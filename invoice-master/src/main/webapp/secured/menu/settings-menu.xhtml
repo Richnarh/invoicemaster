@@ -1,0 +1,55 @@
+<f:subview id="settingsMenu" xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:h="http://xmlns.jcp.org/jsf/html"
+           xmlns:f="http://xmlns.jcp.org/jsf/core"
+           xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    
+
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-cog"></i>
+            <p>
+                Settings
+                <i class="fa fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/bird-type.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.bird_type}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/feed-type.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.feed_type}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/medication.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.medication}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/ingredient.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.ingredient}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/category.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.category}</p>
+                </a>
+            </li>
+<!--            <li class="nav-item">
+                <a href="{application.contextPath}/{msg.settings_menu_url}/country.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>{msg.country}</p>
+                </a>
+            </li>-->
+        </ul>
+    </li>
+</f:subview>
