@@ -5,47 +5,48 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author pascal
  */
+@Entity
+@Table(name = "invoice_item")
 public class InvoiceItem extends BaseModel implements Serializable
 {
-
-    @Column(name = "product_name")
-    private String productName;
-
-    @Column(name = "product_description")
-    private String productDescription;
-
-    @Column(name = "frame_size")
-    private int frameSise;
-
-    @Column(name = "unit_of_measurement")
-    @Enumerated(EnumType.STRING)
-    private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
-
-    @Column(name = "width")
-    private int width;
-
-    @Column(name = "height")
-    private int height;
-
-    @Column(name = "quantity")
-    private int quantity;
-
+    @JoinColumn(name = "inventory", referencedColumnName = "id")
+    @ManyToOne
+    private Inventory inventory;
+    
     @Column(name = "total_price")
     private double totalPrice;
-    
-    @Column(name = "color")
-    private String color;
+
+    public Inventory getInventory()
+    {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory)
+    {
+        this.inventory = inventory;
+    }
+
+    public double getTotalPrice()
+    {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice)
+    {
+        this.totalPrice = totalPrice;
+    }
     
     
 }

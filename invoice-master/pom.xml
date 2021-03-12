@@ -69,12 +69,6 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.khoders</groupId>
-            <artifactId>invoicemaster-entities</artifactId>
-            <version>1</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.12</version>

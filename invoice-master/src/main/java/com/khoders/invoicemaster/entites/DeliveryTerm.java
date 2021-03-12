@@ -9,6 +9,8 @@ import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +26,10 @@ public class DeliveryTerm extends BaseModel implements Serializable
     
     @Column(name = "validation")
     private String validation;
+    
+    @JoinColumn(name = "invoice", referencedColumnName = "id")
+    @ManyToOne
+    private Invoice invoice;
 
     public String getDeliveryTerm()
     {
@@ -34,4 +40,26 @@ public class DeliveryTerm extends BaseModel implements Serializable
     {
         this.deliveryTerm = deliveryTerm;
     }
+
+    public String getValidation()
+    {
+        return validation;
+    }
+
+    public void setValidation(String validation)
+    {
+        this.validation = validation;
+    }
+
+    public Invoice getInvoice()
+    {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice)
+    {
+        this.invoice = invoice;
+    }
+
+
 }

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>#{msg.title} | Register</title>
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" /> 
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/all.min.css" />    
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/icheck-bootstrap.min.css" /> 
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
+    </h:head>
+    <body class="hold-transition register-page">
+        <div class="register-box">
+            <p:messages/>
+            <div class="card">
+                <div class="card-header">Create Account</div>
+                <div class="card-body login-card-body">
+                    <h:form>
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" jsf:value="#{userAccountController.userAccount.username}" required="true" placeholder="Enter email address" name="email" type="email" autofocus="true"/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" jsf:value="#{userAccountController.userAccount.phoneNumber}" required="true" placeholder="Enter mobile number" type="text"/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" jsf:value="#{userAccountController.userAccount.password}" required="true" placeholder="Password" type="password"/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" jsf:value="#{userAccountController.userAccount.password2}" placeholder="Confirm password" type="password"/>
+                            </div>
+
+                            <button jsf:action="#{userAccountController.saveAccount()}" class="btn btn-sm btn-info btn-block">Submit</button>
+                            <a href="#{application.contextPath}/login.xhtml" class="btn btn-link">Login</a>
+                        </fieldset>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="#{application.contextPath}/vendors/js/jquery.min.js"></script>
+
+        <script src="#{application.contextPath}/vendors/js/bootstrap.bundle.min.js"></script>
+
+        <script src="#{application.contextPath}/vendors/js/adminlte.min.js"></script>
+
+    </body>
+</html>
+

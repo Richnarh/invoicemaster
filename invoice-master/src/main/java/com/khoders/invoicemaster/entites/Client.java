@@ -23,22 +23,23 @@ import javax.persistence.Table;
 @Table(name = "client")
 public class Client extends BaseModel implements Serializable
 {
+
     @Column(name = "client_code")
     private String clientCode;
-    
+
     @Column(name = "client_name")
     private String clientName;
-    
+
     @Column(name = "client_type")
     @Enumerated(EnumType.STRING)
     private ClientType clientType;
-    
+
     @Column(name = "phone")
     private String phone;
-    
+
     @Column(name = "email_address")
     private String emailAddress;
-    
+
     @Column(name = "address")
     private String address;
 
@@ -81,7 +82,7 @@ public class Client extends BaseModel implements Serializable
     {
         this.emailAddress = emailAddress;
     }
-    
+
     public String getAddress()
     {
         return address;
@@ -101,14 +102,13 @@ public class Client extends BaseModel implements Serializable
     {
         this.clientCode = clientCode;
     }
-    
-        public void genCode()
+
+    public void genCode()
     {
-        if(getClientCode() != null)
+        if (getClientCode() != null)
         {
             setClientCode(getClientCode());
-        }
-        else
+        } else
         {
             setClientCode(SystemUtils.generateCode());
         }

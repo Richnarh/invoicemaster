@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <h:panelGroup rendered="#{invoiceController.pageView.createView}">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="card">
+                        <h6 class="card-header">Invoice Processing</h6>
+                        <div class="card-body">
+                            <h:form>
+                                <h:panelGrid columns="4" styleClass="spaced-form">
+                                    <span class="required_field">#{msg.ref_no}</span>
+                                    <p:inputText value="#{invoiceController.invoice.refNo}" required="true"/>
+
+                                    <span>#{msg.issue_date}</span>
+                                    <p:datePicker value="#{invoiceController.invoice.issueDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+
+                                    <span class="required_field">#{msg.due_date}</span>
+                                    <p:datePicker required="true" value="#{invoiceController.invoice.dueDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+
+                                    <span>#{msg.account}</span>
+                                    <p:selectOneMenu value="#{invoiceController.invoice.account}">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{selectItemAccount.categorySelectItems}"/>
+                                    </p:selectOneMenu>
+
+                                    <span class="required_field">#{msg.payment_status}</span>
+                                    <p:selectOneMenu value="#{invoiceController.invoice.paymentStatus}" required="true">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{sharedClass.paymentStatusList}"/>
+                                    </p:selectOneMenu>
+
+                                    <span class="required_field">#{msg.payment_method}</span>
+                                    <p:selectOneMenu value="#{invoiceController.invoice.paymentMethod}" required="true">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{sharedClass.paymentMethodList}"/>
+                                    </p:selectOneMenu>
+
+                                    <span>#{msg.client}</span>
+                                    <p:selectOneMenu value="#{invoiceController.invoice.client}" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{commonClass.clientList}"/>
+                                    </p:selectOneMenu>
+
+                                    <span class="required_field">#{msg.total_amount}</span>
+                                    <p:inputText value="#{invoiceController.invoice.totalAmount}" required="true"/>
+
+                                    <span>#{msg.note}</span>
+                                    <p:inputTextarea value="#{invoiceController.invoice.note}"/>
+
+                                </h:panelGrid>
+
+                                <div class="col-md-6 mx-auto pt-5">
+                                    <center>
+                                        <h:panelGrid columns="3">
+                                            <p:commandButton  value="#{invoiceController.optionText}" class="kbtn-success"
+                                                              action="#{invoiceController.saveInvoice()}"  update=":mainTabView:mainPanel, :mainTabView:invoiceTable"/>
+
+                                            <p:commandButton value="#{msg.clear}" class="ml-5 kbtn-cancel" immediate="true" action="#{invoiceController.clearInvoice()}" update=":mainTabView:mainPanel"/>
+                                            <p:commandButton value="#{msg.close}" class="kbtn-danger" immediate="true" action="#{invoiceController.closePage()}" update=":mainTabView:mainPanel"/>
+                                        </h:panelGrid>
+                                    </center>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:panelGroup>
+
+    </h:body>
+</html>
+
