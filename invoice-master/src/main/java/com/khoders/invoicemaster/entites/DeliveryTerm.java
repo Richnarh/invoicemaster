@@ -6,10 +6,12 @@
 package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,16 +23,42 @@ import javax.persistence.Table;
 @Table(name = "delivery_term")
 public class DeliveryTerm extends BaseModel implements Serializable
 {
-    @Column(name = "term_name")
-    private String deliveryTerm;
+    @Column(name = "term_code")
+    private String termCode;
     
-    @Column(name = "validation")
-    private String validation;
+    @Column(name = "term_name")
+    @Lob
+    private String deliveryTerm;
     
     @JoinColumn(name = "invoice", referencedColumnName = "id")
     @ManyToOne
     private Invoice invoice;
+    
+    @Column(name = "description")
+    @Lob
+    private String description;
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+    
+    public String getTermCode()
+    {
+        return termCode;
+    }
+
+    public void setTermCode(String termCode)
+    {
+        this.termCode = termCode;
+    }
+
+    
     public String getDeliveryTerm()
     {
         return deliveryTerm;
@@ -39,16 +67,6 @@ public class DeliveryTerm extends BaseModel implements Serializable
     public void setDeliveryTerm(String deliveryTerm)
     {
         this.deliveryTerm = deliveryTerm;
-    }
-
-    public String getValidation()
-    {
-        return validation;
-    }
-
-    public void setValidation(String validation)
-    {
-        this.validation = validation;
     }
 
     public Invoice getInvoice()
@@ -60,6 +78,24 @@ public class DeliveryTerm extends BaseModel implements Serializable
     {
         this.invoice = invoice;
     }
+    
+    public void genCode()
+    {
+        if (getTermCode() != null)
+        {
+            setTermCode(getTermCode());
+        } else
+        {
+            setTermCode(SystemUtils.generateCode());
+        }
+    }
 
+    @Override
+    public String toString()
+    {
+        return deliveryTerm ;
+    }
+
+    
 
 }

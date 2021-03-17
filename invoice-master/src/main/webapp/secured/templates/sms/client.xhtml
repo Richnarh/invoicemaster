@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Client
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                        <div class="container-fluid">
+                            <div class="card-header">Add #{msg.client}s</div>
+                            <h:panelGroup rendered="#{clientController.pageView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+
+                                            <div class="float-right">
+                                                <h:commandButton value="#{msg.new} #{msg.client}" class="btn btn-outline-primary btn-sm"
+                                                                 action="#{clientController.initCLient()}">
+                                                    <p:ajax update=":mainPanel"/>
+                                                </h:commandButton>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                                <h:form class="mb-3 wow">
+                                    <p:dataTable id="clientTable" value="#{clientController.clientList}" reflow="true" var="client"
+                                                 paginator="true" draggableColumns="true" draggableRows="true" paginatorPosition="bottom" rows="8">
+                                        <p:column exportable="false" style="width: 40px;">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <p:panelGrid columns="2">
+                                                <span>Created Date</span>
+                                                <h:outputText value="#{client.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+
+                                                <span>#{msg.client} Id</span>
+                                                <h:outputText value="#{client.clientCode}"/>
+
+                                                <span>Description</span>
+                                                <h:outputText value="#{client.description}"/>
+                                            </p:panelGrid>
+                                        </p:rowExpansion>
+                                        <p:column headerText="#{msg.client} Type">
+                                            #{client.clientType.label}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.client} Name">
+                                            #{client.clientName}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.business} Name">
+                                            #{client.businessName}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.phone}">
+                                            #{client.phone}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.email_ddress}">
+                                            #{client.emailAddress}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.address}">
+                                            #{client.address}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" style="width: 80px;">
+                                            <h:commandButton class="btn btn-outline-info btn-sm" value="#{msg.edit}" immediate="true" action="#{clientController.editClient(client)}">
+                                                <p:ajax  update=":mainPanel"/>
+                                            </h:commandButton>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" style="width: 100px;">
+                                            <h:commandButton class="btn btn-danger btn-sm" value="#{msg.delete}" action="#{clientController.deleteClient(client)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')">
+                                                <p:ajax update="@form"/>
+                                            </h:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup  rendered="#{clientController.pageView.createView}">
+                                <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                    <h:form>
+                                        <div class="card-block">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.client_type} <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <h:selectOneMenu class="form-control" value="#{clientController.client.clientType}" required="true">
+                                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                                        <f:selectItems value="#{commonClass.clientTypeList}"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.client} Name <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" jsf:value="#{clientController.client.clientName}" required="true" class="form-control" placeholder="Enter name"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.business} Name</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" jsf:value="#{clientController.client.businessName}" class="form-control" placeholder="Enter business name"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.phone} <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" jsf:value="#{clientController.client.phone}" required="true" class="form-control" placeholder="Mobile number"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.email_ddress}</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" jsf:value="#{clientController.client.phone}" class="form-control" placeholder="Enter email address"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.address}/Location</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" jsf:value="#{clientController.client.address}" class="form-control" placeholder="Enter address/location"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.description}</label>
+                                                <div class="col-md-8">
+                                                    <textarea type="text" jsf:value="#{clientController.client.description}" class="form-control" placeholder="Enter description"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center pt-3">
+                                            <h:commandButton class="btn btn-secondary btn-sm" action="#{clientController.saveClient()}" value="#{clientController.optionText}">
+                                                <p:ajax update=":mainPanel"/>
+                                            </h:commandButton>                                                    
+
+                                            <h:commandButton class="btn btn-default btn-sm ml-2" action="#{clientController.clearClient()}" value="#{msg.clear}">
+                                                <p:ajax update=":mainPanel"/>
+                                            </h:commandButton>                                                    
+
+                                            <div class="float-right">
+                                                <h:commandButton class="btn btn-danger btn-sm" action="#{clientController.closePage()}" value="#{msg.close}">
+                                                    <p:ajax update="@form,:mainPanel"/>
+                                                </h:commandButton>
+
+                                            </div>                 
+                                        </div>
+
+                                    </h:form>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

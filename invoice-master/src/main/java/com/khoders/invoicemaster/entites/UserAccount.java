@@ -7,6 +7,7 @@ package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
+import java.util.Currency;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -26,12 +27,31 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "phone_number")
     private String phoneNumber;
     
+    @Column(name = "currency")
+    private Currency currency;
+    
+    @Column(name = "website")
+    private String website;
+    
+    @Column(name = "email")
+    private String email;
+    
     @Column(name = "password")
     private String password;
     
     
     @Transient
     private String password2;
+
+    public Currency getCurrency()
+    {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency)
+    {
+        this.currency = currency;
+    }
 
     public String getUsername()
     {
@@ -71,6 +91,26 @@ public class UserAccount extends BaseModel implements Serializable
     public void setPassword2(String password2)
     {
         this.password2 = password2;
+    }
+
+    public String getWebsite()
+    {
+        return website;
+    }
+
+    public void setWebsite(String website)
+    {
+        this.website = website;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
     
     

@@ -8,27 +8,28 @@
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                Invoice
+                Invoices
             </ui:define>
 
             <ui:define name="pageContent">
                 <p:tabView id="mainTabView" activeIndex="#{invoiceController.selectedTabIndex}">
-
                     <p:ajax event="tabChange" listener="#{invoiceController.onTabChange}"/>
-
-                    <p:tab id="firstTabView" title="Invoices">
-                        
+                    <p:tab id="firstTabView" title="Proforma Invoice">
                         <h:panelGroup id="mainPanel">
                             <h:panelGroup rendered="#{invoiceController.pageView.listView}">
                                 <ui:include src="includes/invoice-list.xhtml"/>
                             </h:panelGroup>
+                            
+                            <h:panelGroup rendered="#{invoiceController.pageView.createView}">
+                                <ui:include src="includes/invoice-init-form.xhtml"/>
+                            </h:panelGroup>
                         </h:panelGroup>
-
+                    </p:tab>
+                    <p:tab title="Standard Invoice">
                         
                     </p:tab>
+                    
                 </p:tabView>
-
-
             </ui:define>
         </ui:composition>
     </h:body>

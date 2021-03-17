@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <div class="row">
+            <div class="col-md-12 col-sm-6 col-lg-12">
+                <h:form style="margin-bottom: 5px;">
+
+                    <span class="mr-2">From Date: </span>
+                    <p:datePicker value="#{invoiceController.dateRange.fromDate}"
+                                  pattern="#{msg.formatted_date}" 
+                                  monthNavigator="true" yearNavigator="true"/>
+
+                    <span class="mr-2">To Date: </span>
+                    <p:datePicker value="#{invoiceController.dateRange.toDate}"
+                                  pattern="#{msg.formatted_date}" 
+                                  monthNavigator="true" yearNavigator="true"/>
+
+                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.load} Data">
+                        <p:ajax update=":mainTabView:mainPanel"/>
+                    </h:commandButton>
+
+                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}">
+                        <p:ajax update=":mainTabView:invoiceTable"/>
+                    </h:commandButton>
+
+                    <div class="float-right">
+                        <h:commandButton value="#{msg.new} #{msg.invoice}" class="btn btn-outline-primary btn-sm"
+                                         action="#{invoiceController.initInvoice()}">
+                            <p:ajax update=":mainTabView:mainPanel"/>
+                        </h:commandButton>
+                    </div>
+                </h:form>      
+            </div>
+        </div>
+
+        <h:form id="invoiceTable">
+            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true"  draggableColumns="true" draggableRows="true" 
+                         paginator="true" paginatorPosition="bottom" rows="15">
+
+                <p:column styleClass="row-toggler">
+                    <p:rowToggler/>
+                </p:column>
+
+                <p:rowExpansion>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.payment_method}:</label>
+                            <h:outputText value="#{invoice.paymentMethod.code}"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.payment_staus}:</label>
+                            <h:outputText value="#{invoice.paymentStatus.code}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                        <h:outputText value="#{validation.description}"/>
+                    </div>
+                </p:rowExpansion>
+                
+                <p:column headerText="#{msg.quotation_no}">
+                    #{invoice.quotationNumber}
+                </p:column>
+                <p:column headerText="#{msg.issued_date}">
+                    <h:outputText value="#{invoice.issuedDate}">
+                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg.client}">
+                    #{invoice.client}
+                </p:column>
+                <p:column headerText="#{msg.project}">
+                    #{invoice.project}
+                </p:column>
+                <p:column headerText="#{msg.total_amount}" class="text-right">
+                    <h:outputText value="#{invoice.totalAmount}">
+                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg.description}">
+                    #{invoice.description}
+                </p:column>
+
+                <p:column headerText="#{msg.action}" style="width: 120px;">
+                    <p:menuButton value="#{msg.manage}">
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Item" immediate="true" update=":mainTabView:mainPanel"/>
+                        <!--<p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="{msg.payment}" update=":mainTabView:mainPanel, :invoicePaymentDialog" oncomplete="PF('paymentForm').show()"/>-->
+                    </p:menuButton>
+                </p:column>
+                <p:column headerText="#{msg.action}">
+                    <p:commandButton icon="fa fa-remove" class="kbtn-danger text-white" value="#{msg.delete}"
+                                     immediate="true" update=":mainTabView:mainPanel" onclick="return confirm('Deleting this record will remove it\'s corresponding invoice items? and payment information, proceed if you know what your\'re doing')"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

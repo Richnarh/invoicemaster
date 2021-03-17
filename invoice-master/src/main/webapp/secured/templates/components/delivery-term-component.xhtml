@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <div class="row p-3">
+            <div class="col-md-4">
+                <h:form id="deliveryForm">
+                    <div class="form-group">
+                        <span>#{msg.delivery_term}</span>
+                        <textarea jsf:value="#{deliveryTermController.deliveryTerm.deliveryTerm}" jsf:required="true" class="form-control"/>
+                    </div>
+                    <div class="form-group">    
+                        <span>#{msg.description}</span>
+                        <textarea jsf:value="#{deliveryTermController.deliveryTerm.description}" class="form-control"/>
+                    </div>
+
+                    <div>
+
+                         
+                        <button jsf:action="#{deliveryTermController.saveDeliveryTerm()}" class="btn btn-secondary">
+                            #{deliveryTermController.optionText}  <i class="fa fa-check-circle"></i>
+                        </button>
+                        <h:commandButton  class="btn btn-default ml-2" value="#{msg.clear}"
+                                          action="#{deliveryTermController.clearDeliveryTerm()}">
+                            <p:ajax  update="@form"/>
+                        </h:commandButton>
+
+                    </div>
+
+                </h:form>
+            </div>
+
+            <div class="col-md-8">
+                <h:form id="deliveryTable">
+
+                    <p:dataTable reflow="true"  draggableColumns="true" draggableRows="true" value="#{deliveryTermController.deliveryTermList}" var="deliveryTerm" paginator="true" paginatorPosition="bottom" rows="5">
+                        <p:column class="row-toggler">
+                            <p:rowToggler/>
+                        </p:column>
+
+                        <p:rowExpansion>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="col-sm-4 col-form-label">Code:</label>
+                                    <h:outputText value="#{deliveryTerm.termCode}"/>
+                                </div>
+
+                                <div class="col">
+                                    <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
+                                    <h:outputText value="#{deliveryTerm.createdDate}">
+                                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                    </h:outputText>
+                                </div>
+
+                            </div>
+                                <div class="col">
+                                    <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                                    <h:outputText value="#{deliveryTerm.description}"/>
+                                </div>
+                        </p:rowExpansion>
+
+                        <p:column headerText="#{msg.delivery_term}">
+                            #{deliveryTerm.deliveryTerm}
+                        </p:column>
+
+                        <p:column headerText="#{msg.action}" style="width: 80px;">
+                            <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" immediate="true" action="#{deliveryTermController.editDeliveryTerm(deliveryTerm)}" update=":mainTabView:deliveryForm"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg.action}" style="width: 100px;">
+                            <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" immediate="true" action="#{deliveryTermController.deleteDeliveryTerm(deliveryTerm)}" update="@form"/>
+                        </p:column>
+
+
+                    </p:dataTable> 
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

@@ -7,6 +7,8 @@ package com.khoders.invoicemaster.entites;
 
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -16,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,73 +28,67 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invoice")
-public class Invoice extends BaseModel implements Serializable{
-   @Column(name = "invoice_code")
-   private String invoiceCode;
-   
-   @Column(name = "invoice_date")
-   private LocalDate invoiceDate;
-   
-   @JoinColumn(name = "invoice_item", referencedColumnName = "id")
-   @ManyToOne
-   private InvoiceItem invoiceItem;
-   
-   @JoinColumn(name = "client", referencedColumnName = "id")
-   @ManyToOne
-   private Client client;
-   
-   @Column(name = "invoice_number")
-   private  String invoiceNumber;
-   
-   @JoinColumn(name = "delivery_term", referencedColumnName = "id")
-   @ManyToOne
-   private DeliveryTerm deliveryTerm;
-   
-   @Column(name = "invoice_type")
-   @Enumerated(EnumType.STRING)
-   private InvoiceType invoiceType;
-   
-   @Column(name = "project")
-   private String project;
-   
-   @Column(name = "quotation_number")
-   private String quotationNumber;
-   
-   @Column(name = "subject")
-   private String subject;
-   
-   @Column(name = "payment_method")
-   @Enumerated(EnumType.STRING)
-   private PaymentMethod paymentMethod;
+public class Invoice extends BaseModel implements Serializable
+{
 
-    public String getInvoiceCode()
+    @Column(name = "issued_date")
+    private LocalDate issuedDate = LocalDate.now();
+
+    @JoinColumn(name = "client", referencedColumnName = "id")
+    @ManyToOne
+    private Client client;
+
+    @Column(name = "invoice_number")
+    private String invoiceNumber;
+
+    @JoinColumn(name = "delivery_term", referencedColumnName = "id")
+    @ManyToOne
+    private DeliveryTerm deliveryTerm;
+
+    @JoinColumn(name = "validation", referencedColumnName = "id")
+    @ManyToOne
+    private Validation validation;
+
+    @Column(name = "invoice_type")
+    @Enumerated(EnumType.STRING)
+    private InvoiceType invoiceType = InvoiceType.PROFORMA_INVOICE;
+
+    @Column(name = "project")
+    private String project;
+
+    @Column(name = "quotation_number")
+    private String quotationNumber;
+
+    @Column(name = "subject")
+    private String subject;
+
+    @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    @Column(name = "unit_of_measurement")
+    @Enumerated(EnumType.STRING)
+    private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
+
+    @Column(name = "total_amount")
+    private double totalAmount;
+
+    @Column(name = "description")
+    @Lob
+    private String description;
+
+    public LocalDate getIssuedDate()
     {
-        return invoiceCode;
+        return issuedDate;
     }
 
-    public void setInvoiceCode(String invoiceCode)
+    public void setIssuedDate(LocalDate issuedDate)
     {
-        this.invoiceCode = invoiceCode;
-    }
-
-    public LocalDate getInvoiceDate()
-    {
-        return invoiceDate;
-    }
-
-    public void setInvoiceDate(LocalDate invoiceDate)
-    {
-        this.invoiceDate = invoiceDate;
-    }
-
-    public InvoiceItem getInvoiceItem()
-    {
-        return invoiceItem;
-    }
-
-    public void setInvoiceItem(InvoiceItem invoiceItem)
-    {
-        this.invoiceItem = invoiceItem;
+        this.issuedDate = issuedDate;
     }
 
     public Client getClient()
@@ -102,6 +99,16 @@ public class Invoice extends BaseModel implements Serializable{
     public void setClient(Client client)
     {
         this.client = client;
+    }
+
+    public Validation getValidation()
+    {
+        return validation;
+    }
+
+    public void setValidation(Validation validation)
+    {
+        this.validation = validation;
     }
 
     public String getInvoiceNumber()
@@ -173,21 +180,50 @@ public class Invoice extends BaseModel implements Serializable{
     {
         this.paymentMethod = paymentMethod;
     }
-   
-   
-    public void genInvoiceCode()
+
+    public double getTotalAmount()
     {
-        if (getInvoiceCode()!= null)
-        {
-            setInvoiceCode(getInvoiceCode());
-        } else
-        {
-            setInvoiceCode(SystemUtils.generateCode());
-        }
+        return totalAmount;
     }
+
+    public void setTotalAmount(double totalAmount)
+    {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public PaymentStatus getPaymentStatus()
+    {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus)
+    {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public UnitOfMeasurement getUnitOfMeasurement()
+    {
+        return unitOfMeasurement;
+    }
+
+    public void setUnitOfMeasurement(UnitOfMeasurement unitOfMeasurement)
+    {
+        this.unitOfMeasurement = unitOfMeasurement;
+    }
+
     public void genQuotationNumber()
     {
-        if (getQuotationNumber()!= null)
+        if (getQuotationNumber() != null)
         {
             setQuotationNumber(getQuotationNumber());
         } else

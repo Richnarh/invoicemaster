@@ -5,10 +5,13 @@
  */
 package com.khoders.invoicemaster.service;
 
+import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.entites.UserAccount;
 import com.khoders.invoicemaster.jbeans.UserModel;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
+import java.util.Collections;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
@@ -60,5 +63,22 @@ public class UserAccountService
             e.printStackTrace();
         }
         return false;
+    }
+    
+    
+    public List<Client> getClientList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM Client e";
+            TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
+                            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 }

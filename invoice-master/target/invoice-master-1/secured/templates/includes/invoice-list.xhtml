@@ -4,39 +4,44 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
 
     <h:body>
         <div class="row">
-            <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-12 col-sm-6 col-lg-12">
                 <h:form style="margin-bottom: 5px;">
 
-                    <span>From Date: </span>
+                    <span class="mr-2">From Date: </span>
                     <p:datePicker value="#{invoiceController.dateRange.fromDate}"
                                   pattern="#{msg.formatted_date}" 
-                                  monthNavigator="true" yearNavigator="true" />
+                                  monthNavigator="true" yearNavigator="true"/>
 
-                    <span>To Date:</span>
+                    <span class="mr-2">To Date: </span>
                     <p:datePicker value="#{invoiceController.dateRange.toDate}"
                                   pattern="#{msg.formatted_date}" 
-                                  monthNavigator="true" yearNavigator="true" />
+                                  monthNavigator="true" yearNavigator="true"/>
 
-                    <p:commandButton class="ml-2 kbtn-primary" update=":mainTabView:mainPanel"
-                                     value="#{msg.load} Data"/>
+                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.filter_record}">
+                        <p:ajax update=":mainTabView:mainPanel"/>
+                    </h:commandButton>
 
-                    <p:commandButton class="kbtn-cancel" value="#{msg.reset}" update=":mainTabView:invoiceTable"/>
+                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}">
+                        <p:ajax update=":mainTabView:invoiceTable"/>
+                    </h:commandButton>
 
                     <div class="float-right">
-                        <p:commandButton value="#{msg.new} #{msg.invoice}" class="kbtn-primary"
-                                         icon="fa fa-plus-circle" update=":mainTabView:mainPanel"
-                                         action="#{invoiceController.initInvoice()}"/>
+                        <h:commandButton value="#{msg.new} #{msg.invoice}" class="btn btn-outline-primary btn-sm"
+                                         action="#{invoiceController.initInvoice()}">
+                            <p:ajax update=":mainTabView:mainPanel"/>
+                        </h:commandButton>
                     </div>
                 </h:form>      
             </div>
         </div>
 
         <h:form id="invoiceTable">
-            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"
+            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true"  draggableColumns="true" draggableRows="true" 
                          paginator="true" paginatorPosition="bottom" rows="15">
 
                 <p:column styleClass="row-toggler">
@@ -44,20 +49,43 @@
                 </p:column>
 
                 <p:rowExpansion>
-                     <!--data here-->
+<!--                    <div class="row">
+                        
+                    </div>-->
+                    <div class="col-md-12">
+                        <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                        <h:outputText value="#{invoice.description}"/>
+                    </div>
                 </p:rowExpansion>
-
-    
+                
+                <p:column headerText="#{msg.quotation_no}">
+                    #{invoice.quotationNumber}
+                </p:column>
+                <p:column headerText="#{msg.issued_date}">
+                    <h:outputText value="#{invoice.issuedDate}">
+                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg.client}">
+                    #{invoice.client}
+                </p:column>
+                <p:column headerText="#{msg.project}">
+                    #{invoice.project}
+                </p:column>
+                <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.currency})" class="text-right">
+                    <h:outputText value="#{invoice.totalAmount}">
+                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                    </h:outputText>
+                </p:column>
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.manage}">
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Invoice Item" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Delivery Term" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Validations" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Colour" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Item" immediate="true" update=":mainTabView:mainPanel"/>
-                        <!--<p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="{msg.payment}" update=":mainTabView:mainPanel, :invoicePaymentDialog" oncomplete="PF('paymentForm').show()"/>-->
+                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>
-                </p:column>
-                <p:column headerText="#{msg.action}">
-                    <p:commandButton icon="fa fa-remove" class="kbtn-danger text-white" value="#{msg.delete}"
-                                     immediate="true" update=":mainTabView:mainPanel" onclick="return confirm('Deleting this record will remove it\'s corresponding invoice items? and payment information, proceed if you know what your\'re doing')"/>
                 </p:column>
             </p:dataTable>
         </h:form>

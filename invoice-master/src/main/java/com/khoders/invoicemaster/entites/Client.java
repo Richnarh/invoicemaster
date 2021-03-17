@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -30,6 +31,9 @@ public class Client extends BaseModel implements Serializable
     @Column(name = "client_name")
     private String clientName;
 
+    @Column(name = "business_name")
+    private String businessName;
+
     @Column(name = "client_type")
     @Enumerated(EnumType.STRING)
     private ClientType clientType;
@@ -42,6 +46,10 @@ public class Client extends BaseModel implements Serializable
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "description")
+    @Lob
+    private String description;
 
     public String getClientName()
     {
@@ -101,6 +109,26 @@ public class Client extends BaseModel implements Serializable
     public void setClientCode(String clientCode)
     {
         this.clientCode = clientCode;
+    }
+
+    public String getBusinessName()
+    {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName)
+    {
+        this.businessName = businessName;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public void genCode()

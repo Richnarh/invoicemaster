@@ -21,52 +21,33 @@
             </li>
             
             <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/birds.xhtml" class="nav-link">
+                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/configure-invoice.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
-                    <p>Birds</p>
+                    <p>Configure Invoice</p>
                 </a>
             </li>
         </ul>
     </li>
-
-    <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
-            <i class="nav-icon fa fa-cube"></i>
-            <p>
-                Feed Formulation
-                <i class="fa fa-angle-left right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.farm_menu_url}/feed-config.xhtml" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon"></i>
-                    <p>Configure Feed</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.farm_menu_url}/feed-overview.xhtml" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon"></i>
-                    <p>Overview</p>
-                </a>
-            </li>
-        </ul>
-    </li>
-
 
     <li class="nav-item has-treeview">
         <a href="#" class="nav-link">
             <i class="nav-icon fa fa-user"></i>
             <p>
-                Client
+                SMS Master
                 <i class="fa fa-angle-left right"></i>
             </p>
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.farm_menu_url}/client.xhtml" class="nav-link">
+                <a href="#{application.contextPath}/#{msg.sms_menu_uri}/client.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>#{msg.client}s</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.sms_menu_uri}/sms.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.contact}s</p>
                 </a>
             </li>
         </ul>

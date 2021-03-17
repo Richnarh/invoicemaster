@@ -8,6 +8,7 @@ package com.khoders.invoicemaster.entites;
 import com.khoders.invoicemaster.entites.enums.DoorType;
 import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,19 +24,20 @@ import javax.persistence.Table;
 @Table(name = "inventory")
 public class Inventory extends BaseModel implements Serializable
 {
+
     @Column(name = "product_code")
     private String productCode;
-    
+
     @Column(name = "product_name")
     private String productName;
-    
+
     @Column(name = "door_type")
     @Enumerated(EnumType.STRING)
     private DoorType doorType;
-    
+
     @Column(name = "frame_size")
     private int frameSise;
-    
+
     @Column(name = "unit_of_measurement")
     @Enumerated(EnumType.STRING)
     private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
@@ -51,10 +53,10 @@ public class Inventory extends BaseModel implements Serializable
 
     @Column(name = "selling_price")
     private double sellingPrice;
-    
+
     @Column(name = "cost_price")
     private double costPrice;
-    
+
     @Column(name = "color")
     private String color;
 
@@ -167,6 +169,15 @@ public class Inventory extends BaseModel implements Serializable
     {
         this.color = color;
     }
-    
-    
+
+    public void genCode()
+    {
+        if (getProductCode() != null)
+        {
+            setProductCode(getProductCode());
+        } else
+        {
+            setProductCode(SystemUtils.generateCode());
+        }
+    }
 }
