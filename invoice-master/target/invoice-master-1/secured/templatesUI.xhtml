@@ -27,10 +27,10 @@
                         <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">Feed Overview</a>
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/inventory.xhtml" class="nav-link">Inventory</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">POS</a>
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="nav-link">Invoice</a>
                     </li>
                 </ul>
 
@@ -48,7 +48,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <h:form>
-                            <p:commandButton class="kbtn-secondary" title="Refresh" ajax="false" icon="fa fa-refresh" action="#{commonClass.init()}"/>
+                            <p:commandButton class="kbtn-secondary" title="Refresh" ajax="false" icon="fa fa-refresh"/>
                         </h:form>
                     </li>
                     <li class="nav-item dropdown">
@@ -74,18 +74,18 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <i class="fa fa-paw"></i>
-                            <span>Pascal<i class="fa fa-angle-down"></i></span>
+                            <span>#{appSession.currentUser.username}<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Profile Activity</span>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
+                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/profile-update.xhtml" class="dropdown-item">
                                 <i class="fa fa-user mr-2"></i> Update Account
                                 <span class="float-right text-muted text-sm"></span>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fa fa-users mr-2"></i> Update Password
+                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/update-password.xhtml" class="dropdown-item">
+                                <i class="fa fa-key mr-2"></i> Update Password
                                 <span class="float-right text-muted text-sm"></span>
                             </a>
                             <div class="dropdown-divider"></div>
@@ -93,7 +93,7 @@
                                 <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>
                             </h:form>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">Pascal</a>
+                            <a href="#" class="dropdown-item dropdown-footer">#{appSession.currentUser.phoneNumber}</a>
                         </div>
                     </li>
                 </ul>

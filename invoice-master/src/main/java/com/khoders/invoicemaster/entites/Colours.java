@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +20,49 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "colours")
-public class Colours extends BaseModel implements Serializable 
+public class Colours extends BaseModel implements Serializable
 {
+
+    @Column(name = "colour_code")
+    private String colourCode;
+
     @Column(name = "colour_name")
     private String colourName;
+
+    public String getColourCode()
+    {
+        return colourCode;
+    }
+
+    public void setColourCode(String colourCode)
+    {
+        this.colourCode = colourCode;
+    }
+
+    public String getColourName()
+    {
+        return colourName;
+    }
+
+    public void setColourName(String colourName)
+    {
+        this.colourName = colourName;
+    }
+    public void genCode()
+    {
+        if (getColourCode()!= null)
+        {
+            setColourCode(getColourCode());
+        } else
+        {
+            setColourCode(SystemUtils.generateCode());
+        }
+    }
     
-    @JoinColumn(name = "invoice", referencedColumnName = "id")
-    @ManyToOne
-    private Invoice invoice;
+    @Override
+    public String toString()
+    {
+        return colourName ;
+    }
+
 }

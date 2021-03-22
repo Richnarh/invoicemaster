@@ -43,7 +43,6 @@ public class ClientController implements Serializable{
     @PostConstruct
     private void init()
     {
-        optionText = "Save Changes";
         clientList = userAccountService.getClientList();
         
         clearClient();
@@ -118,7 +117,6 @@ public class ClientController implements Serializable{
     public void closePage()
     {
        client = new Client();
-       clientList = new LinkedList<>();
        optionText = "Save Changes";
        pageView.restToListView();
     }

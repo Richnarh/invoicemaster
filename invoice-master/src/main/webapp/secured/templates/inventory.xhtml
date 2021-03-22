@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Inventory
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                        <div class="container-fluid">
+                            <div class="card-header">Add #{msg.inventory}</div>
+                            <h:panelGroup rendered="#{inventoryController.pageView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+
+                                            <div class="float-right">
+                                                <h:commandButton value="#{msg.new} #{msg.inventory}" class="btn btn-outline-primary btn-sm"
+                                                                 action="#{inventoryController.initInventory()}">
+                                                    <p:ajax update=":mainPanel"/>
+                                                </h:commandButton>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                                <h:form id="inventoryTable" class="mb-3 wow">
+                                    <p:dataTable value="#{inventoryController.inventoryList}" reflow="true" var="inventory"
+                                                 paginator="true" draggableColumns="true" paginatorPosition="bottom" rows="8">
+                                        <p:column exportable="false" class="row-toggler">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
+                                                    <h:outputText value="#{inventory.createdDate}">
+                                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                    </h:outputText>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.inventory} Id:</label>
+                                                    <h:outputText value="#{inventory.inventoryCode}"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.measurement}:</label>
+                                                    <h:outputText value="#{inventory.unitOfMeasurement}"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                                                    <h:outputText value="#{inventory.description}"/>
+                                                </div>
+                                            </div>
+                                        </p:rowExpansion>
+                                        
+                                        <p:column headerText="Door #{msg.type}">
+                                            #{inventory.doorType.label}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.product}">
+                                            #{inventory.productName}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.frame_size}" class="text-right">
+                                            #{inventory.frameSise} #{inventory.unitOfMeasurement.label}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.width}" class="text-right">
+                                            #{inventory.width} #{inventory.unitOfMeasurement.label}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.height}" class="text-right">
+                                            #{inventory.height} #{inventory.unitOfMeasurement.label}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.quantity}" class="text-right">
+                                            #{inventory.quantity}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.selling} Price (#{appSession.currentUser.currency})" class="text-right">
+                                            <h:outputText value="#{inventory.sellingPrice}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{msg.cost} Price (#{appSession.currentUser.currency})" class="text-right">
+                                            <h:outputText value="#{inventory.costPrice}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" style="width: 80px;">
+                                            <h:commandButton class="btn btn-outline-info btn-sm" value="#{msg.edit}" immediate="true" action="#{inventoryController.editInventory(inventory)}">
+                                                <p:ajax  update=":mainPanel"/>
+                                            </h:commandButton>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" style="width: 100px;">
+                                            <h:commandButton class="btn btn-danger btn-sm" value="#{msg.delete}" action="#{inventoryController.deleteInventory(inventory)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')">
+                                                <p:ajax update="@form"/>
+                                            </h:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup  rendered="#{inventoryController.pageView.createView}">
+                                <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                    <h:form>
+                                        <div class="card-block">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Door #{msg.type} <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.doorType}" required="true">
+                                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                                        <f:selectItems value="#{commonClass.doorTypeList}"/>
+                                                    </p:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.product} Name <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.productName}" class="col" required="true" placeholder="Enter product name"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.frame_size} <span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.frameSise}" required="true" class="col" placeholder="Enter frame size"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.width} <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.width}" required="true" class="col" placeholder="Enter width"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.height} <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.height}" required="true" class="col" placeholder="Enter height"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.quantity}</label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.quantity}" class="col" placeholder="Enter quantity"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.selling} #{msg.price}</label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.sellingPrice}" class="col" placeholder="Enter selling price"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.cost} #{msg.price} <span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{inventoryController.inventory.costPrice}" class="col" placeholder="Enter cost price"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.measurement} <span class="text-danger">*</span> </label>
+                                                <div class="col-md-8">
+                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.unitOfMeasurement}" required="true">
+                                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                                        <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                    </p:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.description}</label>
+                                                <div class="col-md-8">
+                                                    <textarea jsf:value="#{inventoryController.inventory.description}" class="form-control" placeholder="Enter description"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center pt-3">
+                                            <p:commandButton class="kbtn-success" value="#{inventoryController.optionText}" icon="fa fa-check-circle" action="#{inventoryController.saveInventory()}" ajax="false"/>
+                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" action="#{inventoryController.clearInventory()}" update=":mainPanel"/>
+
+                                            <div class="float-right">
+                                                <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{inventoryController.closePage()}">
+                                                    <p:ajax update="@form,:mainPanel"/>
+                                                </h:commandButton>
+                                            </div>                 
+                                        </div>
+
+                                    </h:form>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

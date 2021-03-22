@@ -27,6 +27,13 @@
                                 <input class="form-control" type="telephone" jsf:value="#{userAccountController.userAccount.phoneNumber}" required="true" placeholder="Enter mobile number"/>
                             </div>
                             <div class="form-group">
+                                <span>Currency</span>
+                                <h:selectOneMenu class="form-control" value="#{userAccountController.userAccount.currency}" required="true">
+                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                    <f:selectItems value="#{commonClass.currencyList}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-group">
                                 <input class="form-control" jsf:value="#{userAccountController.userAccount.password}" required="true" placeholder="Password" type="password"/>
                             </div>
                             <div class="form-group">

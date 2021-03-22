@@ -141,4 +141,12 @@ public class Client extends BaseModel implements Serializable
             setClientCode(SystemUtils.generateCode());
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return clientName;
+    }
+    
+    
 }

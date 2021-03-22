@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -24,9 +25,8 @@ import javax.persistence.Table;
 @Table(name = "inventory")
 public class Inventory extends BaseModel implements Serializable
 {
-
-    @Column(name = "product_code")
-    private String productCode;
+    @Column(name = "inventory_code")
+    private String inventoryCode;
 
     @Column(name = "product_name")
     private String productName;
@@ -37,10 +37,6 @@ public class Inventory extends BaseModel implements Serializable
 
     @Column(name = "frame_size")
     private int frameSise;
-
-    @Column(name = "unit_of_measurement")
-    @Enumerated(EnumType.STRING)
-    private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
 
     @Column(name = "width")
     private int width;
@@ -57,19 +53,14 @@ public class Inventory extends BaseModel implements Serializable
     @Column(name = "cost_price")
     private double costPrice;
 
-    @Column(name = "color")
-    private String color;
+    @Column(name = "unit_of_measurement")
+    @Enumerated(EnumType.STRING)
+    private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
 
-    public String getProductCode()
-    {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode)
-    {
-        this.productCode = productCode;
-    }
-
+    @Column(name = "description")
+    @Lob
+    private String description;
+    
     public String getProductName()
     {
         return productName;
@@ -160,24 +151,41 @@ public class Inventory extends BaseModel implements Serializable
         this.costPrice = costPrice;
     }
 
-    public String getColor()
+    public String getInventoryCode()
     {
-        return color;
+        return inventoryCode;
     }
 
-    public void setColor(String color)
+    public void setInventoryCode(String inventoryCode)
     {
-        this.color = color;
+        this.inventoryCode = inventoryCode;
     }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    @Override
+    public String toString()
+    {
+        return productName;
+    }
+    
 
     public void genCode()
     {
-        if (getProductCode() != null)
+        if (getInventoryCode() != null)
         {
-            setProductCode(getProductCode());
+            setInventoryCode(getInventoryCode());
         } else
         {
-            setProductCode(SystemUtils.generateCode());
+            setInventoryCode(SystemUtils.generateCode());
         }
     }
 }

@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <div class="col-md-12">
+
+        <h:form id="invoiceConfigForm">
+            <h:panelGrid columns="2" class="spaced-form"> 
+                <span>#{msg.delivery_term}</span>
+                <p:selectOneMenu value="#{invoiceController.invoiceConfigItems.deliveryTerm}" 
+                                 filter="true" filterMatchMode="contains" required="true">
+                    <f:selectItem itemLabel="#{msg.choose}"/>
+                    <f:selectItems value="#{userCommonClass.deliveryTermList}"/>
+                </p:selectOneMenu>
+
+                <span>#{msg.validation}</span>
+                <p:selectOneMenu value="#{invoiceController.invoiceConfigItems.validation}" 
+                                 filter="true" filterMatchMode="contains" required="true">
+                    <f:selectItem itemLabel="#{msg.choose}"/>
+                    <f:selectItems value="#{userCommonClass.validationList}"/>
+                </p:selectOneMenu>
+
+                <span>#{msg.colour}</span>
+                <p:selectOneMenu value="#{invoiceController.invoiceConfigItems.colours}" 
+                                 filter="true" filterMatchMode="contains" required="true">
+                    <f:selectItem itemLabel="#{msg.choose}"/>
+                    <f:selectItems value="#{userCommonClass.coloursList}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+            <div class="py-3">
+                <p:commandButton value="#{invoiceController.optionText}" icon="fa fa-check-circle" class="kbtn-success" action="#{invoiceController.saveInvoiceConfigItems()}" update=":invoiceConfigTable, @form"/>
+
+                <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{invoiceController.clearInvoiceConfigItems()}" update="@form"/>
+            </div>
+        </h:form>
+
+        <h:form id="invoiceConfigTable">
+            <p:dataTable value="#{invoiceController.invoiceConfigItemsList}" var="invoiceConfig" 
+                         reflow="true" paginator="true" paginatorPosition="bottom" rows="6">
+                <p:column class="row-toggler">
+                    <p:rowToggler/>
+                </p:column>
+
+                <p:rowExpansion>
+                        <div class="row">
+                            <div class="col">
+                                <span class="col-sm-4 col-form-label">#{msg.created_date}:</span>
+                                <h:outputText value="#{invoiceConfig.createdDate}">
+                                    <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                </h:outputText>
+                            </div>
+                        </div>
+                          <hr/>
+                        <div class="row">
+                            <div class="col">
+                                <span class="col-sm-4 col-form-label">#{msg.invoice}:</span>
+                                <h:outputText value="#{invoiceConfig.invoice.quotationNumber}"/>
+                            </div>
+                        </div>
+
+                </p:rowExpansion>
+
+                <p:column headerText="#{msg.delivery_term}">
+                    #{invoiceConfig.deliveryTerm.deliveryTerm}
+                </p:column>
+
+                <p:column headerText="#{msg.validation}">
+                    #{invoiceConfig.validation.validation}
+                </p:column>
+
+                <p:column headerText="#{msg.colour}">
+                    #{invoiceConfig.colours.colourName}
+                </p:column>
+
+                <p:column headerText="#{msg.action}" style="width: 80px;">
+                    <p:commandButton  class="kbtn-info" action="#{invoiceController.editInvoiceConfigItems(invoiceConfig)}" 
+                                      value="#{msg.edit}" update=":invoiceConfigForm"/>
+
+                </p:column>
+                <p:column headerText="#{msg.action}" style="width: 100px;">
+                    <p:commandButton value="#{msg.delete}" class="kbtn-danger"
+                                     action="#{invoiceController.deleteInvoiceConfigItems(invoiceConfig)}"
+                                     update="@form"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </div>
+</html>
+

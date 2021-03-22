@@ -8,7 +8,6 @@ package com.khoders.invoicemaster.entites;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
-import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -30,9 +29,11 @@ import javax.persistence.Table;
 @Table(name = "invoice")
 public class Invoice extends BaseModel implements Serializable
 {
-
     @Column(name = "issued_date")
     private LocalDate issuedDate = LocalDate.now();
+   
+    @Column(name = "due_date")
+    private LocalDate dueDate;
 
     @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
@@ -40,14 +41,6 @@ public class Invoice extends BaseModel implements Serializable
 
     @Column(name = "invoice_number")
     private String invoiceNumber;
-
-    @JoinColumn(name = "delivery_term", referencedColumnName = "id")
-    @ManyToOne
-    private DeliveryTerm deliveryTerm;
-
-    @JoinColumn(name = "validation", referencedColumnName = "id")
-    @ManyToOne
-    private Validation validation;
 
     @Column(name = "invoice_type")
     @Enumerated(EnumType.STRING)
@@ -57,7 +50,7 @@ public class Invoice extends BaseModel implements Serializable
     private String project;
 
     @Column(name = "quotation_number")
-    private String quotationNumber;
+    private String quotationNumber = SystemUtils.generateCode();
 
     @Column(name = "subject")
     private String subject;
@@ -69,10 +62,6 @@ public class Invoice extends BaseModel implements Serializable
     @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
-
-    @Column(name = "unit_of_measurement")
-    @Enumerated(EnumType.STRING)
-    private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
 
     @Column(name = "total_amount")
     private double totalAmount;
@@ -101,16 +90,6 @@ public class Invoice extends BaseModel implements Serializable
         this.client = client;
     }
 
-    public Validation getValidation()
-    {
-        return validation;
-    }
-
-    public void setValidation(Validation validation)
-    {
-        this.validation = validation;
-    }
-
     public String getInvoiceNumber()
     {
         return invoiceNumber;
@@ -119,16 +98,6 @@ public class Invoice extends BaseModel implements Serializable
     public void setInvoiceNumber(String invoiceNumber)
     {
         this.invoiceNumber = invoiceNumber;
-    }
-
-    public DeliveryTerm getDeliveryTerm()
-    {
-        return deliveryTerm;
-    }
-
-    public void setDeliveryTerm(DeliveryTerm deliveryTerm)
-    {
-        this.deliveryTerm = deliveryTerm;
     }
 
     public InvoiceType getInvoiceType()
@@ -211,24 +180,21 @@ public class Invoice extends BaseModel implements Serializable
         this.paymentStatus = paymentStatus;
     }
 
-    public UnitOfMeasurement getUnitOfMeasurement()
+    public LocalDate getDueDate()
     {
-        return unitOfMeasurement;
+        return dueDate;
     }
 
-    public void setUnitOfMeasurement(UnitOfMeasurement unitOfMeasurement)
+    public void setDueDate(LocalDate dueDate)
     {
-        this.unitOfMeasurement = unitOfMeasurement;
+        this.dueDate = dueDate;
     }
 
-    public void genQuotationNumber()
+    @Override
+    public String toString()
     {
-        if (getQuotationNumber() != null)
-        {
-            setQuotationNumber(getQuotationNumber());
-        } else
-        {
-            setQuotationNumber(SystemUtils.generateCode());
-        }
+        return quotationNumber;
     }
+    
+    
 }

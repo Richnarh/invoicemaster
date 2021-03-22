@@ -11,7 +11,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,13 +28,6 @@ public class Validation extends BaseModel implements Serializable
     @Column(name = "validation")
     private String validation;
     
-    @JoinColumn(name = "invoice", referencedColumnName = "id")
-    @ManyToOne
-    private Invoice invoice;
-    
-    @Column(name = "description")
-    @Lob
-    private String description;
     public String getValidation()
     {
         return validation;
@@ -46,16 +38,6 @@ public class Validation extends BaseModel implements Serializable
         this.validation = validation;
     }
 
-    public Invoice getInvoice()
-    {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice)
-    {
-        this.invoice = invoice;
-    }
-
     public String getValidationCode()
     {
         return validationCode;
@@ -64,16 +46,6 @@ public class Validation extends BaseModel implements Serializable
     public void setValidationCode(String validationCode)
     {
         this.validationCode = validationCode;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
    public void genCode()

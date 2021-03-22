@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.invoicemaster.entites.enums.DoorType;
 import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -24,87 +23,33 @@ import javax.persistence.Table;
 @Table(name = "invoice_item")
 public class InvoiceItem extends BaseModel implements Serializable
 {
- @Column(name = "product_code")
-    private String productCode;
-    
-    @Column(name = "product_name")
-    private String productName;
-    
-    @Column(name = "frame_size")
-    private int frameSise;
-    
-    @Column(name = "width")
-    private int width;
 
-    @Column(name = "height")
-    private int height;
+    @Column(name = "item_code")
+    private String itemCode;
+
+    @JoinColumn(name = "inventory_product", referencedColumnName = "id")
+    @ManyToOne
+    private Inventory inventoryProduct;
 
     @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "unit_price")
     private double unitPrice;
-    
-    @Column(name = "total_price")
-    private double totalPrice;
-    
+
+    @Column(name = "charges")
+    private double charges;
+
+    @Column(name = "total_amount")
+    private double totalAmount;
+
     @Column(name = "description")
     @Lob
     private String description;
-    
+
     @JoinColumn(name = "invoice", referencedColumnName = "id")
     @ManyToOne
     private Invoice invoice;
-
-    public String getProductCode()
-    {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode)
-    {
-        this.productCode = productCode;
-    }
-
-    public String getProductName()
-    {
-        return productName;
-    }
-
-    public void setProductName(String productName)
-    {
-        this.productName = productName;
-    }
-
-    public int getFrameSise()
-    {
-        return frameSise;
-    }
-
-    public void setFrameSise(int frameSise)
-    {
-        this.frameSise = frameSise;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public void setWidth(int width)
-    {
-        this.width = width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public void setHeight(int height)
-    {
-        this.height = height;
-    }
 
     public int getQuantity()
     {
@@ -136,16 +81,16 @@ public class InvoiceItem extends BaseModel implements Serializable
         this.unitPrice = unitPrice;
     }
 
-    public double getTotalPrice()
+    public double getTotalAmount()
     {
-        return totalPrice;
+        return totalAmount;
     }
 
-    public void setTotalPrice(double totalPrice)
+    public void setTotalAmount(double totalAmount)
     {
-        this.totalPrice = totalPrice;
+        this.totalAmount = totalAmount;
     }
-
+    
     public String getDescription()
     {
         return description;
@@ -156,14 +101,44 @@ public class InvoiceItem extends BaseModel implements Serializable
         this.description = description;
     }
 
-        public void genCode()
+    public String getItemCode()
     {
-        if (getProductCode() != null)
+        return itemCode;
+    }
+
+    public void setItemCode(String itemCode)
+    {
+        this.itemCode = itemCode;
+    }
+
+    public Inventory getInventoryProduct()
+    {
+        return inventoryProduct;
+    }
+
+    public void setInventoryProduct(Inventory inventoryProduct)
+    {
+        this.inventoryProduct = inventoryProduct;
+    }
+
+    public double getCharges()
+    {
+        return charges;
+    }
+
+    public void setCharges(double charges)
+    {
+        this.charges = charges;
+    }
+
+    public void genCode()
+    {
+        if (getItemCode() != null)
         {
-            setProductCode(getProductCode());
+            setItemCode(getItemCode());
         } else
         {
-            setProductCode(SystemUtils.generateCode());
+            setItemCode(SystemUtils.generateCode());
         }
     }
 }

@@ -19,11 +19,11 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.invoice_type} <span class="text-danger">*</span> </label>
                                         <div class="col-md-8">
-                                            <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.invoiceType}" required="true">
+                                            <p:selectOneMenu value="#{invoiceController.invoice.invoiceType}" required="true" class="col">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{commonClass.invoiceTypeList}"/>
                                                 <p:ajax listener="#{invoiceController.show()}" update="@form"/>
-                                            </h:selectOneMenu>
+                                            </p:selectOneMenu>
                                         </div>
                                     </div>
                                     <h:panelGroup rendered="#{invoiceController.toggleDisplay == false}">
@@ -62,9 +62,16 @@
                                     </h:panelGroup>
                                     
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.issued_date} <span class="text-danger">*</span></label>
+                                        <label class="col-sm-4 col-form-label">#{msg.issued_date}</label>
                                         <div class="col-md-8">
-                                            <p:datePicker value="#{invoiceController.invoice.issuedDate}" required="true" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                                            <p:datePicker value="#{invoiceController.invoice.issuedDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.due_date} <span class="text-danger">*</span></label>
+                                        <div class="col-md-8">
+                                            <p:datePicker value="#{invoiceController.invoice.dueDate}" required="true" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -79,19 +86,9 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.project}</label>
                                         <div class="col-md-8">
-                                            <input type="text" jsf:value="#{invoiceController.invoice.subject}" class="form-control" placeholder="Enter project"/>
+                                            <input type="text" jsf:value="#{invoiceController.invoice.project}" class="form-control" placeholder="Enter project"/>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.measurement} <span class="text-danger">*</span></label>
-                                        <div class="col-md-8">
-                                            <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.unitOfMeasurement}" required="true">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
-                                            </h:selectOneMenu>
-                                        </div>
-                                    </div>
-                                    
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.total_amount} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">
@@ -107,15 +104,10 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <h:commandButton  value="#{invoiceController.optionText}" class="btn btn-secondary btn-sm"
-                                                      action="#{invoiceController.saveInvoice()}">
-                                        <p:ajax update=":mainTabView:mainPanel, :mainTabView:invoiceTable"/>
-                                    </h:commandButton>
+                                    <p:commandButton  value="#{invoiceController.optionText}" class="kbtn-success" icon="fa fa-check-circle"
+                                                      action="#{invoiceController.saveInvoice()}" ajax="false"/>
 
-                                    <h:commandButton value="#{msg.clear}" class="ml-3 btn btn-default btn-sm" immediate="true" action="#{invoiceController.clearInvoice()}">
-                                        <p:ajax update=":mainTabView:mainPanel"/>
-                                    </h:commandButton>
-
+                                    <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="fa fa-trash" action="#{invoiceController.clearInvoice()}" update=":mainTabView:mainPanel"/>
 
                                     <div class="float-right">
                                         <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{invoiceController.closePage()}">

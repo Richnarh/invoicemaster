@@ -30,24 +30,6 @@ public class DeliveryTerm extends BaseModel implements Serializable
     @Lob
     private String deliveryTerm;
     
-    @JoinColumn(name = "invoice", referencedColumnName = "id")
-    @ManyToOne
-    private Invoice invoice;
-    
-    @Column(name = "description")
-    @Lob
-    private String description;
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-    
     public String getTermCode()
     {
         return termCode;
@@ -58,7 +40,6 @@ public class DeliveryTerm extends BaseModel implements Serializable
         this.termCode = termCode;
     }
 
-    
     public String getDeliveryTerm()
     {
         return deliveryTerm;
@@ -69,16 +50,6 @@ public class DeliveryTerm extends BaseModel implements Serializable
         this.deliveryTerm = deliveryTerm;
     }
 
-    public Invoice getInvoice()
-    {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice)
-    {
-        this.invoice = invoice;
-    }
-    
     public void genCode()
     {
         if (getTermCode() != null)

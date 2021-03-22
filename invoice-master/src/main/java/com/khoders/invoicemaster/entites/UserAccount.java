@@ -5,11 +5,13 @@
  */
 package com.khoders.invoicemaster.entites;
 
+import com.khoders.resource.enums.Currency;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
-import java.util.Currency;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -28,7 +30,8 @@ public class UserAccount extends BaseModel implements Serializable
     private String phoneNumber;
     
     @Column(name = "currency")
-    private Currency currency;
+    @Enumerated(EnumType.STRING)
+    private Currency currency = Currency.GHS;
     
     @Column(name = "website")
     private String website;

@@ -74,7 +74,7 @@ and open the template in the editor.
     border-color: #28a745 !important;
 }
 .kbtn-success:hover{
-    background: #A5D6A7 !important;
+    background: inherit !important;
     color: #28a745 !important;
     border-color: #28a745 !important;
     transition: ease-in 0.3s;
@@ -143,6 +143,18 @@ and open the template in the editor.
     color: #17a2b8 !important;
     padding: 3px !important;
     border: 1px solid #81D4FA !important;
+}
+
+.kbtn-default{
+    background-color: #f8f9fa !important;
+    border-color: #ddd !important;
+    color: #444 !important;
+}
+
+.kbtn-default:hover{
+    background-color: #f1f0f2 !important;
+    border-color: #ddd !important;
+    color: #444 !important;
 }
 
 .field-shade

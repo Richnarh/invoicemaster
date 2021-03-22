@@ -33,26 +33,34 @@
                                     </div>
                                 </div>
 
-                                <h:form class="mb-3 wow">
-                                    <p:dataTable id="clientTable" value="#{clientController.clientList}" reflow="true" var="client"
+                                <h:form id="clientTable" class="mb-3 wow">
+                                    <p:dataTable value="#{clientController.clientList}" reflow="true" var="client"
                                                  paginator="true" draggableColumns="true" draggableRows="true" paginatorPosition="bottom" rows="8">
                                         <p:column exportable="false" style="width: 40px;">
                                             <p:rowToggler/>
                                         </p:column>
 
                                         <p:rowExpansion>
-                                            <p:panelGrid columns="2">
-                                                <span>Created Date</span>
-                                                <h:outputText value="#{client.createdDate}">
-                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                                </h:outputText>
-
-                                                <span>#{msg.client} Id</span>
-                                                <h:outputText value="#{client.clientCode}"/>
-
-                                                <span>Description</span>
-                                                <h:outputText value="#{client.description}"/>
-                                            </p:panelGrid>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
+                                                    <h:outputText value="#{client.createdDate}">
+                                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                    </h:outputText>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.client} Id:</label>
+                                                    <h:outputText value="#{client.clientCode}"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                                                    <h:outputText value="#{client.description}"/>
+                                                </div>
+                                            </div>
                                         </p:rowExpansion>
                                         <p:column headerText="#{msg.client} Type">
                                             #{client.clientType.label}
@@ -128,7 +136,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">#{msg.email_ddress}</label>
                                                 <div class="col-md-8">
-                                                    <input type="text" jsf:value="#{clientController.client.phone}" class="form-control" placeholder="Enter email address"/>
+                                                    <input type="text" jsf:value="#{clientController.client.emailAddress}" class="form-control" placeholder="Enter email address"/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -145,19 +153,13 @@
                                             </div>
                                         </div>
                                         <div class="text-center pt-3">
-                                            <h:commandButton class="btn btn-secondary btn-sm" action="#{clientController.saveClient()}" value="#{clientController.optionText}">
-                                                <p:ajax update=":mainPanel"/>
-                                            </h:commandButton>                                                    
-
-                                            <h:commandButton class="btn btn-default btn-sm ml-2" action="#{clientController.clearClient()}" value="#{msg.clear}">
-                                                <p:ajax update=":mainPanel"/>
-                                            </h:commandButton>                                                    
+                                            <p:commandButton class="kbtn-success" value="#{clientController.optionText}" icon="fa fa-check-circle" action="#{clientController.saveClient()}" ajax="false"/>
+                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" action="#{clientController.clearClient()}" update=":mainPanel"/>
 
                                             <div class="float-right">
-                                                <h:commandButton class="btn btn-danger btn-sm" action="#{clientController.closePage()}" value="#{msg.close}">
+                                                <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{clientController.closePage()}">
                                                     <p:ajax update="@form,:mainPanel"/>
                                                 </h:commandButton>
-
                                             </div>                 
                                         </div>
 

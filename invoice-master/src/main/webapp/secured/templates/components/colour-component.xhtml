@@ -2,83 +2,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">  
 
     <h:body>
-        <h:form>
-            <div class="p-3">
-                <div class="row">
-                    <div class="col-md-4">
+        <div class="p-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h:form id="colourForm">
                         <div class="form-group">
-                            <span>#{msg.validation}</span>
-                            <textarea jsf:value="#{validationController.validation.validation}" class="form-control"/>
-                        </div>
-                        <div class="form-group">    
-                            <span>#{msg.description}</span>
-                            <textarea jsf:value="#{validationController.validation.description}" class="form-control"/>
+                            <span>#{msg.colour} Name <span class="text-danger">*</span></span>
+                            <textarea jsf:value="#{invoiceConfigController.colours.colourName}" required="true" class="form-control"/>
                         </div>
 
-                        <div>
-                            <h:commandButton  class="btn btn-secondary btn-sm" value="#{deliveryTermController.optionText}"
-                                              action="#{validationController.saveValidation()}">
-                                <p:ajax  update="@form"/>
-                            </h:commandButton>
+                        <div class="py-3">
 
-                            <h:commandButton  class="btn btn-default btn-sm ml-5" value="#{msg.clear}"
-                                              action="#{validationController.clearValidation()}">
-                                <p:ajax  update="@form"/>
-                            </h:commandButton>
+                            <p:commandButton class="kbtn-success" value="#{invoiceConfigController.optionText}" icon="fa fa-check-circle" update="@form, :mainTabView:colourTable" action="#{invoiceConfigController.saveColour()}"/>
+                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" update="@form" action="#{invoiceConfigController.clearColours()}"/>
 
                         </div>
-                    </div>
-                    <div class="col-md-8">
-
-                        <p:dataTable id="validationTable" reflow="true"  draggableColumns="true" draggableRows="true" value="#{validationController.validationList}" var="validation" rows="5">
+                    </h:form>
+                </div>
+                <div class="col-md-8">
+                    <h:form id="colourTable">
+                        <p:dataTable reflow="true"  draggableColumns="true" draggableRows="true" value="#{invoiceConfigController.coloursList}" var="colour" rows="5">
                             <p:column class="row-toggler">
                                 <p:rowToggler/>
                             </p:column>
 
                             <p:rowExpansion>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <label class="col-sm-4 col-form-label">Code:</label>
-                                        <h:outputText value="#{validation.validationCode}"/>
+                                        <h:outputText value="#{colour.colourCode}"/>
                                     </div>
-
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
-                                        <h:outputText value="#{validation.createdDate}">
+                                        <h:outputText value="#{colour.createdDate}">
                                             <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                         </h:outputText>
                                     </div>
-
                                 </div>
-                                    <div class="col-md-12">
-                                        <label class="col-sm-4 col-form-label">#{msg.description}:</label>
-                                        <h:outputText value="#{validation.description}"/>
-                                    </div>
-                                  
+                                
+
                             </p:rowExpansion>
-                            <p:column headerText="#{msg.validation}">
-                                #{validation.validation}
+                            <p:column headerText="#{msg.colour} Name">
+                                #{colour.colourName}
                             </p:column>
 
                             <p:column headerText="#{msg.action}" style="width: 80px;">
-                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" update="@form" action="#{validationController.editValidation(validation)}"/>
+                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" update=":mainTabView:colourForm" action="#{invoiceConfigController.editColours(colour)}"/>
                             </p:column>
 
                             <p:column headerText="#{msg.action}" style="width: 100px;">
-                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" action="#{validationController.deleteValidation(validation)}" update="@form"/>
+                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" action="#{invoiceConfigController.deleteColours(colour)}" update="@form"/>
                             </p:column>
 
                         </p:dataTable> 
-                    </div>
+                    </h:form>
                 </div>
             </div>
-        </h:form>
+        </div>
     </h:body>
 </html>
 

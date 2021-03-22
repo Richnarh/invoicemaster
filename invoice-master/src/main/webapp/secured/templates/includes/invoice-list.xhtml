@@ -22,11 +22,11 @@
                                   pattern="#{msg.formatted_date}" 
                                   monthNavigator="true" yearNavigator="true"/>
 
-                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.filter_record}">
+                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.filter_record}" action="#{invoiceController.filterProformaInvoice()}">
                         <p:ajax update=":mainTabView:mainPanel"/>
                     </h:commandButton>
 
-                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}">
+                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{invoiceController.reset()}">
                         <p:ajax update=":mainTabView:invoiceTable"/>
                     </h:commandButton>
 
@@ -41,23 +41,38 @@
         </div>
 
         <h:form id="invoiceTable">
-            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true"  draggableColumns="true" draggableRows="true" 
+            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true" draggableRows="true" 
                          paginator="true" paginatorPosition="bottom" rows="15">
 
-                <p:column styleClass="row-toggler">
+                <p:column class="row-toggler">
                     <p:rowToggler/>
                 </p:column>
 
                 <p:rowExpansion>
-<!--                    <div class="row">
-                        
-                    </div>-->
-                    <div class="col-md-12">
-                        <label class="col-sm-4 col-form-label">#{msg.description}:</label>
-                        <h:outputText value="#{invoice.description}"/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
+                            <h:outputText value="#{invoice.createdDate}">
+                                <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                            </h:outputText>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.invoice_type}:</label>
+                            <h:outputText value="#{invoice.invoiceType}"/>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                            <h:outputText value="#{invoice.description}"/>
+                        </div>
                     </div>
                 </p:rowExpansion>
-                
+
                 <p:column headerText="#{msg.quotation_no}">
                     #{invoice.quotationNumber}
                 </p:column>
@@ -79,12 +94,12 @@
                 </p:column>
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.manage}">
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Invoice Item" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Delivery Term" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Validations" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Colour" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{invoiceController.editInvoice(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-plus" class="text-info" value="Add Invoice Item" action="#{invoiceController.manageInvoiceItem(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-plus" class="text-info" value="Add Config Item" action="#{invoiceController.manageInvoiceConfig(invoice)}" immediate="true" update=":mainTabView:mainPanel, :invoiceConfigModal" oncomplete="PF('invoiceConfigForm').show()"/>
+                        <p:menuitem icon="fa fa-plus" class="text-info" value="#{msg.payment}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-cog"  class="text-info" title="Convert proforma invoice to standard invoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>
                 </p:column>
             </p:dataTable>

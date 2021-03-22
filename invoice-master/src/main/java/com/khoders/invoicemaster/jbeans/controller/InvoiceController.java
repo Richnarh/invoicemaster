@@ -5,11 +5,9 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.entites.Colours;
-import com.khoders.invoicemaster.entites.DeliveryTerm;
 import com.khoders.invoicemaster.entites.Invoice;
+import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.InvoiceItem;
-import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
@@ -45,7 +43,6 @@ public class InvoiceController implements Serializable
     private InvoiceService invoiceService;
 
     private FormView pageView = FormView.listForm();
-    private int selectedTabIndex;
     private DateRangeUtil dateRange = new DateRangeUtil();
 
     private Invoice invoice = new Invoice();
@@ -54,15 +51,10 @@ public class InvoiceController implements Serializable
     private InvoiceItem invoiceItem = new InvoiceItem();
     private List<InvoiceItem> invoiceItemList = new LinkedList<>();
 
-    private DeliveryTerm deliveryTerm = new DeliveryTerm();
-    private List<DeliveryTerm> deliveryTermList = new LinkedList<>();
-
-    private Validation validation = new Validation();
-    private List<Validation> validationList = new LinkedList<>();
-
-    private Colours colour = new Colours();
-    private List<Colours> colourList = new LinkedList<>();
-
+    private InvoiceConfigItems invoiceConfigItems = new InvoiceConfigItems();
+    private List<InvoiceConfigItems> invoiceConfigItemsList = new LinkedList<>();
+    
+    private int selectedTabIndex;
     private String optionText;
     private double totalAmount;
      
@@ -71,12 +63,21 @@ public class InvoiceController implements Serializable
     @PostConstruct
     private void init()
     {
-        clearInvoiceItem();
+        invoiceList = invoiceService.getInvoiceList();
+        clearInvoice();
     }
     
     public void show()
     {
         toggleDisplay = invoice.getInvoiceType() == InvoiceType.STANDARD_INVOICE;
+    }
+    
+    public void inventoryProperties()
+    {
+        if(invoiceItem.getInventoryProduct().getSellingPrice() != 0.0)
+        {
+            invoiceItem.setUnitPrice(invoiceItem.getInventoryProduct().getSellingPrice());
+        }
     }
 
     public void initInvoice()
@@ -97,7 +98,18 @@ public class InvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-
+    
+    public void filterProformaInvoice()
+    {
+        selectedTabIndex = 1;
+        invoiceList = invoiceService.getProformaInvoice(dateRange, invoice);   
+    }
+    
+    public void reset()
+    {
+        invoiceList = new LinkedList<>();
+    }
+    
     public void saveInvoice()
     {
         try
@@ -125,32 +137,24 @@ public class InvoiceController implements Serializable
     {
         this.invoice = invoice;
         pageView.restToDetailView();
+        
+        clearInvoiceItem();
+        
         invoiceItemList = invoiceService.getInvoiceItemList(invoice);
-
+        
+        for (InvoiceItem items : invoiceItemList) 
+        {
+            totalAmount += items.getTotalAmount();
+            setTotalAmount(totalAmount);
+        }
     }
 
-    public void manageDeliveryTerm(Invoice invoice)
+    public void manageInvoiceConfig(Invoice invoice)
     {
         this.invoice = invoice;
-        pageView.restToDetailView();
-        deliveryTermList = invoiceService.getDeliveryTermList(invoice);
-
-    }
-
-    public void manageValidation(Invoice invoice)
-    {
-        this.invoice = invoice;
-        pageView.restToDetailView();
-        validationList = invoiceService.getValidationList(invoice);
-
-    }
-
-    public void manageColour(Invoice invoice)
-    {
-        this.invoice = invoice;
-        pageView.restToDetailView();
-        colourList = invoiceService.getColoursList(invoice);
-
+        clearInvoiceConfigItems();
+        
+        invoiceConfigItemsList = invoiceService.getInvoiceConfigItemsList(invoice);
     }
 
     public void addInvoiceItem()
@@ -167,7 +171,7 @@ public class InvoiceController implements Serializable
             if(invoiceItem.getUnitPrice() <= 0)
             {
               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter unit price"), null));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
               return;
             }
             
@@ -176,10 +180,19 @@ public class InvoiceController implements Serializable
                 
                 totalAmount= invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
                   
-                invoiceItem.setTotalPrice(totalAmount);
+                invoiceItem.setTotalAmount(totalAmount);
+                
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
                 
+                  for (InvoiceItem item : invoiceItemList)
+                  {
+                      System.out.println("Prod name -- "+item.getInventoryProduct().getProductName());
+                      System.out.println("Inoice"+item.getInvoice());
+                      System.out.println(""+item.getUnitPrice());
+                  }
+                  System.out.println("invoiceItemList -- "+invoiceItemList.size());
+                  
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Invoice item added"), null));
               }
               else
@@ -204,7 +217,7 @@ public class InvoiceController implements Serializable
                 {
                     crudApi.save(items);
                     
-                    totalAmount += items.getTotalPrice();
+                    totalAmount += items.getTotalAmount();
                     
                     setTotalAmount(totalAmount);
                     
@@ -224,13 +237,103 @@ public class InvoiceController implements Serializable
         }
     }
     
+    public void editInvoiceItem(InvoiceItem invoiceItem)
+    {
+        this.invoiceItem = invoiceItem;
+        optionText = "Update";
+    }
+    public void deleteInvoiceItem(InvoiceItem invoiceItem)
+    {
+        try 
+        {
+            if(crudApi.delete(invoiceItem))
+            {
+                invoiceItemList.remove(invoiceItem);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+            }
+            else
+            {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.DELETE_MESSAGE, null));
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addInvoiceConfigItems()
+    {
+        if(invoiceConfigItemsList != null)
+        {
+            invoiceConfigItemsList = CollectionList.washList(invoiceConfigItemsList, invoiceConfigItems);
+            
+            clearInvoiceConfigItems();
+        }
+    }
+    
+    public void saveInvoiceConfigItems()
+    {
+        try
+        {
+            invoiceConfigItems.setInvoice(invoice);
+            if(crudApi.save(invoiceConfigItems) != null)
+            {
+                invoiceConfigItemsList = CollectionList.washList(invoiceConfigItemsList, invoiceConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+           
+            }
+            else
+            {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+            }
+             clearInvoiceConfigItems();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)
+    {
+        this.invoiceConfigItems=invoiceConfigItems;
+        optionText = "Update";
+    }
+
+    public void deleteInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems
+)    {
+        try
+        {
+            if(crudApi.delete(invoiceConfigItems))
+            {
+                invoiceConfigItemsList.remove(invoiceConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                 FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     public void closePage()
     {
-        selectedTabIndex = 1;
        invoice = new Invoice();
+       invoiceConfigItems = new InvoiceConfigItems();
        invoiceItemList = new LinkedList<>();
+       invoiceConfigItemsList = new LinkedList<>();
        totalAmount = 0;
        optionText = "Save Changes";
+       selectedTabIndex = 0;
        pageView.restToListView();
     }
     
@@ -241,10 +344,18 @@ public class InvoiceController implements Serializable
         invoiceItem.setInvoice(invoice);
         SystemUtils.resetJsfUI();
     }
+    
+    public void clearInvoiceConfigItems()
+    {
+        invoiceConfigItems = new InvoiceConfigItems();
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
+    }
 
     public void editInvoice(Invoice invoice)
     {
         this.invoice = invoice;
+        pageView.restToCreateView();
         optionText = "Update";
     }
 
@@ -252,6 +363,7 @@ public class InvoiceController implements Serializable
     {
         invoice = new Invoice();
         optionText = "Save Changes";
+        selectedTabIndex = 0;
         SystemUtils.resetJsfUI();
     }
 
@@ -334,4 +446,25 @@ public class InvoiceController implements Serializable
     {
         this.toggleDisplay = toggleDisplay;
     }
+
+    public List<InvoiceItem> getInvoiceItemList()
+    {
+        return invoiceItemList;
+    }
+
+    public InvoiceConfigItems getInvoiceConfigItems()
+    {
+        return invoiceConfigItems;
+    }
+
+    public void setInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)
+    {
+        this.invoiceConfigItems = invoiceConfigItems;
+    }
+
+    public List<InvoiceConfigItems> getInvoiceConfigItemsList()
+    {
+        return invoiceConfigItemsList;
+    }
+  
 }

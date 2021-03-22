@@ -2,41 +2,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">  
 
     <h:body>
-        <h:form>
-            <div class="p-3">
-                <div class="row">
-                    <div class="col-md-4">
+        <div class="p-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h:form id="validationForm">
                         <div class="form-group">
-                            <span>#{msg.validation}</span>
-                            <textarea jsf:value="#{validationController.validation.validation}" class="form-control"/>
+                            <span>#{msg.validation} <span class="text-danger">*</span></span>
+                            <textarea jsf:value="#{invoiceConfigController.validation.validation}" required="true" class="form-control"/>
                         </div>
-                        <div class="form-group">    
-                            <span>#{msg.description}</span>
-                            <textarea jsf:value="#{validationController.validation.description}" class="form-control"/>
+                        <div class="py-3">
+                            <p:commandButton class="kbtn-success" value="#{invoiceConfigController.optionText}" icon="fa fa-check-circle" update="@form, :mainTabView:validationTable" action="#{invoiceConfigController.saveValidation()}"/>
+                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" update="@form" action="#{invoiceConfigController.clearValidation()}"/>
                         </div>
-
-                        <div>
-                            
-                        <button jsf:action="#{validationController.saveValidation()}" class="btn btn-secondary">
-                            #{validationController.optionText} <i class="fa fa-check-circle"></i>
-                        </button>
-
-                            <h:commandButton  class="btn btn-default ml-2" value="#{msg.clear}"
-                                              action="#{validationController.clearValidation()}">
-                                <p:ajax  update="@form"/>
-                            </h:commandButton>
-
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-
-                        <p:dataTable id="validationTable" reflow="true"  draggableColumns="true" draggableRows="true" value="#{validationController.validationList}" var="validation" rows="5">
+                    </h:form>
+                </div>
+                <div class="col-md-8">
+                    <h:form id="validationTable">
+                        <p:dataTable reflow="true"  draggableColumns="true" draggableRows="true" value="#{invoiceConfigController.validationList}" var="validation" rows="5">
                             <p:column class="row-toggler">
                                 <p:rowToggler/>
                             </p:column>
@@ -54,31 +41,26 @@
                                             <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                         </h:outputText>
                                     </div>
-
                                 </div>
-                                    <div class="col-md-12">
-                                        <label class="col-sm-4 col-form-label">#{msg.description}:</label>
-                                        <h:outputText value="#{validation.description}"/>
-                                    </div>
-                                  
                             </p:rowExpansion>
+
                             <p:column headerText="#{msg.validation}">
                                 #{validation.validation}
                             </p:column>
 
                             <p:column headerText="#{msg.action}" style="width: 80px;">
-                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" update="@form" action="#{validationController.editValidation(validation)}"/>
+                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" update=":mainTabView:validationForm" action="#{invoiceConfigController.editValidation(validation)}"/>
                             </p:column>
 
                             <p:column headerText="#{msg.action}" style="width: 100px;">
-                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" action="#{validationController.deleteValidation(validation)}" update="@form"/>
+                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" action="#{invoiceConfigController.deleteValidation(validation)}" update="@form"/>
                             </p:column>
 
                         </p:dataTable> 
-                    </div>
+                    </h:form>
                 </div>
             </div>
-        </h:form>
+        </div>
     </h:body>
 </html>
 
