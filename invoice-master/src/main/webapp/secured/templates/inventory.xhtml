@@ -93,13 +93,13 @@
                                             #{inventory.quantity}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.selling} Price (#{appSession.currentUser.currency})" class="text-right">
+                                        <p:column headerText="S.P (#{appSession.currentUser.currency})" class="text-right">
                                             <h:outputText value="#{inventory.sellingPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
                                         </p:column>
                                         
-                                        <p:column headerText="#{msg.cost} Price (#{appSession.currentUser.currency})" class="text-right">
+                                        <p:column headerText="C.P (#{appSession.currentUser.currency})" class="text-right">
                                             <h:outputText value="#{inventory.costPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>

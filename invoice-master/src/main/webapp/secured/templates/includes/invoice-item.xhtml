@@ -78,8 +78,8 @@
                         
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
-                        <p:commandButton value="#{msg.delete}" class="kbtn-danger"
-                                       action="#{invoiceController.deleteInvoiceItem(invoiceItem)}"
+                        <p:commandButton value="Remove" class="kbtn-danger"
+                                       action="#{invoiceController.removeInvoiceItem(invoiceItem)}"
                                        update="@form"/>
                     </p:column>
                 </p:dataTable>

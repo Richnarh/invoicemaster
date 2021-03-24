@@ -11,21 +11,21 @@
             <h:panelGrid columns="2" class="spaced-form"> 
                 <span>#{msg.delivery_term}</span>
                 <p:selectOneMenu value="#{invoiceController.invoiceConfigItems.deliveryTerm}" 
-                                 filter="true" filterMatchMode="contains" required="true">
+                                 filter="true" filterMatchMode="contains">
                     <f:selectItem itemLabel="#{msg.choose}"/>
                     <f:selectItems value="#{userCommonClass.deliveryTermList}"/>
                 </p:selectOneMenu>
 
                 <span>#{msg.validation}</span>
                 <p:selectOneMenu value="#{invoiceController.invoiceConfigItems.validation}" 
-                                 filter="true" filterMatchMode="contains" required="true">
+                                 filter="true" filterMatchMode="contains">
                     <f:selectItem itemLabel="#{msg.choose}"/>
                     <f:selectItems value="#{userCommonClass.validationList}"/>
                 </p:selectOneMenu>
 
                 <span>#{msg.colour}</span>
                 <p:selectOneMenu value="#{invoiceController.invoiceConfigItems.colours}" 
-                                 filter="true" filterMatchMode="contains" required="true">
+                                 filter="true" filterMatchMode="contains">
                     <f:selectItem itemLabel="#{msg.choose}"/>
                     <f:selectItems value="#{userCommonClass.coloursList}"/>
                 </p:selectOneMenu>
@@ -33,7 +33,6 @@
 
             <div class="py-3">
                 <p:commandButton value="#{invoiceController.optionText}" icon="fa fa-check-circle" class="kbtn-success" action="#{invoiceController.saveInvoiceConfigItems()}" update=":invoiceConfigTable, @form"/>
-
                 <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{invoiceController.clearInvoiceConfigItems()}" update="@form"/>
             </div>
         </h:form>

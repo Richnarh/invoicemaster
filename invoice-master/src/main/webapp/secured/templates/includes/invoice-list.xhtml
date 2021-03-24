@@ -97,8 +97,7 @@
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{invoiceController.editInvoice(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Add Invoice Item" action="#{invoiceController.manageInvoiceItem(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Add Config Item" action="#{invoiceController.manageInvoiceConfig(invoice)}" immediate="true" update=":mainTabView:mainPanel, :invoiceConfigModal" oncomplete="PF('invoiceConfigForm').show()"/>
-                        <p:menuitem icon="fa fa-plus" class="text-info" value="#{msg.payment}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-cog"  class="text-info" title="Convert proforma invoice to standard invoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{invoiceController.convertToSTDInvoice(invoice)}" title="Convert proforma invoice to standard invoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>
                 </p:column>

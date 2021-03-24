@@ -36,7 +36,11 @@ public class InvoiceService
     {
         try
         {
-
+          String query = "SELECT e FROM InvoiceItem e WHERE e.invoice=?1";
+        
+        TypedQuery<InvoiceItem> typedQuery = crudApi.getEm().createQuery(query, InvoiceItem.class)
+                                .setParameter(1, invoice);
+                return typedQuery.getResultList();      
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -95,6 +99,34 @@ public class InvoiceService
                     .setParameter(1, dateRange.getFromDate())
                     .setParameter(2, dateRange.getToDate())
                     .setParameter(3, InvoiceType.PROFORMA_INVOICE);
+            
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
+    
+    public List<Invoice> getStandardInvoice(DateRangeUtil dateRange, Invoice invoice)
+    {
+        try {
+            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
+            {
+                  String  queryString = "SELECT e FROM Invoice e WHERE e.invoiceType=?1";
+                  TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class)
+                                .setParameter(1, InvoiceType.STANDARD_INVOICE);
+
+                return typedQuery.getResultList();
+            }
+            
+            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.invoiceType=?3";
+            
+            TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
+                    .setParameter(1, dateRange.getFromDate())
+                    .setParameter(2, dateRange.getToDate())
+                    .setParameter(3, InvoiceType.STANDARD_INVOICE);
             
            return typedQuery.getResultList();
             
@@ -169,4 +201,42 @@ public class InvoiceService
         return Collections.emptyList();
     }
 
+    
+    
+    public Invoice extractFromProformerInvoice(Invoice proformaInvoice)
+    {
+        Invoice standardInvoice = new Invoice();
+        standardInvoice.setIssuedDate(proformaInvoice.getIssuedDate());
+        standardInvoice.setDueDate(proformaInvoice.getDueDate());
+        standardInvoice.setClient(proformaInvoice.getClient());
+        standardInvoice.setInvoiceNumber(proformaInvoice.getQuotationNumber());
+        standardInvoice.setInvoiceType(InvoiceType.STANDARD_INVOICE);
+        standardInvoice.setProject(proformaInvoice.getProject());
+        standardInvoice.setSubject(proformaInvoice.getSubject());
+        standardInvoice.setDescription(proformaInvoice.getDescription());
+        standardInvoice.setTotalAmount(proformaInvoice.getTotalAmount());
+        
+        if(crudApi.save(standardInvoice) != null)
+        {
+            List<InvoiceItem> invoiceItemList = getInvoiceItemList(proformaInvoice);
+            
+            for (InvoiceItem item : invoiceItemList)
+            {
+                InvoiceItem invoiceItem = new InvoiceItem();
+                invoiceItem.setInvoice(standardInvoice);
+                invoiceItem.setItemCode(item.getItemCode());
+                invoiceItem.setInventoryProduct(item.getInventoryProduct());
+                invoiceItem.setUnitPrice(item.getUnitPrice());
+                invoiceItem.setQuantity(item.getQuantity());
+                invoiceItem.setCharges(item.getCharges());
+                invoiceItem.setTotalAmount(item.getTotalAmount());
+                
+                invoiceItemList.add(invoiceItem);
+                
+                crudApi.save(invoiceItem);
+            }
+        }
+        
+        return standardInvoice;
+    }
 }
