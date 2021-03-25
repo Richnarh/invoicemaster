@@ -16,58 +16,39 @@
                         <div class="card-body">
                             <h:form>
                                 <div class="card-block">
+
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.invoice_type} <span class="text-danger">*</span> </label>
+                                        <label class="col-sm-4 col-form-label">#{msg.invoice_no}</label>
                                         <div class="col-md-8">
-                                            <p:selectOneMenu value="#{invoiceController.invoice.invoiceType}" required="true" class="col">
+                                            <input type="text" jsf:value="#{invoiceController.invoice.invoiceNumber}" class="form-control" placeholder="Enter invoice number"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.payment_staus}</label>
+                                        <div class="col-md-8">
+                                            <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.paymentStatus}">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.invoiceTypeList}"/>
-                                                <p:ajax listener="#{invoiceController.show()}" update="@form"/>
-                                            </p:selectOneMenu>
+                                                <f:selectItems value="#{commonClass.paymentStatusList}"/>
+                                            </h:selectOneMenu>
                                         </div>
                                     </div>
-                                    <h:panelGroup rendered="#{invoiceController.toggleDisplay == false}">
-                                        <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.quotation_no}</label>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.payment_method}</label>
                                         <div class="col-md-8">
-                                            <input type="text" jsf:value="#{invoiceController.invoice.quotationNumber}" class="form-control" placeholder="Enter enter quote #"/>
+                                            <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.paymentMethod}">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.paymentMethodList}"/>
+                                            </h:selectOneMenu>
                                         </div>
                                     </div>
-                                    </h:panelGroup>
-                                    <h:panelGroup rendered="#{invoiceController.toggleDisplay == true}">
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">#{msg.invoice_no}</label>
-                                            <div class="col-md-8">
-                                                <input type="text" jsf:value="#{invoiceController.invoice.invoiceNumber}" class="form-control" placeholder="Enter invoice number"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">#{msg.payment_staus}</label>
-                                            <div class="col-md-8">
-                                                <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.paymentStatus}">
-                                                    <f:selectItem itemLabel="#{msg.choose}"/>
-                                                    <f:selectItems value="#{commonClass.paymentStatusList}"/>
-                                                </h:selectOneMenu>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">#{msg.payment_method}</label>
-                                            <div class="col-md-8">
-                                                <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.paymentStatus}">
-                                                    <f:selectItem itemLabel="#{msg.choose}"/>
-                                                    <f:selectItems value="#{commonClass.paymentMethodList}"/>
-                                                </h:selectOneMenu>
-                                            </div>
-                                        </div>
-                                    </h:panelGroup>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.issued_date}</label>
                                         <div class="col-md-8">
                                             <p:datePicker value="#{invoiceController.invoice.issuedDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.due_date} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">

@@ -22,7 +22,7 @@ public class InvoiceConfigItems extends BaseModel implements Serializable
 {
     @JoinColumn(name = "invoice", referencedColumnName = "id")
     @ManyToOne
-    private Invoice invoice;
+    private ProformaInvoice proformaInvoice;
     
     @JoinColumn(name = "delivery_term", referencedColumnName = "id")
     @ManyToOne
@@ -36,16 +36,16 @@ public class InvoiceConfigItems extends BaseModel implements Serializable
     @ManyToOne
     private Colours colours;
 
-    public Invoice getInvoice()
+    public ProformaInvoice getProformaInvoice()
     {
-        return invoice;
+        return proformaInvoice;
     }
 
-    public void setInvoice(Invoice invoice)
+    public void setProformaInvoice(ProformaInvoice proformaInvoice)
     {
-        this.invoice = invoice;
+        this.proformaInvoice = proformaInvoice;
     }
-
+    
     public DeliveryTerm getDeliveryTerm()
     {
         return deliveryTerm;

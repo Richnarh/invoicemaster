@@ -6,9 +6,7 @@
 package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entites.Invoice;
-import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.InvoiceItem;
-import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -46,21 +44,15 @@ public class InvoiceController implements Serializable
     private DateRangeUtil dateRange = new DateRangeUtil();
 
     private Invoice invoice = new Invoice();
-    private Invoice stdInvoice = new Invoice();
     private List<Invoice> invoiceList = new LinkedList<>();
-    private List<Invoice> standardInvoiceList = new LinkedList<>();
 
     private InvoiceItem invoiceItem = new InvoiceItem();
     private List<InvoiceItem> invoiceItemList = new LinkedList<>();
 
-    private InvoiceConfigItems invoiceConfigItems = new InvoiceConfigItems();
-    private List<InvoiceConfigItems> invoiceConfigItemsList = new LinkedList<>();
-    
     private int selectedTabIndex;
     private String optionText;
     private double totalAmount;
      
-    private boolean toggleDisplay = false;
 
     @PostConstruct
     private void init()
@@ -68,12 +60,7 @@ public class InvoiceController implements Serializable
         invoiceList = invoiceService.getInvoiceList();
         clearInvoice();
     }
-    
-    public void show()
-    {
-        toggleDisplay = invoice.getInvoiceType() == InvoiceType.STANDARD_INVOICE;
-    }
-    
+        
     public void inventoryProperties()
     {
         if(invoiceItem.getInventoryProduct().getSellingPrice() != 0.0)
@@ -91,28 +78,22 @@ public class InvoiceController implements Serializable
     public void convertToSTDInvoice(Invoice invoice)
     {
         Invoice standardInvoice = invoiceService.extractFromProformerInvoice(invoice);
-        standardInvoiceList = CollectionList.washList(invoiceList, standardInvoice);
+        invoiceList = CollectionList.washList(invoiceList, standardInvoice);
         editInvoice(standardInvoice);
     }
         
-    public void filterProformaInvoice()
+    public void filterInvoice()
     {
         selectedTabIndex = 1;
         invoiceList = invoiceService.getProformaInvoice(dateRange, invoice);   
     }
     
-    public void filterStdInvoice()
+    public void reset()
     {
-        selectedTabIndex = 2;
-        standardInvoiceList = invoiceService.getStandardInvoice(dateRange, invoice);   
+        invoiceList = new LinkedList<>();
     }
     
-    public void stdReset()
-    {
-        standardInvoiceList = new LinkedList<>();
-    }
-    
-    public void saveProformaInvoice()
+    public void saveInvoice()
     {
         try
         {
@@ -149,14 +130,6 @@ public class InvoiceController implements Serializable
             totalAmount += items.getTotalAmount();
             setTotalAmount(totalAmount);
         }
-    }
-
-    public void manageInvoiceConfig(Invoice invoice)
-    {
-        this.invoice = invoice;
-        clearInvoiceConfigItems();
-        
-        invoiceConfigItemsList = invoiceService.getInvoiceConfigItemsList(invoice);
     }
 
     public void addInvoiceItem()
@@ -238,74 +211,11 @@ public class InvoiceController implements Serializable
     {
         invoiceItemList.remove(invoiceItem);
     }
-    
-    public void addInvoiceConfigItems()
-    {
-        if(invoiceConfigItemsList != null)
-        {
-            invoiceConfigItemsList = CollectionList.washList(invoiceConfigItemsList, invoiceConfigItems);
-            
-            clearInvoiceConfigItems();
-        }
-    }
-    
-    public void saveInvoiceConfigItems()
-    {
-        try
-        {
-            invoiceConfigItems.setInvoice(invoice);
-            if(crudApi.save(invoiceConfigItems) != null)
-            {
-                invoiceConfigItemsList = CollectionList.washList(invoiceConfigItemsList, invoiceConfigItems);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-           
-            }
-            else
-            {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
-            }
-             clearInvoiceConfigItems();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    public void editInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)
-    {
-        this.invoiceConfigItems=invoiceConfigItems;
-        optionText = "Update";
-    }
-
-    public void deleteInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems
-)    {
-        try
-        {
-            if(crudApi.delete(invoiceConfigItems))
-            {
-                invoiceConfigItemsList.remove(invoiceConfigItems);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-            }
-            else
-            {
-                 FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
+ 
     public void closePage()
     {
        invoice = new Invoice();
-       invoiceConfigItems = new InvoiceConfigItems();
        invoiceItemList = new LinkedList<>();
-       invoiceConfigItemsList = new LinkedList<>();
        totalAmount = 0;
        optionText = "Save Changes";
        selectedTabIndex = 0;
@@ -320,13 +230,6 @@ public class InvoiceController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
-    public void clearInvoiceConfigItems()
-    {
-        invoiceConfigItems = new InvoiceConfigItems();
-        optionText = "Save Changes";
-        SystemUtils.resetJsfUI();
-    }
-
     public void editInvoice(Invoice invoice)
     {
         this.invoice = invoice;
@@ -424,49 +327,9 @@ public class InvoiceController implements Serializable
         this.totalAmount = totalAmount;
     }
 
-    public boolean isToggleDisplay()
-    {
-        return toggleDisplay;
-    }
-
-    public void setToggleDisplay(boolean toggleDisplay)
-    {
-        this.toggleDisplay = toggleDisplay;
-    }
-
     public List<InvoiceItem> getInvoiceItemList()
     {
         return invoiceItemList;
     }
 
-    public InvoiceConfigItems getInvoiceConfigItems()
-    {
-        return invoiceConfigItems;
-    }
-
-    public void setInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)
-    {
-        this.invoiceConfigItems = invoiceConfigItems;
-    }
-
-    public List<InvoiceConfigItems> getInvoiceConfigItemsList()
-    {
-        return invoiceConfigItemsList;
-    }
-
-    public List<Invoice> getStandardInvoiceList()
-    {
-        return standardInvoiceList;
-    }
-
-    public Invoice getStdInvoice()
-    {
-        return stdInvoice;
-    }
-
-    public void setStdInvoice(Invoice stdInvoice)
-    {
-        this.stdInvoice = stdInvoice;
-    }
-  
 }

@@ -42,15 +42,8 @@ public class Invoice extends BaseModel implements Serializable
     @Column(name = "invoice_number")
     private String invoiceNumber;
 
-    @Column(name = "invoice_type")
-    @Enumerated(EnumType.STRING)
-    private InvoiceType invoiceType = InvoiceType.PROFORMA_INVOICE;
-
     @Column(name = "project")
     private String project;
-
-    @Column(name = "quotation_number")
-    private String quotationNumber = SystemUtils.generateCode();
 
     @Column(name = "subject")
     private String subject;
@@ -100,16 +93,6 @@ public class Invoice extends BaseModel implements Serializable
         this.invoiceNumber = invoiceNumber;
     }
 
-    public InvoiceType getInvoiceType()
-    {
-        return invoiceType;
-    }
-
-    public void setInvoiceType(InvoiceType invoiceType)
-    {
-        this.invoiceType = invoiceType;
-    }
-
     public String getProject()
     {
         return project;
@@ -118,16 +101,6 @@ public class Invoice extends BaseModel implements Serializable
     public void setProject(String project)
     {
         this.project = project;
-    }
-
-    public String getQuotationNumber()
-    {
-        return quotationNumber;
-    }
-
-    public void setQuotationNumber(String quotationNumber)
-    {
-        this.quotationNumber = quotationNumber;
     }
 
     public String getSubject()
@@ -193,7 +166,7 @@ public class Invoice extends BaseModel implements Serializable
     @Override
     public String toString()
     {
-        return quotationNumber;
+        return invoiceNumber;
     }
     
     

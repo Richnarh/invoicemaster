@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">  
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Invoices
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="btn btn-sm bg-info">
+                    Standard Invoice
+                </a>
+                <p:tabView id="mainTabView" activeIndex="#{proformaInvoiceController.selectedTabIndex}">
+                    <p:ajax event="tabChange" listener="#{proformaInvoiceController.onTabChange}"/>
+                    <p:tab id="firstTabView" title="Proforma Invoice">
+                        <h:panelGroup id="mainPanel">
+                            <h:panelGroup rendered="#{proformaInvoiceController.pageView.listView}">
+                                <ui:include src="includes/proforma-invoice-list.xhtml"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{proformaInvoiceController.pageView.createView}">
+                                <ui:include src="includes/proforma-invoice-init-form.xhtml"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{proformaInvoiceController.pageView.detailView}">
+                                <div class="row mb-3">
+                                    <div class="col-md-10 mx-auto">
+                                        <div class="shadow bg-gray">
+                                            <div class="row p-2">
+                                                <span class="p-2 mx-2 field-label">#{msg.client}</span>
+                                                <h:outputText value="#{proformaInvoiceController.proformaInvoice.client.clientName}" class="field-shade"/>
+                                                
+                                                 <span class="p-2 mx-2 field-label">#{msg.due_date}</span>
+                                                <h:outputText value="#{proformaInvoiceController.proformaInvoice.dueDate}" class="col-sm-2 field-shade">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                                <span class="p-2 mx-2 field-label">#{msg.ref_no}</span>
+                                                <h:outputText value="#{proformaInvoiceController.proformaInvoice.quotationNumber}" class="field-shade"/>
+                                                 
+                                                <span class="p-2 mx-2 field-label">#{msg.total_amount}</span>
+                                                 <h:outputText value="#{appSession.currentUser.currency} #{proformaInvoiceController.proformaInvoice.totalAmount}" class="field-shade">
+                                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                                </h:outputText> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <fieldset>
+                                    <legend class="text-info text-lg"> <u>Please Add Items On Invoice</u> </legend>
+                                    <ui:include src="includes/proforma-invoice-item.xhtml"/>
+                                </fieldset>
+                            </h:panelGroup>
+                            
+                        </h:panelGroup>
+                    </p:tab>
+                </p:tabView>
+                
+                <p:dialog resizable="true" widgetVar="proformaInvoiceConfigForm" closeOnEscape="true" modal="true" id="proformaInvoiceConfigModal" height="400"  width="960">
+                    <ui:include src="includes/invoice-config-items.xhtml"/>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

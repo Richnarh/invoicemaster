@@ -14,7 +14,7 @@
                                      filter="true" filterMatchMode="contains" required="true">
                         <f:selectItem itemLabel="#{msg.choose}"/>
                         <f:selectItems value="#{userCommonClass.inventoryList}"/>
-                        
+
                         <p:ajax listener="#{invoiceController.inventoryProperties()}" update="sellingPrice"/>
                     </p:selectOneMenu>
 
@@ -55,7 +55,7 @@
                     <p:column headerText="#{msg.product}">
                         #{invoiceItem.inventoryProduct.productName}
                     </p:column>
-                    
+
                     <p:column headerText="#{msg.qty}" class="text-right">
                         #{invoiceItem.quantity}
                     </p:column>
@@ -74,16 +74,16 @@
 
                     <p:column headerText="#{msg.action}" style="width: 80px;">
                         <p:commandButton  class="kbtn-info" action="#{invoiceController.editInvoiceItem(invoiceItem)}" 
-                                        value="#{msg.edit}" update=":mainTabView:orderItemForm"/>
-                        
+                                          value="#{msg.edit}" update=":mainTabView:orderItemForm"/>
+
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
                         <p:commandButton value="Remove" class="kbtn-danger"
-                                       action="#{invoiceController.removeInvoiceItem(invoiceItem)}"
-                                       update="@form"/>
+                                         action="#{invoiceController.removeInvoiceItem(invoiceItem)}"
+                                         update="@form"/>
                     </p:column>
                 </p:dataTable>
-                
+
                 <center class="py-3">
                     <h:panelGrid columns="2">
                         <span>Total Amount</span>

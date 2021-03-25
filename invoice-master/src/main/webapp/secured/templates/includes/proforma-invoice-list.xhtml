@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <div class="row">
+            <div class="col-md-12 col-sm-6 col-lg-12">
+                <h:form style="margin-bottom: 5px;">
+
+                    <span class="mr-2">From Date: </span>
+                    <p:datePicker value="#{proformaInvoiceController.dateRange.fromDate}"
+                                  pattern="#{msg.formatted_date}" 
+                                  monthNavigator="true" yearNavigator="true"/>
+
+                    <span class="mr-2">To Date: </span>
+                    <p:datePicker value="#{proformaInvoiceController.dateRange.toDate}"
+                                  pattern="#{msg.formatted_date}" 
+                                  monthNavigator="true" yearNavigator="true"/>
+
+                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.filter_record}" action="#{proformaInvoiceController.filterProformaInvoice()}">
+                        <p:ajax update=":mainTabView:mainPanel"/>
+                    </h:commandButton>
+
+                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{proformaInvoiceController.reset()}">
+                        <p:ajax update=":mainTabView:proformaInvoiceTable"/>
+                    </h:commandButton>
+
+                    <div class="float-right">
+                        <h:commandButton value="#{msg.new} #{msg.proforma} #{msg.invoice}" class="btn btn-outline-primary btn-sm"
+                                         action="#{proformaInvoiceController.initProformaInvoice()}">
+                            <p:ajax update=":mainTabView:mainPanel"/>
+                        </h:commandButton>
+                    </div>
+                </h:form>      
+            </div>
+        </div>
+
+        <h:form id="proformaInvoiceTable">
+            <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoice"  reflow="true" draggableRows="true" 
+                         paginator="true" paginatorPosition="bottom" rows="15">
+
+                <p:column class="row-toggler">
+                    <p:rowToggler/>
+                </p:column>
+
+                <p:rowExpansion>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
+                            <h:outputText value="#{proformaInvoice.createdDate}">
+                                <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                            </h:outputText>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">#{msg.description}:</label>
+                            <h:outputText value="#{proformaInvoice.description}"/>
+                        </div>
+                    </div>
+                </p:rowExpansion>
+
+                <p:column headerText="#{msg.quotation_no}">
+                    #{proformaInvoice.quotationNumber}
+                </p:column>
+                <p:column headerText="#{msg.issued_date}">
+                    <h:outputText value="#{proformaInvoice.issuedDate}">
+                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg.client}">
+                    #{proformaInvoice.client}
+                </p:column>
+                <p:column headerText="#{msg.project}">
+                    #{proformaInvoice.project}
+                </p:column>
+                <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.currency})" class="text-right">
+                    <h:outputText value="#{proformaInvoice.totalAmount}">
+                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg.action}" style="width: 120px;">
+                    <p:menuButton value="#{msg.manage}">
+                        <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-plus" class="text-info" value="Add Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-plus" class="text-info" value="Add Config Item" action="#{proformaInvoiceController.manageProformaInvoiceConfig(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :proformaInvoiceConfigModal" oncomplete="PF('proformaInvoiceConfigForm').show()"/>
+                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{proformaInvoiceController.convertToSTDInvoice(proformaInvoice)}" title="Convert proforma proformaInvoice to standard proformaInvoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
+                    </p:menuButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

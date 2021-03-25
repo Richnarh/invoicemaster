@@ -22,11 +22,11 @@
                                   pattern="#{msg.formatted_date}" 
                                   monthNavigator="true" yearNavigator="true"/>
 
-                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.filter_record}" action="#{invoiceController.filterStdInvoice()}">
+                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="#{msg.filter_record}" action="#{invoiceController.filterInvoice()}">
                         <p:ajax update=":mainTabView:stdmainPanel"/>
                     </h:commandButton>
 
-                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{invoiceController.stdReset()}">
+                    <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{invoiceController.reset()}">
                         <p:ajax update=":mainTabView:stdinvoiceTable"/>
                     </h:commandButton>
 
@@ -41,7 +41,7 @@
         </div>
 
         <h:form id="stdinvoiceTable">
-            <p:dataTable value="#{invoiceController.standardInvoiceList}" var="stdInvoice"  reflow="true" draggableRows="true" 
+            <p:dataTable value="#{invoiceController.invoiceList}" var="stdInvoice"  reflow="true" draggableRows="true" 
                          paginator="true" paginatorPosition="bottom" rows="15">
 
                 <p:column class="row-toggler">

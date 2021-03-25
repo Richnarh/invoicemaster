@@ -68,16 +68,14 @@ public class InvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM Invoice e WHERE e.invoiceType=?1";
+            String qryString = "SELECT e FROM Invoice e ";
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class);
-                                typedQuery.setParameter(1, InvoiceType.PROFORMA_INVOICE);
                          return typedQuery.getResultList();
 
         } catch (Exception e)
         {
             e.printStackTrace();
         }
-
         return Collections.emptyList();
     }
     
@@ -86,19 +84,17 @@ public class InvoiceService
         try {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM Invoice e WHERE e.invoiceType=?1";
-                  TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class)
-                                .setParameter(1, InvoiceType.PROFORMA_INVOICE);
+                  String  queryString = "SELECT e FROM Invoice e ";
+                  TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class);
 
                 return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.invoiceType=?3";
+            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2";
             
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
                     .setParameter(1, dateRange.getFromDate())
-                    .setParameter(2, dateRange.getToDate())
-                    .setParameter(3, InvoiceType.PROFORMA_INVOICE);
+                    .setParameter(2, dateRange.getToDate());
             
            return typedQuery.getResultList();
             
@@ -209,8 +205,6 @@ public class InvoiceService
         standardInvoice.setIssuedDate(proformaInvoice.getIssuedDate());
         standardInvoice.setDueDate(proformaInvoice.getDueDate());
         standardInvoice.setClient(proformaInvoice.getClient());
-        standardInvoice.setInvoiceNumber(proformaInvoice.getQuotationNumber());
-        standardInvoice.setInvoiceType(InvoiceType.STANDARD_INVOICE);
         standardInvoice.setProject(proformaInvoice.getProject());
         standardInvoice.setSubject(proformaInvoice.getSubject());
         standardInvoice.setDescription(proformaInvoice.getDescription());

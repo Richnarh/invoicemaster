@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <h:panelGroup rendered="#{proformaInvoiceController.pageView.createView}">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="card">
+                        <h6 class="card-header">Proforma Invoice Processing</h6>
+                        <div class="card-body">
+                            <h:form>
+                                <div class="card-block">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.quotation_no}</label>
+                                        <div class="col-md-8">
+                                            <input type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.quotationNumber}" class="form-control" placeholder="Enter enter quote #"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.issued_date}</label>
+                                        <div class="col-md-8">
+                                            <p:datePicker value="#{proformaInvoiceController.proformaInvoice.issuedDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.client} <span class="text-danger">*</span></label>
+                                        <div class="col-md-8">
+                                            <p:selectOneMenu class="col" value="#{proformaInvoiceController.proformaInvoice.client}" required="true" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{userCommonClass.clientList}"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.project}</label>
+                                        <div class="col-md-8">
+                                            <input type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.project}" class="form-control" placeholder="Enter project"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.total_amount} <span class="text-danger">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.totalAmount}" required="true" class="form-control" placeholder="Enter total amount"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">#{msg.description}</label>
+                                        <div class="col-md-8">
+                                            <textarea type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.description}" class="form-control" placeholder="Type description"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <p:commandButton  value="#{proformaInvoiceController.optionText}" class="kbtn-success" icon="fa fa-check-circle"
+                                                      action="#{proformaInvoiceController.saveProformaInvoice()}" ajax="false"/>
+
+                                    <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="fa fa-trash" action="#{proformaInvoiceController.clearProformaInvoice()}" update=":mainTabView:mainPanel"/>
+
+                                    <div class="float-right">
+                                        <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{proformaInvoiceController.closePage()}">
+                                            <p:ajax update=":mainTabView:mainPanel"/>
+                                        </h:commandButton>
+                                    </div> 
+                                </div>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:panelGroup>
+
+    </h:body>
+</html>
+
