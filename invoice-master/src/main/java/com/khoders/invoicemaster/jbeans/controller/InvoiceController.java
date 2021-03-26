@@ -7,6 +7,7 @@ package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceItem;
+import com.khoders.invoicemaster.entites.Payment;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -46,6 +47,9 @@ public class InvoiceController implements Serializable
     private Invoice invoice = new Invoice();
     private List<Invoice> invoiceList = new LinkedList<>();
 
+    private Payment payment = new Payment();
+    private List<Payment> paymentList = new LinkedList<>();
+
     private InvoiceItem invoiceItem = new InvoiceItem();
     private List<InvoiceItem> invoiceItemList = new LinkedList<>();
 
@@ -75,13 +79,6 @@ public class InvoiceController implements Serializable
         pageView.restToCreateView();
     }
     
-    public void convertToSTDInvoice(Invoice invoice)
-    {
-        Invoice standardInvoice = invoiceService.extractFromProformerInvoice(invoice);
-        invoiceList = CollectionList.washList(invoiceList, standardInvoice);
-        editInvoice(standardInvoice);
-    }
-        
     public void filterInvoice()
     {
         selectedTabIndex = 1;
@@ -130,6 +127,14 @@ public class InvoiceController implements Serializable
             totalAmount += items.getTotalAmount();
             setTotalAmount(totalAmount);
         }
+    }
+    public void managePayment(Invoice invoice)
+    {
+        this.invoice = invoice;
+        payment.setInvoice(invoice);
+        
+        paymentList = invoiceService.getPaymentList(invoice);
+        
     }
 
     public void addInvoiceItem()
@@ -207,9 +212,73 @@ public class InvoiceController implements Serializable
         this.invoiceItem = invoiceItem;
         optionText = "Update";
     }
-    public void removeInvoiceItem(InvoiceItem invoiceItem)
+    public void deleteInvoiceItem(InvoiceItem invoiceItem)
     {
-        invoiceItemList.remove(invoiceItem);
+        try
+        {
+            if(crudApi.delete(invoiceItem))
+            {
+                invoiceItemList.remove(invoiceItem);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void savePayment()
+    {
+        try
+        {
+            payment.genCode();
+            if(crudApi.save(payment) != null)
+            {
+                paymentList = CollectionList.washList(invoiceList, payment);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editPayment(Payment payment)
+    {
+        this.payment=payment;
+    }
+ 
+    public void deletePayment(Payment payment)
+    {
+        try
+        {
+            if(crudApi.delete(payment))
+            {
+                paymentList.remove(payment);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
+        } catch (Exception e)
+        {
+        }
     }
  
     public void closePage()
@@ -242,6 +311,14 @@ public class InvoiceController implements Serializable
         invoice = new Invoice();
         optionText = "Save Changes";
         selectedTabIndex = 0;
+        SystemUtils.resetJsfUI();
+    }
+    
+    public void clearPayment()
+    {
+        payment = new Payment();
+        payment.setInvoice(invoice);
+        optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
@@ -330,6 +407,21 @@ public class InvoiceController implements Serializable
     public List<InvoiceItem> getInvoiceItemList()
     {
         return invoiceItemList;
+    }
+
+    public Payment getPayment()
+    {
+        return payment;
+    }
+
+    public void setPayment(Payment payment)
+    {
+        this.payment = payment;
+    }
+
+    public List<Payment> getPaymentList()
+    {
+        return paymentList;
     }
 
 }

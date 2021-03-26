@@ -18,6 +18,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\UserAccount.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\Client.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\DeliveryTerm.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ChartOfAccount.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProformaInvoice.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\InventoryConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listner\AppSession.java
@@ -34,6 +35,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\LoginController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\commons\UserCommonClass.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InvoiceConfigController.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProformaInvoiceConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\ProformaInvoiceService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\UserAccountService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\Validation.java

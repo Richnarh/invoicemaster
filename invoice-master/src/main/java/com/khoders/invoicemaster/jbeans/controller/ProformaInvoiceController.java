@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
@@ -80,11 +81,14 @@ public class ProformaInvoiceController implements Serializable
         pageView.restToCreateView();
     }
     
-    public void convertToSTDProformaInvoice(ProformaInvoice proformaInvoice)
+    public void convertToInvoice(ProformaInvoice proformaInvoice)
     {
-//        ProformaInvoice standardProformaInvoice = proformaInvoiceService.extractFromProformaInvoice(proformaInvoice);
-//        proformaInvoiceList = CollectionList.washList(proformaInvoiceList, standardProformaInvoice);
-//        editProformaInvoice(standardProformaInvoice);
+      Invoice invoice = proformaInvoiceService.extractFromProformaInvoice(proformaInvoice);  
+      if(invoice != null)
+      {
+          FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Converted Successfully!"), null));
+      }
     }
         
     public void filterProformaInvoice()
@@ -166,6 +170,7 @@ public class ProformaInvoiceController implements Serializable
               {
                 totalAmount = proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
                 proformaInvoiceItem.setTotalAmount(totalAmount);
+                proformaInvoiceItem.genCode();
                 
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
@@ -190,11 +195,11 @@ public class ProformaInvoiceController implements Serializable
         {
             if(proformaInvoiceItemList != null)
             {
-                for (ProformaInvoiceItem proformaInvoiceItem : proformaInvoiceItemList) 
+                for (ProformaInvoiceItem item : proformaInvoiceItemList) 
                 {
-                    crudApi.save(proformaInvoiceItem);
+                    crudApi.save(item);
                     
-                    totalAmount += proformaInvoiceItem.getTotalAmount();
+                    totalAmount += item.getTotalAmount();
                     
                     setTotalAmount(totalAmount);
                     
@@ -219,9 +224,25 @@ public class ProformaInvoiceController implements Serializable
         this.proformaInvoiceItem = proformaInvoiceItem;
         optionText = "Update";
     }
-    public void removeProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
+    public void deleteProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
-        proformaInvoiceItemList.remove(proformaInvoiceItem);
+        try
+        {
+            if(crudApi.delete(proformaInvoiceItem))
+            {
+                proformaInvoiceItemList.remove(proformaInvoiceItem);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public void addInvoiceConfigItems()
@@ -264,8 +285,7 @@ public class ProformaInvoiceController implements Serializable
         optionText = "Update";
     }
 
-    public void deleteInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems
-)    {
+    public void deleteInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)    {
         try
         {
             if(crudApi.delete(invoiceConfigItems))

@@ -79,7 +79,7 @@
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
                         <p:commandButton value="Remove" class="kbtn-danger"
-                                         action="#{proformaInvoiceController.removeProformaInvoiceItem(proformaInvoiceItem)}"
+                                         action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" onclick="return confirm('#{msg.delete_message}')"
                                        update="@form"/>
                     </p:column>
                 </p:dataTable>

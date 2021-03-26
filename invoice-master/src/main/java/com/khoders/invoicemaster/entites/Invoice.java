@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.BaseModel;
@@ -40,7 +39,7 @@ public class Invoice extends BaseModel implements Serializable
     private Client client;
 
     @Column(name = "invoice_number")
-    private String invoiceNumber;
+    private String invoiceNumber = SystemUtils.generateRefNo();
 
     @Column(name = "project")
     private String project;

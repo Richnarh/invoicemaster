@@ -47,7 +47,7 @@ public class ProformaInvoiceItem extends BaseModel implements Serializable
     @Lob
     private String description;
 
-    @JoinColumn(name = "invoice", referencedColumnName = "id")
+    @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne
     private ProformaInvoice proformaInvoice;
 

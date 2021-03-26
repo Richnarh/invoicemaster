@@ -14,7 +14,6 @@ import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.Validation;
-import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
@@ -73,7 +72,7 @@ public class ProformaInvoiceService
             String qryString = "SELECT e FROM ProformaInvoice e";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class);
                          return typedQuery.getResultList();
-
+                         
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -173,38 +172,36 @@ public class ProformaInvoiceService
 
     
     
-    public Invoice extractFromProformerInvoice(ProformaInvoice proformaInvoice)
+ public Invoice extractFromProformaInvoice(ProformaInvoice proformaInvoice)
     {
-        Invoice standardInvoice = new Invoice();
-        standardInvoice.setIssuedDate(proformaInvoice.getIssuedDate());
-        standardInvoice.setClient(proformaInvoice.getClient());
-        standardInvoice.setInvoiceNumber(proformaInvoice.getQuotationNumber());
-        standardInvoice.setProject(proformaInvoice.getProject());
-        standardInvoice.setSubject(proformaInvoice.getSubject());
-        standardInvoice.setDescription(proformaInvoice.getDescription());
-        standardInvoice.setTotalAmount(proformaInvoice.getTotalAmount());
+        Invoice invoice = new Invoice();
+        invoice.setInvoiceNumber(proformaInvoice.getQuotationNumber());
+        invoice.setIssuedDate(proformaInvoice.getIssuedDate());
+        invoice.setClient(proformaInvoice.getClient());
+        invoice.setProject(proformaInvoice.getProject());
+        invoice.setSubject(proformaInvoice.getSubject());
+        invoice.setDescription(proformaInvoice.getDescription());
+        invoice.setTotalAmount(proformaInvoice.getTotalAmount());
         
-        if(crudApi.save(standardInvoice) != null)
+        if(crudApi.save(invoice) != null)
         {
-            List<ProformaInvoiceItem> invoiceItemList = getProformaInvoiceItemList(proformaInvoice);
+            List<ProformaInvoiceItem> proformaInvoiceItemList = getProformaInvoiceItemList(proformaInvoice);
             
-            for (ProformaInvoiceItem item : invoiceItemList)
+            for (ProformaInvoiceItem proformaInvoiceItem : proformaInvoiceItemList)
             {
-                ProformaInvoiceItem invoiceItem = new ProformaInvoiceItem();
-                invoiceItem.setProformaInvoice(proformaInvoice);
-                invoiceItem.setItemCode(item.getItemCode());
-                invoiceItem.setInventoryProduct(item.getInventoryProduct());
-                invoiceItem.setUnitPrice(item.getUnitPrice());
-                invoiceItem.setQuantity(item.getQuantity());
-                invoiceItem.setCharges(item.getCharges());
-                invoiceItem.setTotalAmount(item.getTotalAmount());
-                
-                invoiceItemList.add(invoiceItem);
-                
+                InvoiceItem invoiceItem = new InvoiceItem();
+                invoiceItem.setInvoice(invoice);
+                invoiceItem.setItemCode(proformaInvoiceItem.getItemCode());
+                invoiceItem.setInventoryProduct(proformaInvoiceItem.getInventoryProduct());
+                invoiceItem.setUnitPrice(proformaInvoiceItem.getUnitPrice());
+                invoiceItem.setQuantity(proformaInvoiceItem.getQuantity());
+                invoiceItem.setCharges(proformaInvoiceItem.getCharges());
+                invoiceItem.setTotalAmount(proformaInvoiceItem.getTotalAmount());
+
                 crudApi.save(invoiceItem);
             }
         }
         
-        return standardInvoice;
+        return invoice;
     }
 }

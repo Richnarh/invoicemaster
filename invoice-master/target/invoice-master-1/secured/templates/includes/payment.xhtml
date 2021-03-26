@@ -7,38 +7,31 @@
 
     <div class="col-md-12">
 
-        <h:form id="invoiceConfigForm">
-            <h:panelGrid columns="2" class="spaced-form"> 
-                <span>#{msg.delivery_term}</span>
-                <p:selectOneMenu value="#{proformaInvoiceController.invoiceConfigItems.deliveryTerm}" 
-                                 filter="true" filterMatchMode="contains">
+        <h:form id="paymentForm">
+            <h:panelGrid columns="6" class="spaced-form"> 
+
+                <span>#{msg.payment_method}</span>
+                <p:selectOneMenu value="#{invoiceController.payment.paymentMethod}">
                     <f:selectItem itemLabel="#{msg.choose}"/>
-                    <f:selectItems value="#{userCommonClass.deliveryTermList}"/>
+                    <f:selectItems value="#{commonClass.paymentMethodList}"/>
                 </p:selectOneMenu>
 
-                <span>#{msg.validation}</span>
-                <p:selectOneMenu value="#{proformaInvoiceController.invoiceConfigItems.validation}" 
-                                 filter="true" filterMatchMode="contains">
-                    <f:selectItem itemLabel="#{msg.choose}"/>
-                    <f:selectItems value="#{userCommonClass.validationList}"/>
-                </p:selectOneMenu>
-
-                <span>#{msg.colour}</span>
-                <p:selectOneMenu value="#{proformaInvoiceController.invoiceConfigItems.colours}" 
-                                 filter="true" filterMatchMode="contains">
-                    <f:selectItem itemLabel="#{msg.choose}"/>
-                    <f:selectItems value="#{userCommonClass.coloursList}"/>
-                </p:selectOneMenu>
+                <span>#{msg.payment_date}</span>
+                <p:datePicker value="#{invoiceController.payment.paymentDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+               
+                <span>#{msg.amount_paid}</span>
+                <p:inputText value="#{invoiceController.payment.amountPaid}"/>
+                
             </h:panelGrid>
 
             <div class="py-3">
-                <p:commandButton value="#{proformaInvoiceController.optionText}" icon="fa fa-check-circle" class="kbtn-success" action="#{proformaInvoiceController.saveInvoiceConfigItems()}" update=":invoiceConfigTable, @form"/>
-                <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{proformaInvoiceController.clearInvoiceConfigItems()}" update="@form"/>
+                <p:commandButton value="#{invoiceController.optionText}" icon="fa fa-check-circle" class="kbtn-success" action="#{invoiceController.savePayment()}" update=":paymentTable"/>
+                <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{invoiceController.clearPayment()}" update="@form"/>
             </div>
         </h:form>
 
-        <h:form id="invoiceConfigTable">
-            <p:dataTable value="#{proformaInvoiceController.invoiceConfigItemsList}" var="invoiceConfig" 
+        <h:form id="paymentTable">
+            <p:dataTable value="#{invoiceController.paymentList}" var="payment" 
                          reflow="true" paginator="true" paginatorPosition="bottom" rows="6">
                 <p:column class="row-toggler">
                     <p:rowToggler/>
@@ -48,7 +41,7 @@
                         <div class="row">
                             <div class="col">
                                 <span class="col-sm-4 col-form-label">#{msg.created_date}:</span>
-                                <h:outputText value="#{invoiceConfig.createdDate}">
+                                <h:outputText value="#{payment.createdDate}">
                                     <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                 </h:outputText>
                             </div>
@@ -56,33 +49,41 @@
                           <hr/>
                         <div class="row">
                             <div class="col">
-                                <span class="col-sm-4 col-form-label">#{msg.invoice}:</span>
-                                <h:outputText value="#{invoiceConfig.proformaInvoice.quotationNumber}"/>
+                                <span class="col-sm-4 col-form-label">#{msg.description}:</span>
+                                <h:outputText value="#{payment.description}"/>
                             </div>
                         </div>
 
                 </p:rowExpansion>
 
-                <p:column headerText="#{msg.delivery_term}">
-                    #{invoiceConfig.deliveryTerm.deliveryTerm}
+                <p:column headerText="#{msg.payment} Ref. No.">
+                       
                 </p:column>
 
-                <p:column headerText="#{msg.validation}">
-                    #{invoiceConfig.validation.validation}
+                <p:column headerText="#{msg.invoice} Ref. No.">
+                    <h:outputText value="#{payment.invoice.invoiceNumber}"/>
                 </p:column>
 
-                <p:column headerText="#{msg.colour}">
-                    #{invoiceConfig.colours.colourName}
+                <p:column headerText="#{msg.payment_date}">
+                    <h:outputText value="#{payment.paymentDate}">
+                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg.amount_paid}">
+                    <h:outputText value="#{payment.amountPaid}">
+                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="#{msg.action}" style="width: 80px;">
-                    <p:commandButton  class="kbtn-info" action="#{proformaInvoiceController.editInvoiceConfigItems(invoiceConfig)}" 
-                                      value="#{msg.edit}" update=":invoiceConfigForm"/>
+                    <p:commandButton  class="kbtn-info" action="#{invoiceController.editPayment(payment)}" 
+                                      value="#{msg.edit}" update=":paymentForm"/>
 
                 </p:column>
                 <p:column headerText="#{msg.action}" style="width: 100px;">
                     <p:commandButton value="#{msg.delete}" class="kbtn-danger"
-                                     action="#{proformaInvoiceController.deleteInvoiceConfigItems(invoiceConfig)}"
+                                     action="#{invoiceController.deletePayment(payment)}"
                                      update="@form"/>
                 </p:column>
             </p:dataTable>

@@ -20,6 +20,7 @@ com\khoders\invoicemaster\service\UserAccountService.class
 com\khoders\invoicemaster\entites\DeliveryTerm.class
 com\khoders\invoicemaster\entites\Inventory.class
 com\khoders\invoicemaster\jbeans\converter\ClientConverter.class
+com\khoders\invoicemaster\entites\ChartOfAccount.class
 com\khoders\invoicemaster\entites\model\InvoiceDto$InvoiceItem.class
 com\khoders\invoicemaster\commons\UserCommonClass.class
 com\khoders\invoicemaster\jbeans\controller\InvoiceController.class
@@ -37,6 +38,7 @@ com\khoders\invoicemaster\jbeans\UserModel.class
 com\khoders\invoicemaster\entites\Invoice.class
 com\khoders\invoicemaster\entites\UserAccount.class
 com\khoders\invoicemaster\jbeans\controller\InvoiceConfigController.class
+com\khoders\invoicemaster\jbeans\converter\ProformaInvoiceConverter.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
 com\khoders\invoicemaster\jbeans\converter\ColoursConverter.class
 com\khoders\invoicemaster\entites\enums\DoorType.class

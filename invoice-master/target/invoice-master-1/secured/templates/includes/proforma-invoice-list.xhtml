@@ -41,7 +41,7 @@
         </div>
 
         <h:form id="proformaInvoiceTable">
-            <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoice"  reflow="true" draggableRows="true" 
+            <p:dataTable value="#{proformaInvoiceController.proformaInvoiceList}" var="proformaInvoice"  reflow="true" draggableColumns="true" 
                          paginator="true" paginatorPosition="bottom" rows="15">
 
                 <p:column class="row-toggler">
@@ -90,7 +90,7 @@
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Add Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Add Config Item" action="#{proformaInvoiceController.manageProformaInvoiceConfig(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :proformaInvoiceConfigModal" oncomplete="PF('proformaInvoiceConfigForm').show()"/>
-                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{proformaInvoiceController.convertToSTDInvoice(proformaInvoice)}" title="Convert proforma proformaInvoice to standard proformaInvoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{proformaInvoiceController.convertToInvoice(proformaInvoice)}" title="Convert proforma proformaInvoice to standard proformaInvoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>
                 </p:column>

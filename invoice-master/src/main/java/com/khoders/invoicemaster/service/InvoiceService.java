@@ -11,6 +11,7 @@ import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.InvoiceItem;
+import com.khoders.invoicemaster.entites.Payment;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.resource.jpa.CrudApi;
@@ -47,7 +48,23 @@ public class InvoiceService
         }
         return Collections.emptyList();
     }
-
+    
+    public List<Payment> getPaymentList(Invoice invoice)
+    {
+        try
+        {
+          String query = "SELECT e FROM Payment e WHERE e.invoice=?1";
+        
+        TypedQuery<Payment> typedQuery = crudApi.getEm().createQuery(query, Payment.class)
+                                .setParameter(1, invoice);
+                return typedQuery.getResultList();      
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
     public List<InvoiceConfigItems> getInvoiceConfigItemsList(Invoice invoice)
     {
         try
@@ -197,40 +214,4 @@ public class InvoiceService
         return Collections.emptyList();
     }
 
-    
-    
-    public Invoice extractFromProformerInvoice(Invoice proformaInvoice)
-    {
-        Invoice standardInvoice = new Invoice();
-        standardInvoice.setIssuedDate(proformaInvoice.getIssuedDate());
-        standardInvoice.setDueDate(proformaInvoice.getDueDate());
-        standardInvoice.setClient(proformaInvoice.getClient());
-        standardInvoice.setProject(proformaInvoice.getProject());
-        standardInvoice.setSubject(proformaInvoice.getSubject());
-        standardInvoice.setDescription(proformaInvoice.getDescription());
-        standardInvoice.setTotalAmount(proformaInvoice.getTotalAmount());
-        
-        if(crudApi.save(standardInvoice) != null)
-        {
-            List<InvoiceItem> invoiceItemList = getInvoiceItemList(proformaInvoice);
-            
-            for (InvoiceItem item : invoiceItemList)
-            {
-                InvoiceItem invoiceItem = new InvoiceItem();
-                invoiceItem.setInvoice(standardInvoice);
-                invoiceItem.setItemCode(item.getItemCode());
-                invoiceItem.setInventoryProduct(item.getInventoryProduct());
-                invoiceItem.setUnitPrice(item.getUnitPrice());
-                invoiceItem.setQuantity(item.getQuantity());
-                invoiceItem.setCharges(item.getCharges());
-                invoiceItem.setTotalAmount(item.getTotalAmount());
-                
-                invoiceItemList.add(invoiceItem);
-                
-                crudApi.save(invoiceItem);
-            }
-        }
-        
-        return standardInvoice;
-    }
 }
