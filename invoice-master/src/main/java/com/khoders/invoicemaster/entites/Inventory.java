@@ -53,10 +53,6 @@ public class Inventory extends BaseModel implements Serializable
     @Column(name = "cost_price")
     private double costPrice;
 
-    @Column(name = "unit_of_measurement")
-    @Enumerated(EnumType.STRING)
-    private UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.INCHES;
-
     @Column(name = "description")
     @Lob
     private String description;
@@ -89,16 +85,6 @@ public class Inventory extends BaseModel implements Serializable
     public void setFrameSise(int frameSise)
     {
         this.frameSise = frameSise;
-    }
-
-    public UnitOfMeasurement getUnitOfMeasurement()
-    {
-        return unitOfMeasurement;
-    }
-
-    public void setUnitOfMeasurement(UnitOfMeasurement unitOfMeasurement)
-    {
-        this.unitOfMeasurement = unitOfMeasurement;
     }
 
     public int getWidth()

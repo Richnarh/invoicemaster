@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
     <h:head>
         <title>#{msg.title}</title>
 
@@ -47,7 +48,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <h:form>
-                            <p:commandButton class="kbtn-secondary" action="#{userCommonClass.init()}" title="Refresh" ajax="false" icon="fa fa-refresh"/>
+                            <button class="btn btn-default btn-sm" jsf:action="#{userCommonClass.init()}" title="Refresh"> <i class="fa fa-refresh"></i> </button>
                         </h:form>
                     </li>
                     <li class="nav-item dropdown">

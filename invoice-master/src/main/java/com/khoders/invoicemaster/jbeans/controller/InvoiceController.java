@@ -5,9 +5,10 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceItem;
-import com.khoders.invoicemaster.entites.Payment;
+import com.khoders.invoicemaster.entites.PaymentReceipt;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -35,11 +36,8 @@ import org.primefaces.event.TabChangeEvent;
 @SessionScoped
 public class InvoiceController implements Serializable
 {
-
-    @Inject
-    private CrudApi crudApi;
-    @Inject
-    private InvoiceService invoiceService;
+    @Inject private CrudApi crudApi;
+    @Inject private InvoiceService invoiceService;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -47,17 +45,18 @@ public class InvoiceController implements Serializable
     private Invoice invoice = new Invoice();
     private List<Invoice> invoiceList = new LinkedList<>();
 
-    private Payment payment = new Payment();
-    private List<Payment> paymentList = new LinkedList<>();
+    private PaymentReceipt payment = new PaymentReceipt();
+    private List<PaymentReceipt> paymentList = new LinkedList<>();
 
     private InvoiceItem invoiceItem = new InvoiceItem();
     private List<InvoiceItem> invoiceItemList = new LinkedList<>();
+    
+    private Inventory inventory = new Inventory();
 
     private int selectedTabIndex;
     private String optionText;
     private double totalAmount;
      
-
     @PostConstruct
     private void init()
     {
@@ -92,6 +91,13 @@ public class InvoiceController implements Serializable
     
     public void saveInvoice()
     {
+        if (invoice.getAmountRemaining() == 0.0)
+        {
+            invoice.setAmountRemaining(invoice.getTotalAmount());
+        } else
+        {
+            invoice.setAmountRemaining(invoice.getAmountRemaining());
+        }
         try
         {
             if (crudApi.save(invoice) != null)
@@ -128,14 +134,6 @@ public class InvoiceController implements Serializable
             setTotalAmount(totalAmount);
         }
     }
-    public void managePayment(Invoice invoice)
-    {
-        this.invoice = invoice;
-        payment.setInvoice(invoice);
-        
-        paymentList = invoiceService.getPaymentList(invoice);
-        
-    }
 
     public void addInvoiceItem()
     {
@@ -148,31 +146,27 @@ public class InvoiceController implements Serializable
                 return;
             }
             
-            if(invoiceItem.getUnitPrice() <= 0)
-            {
-              FacesContext.getCurrentInstance().addMessage(null, 
+            if (invoiceItem.getUnitPrice() <= 0) {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
-              return;
+                return;
             }
-            
-             if(invoiceItem != null)
-              {
+
+            if (invoiceItem != null) {
+               
                 totalAmount = invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
                 invoiceItem.setTotalAmount(totalAmount);
-                
+
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
-                
+
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Invoice item added"), null));
-              }
-              else
-                {
-                   FacesContext.getCurrentInstance().addMessage(null, 
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Invoice item removed!"), null));
-                }
+            }
             clearInvoiceItem();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -185,6 +179,15 @@ public class InvoiceController implements Serializable
             {
                 for (InvoiceItem items : invoiceItemList) 
                 {
+                    int qtyPurchased = items.getQuantity();
+                    int qtyAtInventory = items.getInventoryProduct().getQuantity();
+                    int qtyAtHand = qtyAtInventory - qtyPurchased;
+                    
+                    inventory = crudApi.getEm().find(Inventory.class, items.getInventoryProduct().getId());
+                    inventory.setQuantity(qtyAtHand);
+                    
+                    crudApi.save(inventory);
+
                     crudApi.save(items);
                     
                     totalAmount += items.getTotalAmount();
@@ -212,6 +215,7 @@ public class InvoiceController implements Serializable
         this.invoiceItem = invoiceItem;
         optionText = "Update";
     }
+    
     public void deleteInvoiceItem(InvoiceItem invoiceItem)
     {
         try
@@ -232,55 +236,7 @@ public class InvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-    
-    
-    public void savePayment()
-    {
-        try
-        {
-            payment.genCode();
-            if(crudApi.save(payment) != null)
-            {
-                paymentList = CollectionList.washList(invoiceList, payment);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    public void editPayment(Payment payment)
-    {
-        this.payment=payment;
-    }
- 
-    public void deletePayment(Payment payment)
-    {
-        try
-        {
-            if(crudApi.delete(payment))
-            {
-                paymentList.remove(payment);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
-            }
-        } catch (Exception e)
-        {
-        }
-    }
- 
+  
     public void closePage()
     {
        invoice = new Invoice();
@@ -314,14 +270,7 @@ public class InvoiceController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
-    public void clearPayment()
-    {
-        payment = new Payment();
-        payment.setInvoice(invoice);
-        optionText = "Save Changes";
-        SystemUtils.resetJsfUI();
-    }
-    
+
     public void onTabChange(TabChangeEvent event)
     {
         try
@@ -334,6 +283,7 @@ public class InvoiceController implements Serializable
             e.printStackTrace();
         }
     }
+    
     public FormView getPageView()
     {
         return pageView;
@@ -409,17 +359,17 @@ public class InvoiceController implements Serializable
         return invoiceItemList;
     }
 
-    public Payment getPayment()
+    public PaymentReceipt getPayment()
     {
         return payment;
     }
 
-    public void setPayment(Payment payment)
+    public void setPayment(PaymentReceipt payment)
     {
         this.payment = payment;
     }
 
-    public List<Payment> getPaymentList()
+    public List<PaymentReceipt> getPaymentList()
     {
         return paymentList;
     }

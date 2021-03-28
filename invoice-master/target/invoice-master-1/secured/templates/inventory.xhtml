@@ -68,7 +68,7 @@
                                                 </div>
                                             </div>
                                         </p:rowExpansion>
-                                        
+
                                         <p:column headerText="Door #{msg.type}">
                                             #{inventory.doorType.label}
                                         </p:column>
@@ -78,15 +78,15 @@
                                         </p:column>
 
                                         <p:column headerText="#{msg.frame_size}" class="text-right">
-                                            #{inventory.frameSise} #{inventory.unitOfMeasurement.label}
+                                            #{inventory.frameSise} #{appSession.currentUser.frame.label}
                                         </p:column>
 
                                         <p:column headerText="#{msg.width}" class="text-right">
-                                            #{inventory.width} #{inventory.unitOfMeasurement.label}
+                                            #{inventory.width} #{appSession.currentUser.width.label}
                                         </p:column>
 
                                         <p:column headerText="#{msg.height}" class="text-right">
-                                            #{inventory.height} #{inventory.unitOfMeasurement.label}
+                                            #{inventory.height} #{appSession.currentUser.height.label}
                                         </p:column>
 
                                         <p:column headerText="#{msg.quantity}" class="text-right">
@@ -98,7 +98,7 @@
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
                                         </p:column>
-                                        
+
                                         <p:column headerText="C.P (#{appSession.currentUser.currency})" class="text-right">
                                             <h:outputText value="#{inventory.costPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
@@ -174,15 +174,6 @@
                                                 <label class="col-sm-4 col-form-label">#{msg.cost} #{msg.price} <span class="text-danger">*</span></label>
                                                 <div class="col-md-8">
                                                     <p:inputText value="#{inventoryController.inventory.costPrice}" class="col" placeholder="Enter cost price"/>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.measurement} <span class="text-danger">*</span> </label>
-                                                <div class="col-md-8">
-                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.unitOfMeasurement}" required="true">
-                                                        <f:selectItem itemLabel="#{msg.choose}"/>
-                                                        <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
-                                                    </p:selectOneMenu>
                                                 </div>
                                             </div>
                                             <div class="form-group row">

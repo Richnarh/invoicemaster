@@ -11,7 +11,8 @@ import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.InvoiceItem;
-import com.khoders.invoicemaster.entites.Payment;
+import com.khoders.invoicemaster.entites.PaymentReceipt;
+import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.resource.jpa.CrudApi;
@@ -49,15 +50,26 @@ public class InvoiceService
         return Collections.emptyList();
     }
     
-    public List<Payment> getPaymentList(Invoice invoice)
+    public List<PaymentReceipt> getPaymenReceiptList(Invoice invoice, DateRangeUtil dateRange)
     {
         try
         {
-          String query = "SELECT e FROM Payment e WHERE e.invoice=?1";
-        
-        TypedQuery<Payment> typedQuery = crudApi.getEm().createQuery(query, Payment.class)
-                                .setParameter(1, invoice);
-                return typedQuery.getResultList();      
+            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
+            {
+                String query = "SELECT e FROM PaymentReceipt e WHERE e.invoice=?1 ORDER BY e.paymentDate DESC";
+                TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(query, PaymentReceipt.class)
+                        .setParameter(1, invoice);
+                return typedQuery.getResultList();
+            }
+            
+            String qryString = "SELECT e FROM PaymentReceipt e WHERE e.paymentDate BETWEEN ?1 AND ?2 ORDER BY e.paymentDate DESC";
+            
+            TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(qryString, PaymentReceipt.class)
+                    .setParameter(1, dateRange.getFromDate())
+                    .setParameter(2, dateRange.getToDate());
+            
+           return typedQuery.getResultList();
+               
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -188,6 +200,22 @@ public class InvoiceService
         {
             String qryString = "SELECT e FROM Colours e";
             TypedQuery<Colours> typedQuery = crudApi.getEm().createQuery(qryString, Colours.class);
+            return typedQuery.getResultList();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<ReceivedDocument> getReceivedDocumentList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ReceivedDocument e";
+            TypedQuery<ReceivedDocument> typedQuery = crudApi.getEm().createQuery(qryString, ReceivedDocument.class);
             return typedQuery.getResultList();
 
         } catch (Exception e)

@@ -7,6 +7,7 @@ package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entites.Colours;
 import com.khoders.invoicemaster.entites.DeliveryTerm;
+import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
@@ -42,9 +43,11 @@ public class InvoiceConfigController implements Serializable
     private Validation validation = new Validation();
     private List<Validation> validationList = new LinkedList<>();
     
-    
     private Colours colours = new Colours();
     private List<Colours> coloursList = new LinkedList<>();
+    
+    private ReceivedDocument receivedDocument = new ReceivedDocument();
+    private List<ReceivedDocument> receivedDocumentList = new LinkedList<>();
     
     private int selectedTabIndex;
     private String optionText;
@@ -56,12 +59,13 @@ public class InvoiceConfigController implements Serializable
         clearDeliveryTerm();
         
         validationList = invoiceService.getValidationList();
-        
         clearValidation();
         
         coloursList = invoiceService.getColoursList();
-        
         clearColours();
+        
+        receivedDocumentList = invoiceService.getReceivedDocumentList();
+        clearReceivedDocument();
     }
 
     public void saveDeliveryTerm()
@@ -106,27 +110,6 @@ public class InvoiceConfigController implements Serializable
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
             }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearDeliveryTerm()
-    {
-        deliveryTerm = new DeliveryTerm();
-        optionText = "Save Changes";
-         selectedTabIndex = 0;
-        SystemUtils.resetJsfUI();
-    }
-
-    public void onTabChange(TabChangeEvent event)
-    {
-        try
-        {
-            TabView tabView = (TabView) event.getComponent();
-            selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
-
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -186,16 +169,8 @@ public class InvoiceConfigController implements Serializable
         }
     }
     
-    public void clearValidation()
-    {
-        validation = new Validation();
-        optionText = "Save Changes";
-        selectedTabIndex = 2;
-        SystemUtils.resetJsfUI();
-    }
 
-    
-    
+
 /* -- Colour -- */
     public void saveColour()
     {
@@ -248,13 +223,106 @@ public class InvoiceConfigController implements Serializable
             e.printStackTrace();
         }
     }
+       
+    
+/* -- ReceivedDocument -- */
+    public void saveReceivedDocument()
+    {
+        try
+        {
+           receivedDocument.genCode();
+            if(crudApi.save(receivedDocument) != null)
+            {
+                receivedDocumentList = CollectionList.washList(receivedDocumentList, receivedDocument);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                
+                clearReceivedDocument();
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editReceivedDocument(ReceivedDocument receivedDocument)
+    {
+        this.receivedDocument=receivedDocument;
+        optionText = "Update";
+    }
+    
+    
+    public void deleteReceivedDocument(ReceivedDocument receivedDocument)
+    {
+        try
+        {
+            if(crudApi.delete(receivedDocument))
+            {
+                receivedDocumentList.remove(receivedDocument);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    
+    public void clearDeliveryTerm()
+    {
+        deliveryTerm = new DeliveryTerm();
+        optionText = "Save Changes";
+         selectedTabIndex = 0;
+        SystemUtils.resetJsfUI();
+    }
+
+    public void clearValidation()
+    {
+        validation = new Validation();
+        optionText = "Save Changes";
+        selectedTabIndex = 1;
+        SystemUtils.resetJsfUI();
+    }
     
     public void clearColours()
     {
         colours = new Colours();
         optionText = "Save Changes";
+        selectedTabIndex = 2;
+        SystemUtils.resetJsfUI();
+    }
+
+    public void clearReceivedDocument()
+    {
+        receivedDocument = new ReceivedDocument();
+        optionText = "Save Changes";
         selectedTabIndex = 3;
         SystemUtils.resetJsfUI();
+    }
+
+    
+    public void onTabChange(TabChangeEvent event)
+    {
+        try
+        {
+            TabView tabView = (TabView) event.getComponent();
+            selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public DeliveryTerm getDeliveryTerm()
@@ -317,4 +385,16 @@ public class InvoiceConfigController implements Serializable
         return coloursList;
     }
 
+    public ReceivedDocument getReceivedDocument() {
+        return receivedDocument;
+    }
+
+    public void setReceivedDocument(ReceivedDocument receivedDocument) {
+        this.receivedDocument = receivedDocument;
+    }
+
+    public List<ReceivedDocument> getReceivedDocumentList() {
+        return receivedDocumentList;
+    }
+    
 }

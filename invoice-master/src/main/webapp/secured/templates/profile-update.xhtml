@@ -11,34 +11,76 @@
             <ui:define name="pageTitle">
                 Profile
             </ui:define>
-
             <ui:define name="pageContent">
                 <div class="col-md-12">
                     <div class="card">
                         <h5 class="card-header">Update Account</h5>
                         <div class="card-body">
-                            <h:form class="spaced-form">
-                                <h:panelGrid columns="4">
-                                    <span>Username</span>
-                                    <p:inputText value="#{appSession.currentUser.username}"/>
+                            <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                <h:form>
+                                    <div class="card-block">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Username<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.username}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Phone<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.phoneNumber}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Currency<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.currency}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.currencyList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Frame</label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.frame}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">#{msg.width}</label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.width}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">#{msg.height}</label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.height}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
 
-                                    <span>Phone number</span>
-                                    <p:inputText value="#{appSession.currentUser.phoneNumber}"/>
+                                         <div class="text-center pt-3">
+                                             <p:commandButton class="kbtn-success" value="Save Changes" icon="fa fa-check-circle" action="#{profileUpdateController.updateAccount()}" update="@form"/>
+               
+                                        </div>
 
-                                    <span>Country</span>
-                                    <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{appSession.currentUser.currency}">
-                                        <f:selectItem itemLabel="#{msg.choose}"/>
-                                        <f:selectItems value="#{commonClass.currencyList}"/>
-                                    </p:selectOneMenu>
-                                    
-                                    </h:panelGrid>
-                                    <div class="col-lg-3-lg-3 mx-auto pt-3 mb-3">
-                                        <h:commandLink class="btn btn-info" action="#{profileUpdateController.updateAccount()}" value="Save Changes" />
                                     </div>
-                            </h:form>
+                                </h:form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    </div>
             </ui:define>
         </ui:composition>
     </h:body>

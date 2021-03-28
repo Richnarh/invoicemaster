@@ -8,7 +8,7 @@
     <div class="col-md-12">
 
         <h:form id="invoiceConfigForm">
-            <h:panelGrid columns="2" class="spaced-form"> 
+            <h:panelGrid columns="6" class="spaced-form"> 
                 <span>#{msg.delivery_term}</span>
                 <p:selectOneMenu value="#{proformaInvoiceController.invoiceConfigItems.deliveryTerm}" 
                                  filter="true" filterMatchMode="contains">
@@ -28,6 +28,13 @@
                                  filter="true" filterMatchMode="contains">
                     <f:selectItem itemLabel="#{msg.choose}"/>
                     <f:selectItems value="#{userCommonClass.coloursList}"/>
+                </p:selectOneMenu>
+
+                <span>#{msg.document}</span>
+                <p:selectOneMenu value="#{proformaInvoiceController.invoiceConfigItems.receivedDocument}" 
+                                 filter="true" filterMatchMode="contains">
+                    <f:selectItem itemLabel="#{msg.choose}"/>
+                    <f:selectItems value="#{userCommonClass.receivedDocumentList}"/>
                 </p:selectOneMenu>
             </h:panelGrid>
 
@@ -73,6 +80,10 @@
 
                 <p:column headerText="#{msg.colour}">
                     #{invoiceConfig.colours.colourName}
+                </p:column>
+
+                <p:column headerText="#{msg.document}">
+                    #{invoiceConfig.receivedDocument.documentName}
                 </p:column>
 
                 <p:column headerText="#{msg.action}" style="width: 80px;">

@@ -57,7 +57,10 @@ public class Invoice extends BaseModel implements Serializable
 
     @Column(name = "total_amount")
     private double totalAmount;
-
+    
+    @Column(name = "amount_remaining")
+    private double amountRemaining;
+    
     @Column(name = "description")
     @Lob
     private String description;
@@ -91,7 +94,7 @@ public class Invoice extends BaseModel implements Serializable
     {
         this.invoiceNumber = invoiceNumber;
     }
-
+    
     public String getProject()
     {
         return project;
@@ -162,10 +165,32 @@ public class Invoice extends BaseModel implements Serializable
         this.dueDate = dueDate;
     }
 
+    public double getAmountRemaining()
+    {
+        return amountRemaining;
+    }
+
+    public void setAmountRemaining(double amountRemaining)
+    {
+        this.amountRemaining = amountRemaining;
+    }
+
+    
+    public void genCode()
+    {
+        if (getInvoiceNumber() != null)
+        {
+            setInvoiceNumber(getInvoiceNumber());
+        } else
+        {
+            setInvoiceNumber(SystemUtils.generateRefNo());
+        }
+    }
+    
     @Override
     public String toString()
     {
-        return invoiceNumber;
+        return invoiceNumber +" - "+ client;
     }
     
     

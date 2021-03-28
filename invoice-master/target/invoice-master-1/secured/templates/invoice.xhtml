@@ -8,13 +8,10 @@
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                Invoices
+                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml">#{msg.proforma} #{msg.invoice}</a><small>/invoice</small>
             </ui:define>
 
             <ui:define name="pageContent">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml" class="btn btn-sm bg-info">
-                    Proforma Invoice
-                </a>
                 <p:tabView id="mainTabView" activeIndex="#{invoiceController.selectedTabIndex}">
                     <p:ajax event="tabChange" listener="#{invoiceController.onTabChange}"/>
                     <p:tab id="firstTabView" title="Standard Invoice">
@@ -63,7 +60,7 @@
                 </p:tabView>
                 
                 <p:dialog resizable="true" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentModal" height="400"  width="960">
-                    <ui:include src="includes/payment.xhtml"/>
+                    <!--<ui:include src="includes/payment.xhtml"/>-->
                 </p:dialog>
             </ui:define>
         </ui:composition>

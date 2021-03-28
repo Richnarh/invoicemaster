@@ -4,13 +4,14 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProformaInvoiceItem.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ValidationConverter.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ReceivedDocumentConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\Colours.java
-C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\Payment.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\enums\InvoiceType.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\Pages.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InvoiceController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listner\SessionListener.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\PaymentReceipt.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\DeliveryTermConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InventoryController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\enums\ClientType.java
@@ -34,6 +35,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\InvoiceService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\LoginController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\commons\UserCommonClass.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\PaymentReceiptController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InvoiceConfigController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProformaInvoiceConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\ProformaInvoiceService.java

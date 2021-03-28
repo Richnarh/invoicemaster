@@ -9,6 +9,8 @@ import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.entites.Colours;
 import com.khoders.invoicemaster.entites.DeliveryTerm;
 import com.khoders.invoicemaster.entites.Inventory;
+import com.khoders.invoicemaster.entites.Invoice;
+import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.invoicemaster.service.UserAccountService;
@@ -36,6 +38,8 @@ public class UserCommonClass implements Serializable{
     private List<Colours> coloursList = new LinkedList<>();
     private List<Client> clientList = new LinkedList<>();
     private List<Inventory> inventoryList = new LinkedList<>();
+    private List<Invoice> invoiceList = new LinkedList<>();
+    private List<ReceivedDocument> receivedDocumentList = new LinkedList<>();
     
     @PostConstruct
     @Asynchronous
@@ -43,8 +47,10 @@ public class UserCommonClass implements Serializable{
     {
         deliveryTermList = invoiceService.getDeliveryTermList();
         validationList = invoiceService.getValidationList();
+        invoiceList = invoiceService.getInvoiceList();
         clientList = userAccountService.getClientList();
         coloursList = invoiceService.getColoursList();
+        receivedDocumentList = invoiceService.getReceivedDocumentList();
         inventoryList = invoiceService.getInventoryList();
     }
 
@@ -71,6 +77,15 @@ public class UserCommonClass implements Serializable{
     public List<Inventory> getInventoryList()
     {
         return inventoryList;
+    }
+
+    public List<ReceivedDocument> getReceivedDocumentList() {
+        return receivedDocumentList;
+    }
+
+    public List<Invoice> getInvoiceList()
+    {
+        return invoiceList;
     }
 
     

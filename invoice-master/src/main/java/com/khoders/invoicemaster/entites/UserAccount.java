@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.enums.Currency;
+import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -38,6 +39,18 @@ public class UserAccount extends BaseModel implements Serializable
     
     @Column(name = "email")
     private String email;
+    
+    @Column(name = "frame")
+    @Enumerated(EnumType.STRING)
+    private UnitOfMeasurement frame = UnitOfMeasurement.INCHES;
+    
+    @Column(name = "width")
+    @Enumerated(EnumType.STRING)
+    private UnitOfMeasurement width = UnitOfMeasurement.MILLIMETERS;
+    
+    @Column(name = "height")
+    @Enumerated(EnumType.STRING)
+    private UnitOfMeasurement height = UnitOfMeasurement.MILLIMETERS;
     
     @Column(name = "password")
     private String password;
@@ -115,7 +128,35 @@ public class UserAccount extends BaseModel implements Serializable
     {
         this.email = email;
     }
+
+    public UnitOfMeasurement getFrame()
+    {
+        return frame;
+    }
+
+    public void setFrame(UnitOfMeasurement frame)
+    {
+        this.frame = frame;
+    }
     
-    
+    public UnitOfMeasurement getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(UnitOfMeasurement width)
+    {
+        this.width = width;
+    }
+
+    public UnitOfMeasurement getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(UnitOfMeasurement height)
+    {
+        this.height = height;
+    }
     
 }

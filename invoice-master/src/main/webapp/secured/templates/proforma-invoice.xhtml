@@ -8,13 +8,10 @@
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                Invoices
+                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml">Invoices</a><small>/proforma invoice</small>
             </ui:define>
 
             <ui:define name="pageContent">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="btn btn-sm bg-info">
-                    Standard Invoice
-                </a>
                 <p:tabView id="mainTabView" activeIndex="#{proformaInvoiceController.selectedTabIndex}">
                     <p:ajax event="tabChange" listener="#{proformaInvoiceController.onTabChange}"/>
                     <p:tab id="firstTabView" title="Proforma Invoice">

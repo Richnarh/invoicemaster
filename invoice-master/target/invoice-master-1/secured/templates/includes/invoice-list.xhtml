@@ -41,8 +41,7 @@
         </div>
 
         <h:form id="invoiceTable">
-            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true" draggableRows="true" 
-                         paginator="true" paginatorPosition="bottom" rows="15">
+            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true" draggableRows="true">
 
                 <p:column class="row-toggler">
                     <p:rowToggler/>
@@ -87,9 +86,7 @@
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.manage}">
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{invoiceController.editInvoice(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-plus" class="text-info" value="Add Invoice Item" action="#{invoiceController.manageInvoiceItem(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-plus" class="text-info" value="Add Payment" action="#{invoiceController.managePayment(invoice)}" immediate="true" update=":mainTabView:mainPanel, :paymentModal" oncomplete="PF('paymentForm').show()"/>
-                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{invoiceController.convertToSTDInvoice(invoice)}" title="Convert proforma invoice to standard invoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-plus" class="text-info" value="Invoice Item" action="#{invoiceController.manageInvoiceItem(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>
                 </p:column>

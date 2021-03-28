@@ -35,7 +35,7 @@ public class ProformaInvoice extends BaseModel implements Serializable
     private String project;
 
     @Column(name = "quotation_number")
-    private String quotationNumber = SystemUtils.generateCode();
+    private String quotationNumber = SystemUtils.generateRefNo();
 
     @Column(name = "subject")
     private String subject;
@@ -117,6 +117,17 @@ public class ProformaInvoice extends BaseModel implements Serializable
         this.description = description;
     }
 
+    public void genCode()
+    {
+        if (getQuotationNumber() != null)
+        {
+            setQuotationNumber(getQuotationNumber());
+        } else
+        {
+            setQuotationNumber(SystemUtils.generateRefNo());
+        }
+    }
+    
     @Override
     public String toString()
     {

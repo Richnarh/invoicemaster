@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "invoice_config_items")
 public class InvoiceConfigItems extends BaseModel implements Serializable
 {
-    @JoinColumn(name = "invoice", referencedColumnName = "id")
+    @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne
     private ProformaInvoice proformaInvoice;
     
@@ -35,6 +35,10 @@ public class InvoiceConfigItems extends BaseModel implements Serializable
     @JoinColumn(name = "colours", referencedColumnName = "id")
     @ManyToOne
     private Colours colours;
+    
+    @JoinColumn(name = "received_document", referencedColumnName = "id")
+    @ManyToOne
+    private ReceivedDocument receivedDocument;
 
     public ProformaInvoice getProformaInvoice()
     {
@@ -74,6 +78,14 @@ public class InvoiceConfigItems extends BaseModel implements Serializable
     public void setColours(Colours colours)
     {
         this.colours = colours;
+    }
+
+    public ReceivedDocument getReceivedDocument() {
+        return receivedDocument;
+    }
+
+    public void setReceivedDocument(ReceivedDocument receivedDocument) {
+        this.receivedDocument = receivedDocument;
     }
     
     
