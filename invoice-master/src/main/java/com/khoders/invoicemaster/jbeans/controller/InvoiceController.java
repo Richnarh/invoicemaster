@@ -10,6 +10,7 @@ import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
 import com.khoders.invoicemaster.service.InvoiceService;
+import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -25,6 +26,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.TypedQuery;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -55,12 +57,13 @@ public class InvoiceController implements Serializable
 
     private int selectedTabIndex;
     private String optionText;
-    private double totalAmount;
+    private double totalAmount, cashInvoiceAmount;
      
     @PostConstruct
     private void init()
     {
         invoiceList = invoiceService.getInvoiceList();
+        getCashInvoice();
         clearInvoice();
     }
         
@@ -270,6 +273,30 @@ public class InvoiceController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
+    
+    public int getPaidInvoiceCount()
+    {
+        int  count = crudApi.getEm().createQuery("SELECT COUNT(e.paymentStatus) FROM Invoice e WHERE e.paymentStatus=?1", Invoice.class)
+                .setParameter(1, PaymentStatus.FULLY_PAID)
+                        .getFirstResult();
+                
+//        int count = ((Integer)typedQuery.getFirstResult());
+        System.out.println("Count -- "+count);
+
+        return count;
+    }
+    
+    public void getCashInvoice()
+    {
+        invoiceList = new LinkedList<>();
+        invoiceList = invoiceService.getCashInvoiceList();
+
+        invoiceList.forEach(item ->
+        {
+            cashInvoiceAmount += item.getTotalAmount();
+        });
+        System.out.println("cashInvoiceAmount -- "+cashInvoiceAmount);
+    }
 
     public void onTabChange(TabChangeEvent event)
     {
@@ -372,6 +399,11 @@ public class InvoiceController implements Serializable
     public List<PaymentReceipt> getPaymentList()
     {
         return paymentList;
+    }
+
+    public double getCashInvoiceAmount()
+    {
+        return cashInvoiceAmount;
     }
 
 }

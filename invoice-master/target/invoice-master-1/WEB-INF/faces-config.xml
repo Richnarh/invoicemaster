@@ -35,8 +35,8 @@
         </resource-bundle>
     </application>
     
-<!--     <lifecycle>
-        <phase-listener>com.khoders.kfms.listener.SessionListener</phase-listener>
+     <lifecycle>
+        <phase-listener>com.khoders.invoicemaster.listener.SessionListener</phase-listener>
     </lifecycle>
-    -->
+    
 </faces-config>

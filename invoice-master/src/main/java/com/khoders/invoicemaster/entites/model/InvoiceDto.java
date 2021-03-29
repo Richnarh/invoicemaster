@@ -5,12 +5,8 @@
  */
 package com.khoders.invoicemaster.entites.model;
 
-import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
-import com.khoders.invoicemaster.entites.enums.InvoiceType;
-import com.khoders.resource.enums.PaymentMethod;
-import com.khoders.resource.enums.PaymentStatus;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,15 +19,15 @@ public class InvoiceDto
 {
     private LocalDate issuedDate;
     private LocalDate dueDate;
-    private Client client;
+    private String client;
     private String invoiceNumber;
-    private InvoiceType invoiceType;
     private String project;
     private String subject;
-    private PaymentMethod paymentMethod;
-    private PaymentStatus paymentStatus;
+    private String paymentMethod;
+    private String paymentStatus;
     private double totalAmount;
     private String description;
+    private String logo;
 
     public List<InvoiceItem> invoiceItemList = new LinkedList<>();
 
@@ -54,17 +50,7 @@ public class InvoiceDto
     {
         this.dueDate = dueDate;
     }
-
-    public Client getClient()
-    {
-        return client;
-    }
-
-    public void setClient(Client client)
-    {
-        this.client = client;
-    }
-
+    
     public String getInvoiceNumber()
     {
         return invoiceNumber;
@@ -75,16 +61,16 @@ public class InvoiceDto
         this.invoiceNumber = invoiceNumber;
     }
 
-    public InvoiceType getInvoiceType()
+    public String getLogo()
     {
-        return invoiceType;
+        return logo;
     }
 
-    public void setInvoiceType(InvoiceType invoiceType)
+    public void setLogo(String logo)
     {
-        this.invoiceType = invoiceType;
+        this.logo = logo;
     }
-    
+
     public String getProject()
     {
         return project;
@@ -105,22 +91,32 @@ public class InvoiceDto
         this.subject = subject;
     }
 
-    public PaymentMethod getPaymentMethod()
+    public String getClient()
+    {
+        return client;
+    }
+
+    public void setClient(String client)
+    {
+        this.client = client;
+    }
+
+    public String getPaymentMethod()
     {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod)
+    public void setPaymentMethod(String paymentMethod)
     {
         this.paymentMethod = paymentMethod;
     }
 
-    public PaymentStatus getPaymentStatus()
+    public String getPaymentStatus()
     {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus)
+    public void setPaymentStatus(String paymentStatus)
     {
         this.paymentStatus = paymentStatus;
     }

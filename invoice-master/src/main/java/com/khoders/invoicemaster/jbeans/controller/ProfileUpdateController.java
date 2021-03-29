@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.listner.AppSession;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SecurityUtil;

@@ -79,6 +79,7 @@
                      <p:menuButton value="#{msg.manage}">
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" immediate="true" action="#{paymentReceiptController.editPaymentReceipt(paymentReceipt)}" update=":mainPanel"/>
                         <p:menuitem icon="fa fa-reply" class="text-info" value="Undo" action="#{paymentReceiptController.undoPaymentReceipt(paymentReceipt)}" update=":mainPanel"/>
+                        <p:menuitem icon="fa fa-print" class="text-info" value="Print" action="#{paymentReceiptController.print(paymentReceipt)}" update=":mainPanel"/>
                         <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" action="#{paymentReceiptController.deletePaymentReceipt(paymentReceipt)}"  onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                     </p:menuButton>
                 </p:column>

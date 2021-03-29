@@ -27,13 +27,19 @@
                         <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/inventory.xhtml" class="nav-link">Inventory</a>
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/inventory.xhtml" class="nav-link">#{msg.inventory}</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="nav-link">Invoice</a>
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="nav-link">#{msg.invoice}s</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/payment-receipt.xhtml" class="nav-link">#{msg.payment}s</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/preview-receipt.xhtml" class="nav-link">Preview Receipt</a>
                     </li>
                 </ul>
-
+                <ui:remove>
                 <form class="form-inline ml-3">
                     <div class="input-group input-group-sm">
                         <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"/>
@@ -44,7 +50,7 @@
                         </div>
                     </div>
                 </form>
-
+              </ui:remove>      
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <h:form>
@@ -52,29 +58,9 @@
                         </h:form>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#" title="Help?">
-                            <i class="fa fa-question-circle" style="font-size: 1.7em; display: flex"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i> User Guide
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i> Contact Us
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i> Release Note v1.1
-                            </a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="fa fa-paw"></i>
-                            <span>#{appSession.currentUser.username}<i class="fa fa-angle-down"></i></span>
+                            <i class="fa fa-user"></i>
+                            <span>Administrator &nbsp;<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Profile Activity</span>
@@ -92,8 +78,6 @@
                             <h:form>
                                 <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>
                             </h:form>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">#{appSession.currentUser.phoneNumber}</a>
                         </div>
                     </li>
                 </ul>

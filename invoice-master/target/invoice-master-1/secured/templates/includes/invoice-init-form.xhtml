@@ -23,25 +23,7 @@
                                             <input type="text" jsf:value="#{invoiceController.invoice.invoiceNumber}" class="form-control" placeholder="Enter invoice number"/>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.payment_staus}</label>
-                                        <div class="col-md-8">
-                                            <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.paymentStatus}">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.paymentStatusList}"/>
-                                            </h:selectOneMenu>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.payment_method}</label>
-                                        <div class="col-md-8">
-                                            <h:selectOneMenu class="form-control" value="#{invoiceController.invoice.paymentMethod}">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.paymentMethodList}"/>
-                                            </h:selectOneMenu>
-                                        </div>
-                                    </div>
-
+                                   
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.issued_date}</label>
                                         <div class="col-md-8">

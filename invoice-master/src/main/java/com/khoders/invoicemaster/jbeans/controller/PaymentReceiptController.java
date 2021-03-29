@@ -148,6 +148,11 @@ public class PaymentReceiptController implements Serializable
            e.printStackTrace();
         }
     }
+    
+    public String print(PaymentReceipt paymentReceipt)
+    {
+        return "";
+    }
   
     public void editPaymentReceipt(PaymentReceipt paymentReceipt)
     {

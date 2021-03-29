@@ -15,6 +15,7 @@ import com.khoders.invoicemaster.entites.PaymentReceipt;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
+import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
@@ -99,6 +100,23 @@ public class InvoiceService
         {
             String qryString = "SELECT e FROM Invoice e ";
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class);
+                         return typedQuery.getResultList();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
+    public List<Invoice> getCashInvoiceList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM Invoice e WHERE e.paymentStatus=?1";
+            TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
+                                .setParameter(1, PaymentStatus.FULLY_PAID);
+            
                          return typedQuery.getResultList();
 
         } catch (Exception e)
