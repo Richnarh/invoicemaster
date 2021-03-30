@@ -13,7 +13,7 @@ import java.time.LocalDate;
  */
 public class PaymentReceiptDto
 {
-    private String companyName;
+    private String receiptNo;
     private LocalDate paymentDate;
     private String recievedFrom;
     private String amountInWords;
@@ -22,15 +22,26 @@ public class PaymentReceiptDto
     private double dueAmount;
     private double unpaidAmount;
     private String description;
+    private String receivedBy;
 
-    public String getCompanyName()
+    public String getReceiptNo()
     {
-        return companyName;
+        return receiptNo;
     }
 
-    public void setCompanyName(String companyName)
+    public void setReceiptNo(String receiptNo)
     {
-        this.companyName = companyName;
+        this.receiptNo = receiptNo;
+    }
+
+    public String getReceivedBy()
+    {
+        return receivedBy;
+    }
+
+    public void setReceivedBy(String receivedBy)
+    {
+        this.receivedBy = receivedBy;
     }
 
     public LocalDate getPaymentDate()
