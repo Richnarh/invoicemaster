@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_temp" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="427ac2ea-a5fe-42e9-86c5-b0e0e91759e7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="static-text-style" fontName="Yu Gothic UI" fontSize="10">
+		<paragraph leftIndent="2" rightIndent="0" spacingBefore="0"/>
+	</style>
+	<style name="static-bg" mode="Opaque" forecolor="#FFFFFF" backcolor="#003366"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="logo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="64" splitType="Stretch">
+			<staticText>
+				<reportElement style="static-text-style" x="380" y="2" width="175" height="48" forecolor="#003366" uuid="675305a0-8163-4a14-96be-0a55c09fb2f3">
+					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.tabStopWidth" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingBefore" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+					<paragraph firstLineIndent="0" spacingBefore="11" spacingAfter="0" tabStopWidth="40"/>
+				</textElement>
+				<text><![CDATA[PRO FORMA INVOICE]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="280" height="50" uuid="bcc795c5-a785-47a5-bb4f-d0154884ec96"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="517" splitType="Stretch">
+			<staticText>
+				<reportElement style="static-bg" isPrintRepeatedValues="false" x="0" y="0" width="180" height="17" uuid="79578dad-ac98-4058-8a44-3242f84b21b1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Yu Gothic UI" size="10"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Bill To:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="static-bg" isPrintRepeatedValues="false" x="187" y="0" width="184" height="17" uuid="1e8f2dae-cbd0-4c09-af7b-f4f067b2230a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Yu Gothic UI" size="10"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Ship To:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="static-text-style" x="380" y="0" width="60" height="17" uuid="d5757970-6acd-4066-8dfb-76a865fe06e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Issued Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="static-text-style" x="380" y="17" width="60" height="17" uuid="1e1e78de-955f-4890-a976-ad98c141becd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Expiry Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="static-text-style" x="380" y="34" width="60" height="17" uuid="16692b04-353e-4d49-87cf-64b3fa6f8b87">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Invoice #:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="static-text-style" x="380" y="51" width="60" height="17" uuid="cb9bbd8a-17e7-467c-8ed8-d21df7445953">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Customer ID:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

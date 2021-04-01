@@ -78,6 +78,23 @@ public class InvoiceService
         return Collections.emptyList();
     }
     
+    
+    public List<PaymentReceipt> getPaymentReceipt(Invoice invoice)
+    {
+        try
+        {
+            String query = "SELECT e FROM PaymentReceipt e WHERE e.invoice=?1";
+            TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(query, PaymentReceipt.class)
+                    .setParameter(1, invoice);
+            return typedQuery.getResultList();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
     public List<InvoiceConfigItems> getInvoiceConfigItemsList(Invoice invoice)
     {
         try

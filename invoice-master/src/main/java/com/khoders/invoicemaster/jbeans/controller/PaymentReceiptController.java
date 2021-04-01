@@ -7,6 +7,10 @@ package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
+import com.khoders.invoicemaster.entites.model.ConvertToWords;
+import com.khoders.invoicemaster.entites.model.PaymentReceiptDto;
+import com.khoders.invoicemaster.jbeans.ReportFiles;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
@@ -15,14 +19,27 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 /**
  *
@@ -33,6 +50,7 @@ import javax.inject.Named;
 public class PaymentReceiptController implements Serializable
 {
     @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
     @Inject private InvoiceService invoiceService;
     
     private PaymentReceipt paymentReceipt = new PaymentReceipt();
@@ -61,6 +79,65 @@ public class PaymentReceiptController implements Serializable
     public void searchReceipt()
     {
        paymentReceiptList = invoiceService.getPaymenReceiptList(selectedInvoice, dateRange);
+    }
+    
+    public void generateReceipt()
+    {
+        if(selectedInvoice == null)
+        {
+            
+            return;
+        }
+        paymentReceiptList = invoiceService.getPaymentReceipt(selectedInvoice);
+        
+        System.out.println("Payment Invoice size -- "+paymentReceiptList.size());
+        
+        List<PaymentReceiptDto> paymentReceiptDtoList = new LinkedList<>();
+       
+        for (PaymentReceipt receipt : paymentReceiptList)
+        {
+            PaymentReceiptDto paymentReceiptDto = new PaymentReceiptDto();
+            paymentReceiptDto.setReceiptNo(receipt.getInvoice().getInvoiceNumber());
+            paymentReceiptDto.setPaymentDate(receipt.getPaymentDate());
+            paymentReceiptDto.setRecievedFrom(receipt.getReceivedFrom().getClientName());
+            paymentReceiptDto.setReceivedAmount(receipt.getReceivedAmount());
+            paymentReceiptDto.setPaymentMethod(receipt.getPaymentMethod() + "");
+            paymentReceiptDto.setDescription(receipt.getDescription());
+            paymentReceiptDto.setReceivedBy(appSession.getCurrentUser() + "");
+            paymentReceiptDto.setUnpaidAmount(receipt.getAmountUnpaid());
+            paymentReceiptDto.setAmountInWords(ConvertToWords.convertNumber(receipt.getReceivedAmount()));
+
+            paymentReceiptDtoList.add(paymentReceiptDto);
+        }
+        
+        try
+        {
+              String BASE_DIR = "com/khoders/invoicemater/resources/reports/";
+    
+     String PAYMENT_RECEIPT_FILE = BASE_DIR+"payment_receipt.jasper";
+     
+            System.out.println("Path -- "+PAYMENT_RECEIPT_FILE);
+    
+            Map<String, Object> reportParams = new LinkedHashMap<>();
+            reportParams.put("Report Type", "");
+
+            InputStream stream = getClass().getResourceAsStream(PAYMENT_RECEIPT_FILE);
+            System.out.println("Stream: " + stream);
+
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paymentReceiptDtoList);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportParams, dataSource);
+            HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            servletResponse.setContentType("application/pdf");
+            
+            JRPdfExporter jRPdfExporter = new JRPdfExporter();
+            jRPdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            jRPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(servletResponse.getOutputStream()));
+            jRPdfExporter.setConfiguration(new SimplePdfExporterConfiguration());
+            
+        } catch (IOException | JRException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public void savePaymentReceipt()

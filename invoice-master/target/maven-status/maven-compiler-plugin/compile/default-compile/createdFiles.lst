@@ -19,8 +19,10 @@ com\khoders\invoicemaster\entites\Validation.class
 com\khoders\invoicemaster\jbeans\converter\ReceivedDocumentConverter.class
 com\khoders\invoicemaster\entites\Client.class
 com\khoders\invoicemaster\commons\CommonClass.class
+com\khoders\invoicemaster\entites\model\ConvertToWords.class
 com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.class
+com\khoders\invoicemaster\entites\model\PaymentReceiptDto.class
 com\khoders\invoicemaster\entites\ProformaInvoiceItem.class
 com\khoders\invoicemaster\jbeans\controller\InvoiceConfigController.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
@@ -38,6 +40,7 @@ com\khoders\invoicemaster\entites\DeliveryTerm.class
 com\khoders\invoicemaster\entites\model\InvoiceDto$InvoiceItem.class
 com\khoders\invoicemaster\commons\UserCommonClass.class
 com\khoders\invoicemaster\jbeans\controller\InvoiceController.class
+com\khoders\invoicemaster\jbeans\ReportFiles.class
 com\khoders\invoicemaster\jbeans\converter\DeliveryTermConverter.class
 com\khoders\invoicemaster\jbeans\UserModel.class
 com\khoders\invoicemaster\entites\Invoice.class

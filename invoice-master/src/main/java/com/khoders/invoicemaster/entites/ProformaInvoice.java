@@ -27,6 +27,9 @@ public class ProformaInvoice extends BaseModel implements Serializable
     @Column(name = "issued_date")
     private LocalDate issuedDate = LocalDate.now();
    
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
+   
     @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
     private Client client;
@@ -57,6 +60,16 @@ public class ProformaInvoice extends BaseModel implements Serializable
         this.issuedDate = issuedDate;
     }
 
+    public LocalDate getExpiryDate()
+    {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate)
+    {
+        this.expiryDate = expiryDate;
+    }
+    
     public Client getClient()
     {
         return client;

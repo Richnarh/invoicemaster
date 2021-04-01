@@ -51,6 +51,7 @@
                                             <p:commandButton class="mx-2" value="#{msg.filter_record}" action="#{paymentReceiptController.searchReceipt()}" update=":mainPanel"/>
 
                                             <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
+                                            <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.generateReceipt()}"/>
 
                                             <div class="float-right">
                                                 <p:commandButton value="#{msg.new} #{msg.payment}" action="#{paymentReceiptController.initPaymentReceipt()}" ajax="false"/>

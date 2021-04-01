@@ -73,6 +73,11 @@
                         <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                     </h:outputText>
                 </p:column>
+                <p:column headerText="#{msg.expiry_date}">
+                    <h:outputText value="#{proformaInvoice.expiryDate}">
+                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                    </h:outputText>
+                </p:column>
                 <p:column headerText="#{msg.client}">
                     #{proformaInvoice.client}
                 </p:column>

@@ -30,6 +30,9 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "phone_number")
     private String phoneNumber;
     
+    @Column(name = "address")
+    private String address;
+    
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
     private Currency currency = Currency.GHS;
@@ -157,6 +160,16 @@ public class UserAccount extends BaseModel implements Serializable
     public void setHeight(UnitOfMeasurement height)
     {
         this.height = height;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
     }
     
 }
