@@ -17,8 +17,8 @@
                     </div>
                     <div class="py-3">
 
-                        <p:commandButton class="kbtn-success" value="#{invoiceConfigController.optionText}" icon="fa fa-check-circle" update="@form, :mainTabView:deliveryTable" action="#{invoiceConfigController.saveDeliveryTerm()}"/>
-                        <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" update="@form" action="#{invoiceConfigController.clearDeliveryTerm()}"/>
+                        <p:commandButton class="kbtn-success" value="#{invoiceConfigController.optionText}" icon="#{msg.check_icon}" update="@form, :mainTabView:deliveryTable" action="#{invoiceConfigController.saveDeliveryTerm()}"/>
+                        <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" update="@form" action="#{invoiceConfigController.clearDeliveryTerm()}"/>
                         
                     </div>
 

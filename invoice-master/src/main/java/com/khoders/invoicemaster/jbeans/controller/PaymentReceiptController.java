@@ -70,7 +70,7 @@ public class PaymentReceiptController implements Serializable
         if(selectedInvoice == null)
         {
            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg("Please select Invoice"), null));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select Invoice"), null));
            return;
         }
         pageView.restToCreateView();
@@ -179,6 +179,7 @@ public class PaymentReceiptController implements Serializable
             System.out.println("Amount Remaining -- "+selectedInvoice.getAmountRemaining());
             
             paymentReceipt.genCode();
+            paymentReceipt.setReceivedFrom(selectedInvoice.getClient());
             if(crudApi.save(paymentReceipt) != null)
             {
                 paymentReceiptList = CollectionList.washList(paymentReceiptList, paymentReceipt);

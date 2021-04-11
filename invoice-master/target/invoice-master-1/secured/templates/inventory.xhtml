@@ -93,13 +93,13 @@
                                             #{inventory.quantity}
                                         </p:column>
 
-                                        <p:column headerText="S.P (#{appSession.currentUser.currency})" class="text-right">
+                                        <p:column headerText="Selling Price" class="text-right">
                                             <h:outputText value="#{inventory.sellingPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="C.P (#{appSession.currentUser.currency})" class="text-right">
+                                        <p:column headerText="Cost Price" class="text-right">
                                             <h:outputText value="#{inventory.costPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
@@ -184,8 +184,8 @@
                                             </div>
                                         </div>
                                         <div class="text-center pt-3">
-                                            <p:commandButton class="kbtn-success" value="#{inventoryController.optionText}" icon="fa fa-check-circle" action="#{inventoryController.saveInventory()}" ajax="false"/>
-                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" action="#{inventoryController.clearInventory()}" update=":mainPanel"/>
+                                            <p:commandButton class="kbtn-success" value="#{inventoryController.optionText}" icon="#{msg.check_icon}" action="#{inventoryController.saveInventory()}" ajax="false"/>
+                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{inventoryController.clearInventory()}" update=":mainPanel"/>
 
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{inventoryController.closePage()}">

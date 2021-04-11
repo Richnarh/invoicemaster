@@ -31,15 +31,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Received From <span class="text-danger">*</span> </label>
-                        <div class="col-md-8">
-                            <p:selectOneMenu class="col" value="#{paymentReceiptController.paymentReceipt.receivedFrom}" required="true">
-                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                <f:selectItems value="#{userCommonClass.clientList}"/>
-                            </p:selectOneMenu>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-4 col-form-label">#{msg.payment_date} <span class="text-danger">*</span> </label>
                         <div class="col-md-8">
                             <p:datePicker value="#{paymentReceiptController.paymentReceipt.paymentDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
@@ -68,8 +59,8 @@
                     </div>
                 </div>
                 <div class="text-center pt-3">
-                    <p:commandButton class="kbtn-success" value="#{paymentReceiptController.optionText}" icon="fa fa-check-circle" action="#{paymentReceiptController.savePaymentReceipt()}" ajax="false"/>
-                    <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" action="#{paymentReceiptController.clearPaymentReceipt()}" immediate="true" update=":mainPanel"/>
+                    <p:commandButton class="kbtn-success" value="#{paymentReceiptController.optionText}" icon="#{msg.check_icon}" action="#{paymentReceiptController.savePaymentReceipt()}" ajax="false"/>
+                    <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{paymentReceiptController.clearPaymentReceipt()}" immediate="true" update=":mainPanel"/>
 
                     <div class="float-right">
                         <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{paymentReceiptController.closePage()}">

@@ -23,7 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.component.tabview.TabView;
+import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.event.TabChangeEvent;
 
 /**
@@ -316,7 +316,7 @@ public class InvoiceConfigController implements Serializable
     {
         try
         {
-            TabView tabView = (TabView) event.getComponent();
+            AccordionPanel tabView = (AccordionPanel) event.getComponent();
             selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
 
         } catch (Exception e)

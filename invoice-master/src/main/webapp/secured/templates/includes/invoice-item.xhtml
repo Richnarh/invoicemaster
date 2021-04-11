@@ -30,14 +30,13 @@
                 </h:panelGrid>
 
                 <div class="py-3">
-                    <p:commandButton value="Add to list" class="kbtn-info" action="#{invoiceController.addInvoiceItem()}" update=":mainTabView:invoiceItemTable, orderItemForm"/>
+                    <p:commandButton value="Add to list" icon="#{msg.add_icon}" class="kbtn-info" action="#{invoiceController.addInvoiceItem()}" update=":mainTabView:invoiceItemTable, orderItemForm"/>
 
-                    <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{invoiceController.clearInvoiceItem()}" update="@form"/>
+                    <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="#{msg.clear_icon}" immediate="true" action="#{invoiceController.clearInvoiceItem()}" update="@form"/>
                 </div>
             </h:form>
         </div>
         <div class="col-lg-8">
-            <span class="text-success">Invoice item list</span>
             <h:form id="invoiceItemTable">
                 <p:dataTable value="#{invoiceController.invoiceItemList}" var="invoiceItem" 
                              paginator="true" paginatorPosition="bottom" rows="6">
@@ -60,13 +59,13 @@
                         #{invoiceItem.quantity}
                     </p:column>
 
-                    <p:column headerText="#{msg.unit_price} (#{appSession.currentUser.currency})" class="text-right">
+                    <p:column headerText="#{msg.unit_price}" class="text-right">
                         <h:outputText value="#{invoiceItem.unitPrice}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Total (#{appSession.currentUser.currency})" class="text-right">
+                    <p:column headerText="Total" class="text-right">
                         <h:outputText value="#{invoiceItem.totalAmount}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
@@ -74,17 +73,17 @@
 
                     <p:column headerText="#{msg.action}" style="width: 80px;">
                         <p:commandButton  class="kbtn-info" action="#{invoiceController.editInvoiceItem(invoiceItem)}" 
-                                          value="#{msg.edit}" update=":mainTabView:orderItemForm"/>
+                                          value="#{msg.edit}" update=":mainTabView:orderItemForm, @form"/>
 
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
-                        <p:commandButton value="Remove" class="kbtn-danger"
+                        <p:commandButton value="#{msg.delete}" class="kbtn-danger"
                                          action="#{invoiceController.deleteInvoiceItem(invoiceItem)}" onclick="return confirm('#{msg.delete_message}')"
                                          update="@form"/>
                     </p:column>
                 </p:dataTable>
 
-                <center class="py-3">
+                <center class="py-3 mt-2">
                     <h:panelGrid columns="2">
                         <span>Total Amount</span>
                         <h:outputText value="#{invoiceController.totalAmount}" class="field-shade">
@@ -93,11 +92,16 @@
                     </h:panelGrid>
                 </center>
             </h:form>
+            <hr/>
             <center>
                 <h:form>
-                    <p:commandButton value="Save All" action="#{invoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:invoiceItemTable"/>
-                    <p:commandButton value="Close Page" class="kbtn-danger" ajax="false" update=":mainTabView:mainPanel" action="#{invoiceController.closePage()}"/>
+                    <p:commandButton icon="#{msg.check_icon}" value="Save All" action="#{invoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:invoiceItemTable"/>
+
+                <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{invoiceController.closePage()}">
+                    <p:ajax update=":mainTabView:mainPanel"/>
+                </h:commandButton>
                 </h:form>
+            
             </center>
         </div>
     </div>

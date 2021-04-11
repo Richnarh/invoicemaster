@@ -26,6 +26,10 @@
                                     Due Amount: 
                                     <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.amountRemaining}" class="text-success font-weight-bold">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                    </h:outputText>  &nbsp; |&nbsp;
+                                    Invoice No.: 
+                                    <h:outputText value="#{paymentReceiptController.selectedInvoice.invoiceNumber}" class="text-success font-weight-bold">
+                                        <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>
                                 </span>
                             </div>
@@ -51,10 +55,15 @@
                                             <p:commandButton class="mx-2" value="#{msg.filter_record}" action="#{paymentReceiptController.searchReceipt()}" update=":mainPanel"/>
 
                                             <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
-                                            <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.generateReceipt()}"/>
+                                            
+                                            <ui:remove>
+                                                <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.generateReceipt()}"/>
+                                            </ui:remove>
 
                                             <div class="float-right">
-                                                <p:commandButton value="#{msg.new} #{msg.payment}" action="#{paymentReceiptController.initPaymentReceipt()}" ajax="false"/>
+                                                <h:commandButton value="#{msg.new} #{msg.payment}" class="btn btn-outline-primary btn-sm"
+                                                                 action="#{paymentReceiptController.initPaymentReceipt()}">
+                                                </h:commandButton>
                                             </div>
                                         </h:form>      
                                     </div>

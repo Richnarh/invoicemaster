@@ -30,17 +30,15 @@
                 </h:panelGrid>
 
                 <div class="py-3">
-                    <p:commandButton value="Add to list" class="kbtn-info" action="#{proformaInvoiceController.addProformaInvoiceItem()}" update=":mainTabView:proformaInvoiceItemTable, orderItemForm"/>
+                    <p:commandButton value="Add to list" icon="#{msg.add_icon}" class="kbtn-info" action="#{proformaInvoiceController.addProformaInvoiceItem()}" update=":mainTabView:proformaInvoiceItemTable, orderItemForm"/>
 
-                    <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{proformaInvoiceController.clearProformaInvoiceItem()}" update="@form"/>
+                    <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="#{msg.clear_icon}" immediate="true" action="#{proformaInvoiceController.clearProformaInvoiceItem()}" update="@form"/>
                 </div>
             </h:form>
         </div>
         <div class="col-lg-8">
-            <span class="text-success">Invoice item list</span>
             <h:form id="proformaInvoiceItemTable">
-                <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem" 
-                             paginator="true" paginatorPosition="bottom" rows="6">
+                <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem">
                     <p:column class="row-toggler">
                         <p:rowToggler/>
                     </p:column>
@@ -56,17 +54,17 @@
                         #{proformaInvoiceItem.inventoryProduct.productName}
                     </p:column>
                     
-                    <p:column headerText="#{msg.qty}" class="text-right">
+                    <p:column headerText="#{msg.quantity}" class="text-right">
                         #{proformaInvoiceItem.quantity}
                     </p:column>
 
-                    <p:column headerText="#{msg.unit_price} (#{appSession.currentUser.currency})" class="text-right">
+                    <p:column headerText="#{msg.unit_price}" class="text-right">
                         <h:outputText value="#{proformaInvoiceItem.unitPrice}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.currency})" class="text-right">
+                    <p:column headerText="#{msg.total_amount}" class="text-right">
                         <h:outputText value="#{proformaInvoiceItem.totalAmount}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
@@ -78,7 +76,7 @@
                         
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
-                        <p:commandButton value="Remove" class="kbtn-danger"
+                        <p:commandButton value="#{msg.delete}" class="kbtn-danger"
                                          action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" onclick="return confirm('#{msg.delete_message}')"
                                        update="@form"/>
                     </p:column>
@@ -86,17 +84,20 @@
                 
                 <center class="py-3">
                     <h:panelGrid columns="2">
-                        <span>Total Amount</span>
+                        <span>Total Amount: </span>
                         <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
                             <f:convertNumber pattern="#{appSession.currentUser.currency} #{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>
                 </center>
             </h:form>
+             <hr/>
             <center>
                 <h:form>
-                    <p:commandButton value="Save All" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
-                    <p:commandButton value="Close Page" class="kbtn-danger" ajax="false" update=":mainTabView:mainPanel" action="#{proformaInvoiceController.closePage()}"/>
+                    <p:commandButton value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
+                    <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
+                    <p:ajax update=":mainTabView:mainPanel"/>
+                </h:commandButton>
                 </h:form>
             </center>
         </div>

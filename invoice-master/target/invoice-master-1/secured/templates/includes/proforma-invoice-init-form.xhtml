@@ -70,10 +70,10 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <p:commandButton  value="#{proformaInvoiceController.optionText}" class="kbtn-success" icon="fa fa-check-circle"
+                                    <p:commandButton  value="#{proformaInvoiceController.optionText}" class="kbtn-success" icon="#{msg.check_icon}"
                                                       action="#{proformaInvoiceController.saveProformaInvoice()}" ajax="false"/>
 
-                                    <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="fa fa-trash" action="#{proformaInvoiceController.clearProformaInvoice()}" update=":mainTabView:mainPanel"/>
+                                    <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="#{msg.clear_icon}" action="#{proformaInvoiceController.clearProformaInvoice()}" update=":mainTabView:mainPanel"/>
 
                                     <div class="float-right">
                                         <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{proformaInvoiceController.closePage()}">

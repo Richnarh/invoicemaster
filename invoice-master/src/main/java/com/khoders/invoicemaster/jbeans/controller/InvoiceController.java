@@ -26,7 +26,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.TypedQuery;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -159,7 +158,7 @@ public class InvoiceController implements Serializable
                
                 totalAmount = invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
                 invoiceItem.setTotalAmount(totalAmount);
-
+                invoiceItem.genCode();
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
 
@@ -190,12 +189,18 @@ public class InvoiceController implements Serializable
                     inventory.setQuantity(qtyAtHand);
                     
                     crudApi.save(inventory);
-
-                    crudApi.save(items);
                     
                     totalAmount += items.getTotalAmount();
-                    
                     setTotalAmount(totalAmount);
+                    
+                    if(totalAmount != invoice.getTotalAmount())
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: "+(totalAmount)+" is not equivalent to the invoice total: "+invoice.getTotalAmount()), null));
+                        return;
+                    }
+
+                    crudApi.save(items);
                     
                 }
                 
@@ -216,6 +221,7 @@ public class InvoiceController implements Serializable
     public void editInvoiceItem(InvoiceItem invoiceItem)
     {
         this.invoiceItem = invoiceItem;
+        invoiceItemList.remove(invoiceItem);
         optionText = "Update";
     }
     
@@ -276,14 +282,18 @@ public class InvoiceController implements Serializable
     
     public int getPaidInvoiceCount()
     {
-        int  count = crudApi.getEm().createQuery("SELECT COUNT(e.paymentStatus) FROM Invoice e WHERE e.paymentStatus=?1", Invoice.class)
-                .setParameter(1, PaymentStatus.FULLY_PAID)
-                        .getFirstResult();
-                
-//        int count = ((Integer)typedQuery.getFirstResult());
-        System.out.println("Count -- "+count);
-
-        return count;
+//        int  count = crudApi.getEm().createQuery("SELECT COUNT(e.paymentStatus) FROM Invoice e WHERE e.paymentStatus=?1", Invoice.class)
+//                .setParameter(1, PaymentStatus.FULLY_PAID)
+//                        .getFirstResult();
+//                
+////        int count = ((Integer)typedQuery.getFirstResult());
+//        System.out.println("Count -- "+count);
+//
+        
+        invoiceList = invoiceService.getCashInvoiceList();
+        
+        
+        return invoiceList.size();
     }
     
     public void getCashInvoice()

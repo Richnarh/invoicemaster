@@ -39,7 +39,7 @@
             </h:panelGrid>
 
             <div class="py-3">
-                <p:commandButton value="#{proformaInvoiceController.optionText}" icon="fa fa-check-circle" class="kbtn-success" action="#{proformaInvoiceController.saveInvoiceConfigItems()}" update=":invoiceConfigTable, @form"/>
+                <p:commandButton value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" class="kbtn-success" action="#{proformaInvoiceController.saveInvoiceConfigItems()}" update=":invoiceConfigTable, @form"/>
                 <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="fa fa-trash" immediate="true" action="#{proformaInvoiceController.clearInvoiceConfigItems()}" update="@form"/>
             </div>
         </h:form>

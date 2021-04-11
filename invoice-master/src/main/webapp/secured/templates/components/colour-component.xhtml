@@ -18,8 +18,8 @@
 
                         <div class="py-3">
 
-                            <p:commandButton class="kbtn-success" value="#{invoiceConfigController.optionText}" icon="fa fa-check-circle" update="@form, :mainTabView:colourTable" action="#{invoiceConfigController.saveColour()}"/>
-                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" update="@form" action="#{invoiceConfigController.clearColours()}"/>
+                            <p:commandButton class="kbtn-success" icon="#{msg.check_icon}" value="#{invoiceConfigController.optionText}" update="@form, :mainTabView:colourTable" action="#{invoiceConfigController.saveColour()}"/>
+                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" update="@form" action="#{invoiceConfigController.clearColours()}"/>
 
                         </div>
                     </h:form>

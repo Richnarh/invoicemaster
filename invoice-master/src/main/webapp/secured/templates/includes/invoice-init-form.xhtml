@@ -67,10 +67,10 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <p:commandButton  value="#{invoiceController.optionText}" class="kbtn-success" icon="fa fa-check-circle"
+                                    <p:commandButton  value="#{invoiceController.optionText}" class="kbtn-success" icon="#{msg.check_icon}"
                                                       action="#{invoiceController.saveInvoice()}" ajax="false"/>
 
-                                    <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="fa fa-trash" action="#{invoiceController.clearInvoice()}" update=":mainTabView:mainPanel"/>
+                                    <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="#{msg.clear_icon}" action="#{invoiceController.clearInvoice()}" update=":mainTabView:mainPanel"/>
 
                                     <div class="float-right">
                                         <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{invoiceController.closePage()}">
