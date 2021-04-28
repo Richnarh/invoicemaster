@@ -234,24 +234,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{paymentMethod}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="21" y="315" width="198" height="17" uuid="c26e3b54-bbe7-4179-b114-6560f5bf288a">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<box>
-						<pen lineStyle="Dashed"/>
-						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
-					</box>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="21" y="335" width="198" height="17" uuid="2d8a386b-090a-4c43-bf99-e0c11102505a">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Stamp]]></text>
-				</staticText>
 			</frame>
 		</band>
 	</detail>

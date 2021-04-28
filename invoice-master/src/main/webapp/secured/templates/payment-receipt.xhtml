@@ -56,9 +56,7 @@
 
                                             <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
                                             
-                                            <ui:remove>
                                                 <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.generateReceipt()}"/>
-                                            </ui:remove>
 
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.new} #{msg.payment}" class="btn btn-outline-primary btn-sm"

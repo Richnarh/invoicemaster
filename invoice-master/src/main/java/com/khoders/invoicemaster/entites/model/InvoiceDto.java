@@ -19,10 +19,8 @@ public class InvoiceDto
 {
     private LocalDate issuedDate;
     private LocalDate dueDate;
-    private String client;
+    private String clientName;
     private String invoiceNumber;
-    private String project;
-    private String subject;
     private String paymentMethod;
     private String paymentStatus;
     private double totalAmount;
@@ -71,36 +69,16 @@ public class InvoiceDto
         this.logo = logo;
     }
 
-    public String getProject()
+    public String getClientName()
     {
-        return project;
+        return clientName;
     }
 
-    public void setProject(String project)
+    public void setClientName(String clientName)
     {
-        this.project = project;
+        this.clientName = clientName;
     }
-
-    public String getSubject()
-    {
-        return subject;
-    }
-
-    public void setSubject(String subject)
-    {
-        this.subject = subject;
-    }
-
-    public String getClient()
-    {
-        return client;
-    }
-
-    public void setClient(String client)
-    {
-        this.client = client;
-    }
-
+    
     public String getPaymentMethod()
     {
         return paymentMethod;

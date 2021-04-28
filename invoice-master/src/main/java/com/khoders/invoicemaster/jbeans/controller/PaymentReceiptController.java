@@ -9,7 +9,6 @@ import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
 import com.khoders.invoicemaster.entites.model.ConvertToWords;
 import com.khoders.invoicemaster.entites.model.PaymentReceiptDto;
-import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.enums.PaymentStatus;
@@ -35,8 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -112,19 +113,20 @@ public class PaymentReceiptController implements Serializable
         
         try
         {
-              String BASE_DIR = "com/khoders/invoicemater/resources/reports/";
+              String BASE_DIR = "/com/khoders/invoicemater/resources/reports/";
     
      String PAYMENT_RECEIPT_FILE = BASE_DIR+"payment_receipt.jasper";
-     
-            System.out.println("Path -- "+PAYMENT_RECEIPT_FILE);
     
             Map<String, Object> reportParams = new LinkedHashMap<>();
-            reportParams.put("Report Type", "");
 
-            InputStream stream = getClass().getResourceAsStream(PAYMENT_RECEIPT_FILE);
+            InputStream stream = this.getClass().getResourceAsStream(PAYMENT_RECEIPT_FILE);
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paymentReceiptDtoList);
+            
+//            String stream = FacesContext.getCurrentInstance().getExternalContext().getRealPath(stream);
+            JasperReport report = (JasperReport)JRLoader.loadObject(stream);
             System.out.println("Stream: " + stream);
 
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paymentReceiptDtoList);
+            reportParams.put("Report Type", dataSource);
             JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportParams, dataSource);
             HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             servletResponse.setContentType("application/pdf");
