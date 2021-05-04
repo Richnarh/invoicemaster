@@ -9,6 +9,7 @@ import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
+import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -352,6 +353,55 @@ public class ProformaInvoiceController implements Serializable
             TabView tabView = (TabView) event.getComponent();
             selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
 
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void generateInvoice(ProformaInvoice proformaInvoice)
+    {
+        List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.DeliveryTerm> deliveryTermList = new LinkedList<>();
+        List<ProformaInvoiceDto.Colours> coloursList = new LinkedList<>();
+        List<ProformaInvoiceDto.Validation> validationList = new LinkedList<>();
+        List<ProformaInvoiceDto.ReceivedDocument> receivedDocumentList = new LinkedList<>();
+        
+        List<InvoiceConfigItems> configItemsList  = proformaInvoiceService.getProformaInvoiceReceipt(proformaInvoice);
+        
+        for (InvoiceConfigItems configItems : configItemsList)
+        {
+            ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
+            proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
+            proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
+            proformaInvoiceDto.setPhone(proformaInvoice.getClient().getPhone());
+            proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress());
+            proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
+            proformaInvoiceDto.setExpiryDate(proformaInvoice.getExpiryDate());
+            proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
+            proformaInvoiceDto.setClientCode(proformaInvoice.getClient().getClientCode());
+            
+            ProformaInvoiceDto.DeliveryTerm deliveryTerm = new ProformaInvoiceDto.DeliveryTerm();
+            ProformaInvoiceDto.Colours colours = new ProformaInvoiceDto.Colours();
+            ProformaInvoiceDto.Validation validation = new ProformaInvoiceDto.Validation();
+            ProformaInvoiceDto.ReceivedDocument receivedDocument = new ProformaInvoiceDto.ReceivedDocument();
+            
+            deliveryTerm.setDeliveryTerm(configItems.getDeliveryTerm().getDeliveryTerm());
+            colours.setColours(configItems.getColours().getColourName());
+            validation.setValidation(configItems.getValidation().getValidation());
+            receivedDocument.setReceivedDocument(configItems.getReceivedDocument().getDocumentName());
+            
+            proformaInvoiceDtoList.add(proformaInvoiceDto);
+            deliveryTermList.add(deliveryTerm);
+            coloursList.add(colours);
+            validationList.add(validation);
+            receivedDocumentList.add(receivedDocument);
+        }
+       
+        try
+        {
+            
         } catch (Exception e)
         {
             e.printStackTrace();

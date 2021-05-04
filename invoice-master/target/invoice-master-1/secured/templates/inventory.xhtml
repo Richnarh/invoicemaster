@@ -15,7 +15,7 @@
 
             <ui:define name="pageContent">
                 <h:panelGroup id="mainPanel">
-                    <div class="card mb-5">
+                    <div class="card mb-5 wow zoomIn">
                         <div class="container-fluid">
                             <div class="card-header">Add #{msg.inventory}</div>
                             <h:panelGroup rendered="#{inventoryController.pageView.listView}">
@@ -41,32 +41,18 @@
                                         </p:column>
 
                                         <p:rowExpansion>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
-                                                    <h:outputText value="#{inventory.createdDate}">
-                                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                                    </h:outputText>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.inventory} Id:</label>
-                                                    <h:outputText value="#{inventory.inventoryCode}"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.measurement}:</label>
-                                                    <h:outputText value="#{inventory.unitOfMeasurement}"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.description}:</label>
-                                                    <h:outputText value="#{inventory.description}"/>
-                                                </div>
-                                            </div>
+                                            <h:panelGrid columns="2">
+                                                <span>#{msg.created_date}</span>
+                                                <h:outputText value="#{inventory.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                                
+                                                <span>#{msg.inventory} Id</span>
+                                                <h:outputText value="#{inventory.inventoryCode}"/>
+                                                
+                                                <span>#{msg.description}</span>
+                                                <h:outputText value="#{inventory.description}"/>
+                                            </h:panelGrid>
                                         </p:rowExpansion>
 
                                         <p:column headerText="Door #{msg.type}">

@@ -15,9 +15,9 @@
 
             <ui:define name="pageContent">
                 <h:panelGroup id="mainPanel">
-                    <div class="card mb-5">
+                    <div class="card mb-5 wow zoomIn">
                         <div class="container-fluid">
-                            <div class="card-header">
+                            <div class="card-header zoomIn">
                                 <span>
                                     Invoice Amount: 
                                     <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.totalAmount}" class="text-success font-weight-bold">
@@ -34,7 +34,7 @@
                                 </span>
                             </div>
                             <h:panelGroup rendered="#{paymentReceiptController.pageView.listView}">
-                                <div class="row">
+                                <div class="row wow zoomIn">
                                     <div class="col-md-12 col-sm-6 col-lg-12 py-3">
                                         <h:form>
                                             <p:selectOneMenu value="#{paymentReceiptController.selectedInvoice}" filter="true" filterMatchMode="contains">
@@ -56,7 +56,7 @@
 
                                             <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
                                             
-                                                <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.generateReceipt()}"/>
+                                                <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.printPayment()}"/>
 
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.new} #{msg.payment}" class="btn btn-outline-primary btn-sm"

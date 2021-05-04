@@ -12,7 +12,10 @@ import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
+import com.khoders.invoicemaster.entites.sms.MessageTemplate;
+import com.khoders.invoicemaster.entites.sms.SenderId;
 import com.khoders.invoicemaster.service.InvoiceService;
+import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.UserAccountService;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -32,6 +35,7 @@ import javax.inject.Named;
 public class UserCommonClass implements Serializable{
     @Inject private InvoiceService invoiceService;
     @Inject private UserAccountService userAccountService;
+    @Inject private SmsService smsService;
     
     private List<DeliveryTerm> deliveryTermList = new LinkedList<>();
     private List<Validation> validationList = new LinkedList<>();
@@ -40,6 +44,8 @@ public class UserCommonClass implements Serializable{
     private List<Inventory> inventoryList = new LinkedList<>();
     private List<Invoice> invoiceList = new LinkedList<>();
     private List<ReceivedDocument> receivedDocumentList = new LinkedList<>();
+    private List<MessageTemplate> messageTemplateList = new LinkedList<>();
+    private List<SenderId> senderIdList = new LinkedList<>();
     
     @PostConstruct
     @Asynchronous
@@ -52,6 +58,8 @@ public class UserCommonClass implements Serializable{
         coloursList = invoiceService.getColoursList();
         receivedDocumentList = invoiceService.getReceivedDocumentList();
         inventoryList = invoiceService.getInventoryList();
+        messageTemplateList = smsService.getMessageTemplateList();
+        senderIdList = smsService.getSenderIdList();
     }
 
     public List<DeliveryTerm> getDeliveryTermList()
@@ -88,5 +96,15 @@ public class UserCommonClass implements Serializable{
         return invoiceList;
     }
 
+    public List<MessageTemplate> getMessageTemplateList()
+    {
+        return messageTemplateList;
+    }
+
+    public List<SenderId> getSenderIdList()
+    {
+        return senderIdList;
+    }
+    
     
 }

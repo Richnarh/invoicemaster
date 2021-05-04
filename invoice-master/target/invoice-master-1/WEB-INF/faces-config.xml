@@ -27,7 +27,7 @@
     
         <resource-bundle>
             <base-name>
-                com.khoders.invoicemater.resources.messages
+                com.khoders.invoicemaster.resources.messages
             </base-name>
             <var>
                 msg

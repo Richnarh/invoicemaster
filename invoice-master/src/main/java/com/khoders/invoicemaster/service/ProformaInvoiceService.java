@@ -170,6 +170,22 @@ public class ProformaInvoiceService
         return Collections.emptyList();
     }
 
+    public List<InvoiceConfigItems> getProformaInvoiceReceipt(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM InvoiceConfigItems e WHERE e.proformaInvoice=?1";
+            TypedQuery<InvoiceConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceConfigItems.class);
+            typedQuery.setParameter(1, proformaInvoice);
+            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
     
     
  public Invoice extractFromProformaInvoice(ProformaInvoice proformaInvoice)

@@ -8,7 +8,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">  
 
     <h:body>
-        <div class="row">
+        <div class="row wow zoomIn">
             <div class="col-md-12 col-sm-6 col-lg-12">
                 <h:form style="margin-bottom: 5px;">
 
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <h:form id="proformaInvoiceTable">
+        <h:form id="proformaInvoiceTable" class="wow zoomIn">
             <p:dataTable value="#{proformaInvoiceController.proformaInvoiceList}" var="proformaInvoice"  reflow="true" draggableColumns="true">
 
                 <p:column class="row-toggler">
@@ -88,6 +88,9 @@
                     <h:outputText value="#{proformaInvoice.totalAmount}">
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>
+                </p:column>
+                <p:column>
+                    <h:commandLink value="Print" action="#{proformaInvoiceController.generateInvoice(proformaInvoice)}"/>
                 </p:column>
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.manage}">

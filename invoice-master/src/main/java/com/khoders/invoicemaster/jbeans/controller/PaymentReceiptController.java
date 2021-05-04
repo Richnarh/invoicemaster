@@ -9,6 +9,7 @@ import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
 import com.khoders.invoicemaster.entites.model.ConvertToWords;
 import com.khoders.invoicemaster.entites.model.PaymentReceiptDto;
+import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.enums.PaymentStatus;
@@ -21,6 +22,7 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,8 +32,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -81,17 +85,14 @@ public class PaymentReceiptController implements Serializable
     {
        paymentReceiptList = invoiceService.getPaymenReceiptList(selectedInvoice, dateRange);
     }
-    
-    public void generateReceipt()
-    {
+
+    public void printPayment(PaymentReceipt paymentReceipt)
+    {  
         if(selectedInvoice == null)
         {
-            
             return;
         }
-        paymentReceiptList = invoiceService.getPaymentReceipt(selectedInvoice);
-        
-        System.out.println("Payment Invoice size -- "+paymentReceiptList.size());
+        paymentReceiptList = invoiceService.getPrintReceipt(selectedInvoice, paymentReceipt.getId());
         
         List<PaymentReceiptDto> paymentReceiptDtoList = new LinkedList<>();
        
@@ -104,7 +105,7 @@ public class PaymentReceiptController implements Serializable
             paymentReceiptDto.setReceivedAmount(receipt.getReceivedAmount());
             paymentReceiptDto.setPaymentMethod(receipt.getPaymentMethod() + "");
             paymentReceiptDto.setDescription(receipt.getDescription());
-            paymentReceiptDto.setReceivedBy(appSession.getCurrentUser() + "");
+            paymentReceiptDto.setReceivedBy(appSession.getCurrentUser().getUsername());
             paymentReceiptDto.setUnpaidAmount(receipt.getAmountUnpaid());
             paymentReceiptDto.setAmountInWords(ConvertToWords.convertNumber(receipt.getReceivedAmount()));
 
@@ -113,30 +114,17 @@ public class PaymentReceiptController implements Serializable
         
         try
         {
-              String BASE_DIR = "/com/khoders/invoicemater/resources/reports/";
-    
-     String PAYMENT_RECEIPT_FILE = BASE_DIR+"payment_receipt.jasper";
-    
-            Map<String, Object> reportParams = new LinkedHashMap<>();
-
-            InputStream stream = this.getClass().getResourceAsStream(PAYMENT_RECEIPT_FILE);
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paymentReceiptDtoList);
+            InputStream stream = getClass().getResourceAsStream(ReportFiles.PAYMENT_RECEIPT_FILE);
             
-//            String stream = FacesContext.getCurrentInstance().getExternalContext().getRealPath(stream);
-            JasperReport report = (JasperReport)JRLoader.loadObject(stream);
-            System.out.println("Stream: " + stream);
-
-            reportParams.put("Report Type", dataSource);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportParams, dataSource);
-            HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            servletResponse.setContentType("application/pdf");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, new HashMap(), dataSource);
+            HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.setContentType("application/pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
             
-            JRPdfExporter jRPdfExporter = new JRPdfExporter();
-            jRPdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-            jRPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(servletResponse.getOutputStream()));
-            jRPdfExporter.setConfiguration(new SimplePdfExporterConfiguration());
-            
-        } catch (IOException | JRException e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }

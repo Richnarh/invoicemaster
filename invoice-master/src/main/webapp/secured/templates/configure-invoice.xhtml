@@ -11,7 +11,7 @@
             </ui:define>
 
             <ui:define name="pageContent">
-                <p:accordionPanel id="mainTabView" activeIndex="#{invoiceConfigController.selectedTabIndex}">
+                <p:accordionPanel class="wow zoomIn" id="mainTabView" activeIndex="#{invoiceConfigController.selectedTabIndex}">
                     <p:ajax event="tabChange" listener="#{invoiceConfigController.onTabChange}"/>
                     <p:tab id="firstTabView" title="#{msg.delivery_term}">
                         <ui:include src="components/delivery-term-component.xhtml"/>

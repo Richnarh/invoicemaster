@@ -8,7 +8,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">  
 
     <h:body>
-        <div class="row">
+        <div class="row wow zoomIn">
             <div class="col-md-12 col-sm-6 col-lg-12">
                 <h:form style="margin-bottom: 5px;">
 
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <h:form id="invoiceTable">
+        <h:form id="invoiceTable" class="wow zoomIn">
             <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true" draggableRows="true">
 
                 <p:column class="row-toggler">

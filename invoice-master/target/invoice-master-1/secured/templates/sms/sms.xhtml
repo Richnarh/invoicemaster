@@ -13,7 +13,45 @@
             </ui:define>
 
             <ui:define name="pageContent">
-                <h1>...start messaging</h1>
+                <div class="card">
+                    <div class="card-header">
+                        Process Message
+                    </div>
+                    <div class="card-body">
+                        <h:panelGroup id="smsPanel">
+                            <div class="row">
+                                <div class="col-md-4 wow fadeIn">
+                                    <h:form>
+                                        <p:dataTable value="#{smsController.clientList}" var="contact" scrollable="true" scrollHeight="250">
+                                            <p:column headerText="#{msg.client}" filterBy="#{contact.clientName}" filterMatchMode="contains">
+                                                <h:outputText value="#{contact.clientName}"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.mobile_no}" filterBy="#{contact.phone}" filterMatchMode="contains">
+                                                <h:commandLink class="text-link" value="#{contact.phone}" action="#{smsController.manage(contact)}">
+                                                    <p:ajax update="smsPanel"/>
+                                                </h:commandLink>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+
+                                <div class="col-md-8">  
+                                    <div class="row py-3">
+                                        <h:outputText id="details" class="field-shade col-md-12" value="
+                                                      #{smsController.selectedClient.clientName} - 
+                                                      #{smsController.selectedClient.phone}
+                                                      "/> 
+                                    </div>
+                                        
+                                        
+                                        
+                                        <ui:include src="../includes/message.xhtml"/>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                    </div>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>

@@ -8,6 +8,7 @@ package com.khoders.invoicemaster.commons;
 import com.khoders.invoicemaster.entites.enums.ClientType;
 import com.khoders.invoicemaster.entites.enums.DoorType;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
+import com.khoders.invoicemaster.entites.enums.MessagingType;
 import com.khoders.resource.enums.Currency;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
@@ -59,5 +60,10 @@ public class CommonClass implements Serializable
     public List<DoorType> getDoorTypeList()
     {
         return Arrays.asList(DoorType.values());
+    }
+    
+    public List<MessagingType> getMessagingTypeList()
+    {
+        return Arrays.asList(MessagingType.values());
     }
 }
