@@ -17,24 +17,12 @@ import javax.persistence.Table;
  * @author pascal
  */
 @Entity
-@Table(name = "invoice_config_items")
-public class InvoiceConfigItems extends BaseModel implements Serializable
+@Table(name = "received_doc_config_items")
+public class ReceivedDocumentConfigItems extends BaseModel implements Serializable
 {
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne
     private ProformaInvoice proformaInvoice;
-    
-    @JoinColumn(name = "delivery_term", referencedColumnName = "id")
-    @ManyToOne
-    private DeliveryTerm deliveryTerm;
-    
-    @JoinColumn(name = "validation", referencedColumnName = "id")
-    @ManyToOne
-    private Validation validation;
-    
-    @JoinColumn(name = "colours", referencedColumnName = "id")
-    @ManyToOne
-    private Colours colours;
     
     @JoinColumn(name = "received_document", referencedColumnName = "id")
     @ManyToOne
@@ -50,36 +38,6 @@ public class InvoiceConfigItems extends BaseModel implements Serializable
         this.proformaInvoice = proformaInvoice;
     }
     
-    public DeliveryTerm getDeliveryTerm()
-    {
-        return deliveryTerm;
-    }
-
-    public void setDeliveryTerm(DeliveryTerm deliveryTerm)
-    {
-        this.deliveryTerm = deliveryTerm;
-    }
-
-    public Validation getValidation()
-    {
-        return validation;
-    }
-
-    public void setValidation(Validation validation)
-    {
-        this.validation = validation;
-    }
-
-    public Colours getColours()
-    {
-        return colours;
-    }
-
-    public void setColours(Colours colours)
-    {
-        this.colours = colours;
-    }
-
     public ReceivedDocument getReceivedDocument() {
         return receivedDocument;
     }

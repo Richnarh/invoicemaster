@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <div class="p-3">
+                <div>
+                    <h:form id="validationItemForm">
+                        <div class="form-group">
+                            <span class="mr-2">#{msg.validation} <span class="text-danger">*</span></span>
+                            <p:selectOneMenu value="#{proformaInvoiceController.validationConfigItems.validation}">
+                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                <f:selectItems value="#{userCommonClass.validationList}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="py-3">
+                            <p:commandButton class="kbtn-success" value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" update="@form, :validationTable" action="#{proformaInvoiceController.saveValidationConfigItems()}"/>
+                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" update="@form" action="#{proformaInvoiceController.clearValidationConfigItems()}"/>
+                        </div>
+                    </h:form>
+                </div>
+                    <h:form id="validationTable">
+                        <p:dataTable reflow="true" value="#{proformaInvoiceController.validationConfigItemsList}" var="validation" scrollable="true" scrollHeight="360">
+                            <p:column style="width: 37px">
+                                <p:rowToggler/>
+                            </p:column>
+
+                            <p:rowExpansion>
+                                <h:panelGrid columns="2">
+                                    <span>#{msg.created_date}</span>
+                                    <h:outputText value="#{validation.createdDate}">
+                                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                    </h:outputText>
+                                </h:panelGrid>
+                            </p:rowExpansion>
+
+                            <p:column headerText="#{msg.validation}">
+                                #{validation.validation}
+                            </p:column>
+
+                            <p:column headerText="#{msg.action}" style="width: 80px;">
+                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" update=":validationItemForm" action="#{proformaInvoiceController.editValidationConfigItems(validation)}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg.action}" style="width: 100px;">
+                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" action="#{proformaInvoiceController.deleteValidationConfigItems(validation)}" update="@form"/>
+                            </p:column>
+
+                        </p:dataTable> 
+                    </h:form>
+        </div>
+    </h:body>
+</html>
+

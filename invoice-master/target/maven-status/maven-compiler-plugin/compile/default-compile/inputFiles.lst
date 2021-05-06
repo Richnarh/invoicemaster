@@ -11,6 +11,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InventoryController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\enums\ClientType.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\Client.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ValidationConfigItems.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\DeliveryTerm.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ChartOfAccount.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProformaInvoice.java
@@ -32,6 +33,8 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listener\SessionListener.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\Invoice.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\enums\MessagingType.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ReceivedDocumentConfigItems.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\DeliveryTermConfigItems.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\SmsService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProformaInvoiceItem.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.java
@@ -40,6 +43,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\MessageTemplateController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InvoiceController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ColoursConfigItems.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\DeliveryTermConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ColoursConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\model\ConvertToWords.java
@@ -49,7 +53,6 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listener\AppSession.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\InventoryService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\enums\DoorType.java
-C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\InvoiceConfigItems.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\model\InvoiceDto.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\UserModel.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\InvoiceService.java

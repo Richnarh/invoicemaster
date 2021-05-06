@@ -6,14 +6,17 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entites.Colours;
+import com.khoders.invoicemaster.entites.ColoursConfigItems;
 import com.khoders.invoicemaster.entites.DeliveryTerm;
+import com.khoders.invoicemaster.entites.DeliveryTermConfigItems;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
-import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
+import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
 import com.khoders.invoicemaster.entites.Validation;
+import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
@@ -49,12 +52,60 @@ public class ProformaInvoiceService
         return Collections.emptyList();
     }
 
-    public List<InvoiceConfigItems> getInvoiceConfigItemsList(ProformaInvoice proformaInvoice)
+    public List<DeliveryTermConfigItems> getDeliveryTermConfigItemsList(ProformaInvoice proformaInvoice)
     {
         try
         {
-            String qryString = "SELECT e FROM InvoiceConfigItems e WHERE e.proformaInvoice = ?1";
-            TypedQuery<InvoiceConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceConfigItems.class);
+            String qryString = "SELECT e FROM DeliveryTermConfigItems e WHERE e.proformaInvoice = ?1";
+            TypedQuery<DeliveryTermConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, DeliveryTermConfigItems.class);
+                                            typedQuery.setParameter(1, proformaInvoice);
+                                     return typedQuery.getResultList();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<ValidationConfigItems> getValidationConfigItemsList(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ValidationConfigItems e WHERE e.proformaInvoice = ?1";
+            TypedQuery<ValidationConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, ValidationConfigItems.class);
+                                            typedQuery.setParameter(1, proformaInvoice);
+                                     return typedQuery.getResultList();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<ColoursConfigItems> getColoursConfigItemsList(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ColoursConfigItems e WHERE e.proformaInvoice = ?1";
+            TypedQuery<ColoursConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, ColoursConfigItems.class);
+                                            typedQuery.setParameter(1, proformaInvoice);
+                                     return typedQuery.getResultList();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<ReceivedDocumentConfigItems> getReceivedDocumentConfigItemsList(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ReceivedDocumentConfigItems e WHERE e.proformaInvoice = ?1";
+            TypedQuery<ReceivedDocumentConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, ReceivedDocumentConfigItems.class);
                                             typedQuery.setParameter(1, proformaInvoice);
                                      return typedQuery.getResultList();
 
@@ -170,12 +221,63 @@ public class ProformaInvoiceService
         return Collections.emptyList();
     }
 
-    public List<InvoiceConfigItems> getProformaInvoiceReceipt(ProformaInvoice proformaInvoice)
+    public List<ValidationConfigItems> getValidationConfigItems(ProformaInvoice proformaInvoice)
     {
         try
         {
-            String qryString = "SELECT e FROM InvoiceConfigItems e WHERE e.proformaInvoice=?1";
-            TypedQuery<InvoiceConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceConfigItems.class);
+            String qryString = "SELECT e FROM ValidationConfigItems e WHERE e.proformaInvoice=?1";
+            TypedQuery<ValidationConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, ValidationConfigItems.class);
+            typedQuery.setParameter(1, proformaInvoice);
+            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
+    
+    public List<ReceivedDocumentConfigItems> getReceivedDocumentConfigItems(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ReceivedDocumentConfigItems e WHERE e.proformaInvoice=?1";
+            TypedQuery<ReceivedDocumentConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, ReceivedDocumentConfigItems.class);
+            typedQuery.setParameter(1, proformaInvoice);
+            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
+    
+    public List<ColoursConfigItems> getColoursConfigItems(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ColoursConfigItems e WHERE e.proformaInvoice=?1";
+            TypedQuery<ColoursConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, ColoursConfigItems.class);
+            typedQuery.setParameter(1, proformaInvoice);
+            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
+    
+    public List<InvoiceItem> getProformaInvoiceItemReceipt(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM InvoiceItem e WHERE e.proformaInvoice=?1";
+            TypedQuery<InvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceItem.class);
             typedQuery.setParameter(1, proformaInvoice);
             return typedQuery.getResultList();
             

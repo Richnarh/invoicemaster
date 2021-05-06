@@ -7,11 +7,12 @@ package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entites.Colours;
 import com.khoders.invoicemaster.entites.DeliveryTerm;
+import com.khoders.invoicemaster.entites.DeliveryTermConfigItems;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
-import com.khoders.invoicemaster.entites.InvoiceConfigItems;
 import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
+import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
@@ -112,22 +113,6 @@ public class InvoiceService
         return Collections.emptyList();
     }
     
-    public List<InvoiceConfigItems> getInvoiceConfigItemsList(Invoice invoice)
-    {
-        try
-        {
-            String qryString = "SELECT e FROM InvoiceConfigItems e WHERE e.invoice = ?1";
-            TypedQuery<InvoiceConfigItems> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceConfigItems.class);
-                                            typedQuery.setParameter(1, invoice);
-                                     return typedQuery.getResultList();
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-
     public List<Invoice> getInvoiceList()
     {
         try

@@ -5,10 +5,14 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.entites.ColoursConfigItems;
+import com.khoders.invoicemaster.entites.DeliveryTermConfigItems;
 import com.khoders.invoicemaster.entites.Invoice;
-import com.khoders.invoicemaster.entites.InvoiceConfigItems;
+import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
+import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
+import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
@@ -53,8 +57,17 @@ public class ProformaInvoiceController implements Serializable
     private ProformaInvoiceItem proformaInvoiceItem = new ProformaInvoiceItem();
     private List<ProformaInvoiceItem> proformaInvoiceItemList = new LinkedList<>();
 
-    private InvoiceConfigItems invoiceConfigItems = new InvoiceConfigItems();
-    private List<InvoiceConfigItems> invoiceConfigItemsList = new LinkedList<>();
+    private DeliveryTermConfigItems deliveryTermConfigItems = new DeliveryTermConfigItems();
+    private List<DeliveryTermConfigItems> deliveryTermConfigItemsList = new LinkedList<>();
+    
+    private ValidationConfigItems validationConfigItems = new ValidationConfigItems();
+    private List<ValidationConfigItems> validationConfigItemsList = new LinkedList<>();
+    
+    private ColoursConfigItems coloursConfigItems = new ColoursConfigItems();
+    private List<ColoursConfigItems> coloursConfigItemsList = new LinkedList<>();
+    
+    private ReceivedDocumentConfigItems receivedDocumentConfigItems = new ReceivedDocumentConfigItems();
+    private List<ReceivedDocumentConfigItems> receivedDocumentConfigItemsList = new LinkedList<>();
     
     private int selectedTabIndex;
     private String optionText;
@@ -141,12 +154,36 @@ public class ProformaInvoiceController implements Serializable
         }
     }
 
-    public void manageProformaInvoiceConfig(ProformaInvoice proformaInvoice)
+    public void manageDeliveryTermItemConfig(ProformaInvoice proformaInvoice)
     {
         this.proformaInvoice = proformaInvoice;
-        clearInvoiceConfigItems();
+        clearDeliveryTermConfigItems();
         
-        invoiceConfigItemsList = proformaInvoiceService.getInvoiceConfigItemsList(proformaInvoice);
+        deliveryTermConfigItemsList = proformaInvoiceService.getDeliveryTermConfigItemsList(proformaInvoice);
+    }
+
+    public void manageValidationConfigItems(ProformaInvoice proformaInvoice)
+    {
+        this.proformaInvoice = proformaInvoice;
+        clearValidationConfigItems();
+        
+        validationConfigItemsList = proformaInvoiceService.getValidationConfigItemsList(proformaInvoice);
+    }
+
+    public void manageColoursConfigItems(ProformaInvoice proformaInvoice)
+    {
+        this.proformaInvoice = proformaInvoice;
+        clearColoursConfigItems();
+        
+        coloursConfigItemsList = proformaInvoiceService.getColoursConfigItemsList(proformaInvoice);
+    }
+
+    public void manageReceivedDocumentConfigItems(ProformaInvoice proformaInvoice)
+    {
+        this.proformaInvoice = proformaInvoice;
+        clearReceivedDocumentConfigItems();
+        
+        receivedDocumentConfigItemsList = proformaInvoiceService.getReceivedDocumentConfigItemsList(proformaInvoice);
     }
 
     public void addProformaInvoiceItem()
@@ -246,52 +283,217 @@ public class ProformaInvoiceController implements Serializable
         }
     }
     
-    public void addInvoiceConfigItems()
+    public void editProformaInvoice(ProformaInvoice proformaInvoice)
     {
-        if(invoiceConfigItemsList != null)
-        {
-            invoiceConfigItemsList = CollectionList.washList(invoiceConfigItemsList, invoiceConfigItems);
-            
-            clearInvoiceConfigItems();
-        }
+        this.proformaInvoice = proformaInvoice;
+        pageView.restToCreateView();
+        optionText = "Update";
     }
     
-    public void saveInvoiceConfigItems()
+//    Configs
+    
+    public void saveDeliveryTermConfigItems()
     {
         try
         {
-            invoiceConfigItems.setProformaInvoice(proformaInvoice);
-            if(crudApi.save(invoiceConfigItems) != null)
-            {
-                invoiceConfigItemsList = CollectionList.washList(invoiceConfigItemsList, invoiceConfigItems);
-                FacesContext.getCurrentInstance().addMessage(null, 
+           if (crudApi.save(deliveryTermConfigItems) != null)
+           {
+               deliveryTermConfigItemsList = CollectionList.washList(deliveryTermConfigItemsList, deliveryTermConfigItems);
+               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-           
-            }
-            else
-            {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
-            }
-             clearInvoiceConfigItems();
+           }
+           else
+           {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+           }
+               
+               clearDeliveryTermConfigItems();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
     
-    public void editInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)
+    public void saveValidationConfigItems()
     {
-        this.invoiceConfigItems=invoiceConfigItems;
+        try
+        {
+           if (crudApi.save(validationConfigItems) != null)
+           {
+               validationConfigItemsList = CollectionList.washList(validationConfigItemsList, validationConfigItems);
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+           }
+           else
+           {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+           }
+               
+               clearValidationConfigItems();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void saveColoursConfigItems()
+    {
+        try
+        {
+           if (crudApi.save(coloursConfigItems) != null)
+           {
+               coloursConfigItemsList = CollectionList.washList(coloursConfigItemsList, coloursConfigItems);
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+           }
+           else
+           {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+           }
+               
+               clearValidationConfigItems();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void saveReceivedDocumentConfigItems()
+    {
+        try
+        {
+           if (crudApi.save(receivedDocumentConfigItems) != null)
+           {
+               receivedDocumentConfigItemsList = CollectionList.washList(receivedDocumentConfigItemsList, receivedDocumentConfigItems);
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+           }
+           else
+           {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+           }
+               
+               clearValidationConfigItems();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editDeliveryTermConfigItems(DeliveryTermConfigItems deliveryTermConfigItems)
+    {
+        this.deliveryTermConfigItems=deliveryTermConfigItems;
+        optionText = "Update";
+    }
+    public void editReceivedDocumentConfigItems(ReceivedDocumentConfigItems receivedDocumentConfigItems)
+    {
+        this.receivedDocumentConfigItems=receivedDocumentConfigItems;
+        optionText = "Update";
+    }
+    public void editColoursConfigItems(ColoursConfigItems coloursConfigItems)
+    {
+        this.coloursConfigItems=coloursConfigItems;
+        optionText = "Update";
+    }
+    public void editValidationConfigItems(ValidationConfigItems validationConfigItems)
+    {
+        this.validationConfigItems=validationConfigItems;
         optionText = "Update";
     }
 
-    public void deleteInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)    {
+    public void deleteDeliveryTermConfigItems(DeliveryTermConfigItems deliveryTermConfigItems)    {
         try
         {
-            if(crudApi.delete(invoiceConfigItems))
+            if(crudApi.delete(deliveryTermConfigItems))
             {
-                invoiceConfigItemsList.remove(invoiceConfigItems);
+                deliveryTermConfigItemsList.remove(deliveryTermConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                 FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteDeliveryTermConfigItems(ValidationConfigItems validationConfigItems)    {
+        try
+        {
+            if(crudApi.delete(validationConfigItems))
+            {
+                validationConfigItemsList.remove(validationConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                 FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void deleteColoursConfigItems(ColoursConfigItems coloursConfigItems)    {
+        try
+        {
+            if(crudApi.delete(coloursConfigItems))
+            {
+                validationConfigItemsList.remove(coloursConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                 FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteReceivedDocumentConfigItems(ReceivedDocumentConfigItems receivedDocumentConfigItems)    {
+        try
+        {
+            if(crudApi.delete(receivedDocumentConfigItems))
+            {
+                validationConfigItemsList.remove(receivedDocumentConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                 FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void deleteValidationConfigItems(ValidationConfigItems validationConfigItems)    {
+        try
+        {
+            if(crudApi.delete(validationConfigItems))
+            {
+                validationConfigItemsList.remove(validationConfigItems);
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
             }
@@ -309,9 +511,6 @@ public class ProformaInvoiceController implements Serializable
     public void closePage()
     {
        proformaInvoice = new ProformaInvoice();
-       invoiceConfigItems = new InvoiceConfigItems();
-       proformaInvoiceItemList = new LinkedList<>();
-       invoiceConfigItemsList = new LinkedList<>();
        totalAmount = 0;
        optionText = "Save Changes";
        pageView.restToListView();
@@ -325,18 +524,36 @@ public class ProformaInvoiceController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
-    public void clearInvoiceConfigItems()
+    public void clearDeliveryTermConfigItems()
     {
-        invoiceConfigItems = new InvoiceConfigItems();
+        deliveryTermConfigItems = new DeliveryTermConfigItems();
+        deliveryTermConfigItems.setProformaInvoice(proformaInvoice);
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-
-    public void editProformaInvoice(ProformaInvoice proformaInvoice)
+    
+    public void clearValidationConfigItems()
     {
-        this.proformaInvoice = proformaInvoice;
-        pageView.restToCreateView();
-        optionText = "Update";
+        validationConfigItems = new ValidationConfigItems();
+        validationConfigItems.setProformaInvoice(proformaInvoice);
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
+    }
+    
+    public void clearColoursConfigItems()
+    {
+        coloursConfigItems = new ColoursConfigItems();
+        coloursConfigItems.setProformaInvoice(proformaInvoice);
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
+    }
+    
+    public void clearReceivedDocumentConfigItems()
+    {
+        receivedDocumentConfigItems = new ReceivedDocumentConfigItems();
+        receivedDocumentConfigItems.setProformaInvoice(proformaInvoice);
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
     }
 
     public void clearProformaInvoice()
@@ -363,15 +580,19 @@ public class ProformaInvoiceController implements Serializable
     public void generateInvoice(ProformaInvoice proformaInvoice)
     {
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.DeliveryTerm> deliveryTermList = new LinkedList<>();
-        List<ProformaInvoiceDto.Colours> coloursList = new LinkedList<>();
-        List<ProformaInvoiceDto.Validation> validationList = new LinkedList<>();
-        List<ProformaInvoiceDto.ReceivedDocument> receivedDocumentList = new LinkedList<>();
         
-        List<InvoiceConfigItems> configItemsList  = proformaInvoiceService.getProformaInvoiceReceipt(proformaInvoice);
+        List<ProformaInvoiceDto.DeliveryTerm> deliveryTermDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.Colours> coloursDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.Validation> validationDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.ReceivedDocument> receivedDocumentDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.InvoiceItem> invoiceItemDtoList = new LinkedList<>();
         
-        for (InvoiceConfigItems configItems : configItemsList)
-        {
+        List<DeliveryTermConfigItems> deliveryTermConfigItemsList  = proformaInvoiceService.getDeliveryTermConfigItemsList(proformaInvoice);
+        List<ReceivedDocumentConfigItems> receivedDocumentConfigItemsList  = proformaInvoiceService.getReceivedDocumentConfigItems(proformaInvoice);
+        List<ValidationConfigItems> validationConfigItemsList  = proformaInvoiceService.getValidationConfigItems(proformaInvoice);
+        List<ColoursConfigItems> coloursConfigItemsList  = proformaInvoiceService.getColoursConfigItems(proformaInvoice);
+        List<InvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
+        
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
             proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
             proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
@@ -382,23 +603,62 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
             proformaInvoiceDto.setClientCode(proformaInvoice.getClient().getClientCode());
             
+        for (DeliveryTermConfigItems configItems : deliveryTermConfigItemsList)
+        {
             ProformaInvoiceDto.DeliveryTerm deliveryTerm = new ProformaInvoiceDto.DeliveryTerm();
-            ProformaInvoiceDto.Colours colours = new ProformaInvoiceDto.Colours();
-            ProformaInvoiceDto.Validation validation = new ProformaInvoiceDto.Validation();
-            ProformaInvoiceDto.ReceivedDocument receivedDocument = new ProformaInvoiceDto.ReceivedDocument();
-            
             deliveryTerm.setDeliveryTerm(configItems.getDeliveryTerm().getDeliveryTerm());
-            colours.setColours(configItems.getColours().getColourName());
-            validation.setValidation(configItems.getValidation().getValidation());
-            receivedDocument.setReceivedDocument(configItems.getReceivedDocument().getDocumentName());
+            
+            deliveryTermDtoList.add(deliveryTerm);
+        }
+        
+        for (ValidationConfigItems validationConfigItems : validationConfigItemsList)
+        {
+            ProformaInvoiceDto.Validation validation = new ProformaInvoiceDto.Validation();
+            validation.setValidation(validationConfigItems.getValidation().getValidation());
+            
+            validationDtoList.add(validation);
+            
+        }
+        
+        for (ReceivedDocumentConfigItems documentConfigItems : receivedDocumentConfigItemsList)
+        {
+            ProformaInvoiceDto.ReceivedDocument receivedDocument = new ProformaInvoiceDto.ReceivedDocument();
+            receivedDocument.setReceivedDocument(documentConfigItems.getReceivedDocument().getDocumentName());
+            
+            receivedDocumentDtoList.add(receivedDocument);
+            
+        }
+        
+        for (ColoursConfigItems coloursConfigItems : coloursConfigItemsList)
+        {
+            ProformaInvoiceDto.Colours colours = new ProformaInvoiceDto.Colours();
+            colours.setColours(coloursConfigItems.getColours().getColourName());
+            
+            coloursDtoList.add(colours);
+        }
+        
+        for (InvoiceItem invoiceItem : invoiceItemList)
+        {
+            ProformaInvoiceDto.InvoiceItem invoiceItemDto = new ProformaInvoiceDto.InvoiceItem();
+            invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
+            invoiceItemDto.setItemCode(invoiceItem.getItemCode());
+            invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
+            invoiceItemDto.setInventoryProduct(invoiceItem.getInventoryProduct());
+            invoiceItemDto.setQuantity(invoiceItem.getQuantity());
+            invoiceItemDto.setInvoice(invoiceItem.getInvoice());
+            invoiceItemDto.setDescription(invoiceItemDto.getDescription());
+            invoiceItemDto.setCharges(invoiceItemDto.getCharges());
+            
+            invoiceItemDtoList.add(invoiceItemDto);
+        }
+            proformaInvoiceDto.setDeliveryTermList(deliveryTermDtoList);
+//            proformaInvoiceDto.setColoursList(coloursDtoList);
+//            proformaInvoiceDto.setReceivedDocumentList(receivedDocumentDtoList);
+//            proformaInvoiceDto.setValidationList(validationDtoList);
+//            proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
             
             proformaInvoiceDtoList.add(proformaInvoiceDto);
-            deliveryTermList.add(deliveryTerm);
-            coloursList.add(colours);
-            validationList.add(validation);
-            receivedDocumentList.add(receivedDocument);
-        }
-       
+            
         try
         {
             
@@ -472,21 +732,6 @@ public class ProformaInvoiceController implements Serializable
         return proformaInvoiceItemList;
     }
     
-    public InvoiceConfigItems getInvoiceConfigItems()
-    {
-        return invoiceConfigItems;
-    }
-
-    public void setInvoiceConfigItems(InvoiceConfigItems invoiceConfigItems)
-    {
-        this.invoiceConfigItems = invoiceConfigItems;
-    }
-
-    public List<InvoiceConfigItems> getInvoiceConfigItemsList()
-    {
-        return invoiceConfigItemsList;
-    }
-    
     public ProformaInvoice getStdProformaInvoice()
     {
         return stdProformaInvoice;
@@ -505,6 +750,66 @@ public class ProformaInvoiceController implements Serializable
     public void setSelectedTabIndex(int selectedTabIndex)
     {
         this.selectedTabIndex = selectedTabIndex;
+    }
+
+    public DeliveryTermConfigItems getDeliveryTermConfigItems()
+    {
+        return deliveryTermConfigItems;
+    }
+
+    public void setDeliveryTermConfigItems(DeliveryTermConfigItems deliveryTermConfigItems)
+    {
+        this.deliveryTermConfigItems = deliveryTermConfigItems;
+    }
+
+    public ValidationConfigItems getValidationConfigItems()
+    {
+        return validationConfigItems;
+    }
+
+    public void setValidationConfigItems(ValidationConfigItems validationConfigItems)
+    {
+        this.validationConfigItems = validationConfigItems;
+    }
+
+    public ColoursConfigItems getColoursConfigItems()
+    {
+        return coloursConfigItems;
+    }
+
+    public void setColoursConfigItems(ColoursConfigItems coloursConfigItems)
+    {
+        this.coloursConfigItems = coloursConfigItems;
+    }
+
+    public ReceivedDocumentConfigItems getReceivedDocumentConfigItems()
+    {
+        return receivedDocumentConfigItems;
+    }
+
+    public void setReceivedDocumentConfigItems(ReceivedDocumentConfigItems receivedDocumentConfigItems)
+    {
+        this.receivedDocumentConfigItems = receivedDocumentConfigItems;
+    }
+
+    public List<DeliveryTermConfigItems> getDeliveryTermConfigItemsList()
+    {
+        return deliveryTermConfigItemsList;
+    }
+
+    public List<ValidationConfigItems> getValidationConfigItemsList()
+    {
+        return validationConfigItemsList;
+    }
+
+    public List<ColoursConfigItems> getColoursConfigItemsList()
+    {
+        return coloursConfigItemsList;
+    }
+
+    public List<ReceivedDocumentConfigItems> getReceivedDocumentConfigItemsList()
+    {
+        return receivedDocumentConfigItemsList;
     }
   
 }

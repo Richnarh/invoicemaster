@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">  
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Invoice Configuration
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <p:accordionPanel class="wow zoomIn" id="mainTabView" activeIndex="#{invoiceConfigController.selectedTabIndex}">
+<!--                    <p:ajax event="tabChange" listener="#{invoiceConfigController.onTabChange}"/>
+                    <p:tab id="firstTabView" title="#{msg.delivery_term}">
+                        <ui:include src="components/delivery-term-item.xhtml"/>
+                    </p:tab>
+
+                    <p:tab title="#{msg.validation}">
+                        <ui:include src="components/validation-item.xhtml"/>
+                    </p:tab>
+
+                    <p:tab title="#{msg.colour}s">
+                        <ui:include src="components/colour-item.xhtml"/>
+                    </p:tab>
+
+                    <p:tab title="Received #{msg.document}">
+                        <ui:include src="components/document-item.xhtml"/>
+                    </p:tab>-->
+
+                </p:accordionPanel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
