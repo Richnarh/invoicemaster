@@ -31,6 +31,9 @@ public class Inventory extends BaseModel implements Serializable
     @Column(name = "product_name")
     private String productName;
 
+    @Column(name = "product_code")
+    private String productCode;
+
     @Column(name = "door_type")
     @Enumerated(EnumType.STRING)
     private DoorType doorType;
@@ -155,6 +158,16 @@ public class Inventory extends BaseModel implements Serializable
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public String getProductCode()
+    {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode)
+    {
+        this.productCode = productCode;
     }
 
     @Override

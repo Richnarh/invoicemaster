@@ -188,7 +188,7 @@
 	<detail>
 		<band height="125" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="0" width="240" height="40" uuid="27ebb9e6-fa9e-405f-b7bb-aa1f15acdb48"/>
+				<reportElement x="0" y="0" width="555" height="40" uuid="27ebb9e6-fa9e-405f-b7bb-aa1f15acdb48"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{deliveryTerm}]]></subreportExpression>
 			</subreport>

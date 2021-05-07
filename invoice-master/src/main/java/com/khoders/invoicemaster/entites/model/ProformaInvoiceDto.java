@@ -6,7 +6,6 @@
 package com.khoders.invoicemaster.entites.model;
 
 import com.khoders.invoicemaster.entites.Inventory;
-import com.khoders.invoicemaster.entites.Invoice;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class ProformaInvoiceDto
     private String logo;
     
 
-    public List<InvoiceItem> invoiceItemList = new LinkedList<>();
+    public List<ProformaInvoiceItem> invoiceItemList = new LinkedList<>();
     public List<DeliveryTerm> deliveryTermList = new LinkedList<>();
     public List<Validation> validationList = new LinkedList<>();
     public List<Colours> coloursList = new LinkedList<>();
@@ -109,16 +108,16 @@ public class ProformaInvoiceDto
         this.description = description;
     }
 
-    public List<InvoiceItem> getInvoiceItemList()
+    public List<ProformaInvoiceItem> getInvoiceItemList()
     {
         return invoiceItemList;
     }
 
-    public void setInvoiceItemList(List<InvoiceItem> invoiceItemList)
+    public void setInvoiceItemList(List<ProformaInvoiceItem> invoiceItemList)
     {
         this.invoiceItemList = invoiceItemList;
     }
-
+    
     public LocalDate getExpiryDate()
     {
         return expiryDate;
@@ -244,6 +243,7 @@ public class ProformaInvoiceDto
         }
         
     }
+    
     public static class Validation
     {
         private String validation;
@@ -291,7 +291,7 @@ public class ProformaInvoiceDto
         
     }
     
-    public static class InvoiceItem
+    public static class ProformaInvoiceItem
     {
         private String itemCode;
         private Inventory inventoryProduct;
@@ -300,7 +300,6 @@ public class ProformaInvoiceDto
         private double charges;
         private double totalAmount;
         private String description;
-        private Invoice invoice;
 
         public String getItemCode()
         {
@@ -372,16 +371,5 @@ public class ProformaInvoiceDto
             this.description = description;
         }
 
-        public Invoice getInvoice()
-        {
-            return invoice;
-        }
-
-        public void setInvoice(Invoice invoice)
-        {
-            this.invoice = invoice;
-        }
-        
-        
     }
 }

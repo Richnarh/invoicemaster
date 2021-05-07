@@ -14,6 +14,7 @@ import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
+import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -21,7 +22,10 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,6 +34,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -262,6 +273,7 @@ public class ProformaInvoiceController implements Serializable
         this.proformaInvoiceItem = proformaInvoiceItem;
         optionText = "Update";
     }
+    
     public void deleteProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
         try
@@ -585,13 +597,13 @@ public class ProformaInvoiceController implements Serializable
         List<ProformaInvoiceDto.Colours> coloursDtoList = new LinkedList<>();
         List<ProformaInvoiceDto.Validation> validationDtoList = new LinkedList<>();
         List<ProformaInvoiceDto.ReceivedDocument> receivedDocumentDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.InvoiceItem> invoiceItemDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
         
-        List<DeliveryTermConfigItems> deliveryTermConfigItemsList  = proformaInvoiceService.getDeliveryTermConfigItemsList(proformaInvoice);
-        List<ReceivedDocumentConfigItems> receivedDocumentConfigItemsList  = proformaInvoiceService.getReceivedDocumentConfigItems(proformaInvoice);
-        List<ValidationConfigItems> validationConfigItemsList  = proformaInvoiceService.getValidationConfigItems(proformaInvoice);
-        List<ColoursConfigItems> coloursConfigItemsList  = proformaInvoiceService.getColoursConfigItems(proformaInvoice);
-        List<InvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
+        List<DeliveryTermConfigItems> deliveryTermList  = proformaInvoiceService.getDeliveryTermConfigItemsList(proformaInvoice);
+        List<ReceivedDocumentConfigItems> receivedDocumentItemsList  = proformaInvoiceService.getReceivedDocumentConfigItems(proformaInvoice);
+        List<ValidationConfigItems> validationItemsList  = proformaInvoiceService.getValidationConfigItems(proformaInvoice);
+        List<ColoursConfigItems> coloursItemsList  = proformaInvoiceService.getColoursConfigItems(proformaInvoice);
+        List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
             proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
@@ -603,7 +615,7 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
             proformaInvoiceDto.setClientCode(proformaInvoice.getClient().getClientCode());
             
-        for (DeliveryTermConfigItems configItems : deliveryTermConfigItemsList)
+        for (DeliveryTermConfigItems configItems : deliveryTermList)
         {
             ProformaInvoiceDto.DeliveryTerm deliveryTerm = new ProformaInvoiceDto.DeliveryTerm();
             deliveryTerm.setDeliveryTerm(configItems.getDeliveryTerm().getDeliveryTerm());
@@ -611,16 +623,16 @@ public class ProformaInvoiceController implements Serializable
             deliveryTermDtoList.add(deliveryTerm);
         }
         
-        for (ValidationConfigItems validationConfigItems : validationConfigItemsList)
+        for (ValidationConfigItems items : validationItemsList)
         {
             ProformaInvoiceDto.Validation validation = new ProformaInvoiceDto.Validation();
-            validation.setValidation(validationConfigItems.getValidation().getValidation());
+            validation.setValidation(items.getValidation().getValidation());
             
             validationDtoList.add(validation);
             
         }
         
-        for (ReceivedDocumentConfigItems documentConfigItems : receivedDocumentConfigItemsList)
+        for (ReceivedDocumentConfigItems documentConfigItems : receivedDocumentItemsList)
         {
             ProformaInvoiceDto.ReceivedDocument receivedDocument = new ProformaInvoiceDto.ReceivedDocument();
             receivedDocument.setReceivedDocument(documentConfigItems.getReceivedDocument().getDocumentName());
@@ -629,40 +641,48 @@ public class ProformaInvoiceController implements Serializable
             
         }
         
-        for (ColoursConfigItems coloursConfigItems : coloursConfigItemsList)
+        for (ColoursConfigItems items : coloursItemsList)
         {
             ProformaInvoiceDto.Colours colours = new ProformaInvoiceDto.Colours();
-            colours.setColours(coloursConfigItems.getColours().getColourName());
+            colours.setColours(items.getColours().getColourName());
             
             coloursDtoList.add(colours);
         }
         
-        for (InvoiceItem invoiceItem : invoiceItemList)
+        for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
-            ProformaInvoiceDto.InvoiceItem invoiceItemDto = new ProformaInvoiceDto.InvoiceItem();
+            ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setItemCode(invoiceItem.getItemCode());
             invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
             invoiceItemDto.setInventoryProduct(invoiceItem.getInventoryProduct());
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
-            invoiceItemDto.setInvoice(invoiceItem.getInvoice());
             invoiceItemDto.setDescription(invoiceItemDto.getDescription());
             invoiceItemDto.setCharges(invoiceItemDto.getCharges());
             
             invoiceItemDtoList.add(invoiceItemDto);
         }
             proformaInvoiceDto.setDeliveryTermList(deliveryTermDtoList);
-//            proformaInvoiceDto.setColoursList(coloursDtoList);
-//            proformaInvoiceDto.setReceivedDocumentList(receivedDocumentDtoList);
-//            proformaInvoiceDto.setValidationList(validationDtoList);
-//            proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
+            proformaInvoiceDto.setColoursList(coloursDtoList);
+            proformaInvoiceDto.setReceivedDocumentList(receivedDocumentDtoList);
+            proformaInvoiceDto.setValidationList(validationDtoList);
+            proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
             
             proformaInvoiceDtoList.add(proformaInvoiceDto);
             
         try
         {
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
+            InputStream stream = getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_FILE);
             
-        } catch (Exception e)
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, new HashMap(), dataSource);
+            HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.setContentType("application/pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+            
+        } catch (IOException | JRException e)
         {
             e.printStackTrace();
         }

@@ -14,5 +14,6 @@ public class ReportFiles
     private static final String BASE_DIR = "/com/khoders/invoicemaster/resources/reports/";
     
     public static final String PAYMENT_RECEIPT_FILE = BASE_DIR+"payment_receipt.jasper";
+    public static final String PROFORMA_INVOICE_FILE = BASE_DIR+"proforma_invoice.jasper";
     
 }
