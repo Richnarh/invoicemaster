@@ -273,8 +273,8 @@ public class ProformaInvoiceDto
         {
             this.colours = colours;
         }
-        
     }
+    
     public static class ReceivedDocument
     {
         private String receivedDocument;
@@ -293,33 +293,17 @@ public class ProformaInvoiceDto
     
     public static class ProformaInvoiceItem
     {
-        private String itemCode;
-        private Inventory inventoryProduct;
+        private String productCode;
+        private String productName;
+        private String description;
+        private int frameSise;
+        private int width;
+        private int height;
         private int quantity;
         private double unitPrice;
-        private double charges;
         private double totalAmount;
-        private String description;
+        private double charges;
 
-        public String getItemCode()
-        {
-            return itemCode;
-        }
-
-        public void setItemCode(String itemCode)
-        {
-            this.itemCode = itemCode;
-        }
-
-        public Inventory getInventoryProduct()
-        {
-            return inventoryProduct;
-        }
-
-        public void setInventoryProduct(Inventory inventoryProduct)
-        {
-            this.inventoryProduct = inventoryProduct;
-        }
 
         public int getQuantity()
         {
@@ -369,6 +353,56 @@ public class ProformaInvoiceDto
         public void setDescription(String description)
         {
             this.description = description;
+        }
+
+        public String getProductCode()
+        {
+            return productCode;
+        }
+
+        public void setProductCode(String productCode)
+        {
+            this.productCode = productCode;
+        }
+
+        public String getProductName()
+        {
+            return productName;
+        }
+
+        public void setProductName(String productName)
+        {
+            this.productName = productName;
+        }
+
+        public int getFrameSise()
+        {
+            return frameSise;
+        }
+
+        public void setFrameSise(int frameSise)
+        {
+            this.frameSise = frameSise;
+        }
+
+        public int getWidth()
+        {
+            return width;
+        }
+
+        public void setWidth(int width)
+        {
+            this.width = width;
+        }
+
+        public int getHeight()
+        {
+            return height;
+        }
+
+        public void setHeight(int height)
+        {
+            this.height = height;
         }
 
     }

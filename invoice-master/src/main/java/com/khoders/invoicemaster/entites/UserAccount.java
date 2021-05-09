@@ -33,6 +33,9 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "address")
     private String address;
     
+    @Column(name = "company_branch_name")
+    private String companyBranchName;
+    
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
     private Currency currency = Currency.GHS;
@@ -170,6 +173,16 @@ public class UserAccount extends BaseModel implements Serializable
     public void setAddress(String address)
     {
         this.address = address;
+    }
+
+    public String getCompanyBranchName()
+    {
+        return companyBranchName;
+    }
+
+    public void setCompanyBranchName(String companyBranchName)
+    {
+        this.companyBranchName = companyBranchName;
     }
     
 }

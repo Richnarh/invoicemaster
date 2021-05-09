@@ -367,7 +367,7 @@ public class ProformaInvoiceController implements Serializable
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
            }
                
-               clearValidationConfigItems();
+            clearColoursConfigItems();
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -378,19 +378,18 @@ public class ProformaInvoiceController implements Serializable
     {
         try
         {
-           if (crudApi.save(receivedDocumentConfigItems) != null)
-           {
-               receivedDocumentConfigItemsList = CollectionList.washList(receivedDocumentConfigItemsList, receivedDocumentConfigItems);
-               FacesContext.getCurrentInstance().addMessage(null, 
+            if (crudApi.save(receivedDocumentConfigItems) != null)
+            {
+                receivedDocumentConfigItemsList = CollectionList.washList(receivedDocumentConfigItemsList, receivedDocumentConfigItems);
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-           }
-           else
-           {
-               FacesContext.getCurrentInstance().addMessage(null, 
+            } else
+            {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
-           }
-               
-               clearValidationConfigItems();
+            }
+   
+            clearValidationConfigItems();
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -438,7 +437,7 @@ public class ProformaInvoiceController implements Serializable
         }
     }
     
-    public void deleteDeliveryTermConfigItems(ValidationConfigItems validationConfigItems)    {
+    public void deleteValidationConfigItems(ValidationConfigItems validationConfigItems)    {
         try
         {
             if(crudApi.delete(validationConfigItems))
@@ -498,28 +497,7 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-    
-    
-    public void deleteValidationConfigItems(ValidationConfigItems validationConfigItems)    {
-        try
-        {
-            if(crudApi.delete(validationConfigItems))
-            {
-                validationConfigItemsList.remove(validationConfigItems);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-            }
-            else
-            {
-                 FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
+  
     public void closePage()
     {
        proformaInvoice = new ProformaInvoice();
@@ -594,17 +572,24 @@ public class ProformaInvoiceController implements Serializable
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
         List<ProformaInvoiceDto.DeliveryTerm> deliveryTermDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.Colours> coloursDtoList = new LinkedList<>();
         List<ProformaInvoiceDto.Validation> validationDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.Colours> coloursDtoList = new LinkedList<>();
         List<ProformaInvoiceDto.ReceivedDocument> receivedDocumentDtoList = new LinkedList<>();
         List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
         
         List<DeliveryTermConfigItems> deliveryTermList  = proformaInvoiceService.getDeliveryTermConfigItemsList(proformaInvoice);
-        List<ReceivedDocumentConfigItems> receivedDocumentItemsList  = proformaInvoiceService.getReceivedDocumentConfigItems(proformaInvoice);
         List<ValidationConfigItems> validationItemsList  = proformaInvoiceService.getValidationConfigItems(proformaInvoice);
+        List<ReceivedDocumentConfigItems> receivedDocumentItemsList  = proformaInvoiceService.getReceivedDocumentConfigItems(proformaInvoice);
         List<ColoursConfigItems> coloursItemsList  = proformaInvoiceService.getColoursConfigItems(proformaInvoice);
         List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         
+
+            System.out.println("Delivery Term -- "+deliveryTermList.size());
+            System.out.println("validationItemsList -- "+validationItemsList.size());
+            System.out.println("receivedDocumentItemsList -- "+receivedDocumentItemsList.size());
+            System.out.println("coloursItemsList -- "+coloursItemsList.size());
+            System.out.println("invoiceItemList -- "+invoiceItemList.size());
+
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
             proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
             proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
@@ -619,7 +604,6 @@ public class ProformaInvoiceController implements Serializable
         {
             ProformaInvoiceDto.DeliveryTerm deliveryTerm = new ProformaInvoiceDto.DeliveryTerm();
             deliveryTerm.setDeliveryTerm(configItems.getDeliveryTerm().getDeliveryTerm());
-            
             deliveryTermDtoList.add(deliveryTerm);
         }
         
@@ -627,7 +611,6 @@ public class ProformaInvoiceController implements Serializable
         {
             ProformaInvoiceDto.Validation validation = new ProformaInvoiceDto.Validation();
             validation.setValidation(items.getValidation().getValidation());
-            
             validationDtoList.add(validation);
             
         }
@@ -652,20 +635,22 @@ public class ProformaInvoiceController implements Serializable
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
             ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
-            invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
-            invoiceItemDto.setItemCode(invoiceItem.getItemCode());
-            invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
-            invoiceItemDto.setInventoryProduct(invoiceItem.getInventoryProduct());
-            invoiceItemDto.setQuantity(invoiceItem.getQuantity());
+            invoiceItemDto.setProductCode(invoiceItem.getInventoryProduct().getProductCode());
+            invoiceItemDto.setProductName(invoiceItem.getInventoryProduct().getProductName());
             invoiceItemDto.setDescription(invoiceItemDto.getDescription());
-            invoiceItemDto.setCharges(invoiceItemDto.getCharges());
+            invoiceItemDto.setFrameSise(invoiceItem.getInventoryProduct().getFrameSise());
+            invoiceItemDto.setWidth(invoiceItem.getInventoryProduct().getWidth());
+            invoiceItemDto.setHeight(invoiceItem.getInventoryProduct().getHeight());
+            invoiceItemDto.setQuantity(invoiceItem.getQuantity());
+            invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
+            invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
             
             invoiceItemDtoList.add(invoiceItemDto);
         }
             proformaInvoiceDto.setDeliveryTermList(deliveryTermDtoList);
+            proformaInvoiceDto.setValidationList(validationDtoList);
             proformaInvoiceDto.setColoursList(coloursDtoList);
             proformaInvoiceDto.setReceivedDocumentList(receivedDocumentDtoList);
-            proformaInvoiceDto.setValidationList(validationDtoList);
             proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
             
             proformaInvoiceDtoList.add(proformaInvoiceDto);

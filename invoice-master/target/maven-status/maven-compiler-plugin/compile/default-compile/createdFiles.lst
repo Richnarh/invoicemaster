@@ -1,11 +1,11 @@
 com\khoders\invoicemaster\entites\enums\ClientType.class
 com\khoders\invoicemaster\entites\PaymentReceipt.class
 com\khoders\invoicemaster\jbeans\controller\LoginController.class
-com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$InvoiceItem.class
 com\khoders\invoicemaster\jbeans\converter\InvoiceConverter.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$Colours.class
 com\khoders\invoicemaster\entites\InvoiceItemRecord.class
 com\khoders\invoicemaster\entites\ProformaInvoice.class
+com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
 com\khoders\invoicemaster\entites\model\InvoiceDto.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$DeliveryTerm.class

@@ -6,7 +6,6 @@
 package com.khoders.invoicemaster.entites;
 
 import com.khoders.invoicemaster.entites.enums.DoorType;
-import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
