@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "validation_config_items")
-public class ValidationConfigItems extends BaseModel implements Serializable
+public class ValidationConfigItems extends UserAccountRecord implements Serializable
 {
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne

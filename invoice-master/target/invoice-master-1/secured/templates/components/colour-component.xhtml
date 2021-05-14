@@ -32,20 +32,16 @@
                             </p:column>
 
                             <p:rowExpansion>
-                                <div class="row">
-                                    <div class="col">
-                                        <label class="col-sm-4 col-form-label">Code:</label>
-                                        <h:outputText value="#{colour.colourCode}"/>
-                                    </div>
-                                    <div class="col">
-                                        <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
-                                        <h:outputText value="#{colour.createdDate}">
-                                            <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
-                                        </h:outputText>
-                                    </div>
-                                </div>
-                                
-
+                                <h:panelGrid columns="2">
+                                    <span>Code</span>
+                                    <h:outputText value="#{colour.colourCode}"/>
+                                    
+                                    <span>#{msg.created_date}</span>
+                                    <h:outputText value="#{colour.createdDate}">
+                                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                    </h:outputText>
+                                    
+                                </h:panelGrid>
                             </p:rowExpansion>
                             <p:column headerText="#{msg.colour} Name">
                                 #{colour.colourName}

@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -18,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "received_document")
-public class ReceivedDocument extends BaseModel implements Serializable 
+public class ReceivedDocument extends UserAccountRecord implements Serializable 
 {
     @Column(name = "document_code")
     private String documentCode;

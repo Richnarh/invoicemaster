@@ -15,6 +15,12 @@
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/animate.css" />  
         <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
 
+        <style>
+            .ui-growl {
+                top: auto;
+                bottom: 5em;
+            }
+        </style>
     </h:head>
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
         <div class="wrapper">
@@ -56,7 +62,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user"></i>
+                            <!--<i class="fa fa-user"></i>-->
                             <span>Administrator &nbsp;<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -151,7 +157,7 @@
         <script src="#{application.contextPath}/vendors/js/wow.min.js"></script>
 
         <script type="text/javascript">
-            new WOW().init();
+//            new WOW().init();
         </script>
     </body>
 </html>

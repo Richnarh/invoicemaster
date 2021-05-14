@@ -53,11 +53,12 @@
 
                                         <p:rowExpansion>
                                             <h:panelGrid columns="2">
-                                                <span>#{msg.created_date}</span>
+                                                <h:panelGrid columns="2">
+                                                    <span>#{msg.created_date}</span>
                                                 <h:outputText value="#{messageTemplate.createdDate}">
                                                     <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                                 </h:outputText>
-
+                                                    
                                                 <span>Text</span>
                                                 <h:outputText class="truncate" value="#{messageTemplate.templateText}"/>
 
@@ -65,7 +66,8 @@
                                                                  action="#{messageTemplateController.editMessageTemplate(messageTemplate)}"/>
                                                 <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')"
                                                                  action="#{messageTemplateController.deleteMessageTemplate(messageTemplate)}"/>
-
+                                                </h:panelGrid>
+                                                
                                             </h:panelGrid>
                                         </p:rowExpansion>
 

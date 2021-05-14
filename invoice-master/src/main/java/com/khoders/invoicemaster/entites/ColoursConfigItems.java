@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "colours_config_items")
-public class ColoursConfigItems extends BaseModel implements Serializable
+public class ColoursConfigItems extends UserAccountRecord implements Serializable
 {
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne

@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "chart_of_account")
-public class ChartOfAccount extends BaseModel implements Serializable
+public class ChartOfAccount extends UserAccountRecord implements Serializable
 {
     @Column(name = "account_code")
     private String accountCode;

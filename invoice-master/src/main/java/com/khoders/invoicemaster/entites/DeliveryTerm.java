@@ -5,14 +5,11 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "delivery_term")
-public class DeliveryTerm extends BaseModel implements Serializable
+public class DeliveryTerm extends UserAccountRecord implements Serializable
 {
     @Column(name = "term_code")
     private String termCode;

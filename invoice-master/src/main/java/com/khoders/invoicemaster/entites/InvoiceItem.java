@@ -21,15 +21,15 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invoice_item")
-public class InvoiceItem extends BaseModel implements Serializable
+public class InvoiceItem extends UserAccountRecord implements Serializable
 {
 
     @Column(name = "item_code")
     private String itemCode;
 
-    @JoinColumn(name = "inventory_product", referencedColumnName = "id")
+    @JoinColumn(name = "inventory", referencedColumnName = "id")
     @ManyToOne
-    private Inventory inventoryProduct;
+    private Inventory inventory;
 
     @Column(name = "quantity")
     private int quantity;
@@ -39,9 +39,6 @@ public class InvoiceItem extends BaseModel implements Serializable
 
     @Column(name = "charges")
     private double charges;
-
-    @Column(name = "total_amount")
-    private double totalAmount;
 
     @Column(name = "description")
     @Lob
@@ -81,16 +78,6 @@ public class InvoiceItem extends BaseModel implements Serializable
         this.unitPrice = unitPrice;
     }
 
-    public double getTotalAmount()
-    {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(double totalAmount)
-    {
-        this.totalAmount = totalAmount;
-    }
-    
     public String getDescription()
     {
         return description;
@@ -111,14 +98,14 @@ public class InvoiceItem extends BaseModel implements Serializable
         this.itemCode = itemCode;
     }
 
-    public Inventory getInventoryProduct()
+    public Inventory getInventory()
     {
-        return inventoryProduct;
+        return inventory;
     }
 
-    public void setInventoryProduct(Inventory inventoryProduct)
+    public void setInventory(Inventory inventory)
     {
-        this.inventoryProduct = inventoryProduct;
+        this.inventory = inventory;
     }
 
     public double getCharges()

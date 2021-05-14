@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "proforma_invoice")
-public class ProformaInvoice extends BaseModel implements Serializable
+public class ProformaInvoice extends UserAccountRecord implements Serializable
 {
     @Column(name = "issued_date")
     private LocalDate issuedDate = LocalDate.now();

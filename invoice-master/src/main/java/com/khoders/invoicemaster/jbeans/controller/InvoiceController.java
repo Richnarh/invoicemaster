@@ -9,8 +9,8 @@ import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InvoiceService;
-import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -38,6 +38,7 @@ import org.primefaces.event.TabChangeEvent;
 public class InvoiceController implements Serializable
 {
     @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
     @Inject private InvoiceService invoiceService;
 
     private FormView pageView = FormView.listForm();
@@ -68,9 +69,9 @@ public class InvoiceController implements Serializable
         
     public void inventoryProperties()
     {
-        if(invoiceItem.getInventoryProduct().getSellingPrice() != 0.0)
+        if(invoiceItem.getInventory().getSellingPrice() != 0.0)
         {
-            invoiceItem.setUnitPrice(invoiceItem.getInventoryProduct().getSellingPrice());
+            invoiceItem.setUnitPrice(invoiceItem.getInventory().getSellingPrice());
         }
     }
 
@@ -132,8 +133,7 @@ public class InvoiceController implements Serializable
         
         for (InvoiceItem items : invoiceItemList) 
         {
-            totalAmount += items.getTotalAmount();
-            setTotalAmount(totalAmount);
+            totalAmount += (items.getQuantity() * items.getUnitPrice());
         }
     }
 
@@ -148,7 +148,7 @@ public class InvoiceController implements Serializable
                 return;
             }
             
-            if (invoiceItem.getUnitPrice() <= 0) {
+            if (invoiceItem.getUnitPrice() <= 0.0) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
                 return;
@@ -157,7 +157,6 @@ public class InvoiceController implements Serializable
             if (invoiceItem != null) {
                
                 totalAmount = invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
-                invoiceItem.setTotalAmount(totalAmount);
                 invoiceItem.genCode();
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
@@ -182,16 +181,13 @@ public class InvoiceController implements Serializable
                 for (InvoiceItem items : invoiceItemList) 
                 {
                     int qtyPurchased = items.getQuantity();
-                    int qtyAtInventory = items.getInventoryProduct().getQuantity();
+                    int qtyAtInventory = items.getInventory().getQuantity();
                     int qtyAtHand = qtyAtInventory - qtyPurchased;
                     
-                    inventory = crudApi.getEm().find(Inventory.class, items.getInventoryProduct().getId());
+                    inventory = crudApi.getEm().find(Inventory.class, items.getInventory().getId());
                     inventory.setQuantity(qtyAtHand);
                     
                     crudApi.save(inventory);
-                    
-                    totalAmount += items.getTotalAmount();
-                    setTotalAmount(totalAmount);
                     
                     if(totalAmount != invoice.getTotalAmount())
                     {
@@ -222,28 +218,14 @@ public class InvoiceController implements Serializable
     {
         this.invoiceItem = invoiceItem;
         invoiceItemList.remove(invoiceItem);
+        totalAmount -= (invoiceItem.getQuantity() * invoiceItem.getUnitPrice());
         optionText = "Update";
     }
     
     public void deleteInvoiceItem(InvoiceItem invoiceItem)
     {
-        try
-        {
-            if(crudApi.delete(invoiceItem))
-            {
-                invoiceItemList.remove(invoiceItem);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        totalAmount -= (invoiceItem.getQuantity() * invoiceItem.getUnitPrice());
+        invoiceItemList.remove(invoiceItem);
     }
   
     public void closePage()
@@ -259,6 +241,7 @@ public class InvoiceController implements Serializable
     public void clearInvoiceItem()
     {
         invoiceItem = new InvoiceItem();
+        invoiceItem.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         invoiceItem.setInvoice(invoice);
         SystemUtils.resetJsfUI();
@@ -274,6 +257,7 @@ public class InvoiceController implements Serializable
     public void clearInvoice()
     {
         invoice = new Invoice();
+        invoice.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         selectedTabIndex = 0;
         SystemUtils.resetJsfUI();

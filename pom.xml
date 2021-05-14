@@ -27,9 +27,9 @@
     
   
   <modules>
-    <module>invoice-master</module>
-    <module>invoicemaster-entities</module>
     <module>invoicemaster-admin</module>
+    <module>invoicemaster-entities</module>
+    <module>invoice-master</module>
   </modules>
     <name>invoicemaster</name>
 </project>

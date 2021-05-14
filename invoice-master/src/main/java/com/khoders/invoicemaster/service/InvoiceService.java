@@ -263,20 +263,5 @@ public class InvoiceService
         return Collections.emptyList();
     }
 
-    public List<Inventory> getInventoryList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM Inventory e";
-            TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class);
-            return typedQuery.getResultList();
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
-    }
 
 }

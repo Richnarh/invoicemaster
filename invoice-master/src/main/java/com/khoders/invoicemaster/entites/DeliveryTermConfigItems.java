@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "deliveryTerm_config_items")
-public class DeliveryTermConfigItems extends BaseModel implements Serializable
+public class DeliveryTermConfigItems extends UserAccountRecord implements Serializable
 {
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne

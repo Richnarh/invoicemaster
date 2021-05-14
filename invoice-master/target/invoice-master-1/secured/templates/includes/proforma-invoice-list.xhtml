@@ -94,7 +94,7 @@
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Validation" action="#{proformaInvoiceController.manageValidationConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :validationModal" oncomplete="PF('validationForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Received Document" action="#{proformaInvoiceController.manageReceivedDocumentConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :receivedDocumentModal" oncomplete="PF('receivedDocumentForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Colours" action="#{proformaInvoiceController.manageColoursConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :coloursModal" oncomplete="PF('coloursForm').show()"/>
-                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{proformaInvoiceController.convertToInvoice(proformaInvoice)}" title="Convert proforma proformaInvoice to standard proformaInvoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-cog"  class="text-info" action="#{proformaInvoiceController.convertToInvoice(proformaInvoice)}" title="Convert proforma invoice to standard proformaInvoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>
                 </p:column>

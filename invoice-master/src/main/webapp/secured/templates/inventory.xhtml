@@ -51,23 +51,23 @@
                                                 <h:outputText value="#{inventory.inventoryCode}"/>
                                                 
                                                 <span>Door Type</span>
-                                                <h:outputText value="#{inventory.doorType.label}"/>
+                                                <h:outputText value="#{inventory.product.doorType}"/>
                                                 
                                                 <span>#{msg.description}</span>
                                                 <h:outputText value="#{inventory.description}"/>
                                             </h:panelGrid>
                                         </p:rowExpansion>
 
-                                        <p:column headerText="Product Code" filterBy="#{inventory.productCode}" filterMatchMode="contains">
-                                            #{inventory.productCode}
+                                        <p:column headerText="Product Code" filterBy="#{inventory.product.productName}" filterMatchMode="contains">
+                                            #{inventory.product.productCode}
                                         </p:column>
 
                                         <p:column headerText="#{msg.product}">
-                                            #{inventory.productName}
+                                            #{inventory.product.productName}
                                         </p:column>
 
                                         <p:column headerText="#{msg.frame_size}" class="text-right">
-                                            #{inventory.frameSise} #{appSession.currentUser.frame.label}
+                                            #{inventory.frameSize} #{appSession.currentUser.frame.label}
                                         </p:column>
 
                                         <p:column headerText="#{msg.width}" class="text-right">
@@ -87,9 +87,9 @@
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
                                         </p:column>
-
+                                        
                                         <p:column headerText="Cost Price" class="text-right">
-                                            <h:outputText value="#{inventory.costPrice}">
+                                            <h:outputText value="#{inventory.unitPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
                                         </p:column>
@@ -115,30 +115,24 @@
                                     <h:form>
                                         <div class="card-block">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Door #{msg.type} <span class="text-danger">*</span> </label>
+                                                <label class="col-sm-4 col-form-label">#{msg.inventory} Code <span class="text-danger">*</span> </label>
                                                 <div class="col-md-8">
-                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.doorType}" required="true">
-                                                        <f:selectItem itemLabel="#{msg.choose}"/>
-                                                        <f:selectItems value="#{commonClass.doorTypeList}"/>
-                                                    </p:selectOneMenu>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.product} Code <span class="text-danger">*</span> </label>
-                                                <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.productCode}" class="col" required="true" placeholder="Enter product code"/>
+                                                    <p:inputText value="#{inventoryController.inventory.inventoryCode}" class="col" required="true" placeholder="Enter inventory code"/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">#{msg.product} Name <span class="text-danger">*</span> </label>
                                                 <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.productName}" class="col" required="true" placeholder="Enter product name"/>
+                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.product}" required="true">
+                                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                                        <f:selectItems value="#{userCommonClass.productList}"/>
+                                                    </p:selectOneMenu>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">#{msg.frame_size} <span class="text-danger">*</span></label>
                                                 <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.frameSise}" required="true" class="col" placeholder="Enter frame size"/>
+                                                    <p:inputText value="#{inventoryController.inventory.frameSize}" required="true" class="col" placeholder="Enter frame size"/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -166,9 +160,9 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.cost} #{msg.price} <span class="text-danger">*</span></label>
+                                                <label class="col-sm-4 col-form-label">Unit #{msg.price} <span class="text-danger">*</span></label>
                                                 <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.costPrice}" class="col" placeholder="Enter cost price"/>
+                                                    <p:inputText value="#{inventoryController.inventory.unitPrice}" class="col" placeholder="Enter cost price"/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -180,7 +174,7 @@
                                         </div>
                                         <div class="text-center pt-3">
                                             <p:commandButton class="kbtn-success" value="#{inventoryController.optionText}" icon="#{msg.check_icon}" action="#{inventoryController.saveInventory()}" ajax="false"/>
-                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{inventoryController.clearInventory()}" update=":mainPanel"/>
+                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{inventoryController.clearInventory()}" immediate="true" update=":mainPanel"/>
 
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{inventoryController.closePage()}">

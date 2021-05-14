@@ -29,19 +29,15 @@
                             </p:column>
 
                             <p:rowExpansion>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label class="col-sm-4 col-form-label">Code:</label>
-                                        <h:outputText value="#{validation.validationCode}"/>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
-                                        <h:outputText value="#{validation.createdDate}">
-                                            <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
-                                        </h:outputText>
-                                    </div>
-                                </div>
+                                <h:panelGrid columns="2">
+                                    <span>Code</span>
+                                    <h:outputText value="#{validation.validationCode}"/>
+                                    
+                                    <span>#{msg.created_date}</span>
+                                    <h:outputText value="#{validation.createdDate}">
+                                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                    </h:outputText>
+                                </h:panelGrid>
                             </p:rowExpansion>
 
                             <p:column headerText="#{msg.validation}">

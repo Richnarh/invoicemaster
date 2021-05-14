@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.entites.sms;
 
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.invoicemaster.entites.UserAccountRecord;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "message_template")
-public class MessageTemplate extends BaseModel implements Serializable
+public class MessageTemplate extends UserAccountRecord implements Serializable
 {
 
     @Column(name = "tempalate_id")

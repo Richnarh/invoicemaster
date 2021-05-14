@@ -6,12 +6,15 @@
 package com.khoders.invoicemaster.entites.sms;
 
 import com.khoders.invoicemaster.entites.Client;
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.invoicemaster.entites.UserAccountRecord;
+import com.khoders.invoicemaster.entites.enums.SMSType;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -23,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "sms")
-public class Sms extends BaseModel implements Serializable
+public class Sms extends UserAccountRecord implements Serializable
 {
     @Column(name = "sms_id")
     private String smsId;
@@ -36,6 +39,10 @@ public class Sms extends BaseModel implements Serializable
     
     @Column(name = "sms_time")
     private LocalDateTime smsTime;
+    
+    @Column(name = "sms_type")
+    @Enumerated(EnumType.STRING)
+    private SMSType sMSType;
     
     @Column(name = "message")
     @Lob
@@ -117,6 +124,16 @@ public class Sms extends BaseModel implements Serializable
     public void setMobileNo(String mobileNo)
     {
         this.mobileNo = mobileNo;
+    }
+
+    public SMSType getsMSType()
+    {
+        return sMSType;
+    }
+
+    public void setsMSType(SMSType sMSType)
+    {
+        this.sMSType = sMSType;
     }
         
     public void genCode()

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Create Product
+            </ui:define>
+            <ui:define name="pageContent">
+                <div class="card wow zoomIn">
+                    <div class="card-header">SetUp product</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h:form id="productForm" class="spaced-form">
+                                    <h:panelGrid columns="2">
+                                        <span>Product Code</span>
+                                        <p:inputText required="true" value="#{productController.product.productCode}"/>
+                                        
+                                        <span>Product Name</span>
+                                        <p:inputText required="true" value="#{productController.product.productName}"/>
+                                       
+                                        <span>Door Type</span>
+                                        <p:selectOneMenu value="#{productController.product.doorType}">
+                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                            <f:selectItems value="#{commonClass.doorTypeList}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+
+                                    <div class="pt-3">
+                                        <p:commandButton class="kbtn-success mr-3" value="#{productController.optionText}" update="@form, :productTable"
+                                                         action="#{productController.saveProduct()}" />
+
+                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
+                                                         action="#{productController.clearProduct()}" update="@form"/>
+                                    </div>
+                                </h:form>
+                            </div>
+
+                            <div class="col-md-8">
+                                <h:form id="productTable">
+                                    <p:dataTable value="#{productController.productList}" var="product" scrollable="true" scrollHeight="300">
+                                        <p:column headerText="#{msg.product} code">
+                                            #{product.productCode}
+                                        </p:column>
+                                                                                
+                                        <p:column headerText="#{msg.product} name">
+                                            #{product.productName}
+                                        </p:column>
+                                                                                
+                                        <p:column headerText="Door Type">
+                                            #{product.doorType.label}
+                                        </p:column>
+                                                                                
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                            <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update="@form, :productForm"
+                                                             action="#{productController.editProduct(product)}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                            <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{productController.deleteProduct(product)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

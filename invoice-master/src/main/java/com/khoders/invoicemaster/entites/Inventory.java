@@ -5,15 +5,13 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.invoicemaster.entites.enums.DoorType;
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,23 +20,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "inventory")
-public class Inventory extends BaseModel implements Serializable
+public class Inventory extends UserAccountRecord implements Serializable
 {
     @Column(name = "inventory_code")
     private String inventoryCode;
-
-    @Column(name = "product_name")
-    private String productName;
-
-    @Column(name = "product_code")
-    private String productCode;
-
-    @Column(name = "door_type")
-    @Enumerated(EnumType.STRING)
-    private DoorType doorType;
+    
+    @JoinColumn(name = "product", referencedColumnName = "id")
+    @ManyToOne
+    private Product product;
 
     @Column(name = "frame_size")
-    private int frameSise;
+    private int frameSize;
 
     @Column(name = "width")
     private int width;
@@ -52,41 +44,21 @@ public class Inventory extends BaseModel implements Serializable
     @Column(name = "selling_price")
     private double sellingPrice;
 
-    @Column(name = "cost_price")
-    private double costPrice;
+    @Column(name = "unit_price")
+    private double unitPrice;
 
     @Column(name = "description")
     @Lob
     private String description;
     
-    public String getProductName()
+    public int getFrameSize()
     {
-        return productName;
+        return frameSize;
     }
 
-    public void setProductName(String productName)
+    public void setFrameSize(int frameSize)
     {
-        this.productName = productName;
-    }
-
-    public DoorType getDoorType()
-    {
-        return doorType;
-    }
-
-    public void setDoorType(DoorType doorType)
-    {
-        this.doorType = doorType;
-    }
-
-    public int getFrameSise()
-    {
-        return frameSise;
-    }
-
-    public void setFrameSise(int frameSise)
-    {
-        this.frameSise = frameSise;
+        this.frameSize = frameSize;
     }
 
     public int getWidth()
@@ -129,14 +101,14 @@ public class Inventory extends BaseModel implements Serializable
         this.sellingPrice = sellingPrice;
     }
 
-    public double getCostPrice()
+    public double getUnitPrice()
     {
-        return costPrice;
+        return unitPrice;
     }
 
-    public void setCostPrice(double costPrice)
+    public void setUnitPrice(double unitPrice)
     {
-        this.costPrice = costPrice;
+        this.unitPrice = unitPrice;
     }
 
     public String getInventoryCode()
@@ -159,23 +131,22 @@ public class Inventory extends BaseModel implements Serializable
         this.description = description;
     }
 
-    public String getProductCode()
+    public Product getProduct()
     {
-        return productCode;
+        return product;
     }
 
-    public void setProductCode(String productCode)
+    public void setProduct(Product product)
     {
-        this.productCode = productCode;
+        this.product = product;
     }
-
+    
     @Override
     public String toString()
     {
-        return productName;
+        return product+"";
     }
     
-
     public void genCode()
     {
         if (getInventoryCode() != null)

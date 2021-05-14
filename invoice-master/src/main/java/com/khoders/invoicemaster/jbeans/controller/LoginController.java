@@ -7,7 +7,7 @@ package com.khoders.invoicemaster.jbeans.controller;
 
 
 import com.khoders.invoicemaster.Pages;
-import com.khoders.invoicemaster.entites.UserAccount;
+import com.khoders.invoicemaster.entities.master.UserAccount;
 import com.khoders.invoicemaster.jbeans.UserModel;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.UserAccountService;

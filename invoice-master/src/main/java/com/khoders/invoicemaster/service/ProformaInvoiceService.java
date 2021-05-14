@@ -296,7 +296,6 @@ public class ProformaInvoiceService
         invoice.setInvoiceNumber(proformaInvoice.getQuotationNumber());
         invoice.setIssuedDate(proformaInvoice.getIssuedDate());
         invoice.setClient(proformaInvoice.getClient());
-        invoice.setProject(proformaInvoice.getProject());
         invoice.setSubject(proformaInvoice.getSubject());
         invoice.setDescription(proformaInvoice.getDescription());
         invoice.setTotalAmount(proformaInvoice.getTotalAmount());
@@ -310,11 +309,10 @@ public class ProformaInvoiceService
                 InvoiceItem invoiceItem = new InvoiceItem();
                 invoiceItem.setInvoice(invoice);
                 invoiceItem.setItemCode(proformaInvoiceItem.getItemCode());
-                invoiceItem.setInventoryProduct(proformaInvoiceItem.getInventoryProduct());
+                invoiceItem.setInventory(proformaInvoiceItem.getInventory());
                 invoiceItem.setUnitPrice(proformaInvoiceItem.getUnitPrice());
                 invoiceItem.setQuantity(proformaInvoiceItem.getQuantity());
                 invoiceItem.setCharges(proformaInvoiceItem.getCharges());
-                invoiceItem.setTotalAmount(proformaInvoiceItem.getTotalAmount());
 
                 crudApi.save(invoiceItem);
             }

@@ -6,7 +6,6 @@
 package com.khoders.invoicemaster.entites;
 
 import com.khoders.invoicemaster.entites.enums.ClientType;
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -22,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "client")
-public class Client extends BaseModel implements Serializable
+public class Client extends UserAccountRecord implements Serializable
 {
 
     @Column(name = "client_code")

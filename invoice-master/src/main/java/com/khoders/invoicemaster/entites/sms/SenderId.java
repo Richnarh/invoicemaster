@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.entites.sms;
 
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.invoicemaster.entites.UserAccountRecord;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "sender_id")
-public class SenderId extends BaseModel implements Serializable
+public class SenderId extends UserAccountRecord implements Serializable
 {
     @Column(name = "sender_id")
     private String senderId;

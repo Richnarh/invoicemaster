@@ -10,10 +10,13 @@ import com.khoders.invoicemaster.entites.Colours;
 import com.khoders.invoicemaster.entites.DeliveryTerm;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
+import com.khoders.invoicemaster.entites.Product;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.sms.MessageTemplate;
+import com.khoders.invoicemaster.entites.sms.SMSGrup;
 import com.khoders.invoicemaster.entites.sms.SenderId;
+import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.UserAccountService;
@@ -36,6 +39,7 @@ public class UserCommonClass implements Serializable{
     @Inject private InvoiceService invoiceService;
     @Inject private UserAccountService userAccountService;
     @Inject private SmsService smsService;
+    @Inject InventoryService inventoryService;
     
     private List<DeliveryTerm> deliveryTermList = new LinkedList<>();
     private List<Validation> validationList = new LinkedList<>();
@@ -46,6 +50,8 @@ public class UserCommonClass implements Serializable{
     private List<ReceivedDocument> receivedDocumentList = new LinkedList<>();
     private List<MessageTemplate> messageTemplateList = new LinkedList<>();
     private List<SenderId> senderIdList = new LinkedList<>();
+    private List<Product> productList = new LinkedList<>();
+    private List<SMSGrup> smsGroupList = new LinkedList<>();
     
     @PostConstruct
     @Asynchronous
@@ -57,9 +63,11 @@ public class UserCommonClass implements Serializable{
         clientList = userAccountService.getClientList();
         coloursList = invoiceService.getColoursList();
         receivedDocumentList = invoiceService.getReceivedDocumentList();
-        inventoryList = invoiceService.getInventoryList();
+        inventoryList = inventoryService.getInventoryList();
+        productList = inventoryService.getProductList();
         messageTemplateList = smsService.getMessageTemplateList();
         senderIdList = smsService.getSenderIdList();
+        smsGroupList = smsService.getGroupList();
     }
 
     public List<DeliveryTerm> getDeliveryTermList()
@@ -105,6 +113,15 @@ public class UserCommonClass implements Serializable{
     {
         return senderIdList;
     }
-    
+
+    public List<Product> getProductList()
+    {
+        return productList;
+    }
+
+    public List<SMSGrup> getSmsGroupList()
+    {
+        return smsGroupList;
+    }
     
 }

@@ -7,7 +7,6 @@ package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invoice")
-public class Invoice extends BaseModel implements Serializable
+public class Invoice extends UserAccountRecord implements Serializable
 {
     @Column(name = "issued_date")
     private LocalDate issuedDate = LocalDate.now();
@@ -40,9 +39,6 @@ public class Invoice extends BaseModel implements Serializable
 
     @Column(name = "invoice_number")
     private String invoiceNumber = SystemUtils.generateRefNo();
-
-    @Column(name = "project")
-    private String project;
 
     @Column(name = "subject")
     private String subject;
@@ -95,16 +91,6 @@ public class Invoice extends BaseModel implements Serializable
         this.invoiceNumber = invoiceNumber;
     }
     
-    public String getProject()
-    {
-        return project;
-    }
-
-    public void setProject(String project)
-    {
-        this.project = project;
-    }
-
     public String getSubject()
     {
         return subject;

@@ -110,6 +110,7 @@ public class ClientController implements Serializable{
     public void clearClient() 
     {
         client = new Client();
+        client.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

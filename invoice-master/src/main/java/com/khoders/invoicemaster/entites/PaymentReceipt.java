@@ -7,7 +7,6 @@ package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "payment_receipt")
-public class PaymentReceipt extends BaseModel implements Serializable
+public class PaymentReceipt extends UserAccountRecord implements Serializable
 {
     @Column(name = "receipt_no")
     private String receiptNumber = SystemUtils.generateRefNo();

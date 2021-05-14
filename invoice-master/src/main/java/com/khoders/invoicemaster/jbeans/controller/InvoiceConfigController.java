@@ -9,6 +9,7 @@ import com.khoders.invoicemaster.entites.Colours;
 import com.khoders.invoicemaster.entites.DeliveryTerm;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -35,6 +36,7 @@ import org.primefaces.event.TabChangeEvent;
 public class InvoiceConfigController implements Serializable
 {
     @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
     @Inject private InvoiceService invoiceService;
     
     private DeliveryTerm deliveryTerm = new DeliveryTerm();
@@ -282,6 +284,7 @@ public class InvoiceConfigController implements Serializable
     public void clearDeliveryTerm()
     {
         deliveryTerm = new DeliveryTerm();
+        deliveryTerm.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
          selectedTabIndex = 0;
         SystemUtils.resetJsfUI();
@@ -290,6 +293,7 @@ public class InvoiceConfigController implements Serializable
     public void clearValidation()
     {
         validation = new Validation();
+        validation.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         selectedTabIndex = 1;
         SystemUtils.resetJsfUI();
@@ -298,6 +302,7 @@ public class InvoiceConfigController implements Serializable
     public void clearColours()
     {
         colours = new Colours();
+        colours.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         selectedTabIndex = 2;
         SystemUtils.resetJsfUI();
@@ -306,6 +311,7 @@ public class InvoiceConfigController implements Serializable
     public void clearReceivedDocument()
     {
         receivedDocument = new ReceivedDocument();
+        receivedDocument.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         selectedTabIndex = 3;
         SystemUtils.resetJsfUI();

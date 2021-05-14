@@ -244,6 +244,7 @@ public class PaymentReceiptController implements Serializable
     {
         paymentReceipt = new PaymentReceipt();
         paymentReceipt.setInvoice(selectedInvoice);
+        paymentReceipt.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

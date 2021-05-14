@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.entites.model;
 
-import com.khoders.invoicemaster.entites.Inventory;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,16 +21,18 @@ public class ProformaInvoiceDto
     private String clientCode;
     private String emailAddress;
     private String address;
-    private String companyAddress;
+    private String boxAddress;
+    private String telephoneNo;
     private String phone;
+    private String gpsAddress;
     private String quotationNumber;
-    private String project;
-    private String subject;
     private double totalAmount;
     private String description;
     private String logo;
+    private String branchName;
+    private String website;
     
-
+    
     public List<ProformaInvoiceItem> invoiceItemList = new LinkedList<>();
     public List<DeliveryTerm> deliveryTermList = new LinkedList<>();
     public List<Validation> validationList = new LinkedList<>();
@@ -48,6 +49,26 @@ public class ProformaInvoiceDto
         this.issuedDate = issuedDate;
     }
 
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
+    }
+
+    public String getBranchName()
+    {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName)
+    {
+        this.branchName = branchName;
+    }
+    
     public String getLogo()
     {
         return logo;
@@ -58,26 +79,16 @@ public class ProformaInvoiceDto
         this.logo = logo;
     }
 
-    public String getProject()
+    public String getWebsite()
     {
-        return project;
+        return website;
     }
 
-    public void setProject(String project)
+    public void setWebsite(String website)
     {
-        this.project = project;
+        this.website = website;
     }
-
-    public String getSubject()
-    {
-        return subject;
-    }
-
-    public void setSubject(String subject)
-    {
-        this.subject = subject;
-    }
-
+    
     public String getClientName()
     {
         return clientName;
@@ -203,26 +214,36 @@ public class ProformaInvoiceDto
         this.address = address;
     }
 
-    public String getCompanyAddress()
+    public String getBoxAddress()
     {
-        return companyAddress;
+        return boxAddress;
     }
 
-    public void setCompanyAddress(String companyAddress)
+    public void setBoxAddress(String boxAddress)
     {
-        this.companyAddress = companyAddress;
+        this.boxAddress = boxAddress;
     }
 
-    public String getPhone()
+    public String getTelephoneNo()
     {
-        return phone;
+        return telephoneNo;
     }
 
-    public void setPhone(String phone)
+    public void setTelephoneNo(String telephoneNo)
     {
-        this.phone = phone;
+        this.telephoneNo = telephoneNo;
     }
 
+    public String getGpsAddress()
+    {
+        return gpsAddress;
+    }
+
+    public void setGpsAddress(String gpsAddress)
+    {
+        this.gpsAddress = gpsAddress;
+    }
+    
     public void setClientCode(String clientCode)
     {
         this.clientCode = clientCode;
@@ -295,8 +316,9 @@ public class ProformaInvoiceDto
     {
         private String productCode;
         private String productName;
-        private String description;
-        private int frameSise;
+        private String frameUnit;
+        private String widthHeightUnits;
+        private int frameSize;
         private int width;
         private int height;
         private int quantity;
@@ -345,16 +367,6 @@ public class ProformaInvoiceDto
             this.totalAmount = totalAmount;
         }
 
-        public String getDescription()
-        {
-            return description;
-        }
-
-        public void setDescription(String description)
-        {
-            this.description = description;
-        }
-
         public String getProductCode()
         {
             return productCode;
@@ -375,16 +387,16 @@ public class ProformaInvoiceDto
             this.productName = productName;
         }
 
-        public int getFrameSise()
+        public int getFrameSize()
         {
-            return frameSise;
+            return frameSize;
         }
 
-        public void setFrameSise(int frameSise)
+        public void setFrameSize(int frameSize)
         {
-            this.frameSise = frameSise;
+            this.frameSize = frameSize;
         }
-
+        
         public int getWidth()
         {
             return width;
@@ -405,5 +417,25 @@ public class ProformaInvoiceDto
             this.height = height;
         }
 
+        public String getFrameUnit()
+        {
+            return frameUnit;
+        }
+
+        public void setFrameUnit(String frameUnit)
+        {
+            this.frameUnit = frameUnit;
+        }
+
+        public String getWidthHeightUnits()
+        {
+            return widthHeightUnits;
+        }
+
+        public void setWidthHeightUnits(String widthHeightUnits)
+        {
+            this.widthHeightUnits = widthHeightUnits;
+        }
+        
     }
 }

@@ -5,13 +5,10 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "validation")
-public class Validation extends BaseModel implements Serializable
+public class Validation extends UserAccountRecord implements Serializable
 {
     @Column(name = "validation_code")
     private String validationCode;

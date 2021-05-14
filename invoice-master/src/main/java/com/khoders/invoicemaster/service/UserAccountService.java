@@ -6,7 +6,7 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entites.Client;
-import com.khoders.invoicemaster.entites.UserAccount;
+import com.khoders.invoicemaster.entities.master.UserAccount;
 import com.khoders.invoicemaster.jbeans.UserModel;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;

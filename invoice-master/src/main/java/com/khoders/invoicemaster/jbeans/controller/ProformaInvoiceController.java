@@ -8,13 +8,13 @@ package com.khoders.invoicemaster.jbeans.controller;
 import com.khoders.invoicemaster.entites.ColoursConfigItems;
 import com.khoders.invoicemaster.entites.DeliveryTermConfigItems;
 import com.khoders.invoicemaster.entites.Invoice;
-import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -25,9 +25,10 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -53,10 +54,9 @@ import org.primefaces.event.TabChangeEvent;
 public class ProformaInvoiceController implements Serializable
 {
 
-    @Inject
-    private CrudApi crudApi;
-    @Inject
-    private ProformaInvoiceService proformaInvoiceService;
+    @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private ProformaInvoiceService proformaInvoiceService;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -94,9 +94,9 @@ public class ProformaInvoiceController implements Serializable
 
     public void inventoryProperties()
     {
-        if(proformaInvoiceItem.getInventoryProduct().getSellingPrice() != 0.0)
+        if(proformaInvoiceItem.getInventory().getSellingPrice() != 0.0)
         {
-            proformaInvoiceItem.setUnitPrice(proformaInvoiceItem.getInventoryProduct().getSellingPrice());
+            proformaInvoiceItem.setUnitPrice(proformaInvoiceItem.getInventory().getSellingPrice());
         }
     }
 
@@ -509,8 +509,9 @@ public class ProformaInvoiceController implements Serializable
     public void clearProformaInvoiceItem()
     {
         proformaInvoiceItem = new ProformaInvoiceItem();
-        optionText = "Save Changes";
         proformaInvoiceItem.setProformaInvoice(proformaInvoice);
+        proformaInvoiceItem.setUserAccount(appSession.getCurrentUser());
+        optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
@@ -518,6 +519,7 @@ public class ProformaInvoiceController implements Serializable
     {
         deliveryTermConfigItems = new DeliveryTermConfigItems();
         deliveryTermConfigItems.setProformaInvoice(proformaInvoice);
+        deliveryTermConfigItems.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -526,6 +528,7 @@ public class ProformaInvoiceController implements Serializable
     {
         validationConfigItems = new ValidationConfigItems();
         validationConfigItems.setProformaInvoice(proformaInvoice);
+        validationConfigItems.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -534,6 +537,7 @@ public class ProformaInvoiceController implements Serializable
     {
         coloursConfigItems = new ColoursConfigItems();
         coloursConfigItems.setProformaInvoice(proformaInvoice);
+        coloursConfigItems.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -549,6 +553,7 @@ public class ProformaInvoiceController implements Serializable
     public void clearProformaInvoice()
     {
         proformaInvoice = new ProformaInvoice();
+        proformaInvoice.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -583,13 +588,8 @@ public class ProformaInvoiceController implements Serializable
         List<ColoursConfigItems> coloursItemsList  = proformaInvoiceService.getColoursConfigItems(proformaInvoice);
         List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         
-
-            System.out.println("Delivery Term -- "+deliveryTermList.size());
-            System.out.println("validationItemsList -- "+validationItemsList.size());
-            System.out.println("receivedDocumentItemsList -- "+receivedDocumentItemsList.size());
-            System.out.println("coloursItemsList -- "+coloursItemsList.size());
-            System.out.println("invoiceItemList -- "+invoiceItemList.size());
-
+        double grandTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+        
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
             proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
             proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
@@ -599,6 +599,29 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setExpiryDate(proformaInvoice.getExpiryDate());
             proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
             proformaInvoiceDto.setClientCode(proformaInvoice.getClient().getClientCode());
+            proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
+            proformaInvoiceDto.setTotalAmount(grandTotalAmount);
+            
+            if(appSession.getCurrentUser().getBoxAddress() != null)
+            {
+                proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getBoxAddress());
+            }
+            if(appSession.getCurrentUser().getTelephoneNo() != null)
+            {
+                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getTelephoneNo());
+            }
+            if(appSession.getCurrentUser().getCompanyBranchName() != null)
+            {
+                 proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranchName());
+            }
+            if(appSession.getCurrentUser().getGpsAddress() != null)
+            {
+                 proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getGpsAddress());
+            }
+            if(appSession.getCurrentUser().getWebsite() != null)
+            {
+                 proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getWebsite());
+            }
             
         for (DeliveryTermConfigItems configItems : deliveryTermList)
         {
@@ -635,15 +658,24 @@ public class ProformaInvoiceController implements Serializable
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
             ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
-            invoiceItemDto.setProductCode(invoiceItem.getInventoryProduct().getProductCode());
-            invoiceItemDto.setProductName(invoiceItem.getInventoryProduct().getProductName());
-            invoiceItemDto.setDescription(invoiceItemDto.getDescription());
-            invoiceItemDto.setFrameSise(invoiceItem.getInventoryProduct().getFrameSise());
-            invoiceItemDto.setWidth(invoiceItem.getInventoryProduct().getWidth());
-            invoiceItemDto.setHeight(invoiceItem.getInventoryProduct().getHeight());
+            invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
+            invoiceItemDto.setProductName(invoiceItem.getInventory().getProduct().getProductName());
+            invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
+            invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
+            invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
+            
+            if(appSession.getCurrentUser().getFrame() != null)
+            {
+                invoiceItemDto.setFrameUnit(appSession.getCurrentUser().getFrame()+"");
+            }
+            
+            if(appSession.getCurrentUser().getWidth() != null)
+            {
+                invoiceItemDto.setWidthHeightUnits(appSession.getCurrentUser().getWidth().getLabel());
+            }
             
             invoiceItemDtoList.add(invoiceItemDto);
         }
@@ -660,7 +692,10 @@ public class ProformaInvoiceController implements Serializable
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
             InputStream stream = getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_FILE);
             
-            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, new HashMap(), dataSource);
+            Map<String, Object> params = new LinkedHashMap<>();
+            params.put("logo", ReportFiles.LOGO);
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, params, dataSource);
             HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             httpServletResponse.setContentType("application/pdf");
             ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
