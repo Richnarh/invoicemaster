@@ -41,9 +41,9 @@
         </div>
 
         <h:form id="invoiceTable" class="wow zoomIn">
-            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice"  reflow="true" draggableRows="true">
+            <p:dataTable value="#{invoiceController.invoiceList}" var="invoice" scrollable="true" scrollHeight="400">
 
-                <p:column class="row-toggler">
+                <p:column style="width: 37px;">
                     <p:rowToggler/>
                 </p:column>
 
@@ -58,7 +58,7 @@
                         <h:outputText value="#{invoice.description}"/>
                     </h:panelGrid>
                 </p:rowExpansion>
-                <p:column headerText="#{msg.invoice_no}">
+                <p:column headerText="#{msg.invoice_no}" filterBy="#{invoice.invoiceNumber}" filterMatchMode="contains">
                     #{invoice.invoiceNumber}
                 </p:column>
                 <p:column headerText="#{msg.issued_date}">

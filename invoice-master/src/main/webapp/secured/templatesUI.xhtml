@@ -57,7 +57,8 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <h:form>
-                            <button class="btn btn-default btn-sm" jsf:action="#{userCommonClass.init()}" title="Refresh"> <i class="fa fa-refresh"></i> </button>
+                            <h:commandLink class="btn btn-default shadow-sm btn-sm" action="#{userCommonClass.init()}" value="Refresh"/>
+                            <!--<button class="btn btn-default btn-sm" jsf:action="{userCommonClass.init()}" title="Refresh"> <i class="fa fa-refresh"></i> </button>-->
                         </h:form>
                     </li>
                     <li class="nav-item dropdown">

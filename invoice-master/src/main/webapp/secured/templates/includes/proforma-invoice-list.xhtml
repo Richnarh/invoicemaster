@@ -41,9 +41,9 @@
         </div>
 
         <h:form id="proformaInvoiceTable" class="wow zoomIn">
-            <p:dataTable value="#{proformaInvoiceController.proformaInvoiceList}" var="proformaInvoice"  reflow="true" draggableColumns="true">
+            <p:dataTable value="#{proformaInvoiceController.proformaInvoiceList}" var="proformaInvoice"  scrollable="true" scrollHeight="400">
 
-                <p:column class="row-toggler">
+                <p:column style="width: 37px;">
                     <p:rowToggler/>
                 </p:column>
 
@@ -59,7 +59,7 @@
                     </h:panelGrid>
                 </p:rowExpansion>
 
-                <p:column headerText="#{msg.quotation_no}">
+                <p:column headerText="Quotation" filterBy="#{proformaInvoice.quotationNumber}" filterMatchMode="contains">
                     #{proformaInvoice.quotationNumber}
                 </p:column>
                 <p:column headerText="#{msg.issued_date}">
@@ -75,10 +75,7 @@
                 <p:column headerText="#{msg.client}">
                     #{proformaInvoice.client}
                 </p:column>
-                <p:column headerText="#{msg.project}">
-                    #{proformaInvoice.project}
-                </p:column>
-                <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.currency})" class="text-right">
+                <p:column headerText="#{msg.total_amount}" class="text-right">
                     <h:outputText value="#{proformaInvoice.totalAmount}">
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>

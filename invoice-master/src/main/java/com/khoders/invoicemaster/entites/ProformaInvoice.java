@@ -33,9 +33,6 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     @ManyToOne
     private Client client;
 
-    @Column(name = "project")
-    private String project;
-
     @Column(name = "quotation_number")
     private String quotationNumber = SystemUtils.generateRefNo();
 
@@ -78,17 +75,7 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     {
         this.client = client;
     }
-
-    public String getProject()
-    {
-        return project;
-    }
-
-    public void setProject(String project)
-    {
-        this.project = project;
-    }
-
+    
     public String getQuotationNumber()
     {
         return quotationNumber;
