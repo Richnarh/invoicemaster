@@ -263,5 +263,21 @@ public class InvoiceService
         return Collections.emptyList();
     }
 
+    public List<InvoiceItem> getInvoiceItemReceipt(Invoice invoice)
+    {
+                try
+        {
+            String qryString = "SELECT e FROM InvoiceItem e WHERE e.invoice=?1";
+            TypedQuery<InvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceItem.class);
+            typedQuery.setParameter(1, invoice);
+            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
 
 }

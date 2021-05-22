@@ -25,10 +25,8 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -41,7 +39,9 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -57,6 +57,7 @@ public class ProformaInvoiceController implements Serializable
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private ProformaInvoiceService proformaInvoiceService;
+    @Inject private ReportHandler reportHandler;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -67,6 +68,7 @@ public class ProformaInvoiceController implements Serializable
 
     private ProformaInvoiceItem proformaInvoiceItem = new ProformaInvoiceItem();
     private List<ProformaInvoiceItem> proformaInvoiceItemList = new LinkedList<>();
+    private List<ProformaInvoiceItem> removedProformaInvoiceItemList = new LinkedList<>();
 
     private DeliveryTermConfigItems deliveryTermConfigItems = new DeliveryTermConfigItems();
     private List<DeliveryTermConfigItems> deliveryTermConfigItemsList = new LinkedList<>();
@@ -217,19 +219,18 @@ public class ProformaInvoiceController implements Serializable
             
              if(proformaInvoiceItem != null)
               {
-                totalAmount = proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
-                proformaInvoiceItem.setTotalAmount(totalAmount);
-                proformaInvoiceItem.genCode();
+                totalAmount += proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
                 
+                proformaInvoiceItem.genCode();
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
                 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("ProformaInvoice item added"), null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item added"), null));
               }
               else
                 {
                    FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("ProformaInvoice item removed!"), null));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Proforma Invoice item removed!"), null));
                 }
             clearProformaInvoiceItem();
         } catch (Exception e)
@@ -242,26 +243,26 @@ public class ProformaInvoiceController implements Serializable
     {
         try 
         {
-            if(proformaInvoiceItemList != null)
-            {
                 for (ProformaInvoiceItem item : proformaInvoiceItemList) 
                 {
-                    crudApi.save(item);
-                    
-                    totalAmount += item.getTotalAmount();
-                    
-                    setTotalAmount(totalAmount);
-                    
+                    if (totalAmount != proformaInvoice.getTotalAmount())
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: " + (totalAmount) + " is not equivalent to the proforma invoce total: " + proformaInvoice.getTotalAmount()), null));
+                        return;
+                    }
+                    crudApi.save(item); 
+                }
+                
+                for (ProformaInvoiceItem invoiceItem : removedProformaInvoiceItemList)
+                {
+                    crudApi.delete(invoiceItem);
+                    removedProformaInvoiceItemList.remove(invoiceItem);
                 }
                 
                 FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("ProformaInvoice item list saved!"), null));
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg("The list is empty!"), null));
-            }
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
+            
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -271,28 +272,16 @@ public class ProformaInvoiceController implements Serializable
     public void editProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
         this.proformaInvoiceItem = proformaInvoiceItem;
+        totalAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
+        proformaInvoiceItemList.remove(proformaInvoiceItem);
         optionText = "Update";
     }
     
     public void deleteProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
-        try
-        {
-            if(crudApi.delete(proformaInvoiceItem))
-            {
-                proformaInvoiceItemList.remove(proformaInvoiceItem);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        totalAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
+        removedProformaInvoiceItemList = CollectionList.washList(removedProformaInvoiceItemList, proformaInvoiceItem);
+        proformaInvoiceItemList.remove(proformaInvoiceItem);
     }
     
     public void editProformaInvoice(ProformaInvoice proformaInvoice)
@@ -303,7 +292,6 @@ public class ProformaInvoiceController implements Serializable
     }
     
 //    Configs
-    
     public void saveDeliveryTermConfigItems()
     {
         try
@@ -572,7 +560,7 @@ public class ProformaInvoiceController implements Serializable
     }
     
     
-    public void generateInvoice(ProformaInvoice proformaInvoice)
+    public void generateProformaInvoice(ProformaInvoice proformaInvoice)
     {
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
@@ -669,7 +657,7 @@ public class ProformaInvoiceController implements Serializable
             
             if(appSession.getCurrentUser().getFrame() != null)
             {
-                invoiceItemDto.setFrameUnit(appSession.getCurrentUser().getFrame()+"");
+                invoiceItemDto.setFrameUnit(appSession.getCurrentUser().getFrame().getLabel());
             }
             
             if(appSession.getCurrentUser().getWidth() != null)
@@ -690,12 +678,21 @@ public class ProformaInvoiceController implements Serializable
         try
         {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
+            JasperReport deliveryTermReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.DELIVERY_TERM_FILE));
+            JasperReport validationReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.VALIDATION_FILE));
+            JasperReport receiveDocumentReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.RECEIVED_DOCUMENT_FILE));
+            JasperReport coloursReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.COLOURS_FILE));
+            JasperReport proformaInvoiceItemReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_ITEM_FILE));
             InputStream stream = getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_FILE);
             
-            Map<String, Object> params = new LinkedHashMap<>();
-            params.put("logo", ReportFiles.LOGO);
+            reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+            reportHandler.reportParams.put("deliveryTerm", deliveryTermReport);
+            reportHandler.reportParams.put("validation", validationReport);
+            reportHandler.reportParams.put("colours", coloursReport);
+            reportHandler.reportParams.put("receivedDocument", receiveDocumentReport);
+            reportHandler.reportParams.put("proformaInvoiceItem", proformaInvoiceItemReport);
             
-            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, params, dataSource);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
             HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             httpServletResponse.setContentType("application/pdf");
             ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();

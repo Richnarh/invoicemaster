@@ -296,7 +296,6 @@ public class ProformaInvoiceService
         invoice.setInvoiceNumber(proformaInvoice.getQuotationNumber());
         invoice.setIssuedDate(proformaInvoice.getIssuedDate());
         invoice.setClient(proformaInvoice.getClient());
-        invoice.setSubject(proformaInvoice.getSubject());
         invoice.setDescription(proformaInvoice.getDescription());
         invoice.setTotalAmount(proformaInvoice.getTotalAmount());
         

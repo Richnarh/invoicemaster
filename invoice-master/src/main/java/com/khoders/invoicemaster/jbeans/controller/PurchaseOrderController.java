@@ -190,8 +190,8 @@ public class PurchaseOrderController implements Serializable
     public void editPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem)
     {
         this.purchaseOrderItem = purchaseOrderItem;
-        purchaseOrderItemList.remove(purchaseOrderItem);
         totalAmount -= (purchaseOrderItem.getQuantity() * purchaseOrderItem.getUnitPrice());
+        purchaseOrderItemList.remove(purchaseOrderItem);
     }
     
     public void removePurchaseOrderItem(PurchaseOrderItem purchaseOrderItem)
@@ -260,7 +260,7 @@ public class PurchaseOrderController implements Serializable
             init();
             
            FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase order posted to inventory Successfully!"), null));  
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase order posted to inventory successfully!"), null));  
            
         }
         } catch (Exception e)

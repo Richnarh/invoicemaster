@@ -44,6 +44,14 @@
                         <p:panelGrid columns="2">
                             <span>#{msg.code}</span>
                             <h:outputText value="#{proformaInvoiceItem.itemCode}"/>
+                            <span>#{msg.frame_size}</span>
+                            <h:outputText value="#{proformaInvoiceItem.inventory.frameSize} #{appSession.currentUser.frame}"/>
+                            
+                            <span>#{msg.width}</span>
+                            <h:outputText value="#{proformaInvoiceItem.inventory.width} #{appSession.currentUser.width}"/>
+                            
+                            <span>#{msg.height}</span>
+                            <h:outputText value="#{proformaInvoiceItem.inventory.height} #{appSession.currentUser.height}"/>
                         </p:panelGrid>
                     </p:rowExpansion>
 

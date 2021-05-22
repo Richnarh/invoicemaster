@@ -9,6 +9,8 @@ import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.PaymentReceipt;
+import com.khoders.invoicemaster.entites.model.InvoiceDto;
+import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InvoiceService;
 import com.khoders.resource.jpa.CrudApi;
@@ -17,6 +19,8 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +30,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -40,6 +53,7 @@ public class InvoiceController implements Serializable
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private InvoiceService invoiceService;
+    @Inject private ReportHandler reportHandler;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -154,20 +168,23 @@ public class InvoiceController implements Serializable
                 return;
             }
 
-            if (invoiceItem != null) {
-               
-                totalAmount = invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
+            if (invoiceItem != null)
+            {
+                totalAmount += invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
+                
                 invoiceItem.genCode();
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Invoice item added"), null));
-            } else {
+            } else
+            {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Invoice item removed!"), null));
             }
             clearInvoiceItem();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -186,15 +203,18 @@ public class InvoiceController implements Serializable
                     
                     inventory = crudApi.getEm().find(Inventory.class, items.getInventory().getId());
                     inventory.setQuantity(qtyAtHand);
-                    
                     crudApi.save(inventory);
                     
-                    if(totalAmount != invoice.getTotalAmount())
-                    {
-                        FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: "+(totalAmount)+" is not equivalent to the invoice total: "+invoice.getTotalAmount()), null));
-                        return;
-                    }
+                    invoice = crudApi.getEm().find(Invoice.class, items.getInvoice().getId());
+                    invoice.setTotalAmount(totalAmount);
+                    crudApi.save(invoice);
+                    
+//                    if(totalAmount != invoice.getTotalAmount())
+//                    {
+//                        FacesContext.getCurrentInstance().addMessage(null, 
+//                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: "+(totalAmount)+" is not equivalent to the invoice total: "+invoice.getTotalAmount()), null));
+//                        return;
+//                    }
 
                     crudApi.save(items);
                     
@@ -300,6 +320,107 @@ public class InvoiceController implements Serializable
             selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
 
         } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void generateInvoice(Invoice invoice)
+    {
+        List<InvoiceDto.InvoiceItem> invoiceItemDtoList = new LinkedList<>();
+        List<InvoiceDto> invoiceDtoList = new LinkedList<>();
+        
+            List<InvoiceItem> itemList = invoiceService.getInvoiceItemReceipt(invoice);
+            
+            InvoiceDto invoiceDto = new InvoiceDto();
+            invoiceDto.setInvoiceNumber(invoice.getInvoiceNumber());
+            invoiceDto.setIssuedDate(invoice.getIssuedDate());
+            invoiceDto.setEmailAddress(invoice.getClient().getEmailAddress());
+            invoiceDto.setPhone(invoice.getClient().getPhone());
+            invoiceDto.setAddress(invoice.getClient().getAddress());
+            
+            if(invoice.getClient() != null)
+            {
+                invoiceDto.setClientName(invoice.getClient().getClientName());
+            }  
+            if(invoice.getPaymentStatus() != null)
+            {
+                invoiceDto.setPaymentMethod(invoice.getPaymentMethod().getLabel());
+            }
+            if(invoice.getDescription() != null)
+            {
+                invoiceDto.setDescription(invoice.getDescription());
+            }
+            if(invoice.getPaymentStatus() != null)
+            {
+                invoiceDto.setPaymentStatus(invoice.getPaymentStatus().getLabel());
+            }
+             if(appSession.getCurrentUser().getBoxAddress() != null)
+            {
+                invoiceDto.setBoxAddress(appSession.getCurrentUser().getBoxAddress());
+            }
+            if(appSession.getCurrentUser().getTelephoneNo() != null)
+            {
+                invoiceDto.setTelephoneNo(appSession.getCurrentUser().getTelephoneNo());
+            }
+            if(appSession.getCurrentUser().getCompanyBranchName() != null)
+            {
+                 invoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranchName());
+            }
+            if(appSession.getCurrentUser().getGpsAddress() != null)
+            {
+                 invoiceDto.setGpsAddress(appSession.getCurrentUser().getGpsAddress());
+            }
+            if(appSession.getCurrentUser().getWebsite() != null)
+            {
+                 invoiceDto.setWebsite(appSession.getCurrentUser().getWebsite());
+            }
+
+            for (InvoiceItem item : itemList)
+            {
+                InvoiceDto.InvoiceItem invoiceItemDto = new InvoiceDto.InvoiceItem();
+                invoiceItemDto.setProductCode(item.getInventory().getProduct().getProductCode());
+                invoiceItemDto.setProductName(item.getInventory().getProduct().getProductName());
+                invoiceItemDto.setFrameSize(item.getInventory().getFrameSize());
+                invoiceItemDto.setWidth(item.getInventory().getWidth());
+                invoiceItemDto.setHeight(item.getInventory().getHeight());
+                invoiceItemDto.setQuantity(item.getQuantity());
+                invoiceItemDto.setUnitPrice(item.getUnitPrice());
+
+                if (appSession.getCurrentUser().getFrame() != null)
+                {
+                    invoiceItemDto.setFrameUnit(appSession.getCurrentUser().getFrame().getLabel());
+                }
+
+                if (appSession.getCurrentUser().getWidth() != null)
+                {
+                    invoiceItemDto.setWidthHeightUnits(appSession.getCurrentUser().getWidth().getLabel());
+                }
+
+                invoiceItemDtoList.add(invoiceItemDto);
+            }
+            
+            invoiceDto.setInvoiceItemList(invoiceItemDtoList);
+            
+            invoiceDtoList.add(invoiceDto);
+            
+        try
+        {
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoiceDtoList);
+            JasperReport invoiceItemReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.INVOICE_ITEM_FILE));
+            InputStream stream = getClass().getResourceAsStream(ReportFiles.INVOICE_FILE);
+            
+            reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+            reportHandler.reportParams.put("invoiceItem", invoiceItemReport);
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
+            HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.setContentType("application/pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+            
+        } catch (IOException | JRException e)
         {
             e.printStackTrace();
         }

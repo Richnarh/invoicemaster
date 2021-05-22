@@ -5,8 +5,6 @@
  */
 package com.khoders.invoicemaster.entites.model;
 
-import com.khoders.invoicemaster.entites.Inventory;
-import com.khoders.invoicemaster.entites.Invoice;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +16,17 @@ import java.util.List;
 public class InvoiceDto
 {
     private LocalDate issuedDate;
-    private LocalDate dueDate;
     private String clientName;
+    private String clientCode;
+    private String emailAddress;
+    private String address;
+    private String boxAddress;
+    private String telephoneNo;
+    private String phone;
+    private String gpsAddress;
+    private String branchName;
+    private String website;
+    
     private String invoiceNumber;
     private String paymentMethod;
     private String paymentStatus;
@@ -37,16 +44,6 @@ public class InvoiceDto
     public void setIssuedDate(LocalDate issuedDate)
     {
         this.issuedDate = issuedDate;
-    }
-
-    public LocalDate getDueDate()
-    {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate)
-    {
-        this.dueDate = dueDate;
     }
     
     public String getInvoiceNumber()
@@ -129,37 +126,187 @@ public class InvoiceDto
         this.invoiceItemList = invoiceItemList;
     }
 
-    
+    public String getClientCode()
+    {
+        return clientCode;
+    }
+
+    public void setClientCode(String clientCode)
+    {
+        this.clientCode = clientCode;
+    }
+
+    public String getEmailAddress()
+    {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    public String getBoxAddress()
+    {
+        return boxAddress;
+    }
+
+    public void setBoxAddress(String boxAddress)
+    {
+        this.boxAddress = boxAddress;
+    }
+
+    public String getTelephoneNo()
+    {
+        return telephoneNo;
+    }
+
+    public void setTelephoneNo(String telephoneNo)
+    {
+        this.telephoneNo = telephoneNo;
+    }
+
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
+    }
+
+    public String getGpsAddress()
+    {
+        return gpsAddress;
+    }
+
+    public void setGpsAddress(String gpsAddress)
+    {
+        this.gpsAddress = gpsAddress;
+    }
+
+    public String getBranchName()
+    {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName)
+    {
+        this.branchName = branchName;
+    }
+
+    public String getWebsite()
+    {
+        return website;
+    }
+
+    public void setWebsite(String website)
+    {
+        this.website = website;
+    }
     
     public static class InvoiceItem
     {
-        private String itemCode;
-        private Inventory inventoryProduct;
+        private String productCode;
+        private String productName;
+        private String frameUnit;
+        private String widthHeightUnits;
+        private int frameSize;
+        private int width;
+        private int height;
         private int quantity;
         private double unitPrice;
-        private double charges;
         private double totalAmount;
-        private String description;
-        private Invoice invoice;
 
-        public String getItemCode()
+        public double getTotalAmount()
         {
-            return itemCode;
+            return totalAmount;
         }
 
-        public void setItemCode(String itemCode)
+        public void setTotalAmount(double totalAmount)
         {
-            this.itemCode = itemCode;
+            this.totalAmount = totalAmount;
         }
 
-        public Inventory getInventoryProduct()
+        public String getProductCode()
         {
-            return inventoryProduct;
+            return productCode;
         }
 
-        public void setInventoryProduct(Inventory inventoryProduct)
+        public void setProductCode(String productCode)
         {
-            this.inventoryProduct = inventoryProduct;
+            this.productCode = productCode;
+        }
+
+        public String getProductName()
+        {
+            return productName;
+        }
+
+        public void setProductName(String productName)
+        {
+            this.productName = productName;
+        }
+
+        public String getFrameUnit()
+        {
+            return frameUnit;
+        }
+
+        public void setFrameUnit(String frameUnit)
+        {
+            this.frameUnit = frameUnit;
+        }
+
+        public String getWidthHeightUnits()
+        {
+            return widthHeightUnits;
+        }
+
+        public void setWidthHeightUnits(String widthHeightUnits)
+        {
+            this.widthHeightUnits = widthHeightUnits;
+        }
+
+        public int getFrameSize()
+        {
+            return frameSize;
+        }
+
+        public void setFrameSize(int frameSize)
+        {
+            this.frameSize = frameSize;
+        }
+
+        public int getWidth()
+        {
+            return width;
+        }
+
+        public void setWidth(int width)
+        {
+            this.width = width;
+        }
+
+        public int getHeight()
+        {
+            return height;
+        }
+
+        public void setHeight(int height)
+        {
+            this.height = height;
         }
 
         public int getQuantity()
@@ -181,47 +328,7 @@ public class InvoiceDto
         {
             this.unitPrice = unitPrice;
         }
-
-        public double getCharges()
-        {
-            return charges;
-        }
-
-        public void setCharges(double charges)
-        {
-            this.charges = charges;
-        }
-
-        public double getTotalAmount()
-        {
-            return totalAmount;
-        }
-
-        public void setTotalAmount(double totalAmount)
-        {
-            this.totalAmount = totalAmount;
-        }
-
-        public String getDescription()
-        {
-            return description;
-        }
-
-        public void setDescription(String description)
-        {
-            this.description = description;
-        }
-
-        public Invoice getInvoice()
-        {
-            return invoice;
-        }
-
-        public void setInvoice(Invoice invoice)
-        {
-            this.invoice = invoice;
-        }
-        
+       
         
     }
 }

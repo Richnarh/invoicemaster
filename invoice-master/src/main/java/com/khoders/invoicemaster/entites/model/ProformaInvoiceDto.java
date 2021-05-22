@@ -248,7 +248,7 @@ public class ProformaInvoiceDto
     {
         this.clientCode = clientCode;
     }
-    
+
     public static class DeliveryTerm
     {
         private String deliveryTerm;

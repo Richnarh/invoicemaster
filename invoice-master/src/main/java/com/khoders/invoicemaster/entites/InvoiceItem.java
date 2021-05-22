@@ -39,7 +39,10 @@ public class InvoiceItem extends UserAccountRecord implements Serializable
 
     @Column(name = "charges")
     private double charges;
-
+    
+    @Column(name = "total_amount")
+    private double totalAmount;
+    
     @Column(name = "description")
     @Lob
     private String description;
@@ -116,6 +119,16 @@ public class InvoiceItem extends UserAccountRecord implements Serializable
     public void setCharges(double charges)
     {
         this.charges = charges;
+    }
+
+    public double getTotalAmount()
+    {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount)
+    {
+        this.totalAmount = totalAmount;
     }
 
     public void genCode()

@@ -36,9 +36,6 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     @Column(name = "quotation_number")
     private String quotationNumber = SystemUtils.generateRefNo();
 
-    @Column(name = "subject")
-    private String subject;
-
     @Column(name = "total_amount")
     private double totalAmount;
 
@@ -84,16 +81,6 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     public void setQuotationNumber(String quotationNumber)
     {
         this.quotationNumber = quotationNumber;
-    }
-
-    public String getSubject()
-    {
-        return subject;
-    }
-
-    public void setSubject(String subject)
-    {
-        this.subject = subject;
     }
 
     public double getTotalAmount()

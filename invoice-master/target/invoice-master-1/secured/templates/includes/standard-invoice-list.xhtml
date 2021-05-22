@@ -84,9 +84,6 @@
                 <p:column headerText="#{msg.client}">
                     #{stdInvoice.client}
                 </p:column>
-                <p:column headerText="#{msg.project}">
-                    #{stdInvoice.project}
-                </p:column>
                 <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.currency})" class="text-right">
                     <h:outputText value="#{stdInvoice.totalAmount}">
                         <f:convertNumber pattern="#{msg.money_pattern}"/>

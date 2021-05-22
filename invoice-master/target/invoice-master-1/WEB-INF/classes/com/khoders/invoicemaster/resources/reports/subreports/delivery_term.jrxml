@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="delivery_term" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cfed9d7d-c132-4067-bc14-244b6f521a4f">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="delivery_term" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cfed9d7d-c132-4067-bc14-244b6f521a4f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="detail-data" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -19,25 +20,22 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="17" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="130" height="17" uuid="d2700fcb-a8fa-4796-9be7-563d268954a9">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<text><![CDATA[Delivery Term]]></text>
-			</staticText>
-		</band>
+		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="0" width="534" height="17" uuid="737511bd-7c5e-4872-a728-ee07b3444354">
+				<reportElement style="detail-data" x="8" y="-1" width="120" height="15" uuid="737511bd-7c5e-4872-a728-ee07b3444354">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{deliveryTerm}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="20" height="17" uuid="8f9d2d30-fc8a-4ae6-b4b3-01011cd586c7"/>
+				<reportElement style="detail-data" x="0" y="0" width="8" height="15" uuid="8f9d2d30-fc8a-4ae6-b4b3-01011cd586c7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textFieldExpression><![CDATA[$V{no}]]></textFieldExpression>
 			</textField>
 		</band>
