@@ -232,7 +232,6 @@ public class PurchaseOrderController implements Serializable
                  return; 
              }
              
-             
             for (PurchaseOrderItem item : orderItemList)
             {
                 inventory = new Inventory();

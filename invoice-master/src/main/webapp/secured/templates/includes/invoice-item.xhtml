@@ -24,9 +24,6 @@
                     <span>#{msg.unit_price} <span class="text-danger">*</span> </span>
                     <p:inputText id="sellingPrice" value="#{invoiceController.invoiceItem.unitPrice}" required="true"/>
 
-                    <span>#{msg.charges}</span>
-                    <p:inputText value="#{invoiceController.invoiceItem.charges}"/>
-
                 </h:panelGrid>
 
                 <div class="py-3">
@@ -39,8 +36,8 @@
         <div class="col-lg-8">
             <h:form id="invoiceItemTable">
                 <p:dataTable value="#{invoiceController.invoiceItemList}" var="invoiceItem" 
-                             paginator="true" paginatorPosition="bottom" rows="6">
-                    <p:column class="row-toggler">
+                             scrollable="true" scrollHeight="250">
+                    <p:column style="width: 37px;">
                         <p:rowToggler/>
                     </p:column>
 
@@ -110,7 +107,6 @@
                     <p:ajax update=":mainTabView:mainPanel"/>
                 </h:commandButton>
                 </h:form>
-            
             </center>
         </div>
     </div>

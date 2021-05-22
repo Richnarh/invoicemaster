@@ -332,12 +332,16 @@ public class InvoiceController implements Serializable
         
             List<InvoiceItem> itemList = invoiceService.getInvoiceItemReceipt(invoice);
             
+            double grandTotalAmount = invoiceItemList.stream().mapToDouble(InvoiceItem::getTotalAmount).sum();
+            
             InvoiceDto invoiceDto = new InvoiceDto();
             invoiceDto.setInvoiceNumber(invoice.getInvoiceNumber());
             invoiceDto.setIssuedDate(invoice.getIssuedDate());
             invoiceDto.setEmailAddress(invoice.getClient().getEmailAddress());
             invoiceDto.setPhone(invoice.getClient().getPhone());
             invoiceDto.setAddress(invoice.getClient().getAddress());
+            invoiceDto.setClientCode(invoice.getClient().getClientCode());
+            invoiceDto.setTotalAmount(grandTotalAmount);
             
             if(invoice.getClient() != null)
             {
@@ -386,6 +390,7 @@ public class InvoiceController implements Serializable
                 invoiceItemDto.setHeight(item.getInventory().getHeight());
                 invoiceItemDto.setQuantity(item.getQuantity());
                 invoiceItemDto.setUnitPrice(item.getUnitPrice());
+                invoiceItemDto.setTotalAmount(item.getTotalAmount());
 
                 if (appSession.getCurrentUser().getFrame() != null)
                 {

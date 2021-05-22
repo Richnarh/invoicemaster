@@ -451,7 +451,7 @@ public class ProformaInvoiceController implements Serializable
         {
             if(crudApi.delete(coloursConfigItems))
             {
-                validationConfigItemsList.remove(coloursConfigItems);
+                coloursConfigItemsList.remove(coloursConfigItems);
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
             }
@@ -471,7 +471,7 @@ public class ProformaInvoiceController implements Serializable
         {
             if(crudApi.delete(receivedDocumentConfigItems))
             {
-                validationConfigItemsList.remove(receivedDocumentConfigItems);
+                receivedDocumentConfigItemsList.remove(receivedDocumentConfigItems);
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
             }
