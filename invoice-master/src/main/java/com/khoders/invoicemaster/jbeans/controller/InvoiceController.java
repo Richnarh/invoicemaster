@@ -171,7 +171,8 @@ public class InvoiceController implements Serializable
             if (invoiceItem != null)
             {
                 totalAmount += invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
-                
+                double x = invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
+                invoiceItem.setTotalAmount(x);
                 invoiceItem.genCode();
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
@@ -244,8 +245,17 @@ public class InvoiceController implements Serializable
     
     public void deleteInvoiceItem(InvoiceItem invoiceItem)
     {
-        totalAmount -= (invoiceItem.getQuantity() * invoiceItem.getUnitPrice());
-        invoiceItemList.remove(invoiceItem);
+        try
+        {
+            if(crudApi.delete(invoiceItem))
+            {
+                totalAmount -= (invoiceItem.getQuantity() * invoiceItem.getUnitPrice());
+                invoiceItemList.remove(invoiceItem);
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
   
     public void closePage()
@@ -332,7 +342,7 @@ public class InvoiceController implements Serializable
         
             List<InvoiceItem> itemList = invoiceService.getInvoiceItemReceipt(invoice);
             
-            double grandTotalAmount = invoiceItemList.stream().mapToDouble(InvoiceItem::getTotalAmount).sum();
+            double grandTotalAmount = itemList.stream().mapToDouble(InvoiceItem::getTotalAmount).sum();
             
             InvoiceDto invoiceDto = new InvoiceDto();
             invoiceDto.setInvoiceNumber(invoice.getInvoiceNumber());

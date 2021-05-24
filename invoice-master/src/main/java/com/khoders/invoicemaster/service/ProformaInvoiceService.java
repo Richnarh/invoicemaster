@@ -17,6 +17,7 @@ import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
@@ -33,8 +34,8 @@ import javax.persistence.TypedQuery;
 public class ProformaInvoiceService
 {
 
-    private @Inject
-    CrudApi crudApi;
+    private @Inject AppSession appSession;
+    private @Inject CrudApi crudApi;
 
     public List<ProformaInvoiceItem> getProformaInvoiceItemList(ProformaInvoice proformaInvoice)
     {
@@ -312,6 +313,8 @@ public class ProformaInvoiceService
                 invoiceItem.setUnitPrice(proformaInvoiceItem.getUnitPrice());
                 invoiceItem.setQuantity(proformaInvoiceItem.getQuantity());
                 invoiceItem.setCharges(proformaInvoiceItem.getCharges());
+                invoiceItem.setTotalAmount(proformaInvoiceItem.getTotalAmount());
+                invoiceItem.setUserAccount(appSession.getCurrentUser());
 
                 crudApi.save(invoiceItem);
             }

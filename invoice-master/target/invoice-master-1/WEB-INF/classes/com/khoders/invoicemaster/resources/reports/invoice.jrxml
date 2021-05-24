@@ -108,14 +108,11 @@
 	<field name="website" class="java.lang.String"/>
 	<field name="description" class="java.lang.String"/>
 	<field name="totalAmount" class="java.lang.Double"/>
-	<variable name="grandTotalAmount" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{totalAmount}]]></variableExpression>
-	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="61" splitType="Stretch">
+		<band height="84" splitType="Stretch">
 			<staticText>
 				<reportElement style="static-text-style" x="380" y="0" width="175" height="50" forecolor="#D6A73E" uuid="675305a0-8163-4a14-96be-0a55c09fb2f3">
 					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
@@ -365,7 +362,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="331" splitType="Stretch">
+		<band height="315" splitType="Stretch">
 			<staticText>
 				<reportElement style="title-background" x="0" y="2" width="20" height="15" uuid="69c5c3cb-f58e-4e70-97da-e21d2bb0dfe4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -475,7 +472,7 @@
 				<text><![CDATA[X]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title-background" x="359" y="2" width="60" height="15" uuid="9f6282ba-ddf0-4e15-a06f-a71f11c83e1a">
+				<reportElement style="title-background" x="359" y="2" width="51" height="15" uuid="9f6282ba-ddf0-4e15-a06f-a71f11c83e1a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -494,7 +491,7 @@
 				<text><![CDATA[Height]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title-background" x="419" y="2" width="21" height="15" uuid="785aee2b-c877-4e9e-91d3-5693a287e186">
+				<reportElement style="title-background" x="410" y="2" width="30" height="15" uuid="785aee2b-c877-4e9e-91d3-5693a287e186">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -581,16 +578,6 @@
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement style="static-text-style" x="110" y="141" width="210" height="15" uuid="5e5344d2-791c-4abb-91bc-a9a6d6d642ba">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<rightPen lineWidth="1.25" lineColor="#FFFFFF"/>
-				</box>
-				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement style="title" x="1" y="156" width="93" height="15" uuid="d3b96498-34ce-4d8c-9bc5-bdc3e3d8aa4f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -674,7 +661,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="185" width="444" height="15" uuid="2c2f94b1-ae6a-4326-bb88-d62e811bea30">
+				<reportElement x="110" y="186" width="444" height="15" uuid="2c2f94b1-ae6a-4326-bb88-d62e811bea30">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -701,6 +688,21 @@
 				<text><![CDATA[Authorized Signatory:................................................................
 (Dolphin Doors Limited)]]></text>
 			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="title" x="110" y="141" width="170" height="15" uuid="92d6837c-bd9c-47d5-bf0b-66b846dbfa27">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.25" lineColor="#FAF8F9"/>
+				</box>
+				<textElement>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band/>
 	</detail>

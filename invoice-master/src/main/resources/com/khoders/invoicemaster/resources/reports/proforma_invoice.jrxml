@@ -581,7 +581,7 @@
 				<text><![CDATA[X]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title-background" x="359" y="0" width="60" height="15" uuid="9f6282ba-ddf0-4e15-a06f-a71f11c83e1a">
+				<reportElement style="title-background" x="359" y="0" width="51" height="15" uuid="9f6282ba-ddf0-4e15-a06f-a71f11c83e1a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -600,7 +600,7 @@
 				<text><![CDATA[Height]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title-background" x="419" y="0" width="21" height="15" uuid="785aee2b-c877-4e9e-91d3-5693a287e186">
+				<reportElement style="title-background" x="410" y="0" width="30" height="15" uuid="785aee2b-c877-4e9e-91d3-5693a287e186">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>

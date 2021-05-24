@@ -72,7 +72,7 @@
                     </p:column>
 
                     <p:column headerText="Total price" class="text-right">
-                        <h:outputText value="#{invoiceItem.unitPrice * invoiceItem.quantity}">
+                        <h:outputText value="#{invoiceItem.totalAmount}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>

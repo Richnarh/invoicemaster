@@ -39,9 +39,22 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     @Column(name = "total_amount")
     private double totalAmount;
 
+    @Column(name = "converted")
+    private boolean converted;
+
     @Column(name = "description")
     @Lob
     private String description;
+
+    public boolean isConverted()
+    {
+        return converted;
+    }
+
+    public void setConverted(boolean converted)
+    {
+        this.converted = converted;
+    }
 
     public LocalDate getIssuedDate()
     {

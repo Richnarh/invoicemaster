@@ -113,6 +113,12 @@ public class ProformaInvoiceController implements Serializable
       Invoice invoice = proformaInvoiceService.extractFromProformaInvoice(proformaInvoice);  
       if(invoice != null)
       {
+           proformaInvoice = crudApi.getEm().find(ProformaInvoice.class, proformaInvoice.getId());
+           proformaInvoice.setConverted(true);
+           crudApi.save(proformaInvoice);
+            
+            init();
+            
           FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Converted Successfully!"), null));
       }
