@@ -77,13 +77,12 @@
 
                     <p:column headerText="#{msg.action}" style="width: 80px;">
                         <p:commandButton  class="kbtn-info" action="#{proformaInvoiceController.editProformaInvoiceItem(proformaInvoiceItem)}" 
-                                        value="#{msg.edit}" update=":mainTabView:orderItemForm"/>
+                                        value="#{msg.edit}" update=":mainTabView:orderItemForm, @form"/>
                         
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
                         <p:commandButton value="#{msg.delete}" class="kbtn-danger"
-                                         action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" onclick="return confirm('#{msg.delete_message}')"
-                                       update="@form"/>
+                                         action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" update="@form"/>
                     </p:column>
                 </p:dataTable>
                 

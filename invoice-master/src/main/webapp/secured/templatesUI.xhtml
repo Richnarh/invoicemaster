@@ -16,9 +16,16 @@
         <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
 
         <style>
+            
             .ui-growl {
                 top: auto;
                 bottom: 5em;
+            }
+            .ptext-link{
+                color: #17a2b8 !important;
+            }
+            .ptext-link:hover{
+                text-decoration: underline !important;
             }
         </style>
     </h:head>
@@ -43,17 +50,17 @@
                     </li>
                 </ul>
                 <ui:remove>
-                <form class="form-inline ml-3">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"/>
-                        <div class="input-group-append">
-                            <button class="btn btn-navbar" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
+                    <form class="form-inline ml-3">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-              </ui:remove>      
+                    </form>
+                </ui:remove>      
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <h:form>
@@ -86,7 +93,7 @@
                     </li>
                 </ul>
             </nav>
-            
+
             <h:panelGroup>
                 <ui:include src="menu/app-menu.xhtml"/>
             </h:panelGroup>
@@ -115,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <section class="content">
                     <div class="container-fluid">
 
@@ -146,9 +153,9 @@
 
 
         <script src="#{application.contextPath}/vendors/js/bootstrap.bundle.min.js"></script>
-        
+
         <script src="#{application.contextPath}/vendors/js/jquery.overlayScrollbars.min.js"></script>
-        
+
         <script src="#{application.contextPath}/vendors/js/adminlte.min.js"></script>
 
         <script src="#{application.contextPath}/vendors/js/demo.js"></script>

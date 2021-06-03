@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                User Account
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <div class="card shadow">
+                    <h5 class="card-title">Register new user</h5>
+                    <div class="card-body">
+                        <h:form>
+                            <h:panelGrid columns="8" class="spaced-form">
+                                <span>Company Profile</span>
+                                <p:selectOneMenu class="col" value="#{userAccountController.userAccount.companyProfile}" required="true">
+                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                    <f:selectItems value="#{userCommonClazz.companyProfileList}"/>
+                                </p:selectOneMenu>
+                                
+                                <span>#{msg.fullname}</span>
+                                <p:inputText value="#{userAccountController.userAccount.fullname}"/>
+
+                                <span>Username</span>
+                                <p:inputText value="#{userAccountController.userAccount.username}"/>
+                                
+                                <span>#{msg.email_ddress}</span>
+                                <p:inputText value="#{userAccountController.userAccount.email}"/>
+
+                                <span>#{msg.phone}</span>
+                                <p:inputText value="#{userAccountController.userAccount.phoneNumber}"/>
+
+                                <span>Status</span>
+                                <p:selectOneMenu class="col" value="#{userAccountController.userAccount.status}" required="true">
+                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                    <f:selectItems value="#{commonClazz.statusList}"/>
+                                </p:selectOneMenu>
+                                
+                                <span>#{msg.access_level}</span>
+                                <p:selectOneMenu class="col" value="#{userAccountController.userAccount.status}" required="true">
+                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                    <f:selectItems/>
+                                </p:selectOneMenu>
+
+                                <span>#{msg.frame_size}</span>
+                                <p:inputText value="#{userAccountController.userAccount.frame}"/>
+
+                                <span>#{msg.height}</span>
+                                <p:inputText value="#{userAccountController.userAccount.height}"/>
+
+                                <span>#{msg.width}</span>
+                                <p:inputText value="#{userAccountController.userAccount.width}"/>
+
+
+                            </h:panelGrid>
+                            <hr/>
+                            <center>
+                                <p:commandButton value="Save" action="#{userAccountController.saveUserAccount()}"/>
+                                <p:commandButton value="Clear" action="#{userAccountController.clear()}"/>
+                            </center>
+
+                            <div>
+                                <p:panel header="Set password" class="float-right">
+                                    <span>Email</span>
+                                    <h:outputText />
+                                    <span>Password</span>
+                                    <p:password value=""/>
+                                </p:panel>
+                            </div>
+                            <br/><br/><br/><br/><br/>
+
+                            <div>
+                                <p:dataTable value="#{userAccountController.userAccountList}" var="userAccount" scrollable="true" scrollHeight="400">
+                                    <p:column style="width: 37px;">
+                                        <p:rowToggler/>
+                                    </p:column>
+
+                                    <p:rowExpansion>
+                                        <h:panelGrid columns="2">
+                                            <span>#{msg.created_date}</span>
+                                            <h:outputText value="#{userAccount.createdDate}"/>
+
+                                        </h:panelGrid>
+                                    </p:rowExpansion>
+
+                                    <p:column headerText="Full name">
+                                        #{userAccount.fullname}
+                                    </p:column>
+
+                                    <p:column headerText="Username">
+                                        #{userAccount.username}
+                                    </p:column>
+
+                                    <p:column headerText="Phone number">
+                                        #{userAccount.phoneNumber}
+                                    </p:column>
+
+                                    <p:column headerText="Email">
+                                        #{userAccount.email}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.frame_size}">
+                                        #{userAccount.frame}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.height}">
+                                        #{userAccount.height}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.width}">
+                                        #{userAccount.width}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.status}">
+                                        #{userAccount.status}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.tin_no}">
+                                        #{userAccount.tinNo}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}">
+                                        <p:commandButton value="#{msg.edit}" action="#{userAccountController.editUserAccount(userAccount)}" update="@form"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}">
+                                        <p:commandButton value="#{msg.delete}" action="#{userAccountController.deleteUserAccount(userAccount)}" update="@form"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -78,11 +78,11 @@
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>
                 </p:column>
-                <p:column>
-                    <h:commandLink value="Print" target="_blank" action="#{proformaInvoiceController.generateProformaInvoice(proformaInvoice)}"/>
-                </p:column>
                 <p:column headerText="Converted">
                     <p:selectBooleanCheckbox value="#{proformaInvoice.converted}" disabled="true"/>
+                </p:column>
+                <p:column style="width: 90px;">
+                    <h:commandLink class="ptext-link" value="Print" target="_blank" action="#{proformaInvoiceController.generateProformaInvoice(proformaInvoice)}"/>
                 </p:column>
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.manage}">

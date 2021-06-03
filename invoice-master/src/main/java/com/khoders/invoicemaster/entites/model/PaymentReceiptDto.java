@@ -19,10 +19,11 @@ public class PaymentReceiptDto
     private String amountInWords;
     private String paymentMethod;
     private double receivedAmount;
-    private double dueAmount;
+    private double totalAmount;
     private double unpaidAmount;
     private String description;
     private String receivedBy;
+    private String paymentStatus;
 
     public String getReceiptNo()
     {
@@ -94,16 +95,16 @@ public class PaymentReceiptDto
         this.receivedAmount = receivedAmount;
     }
 
-    public double getDueAmount()
+    public double getTotalAmount()
     {
-        return dueAmount;
+        return totalAmount;
     }
 
-    public void setDueAmount(double dueAmount)
+    public void setTotalAmount(double totalAmount)
     {
-        this.dueAmount = dueAmount;
+        this.totalAmount = totalAmount;
     }
-
+    
     public double getUnpaidAmount()
     {
         return unpaidAmount;
@@ -122,6 +123,16 @@ public class PaymentReceiptDto
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public String getPaymentStatus()
+    {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus)
+    {
+        this.paymentStatus = paymentStatus;
     }
     
     

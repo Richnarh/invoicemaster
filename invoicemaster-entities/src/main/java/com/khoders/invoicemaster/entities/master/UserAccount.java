@@ -5,7 +5,8 @@
  */
 package com.khoders.invoicemaster.entities.master;
 
-import com.khoders.resource.enums.Currency;
+import com.khoders.resource.enums.AccessLevel;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
@@ -13,6 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,33 +27,33 @@ import javax.persistence.Transient;
 @Table(name = "user_account")
 public class UserAccount extends BaseModel implements Serializable
 {
+    @JoinColumn(name = "company_profile", referencedColumnName = "id")
+    @ManyToOne
+    private CompanyProfile companyProfile;
+    
+    @JoinColumn(name = "company_branch", referencedColumnName = "id")
+    @ManyToOne
+    private CompanyBranch companyBranch;
+    
+    @Column(name = "fullname")
+    private String fullname;
+    
     @Column(name = "username")
     private String username;
     
     @Column(name = "phone_number")
     private String phoneNumber;
     
-    @Column(name = "box_address")
-    private String boxAddress;
-    
-    @Column(name = "gps_address")
-    private String gpsAddress;
-    
-    @Column(name = "company_branch_name")
-    private String companyBranchName;
-    
-    @Column(name = "telephone_no")
-    private String telephoneNo;
-    
-    @Column(name = "currency")
-    @Enumerated(EnumType.STRING)
-    private Currency currency = Currency.GHS;
-    
-    @Column(name = "website")
-    private String website;
-    
     @Column(name = "email")
     private String email;
+    
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    
+    @Column(name = "access_level")
+    @Enumerated(EnumType.STRING)
+    private AccessLevel accessLevel;
     
     @Column(name = "frame")
     @Enumerated(EnumType.STRING)
@@ -64,21 +67,51 @@ public class UserAccount extends BaseModel implements Serializable
     @Enumerated(EnumType.STRING)
     private UnitOfMeasurement height = UnitOfMeasurement.MILLIMETERS;
     
+   
     @Column(name = "password")
     private String password;
     
-    
     @Transient
     private String password2;
-
-    public Currency getCurrency()
+    
+    public String getPassword()
     {
-        return currency;
+        return password;
     }
 
-    public void setCurrency(Currency currency)
+    public void setPassword(String password)
     {
-        this.currency = currency;
+        this.password = password;
+    }
+    
+    public String getPassword2()
+    {
+        return password2;
+    }
+
+    public void setPassword2(String password2)
+    {
+        this.password2 = password2;
+    }
+
+    public CompanyProfile getCompanyProfile()
+    {
+        return companyProfile;
+    }
+
+    public void setCompanyProfile(CompanyProfile companyProfile)
+    {
+        this.companyProfile = companyProfile;
+    }
+
+    public String getFullname()
+    {
+        return fullname;
+    }
+
+    public void setFullname(String fullname)
+    {
+        this.fullname = fullname;
     }
 
     public String getUsername()
@@ -101,44 +134,24 @@ public class UserAccount extends BaseModel implements Serializable
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPassword()
+    public Status getStatus()
     {
-        return password;
+        return status;
     }
 
-    public void setPassword(String password)
+    public void setStatus(Status status)
     {
-        this.password = password;
-    }
-    
-    public String getPassword2()
-    {
-        return password2;
+        this.status = status;
     }
 
-    public void setPassword2(String password2)
+    public AccessLevel getAccessLevel()
     {
-        this.password2 = password2;
+        return accessLevel;
     }
 
-    public String getWebsite()
+    public void setAccessLevel(AccessLevel accessLevel)
     {
-        return website;
-    }
-
-    public void setWebsite(String website)
-    {
-        this.website = website;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
+        this.accessLevel = accessLevel;
     }
 
     public UnitOfMeasurement getFrame()
@@ -150,7 +163,7 @@ public class UserAccount extends BaseModel implements Serializable
     {
         this.frame = frame;
     }
-    
+
     public UnitOfMeasurement getWidth()
     {
         return width;
@@ -171,44 +184,24 @@ public class UserAccount extends BaseModel implements Serializable
         this.height = height;
     }
 
-    public String getBoxAddress()
+    public CompanyBranch getCompanyBranch()
     {
-        return boxAddress;
+        return companyBranch;
     }
 
-    public void setBoxAddress(String boxAddress)
+    public void setCompanyBranch(CompanyBranch companyBranch)
     {
-        this.boxAddress = boxAddress;
+        this.companyBranch = companyBranch;
     }
 
-    public String getCompanyBranchName()
+    public String getEmail()
     {
-        return companyBranchName;
+        return email;
     }
 
-    public void setCompanyBranchName(String companyBranchName)
+    public void setEmail(String email)
     {
-        this.companyBranchName = companyBranchName;
-    }
-
-    public String getGpsAddress()
-    {
-        return gpsAddress;
-    }
-
-    public void setGpsAddress(String gpsAddress)
-    {
-        this.gpsAddress = gpsAddress;
-    }
-
-    public String getTelephoneNo()
-    {
-        return telephoneNo;
-    }
-
-    public void setTelephoneNo(String telephoneNo)
-    {
-        this.telephoneNo = telephoneNo;
+        this.email = email;
     }
     
 }

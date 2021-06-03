@@ -23,7 +23,7 @@
                                     <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.totalAmount}" class="text-success font-weight-bold">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText> &nbsp; |&nbsp;
-                                    Due Amount: 
+                                    Unpaid Amount: 
                                     <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.amountRemaining}" class="text-success font-weight-bold">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>  &nbsp; |&nbsp;
@@ -56,8 +56,6 @@
 
                                             <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
                                             
-                                                <h:commandLink target="_blank" class="btn btn-info" value="#{msg.print} Receipt" action="#{paymentReceiptController.printPayment()}"/>
-
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.new} #{msg.payment}" class="btn btn-outline-primary btn-sm"
                                                                  action="#{paymentReceiptController.initPaymentReceipt()}">

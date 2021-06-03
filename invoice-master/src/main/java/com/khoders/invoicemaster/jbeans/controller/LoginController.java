@@ -36,7 +36,7 @@ public class LoginController implements Serializable
     
     private UserModel userModel = new UserModel();
 
-        public String doLogin()
+    public String doLogin()
     {
         try
         {
@@ -63,7 +63,7 @@ public class LoginController implements Serializable
         return null;
     }
         
-        public String initLogin(UserAccount userAccount)
+    public String initLogin(UserAccount userAccount)
     {
         try
         {

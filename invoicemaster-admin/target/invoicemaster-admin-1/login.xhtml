@@ -5,42 +5,17 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <h:head>
-        <title>#{msg.title} | Login</title>
-        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/all.min.css" />    
-        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />       
-        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/bootstrap/bootstrap.min.css" />    
+        <title>#{msg.title} | Login</title> 
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/login.css" />    
     </h:head>
-    <body class="hold-transition login-page">
-        <div class="login-box">
-            <p:growl/>
-            <div class="card">
-                <div class="card-header bg-gradient-light text-center font-weight-bold">#{msg.title}</div>
-                <div class="card-body login-card-body">
-                    <h:form>
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" required="true" jsf:value="#{loginController.username}" placeholder="Username" type="text" autofocus="true"/>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" required="true" jsf:value="#{loginController.password}" placeholder="Password" type="password" value=""/>
-                            </div>
-
-                            <button jsf:action="#{loginController.doLogin()}" class="btn btn-sm btn-success btn-block">Login</button>
-                            <a href="#{application.contextPath}/register.xhtml" class="btn btn-link">Register</a>
-                            <a href="#{application.contextPath}/forgot-password.xhtml" class="text-danger">Forgot password</a>
-                        </fieldset>
-                    </h:form>
-
-                </div>
-            </div>
-        </div>
-
-        <script src="#{application.contextPath}/vendors/js/jquery.min.js"></script>
-
-        <script src="#{application.contextPath}/vendors/js/bootstrap.bundle.min.js"></script>
-
-        <script src="#{application.contextPath}/vendors/js/adminlte.min.js"></script>
-
+    <body>
+        <p:growl/>
+        <h:form class="login">
+            <center>Invoice Master | ADMIN</center>
+            <input type="text" required="true" jsf:value="#{loginController.username}" placeholder="Username"/>
+            <input type="password" required="true" jsf:value="#{loginController.password}" placeholder="Password"/>
+            <button jsf:action="#{loginController.doLogin()}">Login</button>
+        </h:form>  
     </body>
 </html>
 

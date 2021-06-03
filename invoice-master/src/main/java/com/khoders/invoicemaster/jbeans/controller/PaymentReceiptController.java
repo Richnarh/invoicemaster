@@ -21,7 +21,6 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -47,6 +46,7 @@ public class PaymentReceiptController implements Serializable
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private InvoiceService invoiceService;
+    @Inject private ReportHandler reportHandler;
     
     private PaymentReceipt paymentReceipt = new PaymentReceipt();
     private List<PaymentReceipt> paymentReceiptList = new LinkedList<>();
@@ -90,6 +90,7 @@ public class PaymentReceiptController implements Serializable
         {
             PaymentReceiptDto paymentReceiptDto = new PaymentReceiptDto();
             paymentReceiptDto.setReceiptNo(receipt.getInvoice().getInvoiceNumber());
+            paymentReceiptDto.setTotalAmount(receipt.getInvoice().getTotalAmount());
             paymentReceiptDto.setPaymentDate(receipt.getPaymentDate());
             paymentReceiptDto.setRecievedFrom(receipt.getReceivedFrom().getClientName());
             paymentReceiptDto.setReceivedAmount(receipt.getReceivedAmount());
@@ -98,6 +99,7 @@ public class PaymentReceiptController implements Serializable
             paymentReceiptDto.setReceivedBy(appSession.getCurrentUser().getUsername());
             paymentReceiptDto.setUnpaidAmount(receipt.getAmountUnpaid());
             paymentReceiptDto.setAmountInWords(ConvertToWords.convertNumber(receipt.getReceivedAmount()));
+            paymentReceiptDto.setPaymentStatus(receipt.getPaymentStatus().getLabel());
 
             paymentReceiptDtoList.add(paymentReceiptDto);
         }
@@ -107,7 +109,9 @@ public class PaymentReceiptController implements Serializable
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paymentReceiptDtoList);
             InputStream stream = getClass().getResourceAsStream(ReportFiles.PAYMENT_RECEIPT_FILE);
             
-            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, new HashMap(), dataSource);
+            reportHandler.reportParams.put("image", ReportFiles.LOGO);
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
             HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             httpServletResponse.setContentType("application/pdf");
             ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
@@ -145,7 +149,7 @@ public class PaymentReceiptController implements Serializable
 
             selectedInvoice = crudApi.getEm().find(Invoice.class, paymentReceipt.getInvoice().getId());
             selectedInvoice.setPaymentStatus(PaymentStatus.FULLY_PAID);
-            crudApi.save(selectedInvoice);
+//            crudApi.save(selectedInvoice);
         }
 
         try
@@ -160,6 +164,7 @@ public class PaymentReceiptController implements Serializable
             
             paymentReceipt.genCode();
             paymentReceipt.setReceivedFrom(selectedInvoice.getClient());
+            paymentReceipt.setUserAccount(appSession.getCurrentUser());
             if(crudApi.save(paymentReceipt) != null)
             {
                 paymentReceiptList = CollectionList.washList(paymentReceiptList, paymentReceipt);
@@ -206,12 +211,7 @@ public class PaymentReceiptController implements Serializable
            e.printStackTrace();
         }
     }
-    
-    public String print(PaymentReceipt paymentReceipt)
-    {
-        return "";
-    }
-  
+   
     public void editPaymentReceipt(PaymentReceipt paymentReceipt)
     {
         this.paymentReceipt=paymentReceipt;

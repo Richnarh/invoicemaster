@@ -168,8 +168,7 @@ public class ProformaInvoiceController implements Serializable
         
         for (ProformaInvoiceItem items : proformaInvoiceItemList) 
         {
-            totalAmount += items.getTotalAmount();
-            setTotalAmount(totalAmount);
+            totalAmount += (items.getQuantity() * items.getUnitPrice());
         }
     }
 
@@ -226,7 +225,8 @@ public class ProformaInvoiceController implements Serializable
              if(proformaInvoiceItem != null)
               {
                 totalAmount += proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
-                
+                double x = proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
+                proformaInvoiceItem.setTotalAmount(x);
                 proformaInvoiceItem.genCode();
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
@@ -278,8 +278,8 @@ public class ProformaInvoiceController implements Serializable
     public void editProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
         this.proformaInvoiceItem = proformaInvoiceItem;
-        totalAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
         proformaInvoiceItemList.remove(proformaInvoiceItem);
+        totalAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
         optionText = "Update";
     }
     
@@ -297,7 +297,7 @@ public class ProformaInvoiceController implements Serializable
         optionText = "Update";
     }
     
-//    Configs
+//  Configs
     public void saveDeliveryTermConfigItems()
     {
         try
