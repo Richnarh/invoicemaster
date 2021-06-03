@@ -596,25 +596,25 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(grandTotalAmount);
             
-            if(appSession.getCurrentUser().getBoxAddress() != null)
+            if(appSession.getCurrentUser().getCompanyProfile().getBoxAddress() != null)
             {
-                proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getBoxAddress());
+                proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyProfile().getBoxAddress());
             }
-            if(appSession.getCurrentUser().getTelephoneNo() != null)
+            if(appSession.getCurrentUser().getCompanyProfile().getTelephoneNo() != null)
             {
-                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getTelephoneNo());
+                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyProfile().getTelephoneNo());
             }
-            if(appSession.getCurrentUser().getCompanyBranchName() != null)
+            if(appSession.getCurrentUser().getCompanyBranch() != null)
             {
-                 proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranchName());
+                 proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch()+"");
             }
-            if(appSession.getCurrentUser().getGpsAddress() != null)
+            if(appSession.getCurrentUser().getCompanyProfile().getGpsAddress() != null)
             {
-                 proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getGpsAddress());
+                 proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyProfile().getGpsAddress());
             }
-            if(appSession.getCurrentUser().getWebsite() != null)
+            if(appSession.getCurrentUser().getCompanyProfile().getWebsite() != null)
             {
-                 proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getWebsite());
+                 proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyProfile().getWebsite());
             }
             
         for (DeliveryTermConfigItems configItems : deliveryTermList)

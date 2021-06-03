@@ -26,12 +26,6 @@ public class CompanyBranch extends BaseModel implements Serializable
     @Column(name = "branch_name")
     private String branchName;
 
-    @Override
-    public String toString()
-    {
-       return branchName;
-    }
-
     public String getBranchCode()
     {
         return branchCode;
@@ -51,5 +45,11 @@ public class CompanyBranch extends BaseModel implements Serializable
     {
         this.branchName = branchName;
     }
-        
+    
+    @Override
+    public String toString()
+    {
+       return branchName;
+    }
+
 }
