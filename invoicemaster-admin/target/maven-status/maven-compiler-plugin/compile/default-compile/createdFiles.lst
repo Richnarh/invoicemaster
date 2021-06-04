@@ -1,10 +1,13 @@
 com\khoders\im\admin\jbeans\UserModel.class
 com\khoders\im\admin\listener\SessionListener.class
+com\khoders\im\admin\services\CompanyService.class
 com\khoders\im\admin\jbeans\converter\CompanyProfileConverter.class
 com\khoders\im\admin\Pages.class
 com\khoders\im\admin\jbeans\LoginController.class
+com\khoders\im\admin\jbeans\CompanyProfileController.class
 com\khoders\im\admin\jbeans\UserAccountController.class
-com\khoders\im\admin\commons\UserCommonClazz.class
 com\khoders\im\admin\commons\CommonClazz.class
-com\khoders\im\admin\services\UserAccountService.class
+com\khoders\im\admin\jbeans\CompanyBranchController.class
 com\khoders\im\admin\listener\AppSession.class
+com\khoders\im\admin\commons\UserCommonClazz.class
+com\khoders\im\admin\services\UserAccountService.class

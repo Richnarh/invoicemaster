@@ -596,26 +596,26 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(grandTotalAmount);
             
-            if(appSession.getCurrentUser().getCompanyProfile().getBoxAddress() != null)
-            {
-                proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyProfile().getBoxAddress());
-            }
-            if(appSession.getCurrentUser().getCompanyProfile().getTelephoneNo() != null)
-            {
-                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyProfile().getTelephoneNo());
-            }
-            if(appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                 proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch()+"");
-            }
-            if(appSession.getCurrentUser().getCompanyProfile().getGpsAddress() != null)
-            {
-                 proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyProfile().getGpsAddress());
-            }
-            if(appSession.getCurrentUser().getCompanyProfile().getWebsite() != null)
-            {
-                 proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyProfile().getWebsite());
-            }
+            if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
+        {
+            proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
+        {
+            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getGpsAddress() != null)
+        {
+            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite() != null)
+        {
+            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+        }
             
         for (DeliveryTermConfigItems configItems : deliveryTermList)
         {

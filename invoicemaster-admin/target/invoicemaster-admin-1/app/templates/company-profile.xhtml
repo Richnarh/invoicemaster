@@ -17,39 +17,33 @@
                     <h5 class="card-title">Company Profile</h5>
                     <div class="card-body">
                         <h:form id="profileForm">
-                              <h:panelGrid columns="4">
-                                <span>#{msg.telephone_no}</span>
-                                <p:inputText value="#{userAccountController.userAccount.phoneNumber}"/>
-
-                                <span>#{msg.box_address}</span>
-                                <p:inputText value="#{userAccountController.userAccount.boxAddress}"/>
-
-                                <span>#{msg.gps_address}</span>
-                                <p:inputText value="#{userAccountController.userAccount.gpsAddress}"/>
-
+                              <h:panelGrid columns="4" class="spaced-form">
                                 <span>#{msg.currency}</span>
-                                <p:selectOneMenu class="col" value="#{userAccountController.userAccount.currency}" required="true">
+                                <p:selectOneMenu class="col" value="#{companyProfileController.companyProfile.currency}" required="true">
                                     <f:selectItem itemLabel="#{msg.choose}"/>
                                     <f:selectItems value="#{commonClazz.currencyList}"/>
                                 </p:selectOneMenu>
 
                                 <span>#{msg.website}</span>
-                                <p:inputText value="#{userAccountController.userAccount.website}"/>
+                                <p:inputText value="#{companyProfileController.companyProfile.website}"/>
 
                                 <span>#{msg.email_ddress}</span>
-                                <p:inputText value="#{userAccountController.userAccount.email}"/>
+                                <p:inputText value="#{companyProfileController.companyProfile.companyEmail}"/>
 
                                 <span>#{msg.tin_no}</span>
-                                <p:inputText value="#{userAccountController.userAccount.tinNo}"/>
+                                <p:inputText value="#{companyProfileController.companyProfile.tinNo}"/>
                                 
-                                <center>
-                                    <p:commandButton value="#{msg.save}" update="@form"/>
-                                    <p:commandButton value="#{msg.save}" update="@form"/>
-                                </center>
+                                
                         </h:panelGrid>
+                                <br/>
+                                <p:commandButton class="kbtn-success"  value="#{companyProfileController.optionText}" action="#{companyProfileController.saveCompanyProfile()}" update="@form"/>
+                                <p:commandButton class="kbtn-cancel"  value="#{msg.clear}" update="@form" action="#{companyProfileController.clearProfile()}"/>
+                                
+                           
+                            <br/>
                             
-                            
-                            <p:dataTable>
+                            <div class="pt-3">
+                                <p:dataTable value="#{companyProfileController.companyProfileList}" var="companyProfile">
                                 <p:column style="width: 37px;">
                                     <p:rowToggler/>
                                 </p:column>
@@ -60,28 +54,26 @@
                                     </h:panelGrid>
                                 </p:rowExpansion>
                                 
-                                <p:column headerText="#{msg.box_address}">
-                                    
-                                </p:column>
-                                <p:column headerText="#{msg.gps_address}">
-                                    
-                                </p:column>
-                                <p:column headerText="#{msg.telephone_no}">
-                                    
-                                </p:column>
                                 <p:column headerText="#{msg.currency}">
-                                    
+                                    #{companyProfile.currency}
                                 </p:column>
                                 <p:column headerText="#{msg.website}">
-                                    
+                                    #{companyProfile.website}
                                 </p:column>
                                 <p:column headerText="#{msg.email_ddress}">
-                                    
+                                    #{companyProfile.companyEmail}
                                 </p:column>
                                 <p:column headerText="#{msg.tin_no}">
-                                    
+                                    #{companyProfile.tinNo}
+                                </p:column>
+                                <p:column headerText="#{msg.action}">
+                                    <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{companyProfileController.editCompanyProfile(companyProfile)}" update="@form"/>
+                                </p:column>
+                                <p:column headerText="#{msg.action}">
+                                    <p:commandButton class="kbtn-danger" value="#{msg.delete}" action="#{companyProfileController.deleteCompanyProfile(companyProfile)}" update="@form"/>
                                 </p:column>
                             </p:dataTable>
+                            </div>
                         </h:form>
                     </div>
                 </div>

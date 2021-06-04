@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.payment}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5 wow zoomIn">
+                        <div class="container-fluid">
+                            <div class="card-header zoomIn">
+                                <span>
+                                    Invoice Amount: 
+                                    <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.totalAmount}" class="text-success font-weight-bold">
+                                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                    </h:outputText> &nbsp; |&nbsp;
+                                    Unpaid Amount: 
+                                    <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.amountRemaining}" class="text-success font-weight-bold">
+                                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                    </h:outputText>  &nbsp; |&nbsp;
+                                    Invoice No.: 
+                                    <h:outputText value="#{paymentReceiptController.selectedInvoice.invoiceNumber}" class="text-success font-weight-bold">
+                                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                    </h:outputText>
+                                </span>
+                            </div>
+                            <h:panelGroup rendered="#{paymentReceiptController.pageView.listView}">
+                                <div class="row wow zoomIn">
+                                    <div class="col-md-12 col-sm-6 col-lg-12 py-3">
+                                        <h:form>
+                                            <p:selectOneMenu value="#{paymentReceiptController.selectedInvoice}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose} Invoice"/>
+                                                <f:selectItems value="#{userCommonClass.invoiceList}"/>
+                                            </p:selectOneMenu>
+
+                                            <span class="mr-2">From Date: </span>
+                                            <p:datePicker value="#{paymentReceiptController.dateRange.fromDate}"
+                                                          pattern="#{msg.formatted_date}" 
+                                                          monthNavigator="true" yearNavigator="true"/>
+
+                                            <span class="mr-2">To Date: </span>
+                                            <p:datePicker value="#{paymentReceiptController.dateRange.toDate}"
+                                                          pattern="#{msg.formatted_date}" 
+                                                          monthNavigator="true" yearNavigator="true"/>
+
+                                            <p:commandButton class="mx-2" value="#{msg.filter_record}" action="#{paymentReceiptController.searchReceipt()}" update=":mainPanel"/>
+
+                                            <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
+                                            
+                                            <div class="float-right">
+                                                <h:commandButton value="#{msg.new} #{msg.payment}" class="btn btn-outline-primary btn-sm"
+                                                                 action="#{paymentReceiptController.initPaymentReceipt()}">
+                                                </h:commandButton>
+                                            </div>
+                                        </h:form>      
+                                    </div>
+                                </div>
+
+                                <ui:include src="components/payment-list.xhtml"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup  rendered="#{paymentReceiptController.pageView.createView}">
+                                <ui:include src="components/payment-form.xhtml"/>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

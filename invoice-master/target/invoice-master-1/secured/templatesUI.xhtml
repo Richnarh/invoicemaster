@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <h:head>
+        <title>#{msg.title}</title>
+
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" />
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/OverlayScrollbars.min.css" />   
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/main.css" />  
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/animate.css" />  
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
+
+        <style>
+            
+            .ui-growl {
+                top: auto;
+                bottom: 5em;
+            }
+            .ptext-link{
+                color: #17a2b8 !important;
+            }
+            .ptext-link:hover{
+                text-decoration: underline !important;
+            }
+        </style>
+    </h:head>
+    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+        <div class="wrapper">
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/inventory.xhtml" class="nav-link">#{msg.inventory}</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="nav-link">#{msg.invoice}s</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/payment-receipt.xhtml" class="nav-link">#{msg.payment}s</a>
+                    </li>
+                </ul>
+                <ui:remove>
+                    <form class="form-inline ml-3">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </ui:remove>      
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <h:form>
+                            <h:commandLink class="btn btn-default shadow-sm btn-sm" action="#{userCommonClass.init()}" value="Refresh"/>
+                            <!--<button class="btn btn-default btn-sm" jsf:action="{userCommonClass.init()}" title="Refresh"> <i class="fa fa-refresh"></i> </button>-->
+                        </h:form>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <!--<i class="fa fa-user"></i>-->
+                            <span>Administrator &nbsp;<i class="fa fa-angle-down"></i></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <span class="dropdown-item dropdown-header">Profile Activity</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/profile-update.xhtml" class="dropdown-item">
+                                <i class="fa fa-user mr-2"></i> Update Account
+                                <span class="float-right text-muted text-sm"></span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/update-password.xhtml" class="dropdown-item">
+                                <i class="fa fa-key mr-2"></i> Update Password
+                                <span class="float-right text-muted text-sm"></span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <h:form>
+                                <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>
+                            </h:form>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <h:panelGroup>
+                <ui:include src="menu/app-menu.xhtml"/>
+            </h:panelGroup>
+
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h5 class="m-0 text-gray">
+                                    <ui:insert name="pageTitle">
+                                        Default Title
+                                    </ui:insert>
+                                </h5>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#{application.contextPath}/secured/index.xhtml">Home</a></li>
+                                    <li class="breadcrumb-item active">
+                                        <ui:insert name="pageTitle">
+                                            Default Title
+                                        </ui:insert>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="content">
+                    <div class="container-fluid">
+
+                        <p:messages globalOnly="true">
+                            <p:autoUpdate/>
+                        </p:messages>
+
+                        <ui:insert name="pageContent">
+                            Index Page
+                        </ui:insert>
+
+                    </div>
+                </section>
+            </div>
+
+            <footer class="main-footer">
+                <small>
+                    Copyright &copy; 2021 <a href="#{application.contextPath}/secured/index.xhtml">#{msg.title}</a>
+                    All rights reserved. - <b>#{appSession.currentUser.companyBranchName}</b>
+                </small>
+                <div class="float-right d-none d-sm-inline-block">
+                    <small>
+                        <b>Version</b> 1.1
+                    </small>
+                </div>
+            </footer>
+        </div>
+
+
+        <script src="#{application.contextPath}/vendors/js/bootstrap.bundle.min.js"></script>
+
+        <script src="#{application.contextPath}/vendors/js/jquery.overlayScrollbars.min.js"></script>
+
+        <script src="#{application.contextPath}/vendors/js/adminlte.min.js"></script>
+
+        <script src="#{application.contextPath}/vendors/js/demo.js"></script>
+
+        <script src="#{application.contextPath}/vendors/js/jquery.mousewheel.js"></script>
+        <script src="#{application.contextPath}/vendors/js/raphael.min.js"></script>
+        <script src="#{application.contextPath}/vendors/js/wow.min.js"></script>
+
+        <script type="text/javascript">
+//            new WOW().init();
+        </script>
+    </body>
+</html>
+

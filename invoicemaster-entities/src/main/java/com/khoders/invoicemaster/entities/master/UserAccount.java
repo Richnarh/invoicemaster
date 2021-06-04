@@ -27,10 +27,6 @@ import javax.persistence.Transient;
 @Table(name = "user_account")
 public class UserAccount extends BaseModel implements Serializable
 {
-    @JoinColumn(name = "company_profile", referencedColumnName = "id")
-    @ManyToOne
-    private CompanyProfile companyProfile;
-    
     @JoinColumn(name = "company_branch", referencedColumnName = "id")
     @ManyToOne
     private CompanyBranch companyBranch;
@@ -49,7 +45,7 @@ public class UserAccount extends BaseModel implements Serializable
     
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
     
     @Column(name = "access_level")
     @Enumerated(EnumType.STRING)
@@ -93,17 +89,7 @@ public class UserAccount extends BaseModel implements Serializable
     {
         this.password2 = password2;
     }
-
-    public CompanyProfile getCompanyProfile()
-    {
-        return companyProfile;
-    }
-
-    public void setCompanyProfile(CompanyProfile companyProfile)
-    {
-        this.companyProfile = companyProfile;
-    }
-
+    
     public String getFullname()
     {
         return fullname;

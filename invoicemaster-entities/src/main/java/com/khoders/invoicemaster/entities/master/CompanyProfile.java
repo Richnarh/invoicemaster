@@ -22,15 +22,6 @@ import javax.persistence.Table;
 @Table(name = "company_profile")
 public class CompanyProfile extends BaseModel implements Serializable
 {
-    @Column(name = "box_address")
-    private String boxAddress;
-
-    @Column(name = "gps_address")
-    private String gpsAddress;
-
-    @Column(name = "telephone_no")
-    private String telephoneNo;
-
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
     private Currency currency = Currency.GHS;
@@ -43,37 +34,7 @@ public class CompanyProfile extends BaseModel implements Serializable
 
     @Column(name = "tin_no")
     private String tinNo;
-
-    public String getBoxAddress()
-    {
-        return boxAddress;
-    }
-
-    public void setBoxAddress(String boxAddress)
-    {
-        this.boxAddress = boxAddress;
-    }
-
-    public String getGpsAddress()
-    {
-        return gpsAddress;
-    }
-
-    public void setGpsAddress(String gpsAddress)
-    {
-        this.gpsAddress = gpsAddress;
-    }
-
-    public String getTelephoneNo()
-    {
-        return telephoneNo;
-    }
-
-    public void setTelephoneNo(String telephoneNo)
-    {
-        this.telephoneNo = telephoneNo;
-    }
-
+    
     public Currency getCurrency()
     {
         return currency;

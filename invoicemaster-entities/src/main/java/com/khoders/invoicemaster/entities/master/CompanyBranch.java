@@ -10,6 +10,8 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,10 +23,24 @@ import javax.persistence.Table;
 public class CompanyBranch extends BaseModel implements Serializable
 {
     @Column(name = "branch_code")
-    private String branchCode = SystemUtils.generateShortCode();
+    private String branchCode = SystemUtils.generateCode();
     
     @Column(name = "branch_name")
     private String branchName;
+    
+    @Column(name = "box_address")
+    private String boxAddress;
+
+    @Column(name = "gps_address")
+    private String gpsAddress;
+
+    @Column(name = "telephone_no")
+    private String telephoneNo;
+    
+    @JoinColumn(name = "company_profile", referencedColumnName = "id")
+    @ManyToOne
+    private CompanyProfile companyProfile;
+    
 
     public String getBranchCode()
     {
@@ -44,6 +60,46 @@ public class CompanyBranch extends BaseModel implements Serializable
     public void setBranchName(String branchName)
     {
         this.branchName = branchName;
+    }
+
+    public String getBoxAddress()
+    {
+        return boxAddress;
+    }
+
+    public void setBoxAddress(String boxAddress)
+    {
+        this.boxAddress = boxAddress;
+    }
+
+    public String getGpsAddress()
+    {
+        return gpsAddress;
+    }
+
+    public void setGpsAddress(String gpsAddress)
+    {
+        this.gpsAddress = gpsAddress;
+    }
+
+    public String getTelephoneNo()
+    {
+        return telephoneNo;
+    }
+
+    public void setTelephoneNo(String telephoneNo)
+    {
+        this.telephoneNo = telephoneNo;
+    }
+
+    public CompanyProfile getCompanyProfile()
+    {
+        return companyProfile;
+    }
+
+    public void setCompanyProfile(CompanyProfile companyProfile)
+    {
+        this.companyProfile = companyProfile;
     }
     
     @Override

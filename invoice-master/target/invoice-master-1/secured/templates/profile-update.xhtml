@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Profile
+            </ui:define>
+            <ui:define name="pageContent">
+                <div class="col-md-12">
+                    <div class="card">
+                        <h5 class="card-header">Update Account</h5>
+                        <div class="card-body">
+                            <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                <h:form>
+                                    <div class="card-block">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Username<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.username}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Phone<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.phoneNumber}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Address<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.boxAddress}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Branch Name<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.companyBranchName}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Telephone Number<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.telephoneNo}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Email<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.telephoneNo}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Website<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.website}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Currency<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.currency}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.currencyList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Frame</label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.frame}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">#{msg.width}</label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.width}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">#{msg.height}</label>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.height}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.unitOfMeasurementList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                         <div class="text-center pt-3">
+                                             <p:commandButton class="kbtn-success" value="Save Changes" icon="#{msg.check_icon}" action="#{profileUpdateController.updateAccount()}" update="@form"/>
+               
+                                        </div>
+
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

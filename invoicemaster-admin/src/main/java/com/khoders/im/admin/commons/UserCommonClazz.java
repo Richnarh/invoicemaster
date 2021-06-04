@@ -5,10 +5,11 @@
  */
 package com.khoders.im.admin.commons;
 
+import com.khoders.im.admin.services.CompanyService;
+import com.khoders.invoicemaster.entities.master.CompanyBranch;
 import com.khoders.invoicemaster.entities.master.CompanyProfile;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -25,27 +26,26 @@ import javax.inject.Named;
 public class UserCommonClazz implements Serializable
 {
    @Inject private CrudApi crudApi;
+   @Inject private CompanyService companyService;
    
+   private List<CompanyBranch> companyBranchList = new LinkedList<>();
    private List<CompanyProfile> companyProfileList = new LinkedList<>();
    
    @PostConstruct
-   private void init()
+   public void init()
    {
-       getCompanyProfileList();
+       companyBranchList = companyService.getCompanyBranchList();
+       companyProfileList = companyService.getCompanyProfileList();
    }
-   
-   public List<CompanyProfile> getCompanyProfileList()
-   {
-       try
-       {
-           companyProfileList = crudApi.getEm().createQuery("SELECT e FROM CompanyProfile e", CompanyProfile.class).getResultList();
-       } catch (Exception e)
-       {
-           e.printStackTrace();
-           return Collections.EMPTY_LIST;
-       }
-       
-       return Collections.emptyList();
-   }
+
+    public List<CompanyBranch> getCompanyBranchList()
+    {
+        return companyBranchList;
+    }
+
+    public List<CompanyProfile> getCompanyProfileList()
+    {
+        return companyProfileList;
+    }
    
 }

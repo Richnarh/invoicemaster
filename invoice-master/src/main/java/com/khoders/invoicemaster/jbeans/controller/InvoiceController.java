@@ -371,25 +371,25 @@ public class InvoiceController implements Serializable
         {
             invoiceDto.setPaymentStatus(invoice.getPaymentStatus().getLabel());
         }
-        if (appSession.getCurrentUser().getCompanyProfile().getBoxAddress() != null)
+        if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
         {
-            invoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyProfile().getBoxAddress());
+            invoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
         }
-        if (appSession.getCurrentUser().getCompanyProfile().getTelephoneNo() != null)
+        if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
         {
-            invoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyProfile().getTelephoneNo());
+            invoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
         }
         if (appSession.getCurrentUser().getCompanyBranch() != null)
         {
             invoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
         }
-        if (appSession.getCurrentUser().getCompanyProfile().getGpsAddress() != null)
+        if (appSession.getCurrentUser().getCompanyBranch().getGpsAddress() != null)
         {
-            invoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyProfile().getGpsAddress());
+            invoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
         }
-        if (appSession.getCurrentUser().getCompanyProfile().getWebsite() != null)
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite() != null)
         {
-            invoiceDto.setWebsite(appSession.getCurrentUser().getCompanyProfile().getWebsite());
+            invoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
         }
 
         for (InvoiceItem item : itemList)

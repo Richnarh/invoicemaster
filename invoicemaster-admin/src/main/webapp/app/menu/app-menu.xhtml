@@ -9,7 +9,7 @@
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="#{application.contextPath}/secured/index.xhtml" class="brand-link">
-            <i class="fa fa-folder-open"></i> <span class="brand-text">#{msg.appName} - v1.1 </span> <span class="float-right" title="System currency">#{appSession.currentUser.currency}</span>
+            <i class="fa fa-folder-open"></i> <span class="brand-text">#{msg.appName} - v1.1 </span> <span class="float-right" title="System currency">#{appSession.currentUser.companyBranch.companyProfile.currency}</span>
         </a>
 
         <div class="sidebar">
@@ -48,12 +48,13 @@
 <!--                    <h:panelGroup>
                         <ui:include src="account-menu.xhtml"/>
                     </h:panelGroup>-->
-                    </ui:remove>
+                    
 
                     <li class="nav-header">SETTINGS</li>
                     <h:panelGroup>
                         <ui:include src="settings-menu.xhtml"/>
                     </h:panelGroup>
+                    </ui:remove>
                 </ul>
             </nav>
         </div>
