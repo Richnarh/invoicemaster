@@ -96,7 +96,7 @@ public class PaymentReceiptController implements Serializable
             paymentReceiptDto.setReceivedAmount(receipt.getReceivedAmount());
             paymentReceiptDto.setPaymentMethod(receipt.getPaymentMethod() + "");
             paymentReceiptDto.setDescription(receipt.getDescription());
-            paymentReceiptDto.setReceivedBy(appSession.getCurrentUser().getUsername());
+            paymentReceiptDto.setReceivedBy(appSession.getCurrentUser().getFullname());
             paymentReceiptDto.setUnpaidAmount(receipt.getAmountUnpaid());
             paymentReceiptDto.setAmountInWords(ConvertToWords.convertNumber(receipt.getReceivedAmount()));
             paymentReceiptDto.setPaymentStatus(receipt.getPaymentStatus().getLabel());

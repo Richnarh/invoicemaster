@@ -49,7 +49,7 @@ public class UserAccountController implements Serializable{
                 return;
             }
             
-            if(!accountService.isTaken(userAccount.getUsername()))
+            if(!accountService.isTaken(userAccount.getEmail()))
             {
               userAccount.setPassword(hashText(userAccount.getPassword()));
 

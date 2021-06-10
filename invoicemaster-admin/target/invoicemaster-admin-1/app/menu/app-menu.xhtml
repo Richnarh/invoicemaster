@@ -8,7 +8,7 @@
 
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="#{application.contextPath}/secured/index.xhtml" class="brand-link">
+        <a href="#{application.contextPath}/app/index.xhtml" class="brand-link">
             <i class="fa fa-folder-open"></i> <span class="brand-text">#{msg.appName} - v1.1 </span> <span class="float-right" title="System currency">#{appSession.currentUser.companyBranch.companyProfile.currency}</span>
         </a>
 
@@ -19,25 +19,25 @@
                     <img src="#{application.contextPath}/vendors/img/p.png" class="img-circle elevation-2" alt="User Image"/>
                 </div>
                 <div class="info">
-                    <span class="d-block text-light"><i class="fa fa-circle text-success mr-3" title="Online"></i> #{appSession.currentUser.username}</span>
+                    <span class="d-block text-light"><i class="fa fa-circle text-success mr-3" title="Online"></i> #{appSession.currentUser.email}</span>
                 </div>
             </div>
 
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <div class="py-3 ml-2">
-                        <h:form>
-                            <h:panelGrid columns="6" styleClass="spaced-table">
-
-                                <h:selectOneMenu class="form-control form-control-sm" value="#{smsController.senderId.senderId}">
-                                    <f:selectItem itemLabel="--Sender ID--" />
-                                    <f:selectItems  value="#{userCommonClass.senderIdList}" />
-                                </h:selectOneMenu>
-                                <p:commandButton class="mx-2 kbtn-secondary" ajax="false" value="Set Active" action="#{smsController.activateSenderId()}"/>
-                            </h:panelGrid>
-                        </h:form>
-
-                    </div>
+                    <ui:remove>
+                        <div class="py-3 ml-2">
+                            <h:form>
+                                <h:panelGrid columns="6" styleClass="spaced-table">
+                                    <h:selectOneMenu class="form-control form-control-sm" value="#{smsController.senderId.senderId}">
+                                        <f:selectItem itemLabel="--Sender ID--" />
+                                        <f:selectItems  value="#{userCommonClass.senderIdList}" />
+                                    </h:selectOneMenu>
+                                    <p:commandButton class="mx-2 kbtn-secondary" ajax="false" value="Set Active" action="#{smsController.activateSenderId()}"/>
+                                </h:panelGrid>
+                            </h:form>
+                        </div>
+                    </ui:remove>
                     <li class="nav-header">OPERATIONS</li>
                     <h:panelGroup>
                         <ui:include src="invoice-menu.xhtml"/>

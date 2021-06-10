@@ -16,7 +16,7 @@
                 <div class="card">
                     <h5 class="card-header">Company Branch setup</h5>
                     <div class="card-body">
-                        <h:form id="profileForm">
+                        <h:form id="branchForm">
                             <h:panelGrid columns="4" class="spaced-form">
                                 <span>#{msg.branch_code}</span>
                                 <p:inputText value="#{companyBranchController.companyBranch.branchCode}"/>
@@ -39,12 +39,13 @@
                                 <span>#{msg.telephone_no}</span>
                                 <p:inputText value="#{companyBranchController.companyBranch.telephoneNo}"/>
 
-                                <center>
-                                    <p:commandButton class="kbtn-success" value="#{msg.save}" update="@form" action="#{companyBranchController.saveCompanyBranch()}"/>
-                                    <p:commandButton class="kbtn-cancel" value="#{msg.save}" update="@form" action="#{companyBranchController.clearBranch()}"/>
-                                </center>
                         </h:panelGrid>
-                            
+                            <div class="py-3">
+                                <p:commandButton class="kbtn-success mr-3" value="#{companyBranchController.optionText}" update="@form, :branchTable" action="#{companyBranchController.saveCompanyBranch()}"/>
+                                <p:commandButton class="kbtn-cancel" value="#{msg.clear}" update="@form" immediate="true" action="#{companyBranchController.clearBranch()}"/>
+                                </div>
+                        </h:form>
+                        <h:form id="branchTable">
                             
                             <p:dataTable value="#{companyBranchController.companyBranchList}" var="companyBranch">
                                 <p:column style="width: 37px;">
@@ -79,7 +80,7 @@
                                 </p:column>
                                 
                                 <p:column headerText="#{msg.action}">
-                                    <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{companyBranchController.editCompanyBranch(companyBranch)}"/>
+                                    <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{companyBranchController.editCompanyBranch(companyBranch)}" immediate="true" update=":branchForm"/>
                                 </p:column>
                                 <p:column headerText="#{msg.action}">
                                     <p:commandButton class="kbtn-danger" value="#{msg.delete}" action="#{companyBranchController.deleteCompanyBranch(companyBranch)}" update="@form"/>

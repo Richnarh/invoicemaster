@@ -78,6 +78,6 @@ public class CompanyProfile extends BaseModel implements Serializable
     @Override
     public String toString()
     {
-        return tinNo;
+        return companyEmail+" - "+tinNo;
     }
 }

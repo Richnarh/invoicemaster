@@ -94,13 +94,13 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.action}" style="width: 80px;">
+                                        <p:column headerText="#{msg.action}" style="width: 80px;" rendered="#{appSession.currentUser.permUpdate == true}">
                                             <h:commandButton class="btn btn-outline-info btn-sm" value="#{msg.edit}" immediate="true" action="#{inventoryController.editInventory(inventory)}">
                                                 <p:ajax  update=":mainPanel"/>
                                             </h:commandButton>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.action}" style="width: 100px;">
+                                        <p:column headerText="#{msg.action}" style="width: 100px;" rendered="#{appSession.currentUser.permDelete == true}">
                                             <h:commandButton class="btn btn-danger btn-sm" value="#{msg.delete}" action="#{inventoryController.deleteInventory(inventory)}" 
                                                              onclick="return confirm('#{msg.delete_message}')">
                                                 <p:ajax update="@form"/>
@@ -173,7 +173,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center pt-3">
-                                            <p:commandButton class="kbtn-success" value="#{inventoryController.optionText}" icon="#{msg.check_icon}" action="#{inventoryController.saveInventory()}" ajax="false"/>
+                                            <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success" value="#{inventoryController.optionText}" icon="#{msg.check_icon}" action="#{inventoryController.saveInventory()}" ajax="false"/>
                                             <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{inventoryController.clearInventory()}" immediate="true" update=":mainPanel"/>
 
                                             <div class="float-right">

@@ -20,9 +20,16 @@
                                 <h:form>
                                     <div class="card-block">
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Username<span class="text-danger">*</span> </label>
+                                            <label class="col-sm-4 col-form-label">#{msg.fullname}<span class="text-danger">*</span> </label>
                                             <div class="col-md-8">
-                                                <p:inputText class="col" value="#{appSession.currentUser.username}" required="true"/>
+                                                <p:inputText class="col" value="#{appSession.currentUser.fullname}" required="true"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">#{msg.email_ddress}<span class="text-danger">*</span> </label>
+                                            <div class="col-md-8">
+                                                <p:inputText class="col" value="#{appSession.currentUser.email}" required="true"/>
                                             </div>
                                         </div>
                                         
@@ -33,50 +40,6 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Address<span class="text-danger">*</span> </label>
-                                            <div class="col-md-8">
-                                                <p:inputText class="col" value="#{appSession.currentUser.boxAddress}" required="true"/>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Branch Name<span class="text-danger">*</span> </label>
-                                            <div class="col-md-8">
-                                                <p:inputText class="col" value="#{appSession.currentUser.companyBranchName}" required="true"/>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Telephone Number<span class="text-danger">*</span> </label>
-                                            <div class="col-md-8">
-                                                <p:inputText class="col" value="#{appSession.currentUser.telephoneNo}" required="true"/>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Email<span class="text-danger">*</span> </label>
-                                            <div class="col-md-8">
-                                                <p:inputText class="col" value="#{appSession.currentUser.telephoneNo}" required="true"/>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Website<span class="text-danger">*</span> </label>
-                                            <div class="col-md-8">
-                                                <p:inputText class="col" value="#{appSession.currentUser.website}" required="true"/>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Currency<span class="text-danger">*</span> </label>
-                                            <div class="col-md-8">
-                                                <p:selectOneMenu class="col" value="#{appSession.currentUser.currency}" required="true">
-                                                    <f:selectItem itemLabel="#{msg.choose}"/>
-                                                    <f:selectItems value="#{commonClass.currencyList}"/>
-                                                </p:selectOneMenu>
-                                            </div>
-                                        </div>
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label">Frame</label>
                                             <div class="col-md-8">

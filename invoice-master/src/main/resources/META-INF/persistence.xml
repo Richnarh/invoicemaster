@@ -5,6 +5,8 @@
     <jta-data-source>jdbc/invoicemaster</jta-data-source>
     <class>com.khoders.invoicemaster.entities.master.UserAccount</class>
     <class>com.khoders.invoicemaster.entities.master.CompanyProfile</class>
+    <class>com.khoders.invoicemaster.entities.master.CompanyBranch</class>
+    <class>com.khoders.invoicemaster.entities.master.UserPermissions</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

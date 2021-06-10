@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <h:head>
-        <title>#{msg.title}</title>
+        <title>#{msg.title}-Admin</title>
 
         <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" />
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
@@ -14,6 +14,15 @@
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/main.css" />  
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/animate.css" />  
         <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
+        
+        <style>
+            .ptext-link{
+                color: #17a2b8 !important;
+            }
+            .ptext-link:hover{
+                text-decoration: underline;
+            }
+        </style>
 
     </h:head>
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -52,16 +61,6 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Profile Activity</span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#{application.contextPath}/#{msg.app_menu_uri}/profile-update.xhtml" class="dropdown-item">
-                                <i class="fa fa-user mr-2"></i> Update Account
-                                <span class="float-right text-muted text-sm"></span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#{application.contextPath}/#{msg.app_menu_uri}/update-password.xhtml" class="dropdown-item">
-                                <i class="fa fa-key mr-2"></i> Update Password
-                                <span class="float-right text-muted text-sm"></span>
-                            </a>
                             <div class="dropdown-divider"></div>
                             <h:form>
                                 <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>

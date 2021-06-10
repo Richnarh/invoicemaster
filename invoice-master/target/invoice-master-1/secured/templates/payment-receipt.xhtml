@@ -4,8 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+      xmlns:p="http://primefaces.org/ui">  
 
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
@@ -20,11 +19,11 @@
                             <div class="card-header zoomIn">
                                 <span>
                                     Invoice Amount: 
-                                    <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.totalAmount}" class="text-success font-weight-bold">
+                                    <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{paymentReceiptController.selectedInvoice.totalAmount}" class="text-success font-weight-bold">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText> &nbsp; |&nbsp;
                                     Unpaid Amount: 
-                                    <h:outputText value="#{appSession.currentUser.currency} #{paymentReceiptController.selectedInvoice.amountRemaining}" class="text-success font-weight-bold">
+                                    <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{paymentReceiptController.selectedInvoice.amountRemaining}" class="text-success font-weight-bold">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>  &nbsp; |&nbsp;
                                     Invoice No.: 
@@ -55,7 +54,7 @@
                                             <p:commandButton class="mx-2" value="#{msg.filter_record}" action="#{paymentReceiptController.searchReceipt()}" update=":mainPanel"/>
 
                                             <p:commandButton class="kbtn-default" value="#{msg.reset}" action="#{paymentReceiptController.reset()}" update=":mainPanel"/>
-                                            
+
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.new} #{msg.payment}" class="btn btn-outline-primary btn-sm"
                                                                  action="#{paymentReceiptController.initPaymentReceipt()}">

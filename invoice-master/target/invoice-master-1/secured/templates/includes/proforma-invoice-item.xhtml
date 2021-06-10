@@ -90,7 +90,7 @@
                     <h:panelGrid columns="2">
                         <span>Total Amount: </span>
                         <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
-                            <f:convertNumber pattern="#{appSession.currentUser.currency} #{msg.money_pattern}"/>
+                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>
                 </center>
@@ -98,7 +98,7 @@
              <hr/>
             <center>
                 <h:form>
-                    <p:commandButton value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
+                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
                     <p:ajax update=":mainTabView:mainPanel"/>
                 </h:commandButton>

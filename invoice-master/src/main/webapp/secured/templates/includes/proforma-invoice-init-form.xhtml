@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <p:commandButton  value="#{proformaInvoiceController.optionText}" class="kbtn-success" icon="#{msg.check_icon}"
+                                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="#{proformaInvoiceController.optionText}" class="kbtn-success" icon="#{msg.check_icon}"
                                                       action="#{proformaInvoiceController.saveProformaInvoice()}" ajax="false"/>
 
                                     <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="#{msg.clear_icon}" action="#{proformaInvoiceController.clearProformaInvoice()}" update=":mainTabView:mainPanel"/>

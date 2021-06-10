@@ -20,7 +20,7 @@
                         </div>
                         <label class="col-sm-4 col-form-label">Total Amount</label>
                         <div class="col-md-8">
-                            <h:outputText value="#{appSession.currentUser.currency} 
+                            <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} 
                                           #{paymentReceiptController.selectedInvoice.totalAmount}" class="field-shade"/>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="text-center pt-3">
-                    <p:commandButton class="kbtn-success" value="#{paymentReceiptController.optionText}" icon="#{msg.check_icon}" action="#{paymentReceiptController.savePaymentReceipt()}" ajax="false"/>
+                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success" value="#{paymentReceiptController.optionText}" icon="#{msg.check_icon}" action="#{paymentReceiptController.savePaymentReceipt()}" ajax="false"/>
                     <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{paymentReceiptController.clearPaymentReceipt()}" immediate="true" update=":mainPanel"/>
 
                     <div class="float-right">

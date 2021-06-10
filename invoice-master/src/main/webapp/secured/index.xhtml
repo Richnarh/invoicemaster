@@ -63,7 +63,7 @@
                             <div class="info-box-content">
                                 <span class="info-box-text" title="Total amount on paid invoices">Cash #{msg.invoice}</span>
                                 <span class="info-box-number">
-                                    <h:outputText value="#{appSession.currentUser.currency} #{invoiceController.cashInvoiceAmount}">
+                                    <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{invoiceController.cashInvoiceAmount}">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>
                                 </span>

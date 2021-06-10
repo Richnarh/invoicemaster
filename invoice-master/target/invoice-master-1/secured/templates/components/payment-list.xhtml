@@ -63,27 +63,27 @@
                     #{paymentReceipt.receivedFrom.clientName}
                 </p:column>
 
-                <p:column headerText="Received Amt (#{appSession.currentUser.currency})" class="text-right">
+                <p:column headerText="Received Amt (#{appSession.currentUser.companyBranch.companyProfile.currency})" class="text-right">
                     <h:outputText value="#{paymentReceipt.receivedAmount}">
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Unpaid Amt (#{appSession.currentUser.currency})" class="text-right">
+                <p:column headerText="Unpaid Amt (#{appSession.currentUser.companyBranch.companyProfile.currency})" class="text-right">
                     <h:outputText value="#{paymentReceipt.amountUnpaid}">
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Print" class="text-center">
+                <p:column rendered="#{appSession.currentUser.permPrint == true}" headerText="#{msg.action}" class="text-center">
                    <h:commandLink class="text-info" target="_blank" value="Print" action="#{paymentReceiptController.printPayment(paymentReceipt)}"/>
                 </p:column>
                 
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                      <p:menuButton value="#{msg.manage}">
-                        <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" immediate="true" action="#{paymentReceiptController.editPaymentReceipt(paymentReceipt)}" update=":mainPanel"/>
-                        <p:menuitem icon="fa fa-reply" class="text-info" value="Undo" action="#{paymentReceiptController.undoPaymentReceipt(paymentReceipt)}" update=":mainPanel"/>
-                        <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}" action="#{paymentReceiptController.deletePaymentReceipt(paymentReceipt)}"  onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                         <p:menuitem rendered="#{appSession.currentUser.permUpdate == true}" icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" immediate="true" action="#{paymentReceiptController.editPaymentReceipt(paymentReceipt)}" update=":mainPanel"/>
+                        <p:menuitem icon="fa fa-reply" class="text-info" value="Undo" action="#{paymentReceiptController.undoPaymentReceipt(paymentReceipt)}"  onclick="return confirm('Click YES to undo, No to cancel')" update=":mainPanel"/>
+                        <p:menuitem rendered="#{appSession.currentUser.permDelete == true}" icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}" action="#{paymentReceiptController.deletePaymentReceipt(paymentReceipt)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                     </p:menuButton>
                 </p:column>
                 

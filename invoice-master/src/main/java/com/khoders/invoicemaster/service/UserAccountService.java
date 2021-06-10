@@ -30,9 +30,9 @@ public class UserAccountService
         
         try
         {
-            String qryString = "SELECT e FROM UserAccount e WHERE e.username=?1 AND e.password=?2";
+            String qryString = "SELECT e FROM UserAccount e WHERE e.email=?1 AND e.password=?2";
             TypedQuery<UserAccount> typedQuery = crudApi.getEm().createQuery(qryString, UserAccount.class)
-                    .setParameter(1, userModel.getUsername())
+                    .setParameter(1, userModel.getUserEmail())
                     .setParameter(2, hashText(userModel.getPassword()));
             
                  if(typedQuery.getSingleResult() != null)
@@ -48,12 +48,12 @@ public class UserAccountService
         return null;
     }
     
-    public boolean isTaken(String username)
+    public boolean isTaken(String email)
     {
-        String qryString = "SELECT e FROM UserAccount e WHERE e.username=?1";
+        String qryString = "SELECT e FROM UserAccount e WHERE e.email=?1";
         try {
             UserAccount account = crudApi.getEm().createQuery(qryString, UserAccount.class)
-                    .setParameter(1, username)
+                    .setParameter(1, email)
                     .getSingleResult();
             
             return account != null;

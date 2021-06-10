@@ -35,6 +35,7 @@ public class CompanyProfileController implements Serializable
     @PostConstruct
     private void init()
     {
+        optionText="Save Changes";
         companyProfileList = companyService.getCompanyProfileList();
     }
     

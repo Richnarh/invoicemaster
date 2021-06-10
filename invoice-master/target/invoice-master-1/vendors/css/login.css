@@ -10,12 +10,17 @@ and open the template in the editor.
 
 body {
   /*background-color: #f45b69;*/
-  background-color: #e9ecef;
+  /*background-color: #e9ecef;*/
+  background-image: url("../img/1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: "Asap", sans-serif;
+  /*opacity: .7;*/
 }
 
 .login {
   overflow: hidden;
+  /*background-color: transparent;*/
   background-color: white;
   padding: 40px 30px 30px 30px;
   border-radius: 10px;

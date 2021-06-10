@@ -40,7 +40,7 @@
                                                 <h:outputText value="#{proformaInvoiceController.proformaInvoice.quotationNumber}" class="field-shade"/>
                                                  
                                                 <span class="p-2 mx-2 field-label">#{msg.total_amount}</span>
-                                                 <h:outputText value="#{appSession.currentUser.currency} #{proformaInvoiceController.proformaInvoice.totalAmount}" class="field-shade">
+                                                 <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{proformaInvoiceController.proformaInvoice.totalAmount}" class="field-shade">
                                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                                 </h:outputText> 
                                             </div>

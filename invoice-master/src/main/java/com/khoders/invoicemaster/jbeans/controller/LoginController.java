@@ -31,7 +31,7 @@ public class LoginController implements Serializable
     @Inject private AppSession appSession;
     @Inject private UserAccountService userAccountService;
     
-    private String username;
+    private String userEmail;
     private String password;
     
     private UserModel userModel = new UserModel();
@@ -40,8 +40,7 @@ public class LoginController implements Serializable
     {
         try
         {
-
-            userModel.setUsername(username);
+            userModel.setUserEmail(userEmail);
             userModel.setPassword(password);
 
             UserAccount account = userAccountService.login(userModel);
@@ -67,14 +66,12 @@ public class LoginController implements Serializable
     {
         try
         {
-
             if (userAccount == null)
             {
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
                 return null;
             }
-
             appSession.login(userAccount);
             
             Faces.redirect(Pages.index);
@@ -103,12 +100,12 @@ public class LoginController implements Serializable
         return null;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getPassword() {

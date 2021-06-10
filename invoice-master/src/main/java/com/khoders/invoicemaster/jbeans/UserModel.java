@@ -11,15 +11,15 @@ package com.khoders.invoicemaster.jbeans;
  * @author khoders
  */
 public class UserModel {
-    private String username;
+    private String userEmail;
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getPassword() {

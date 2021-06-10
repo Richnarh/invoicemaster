@@ -108,7 +108,7 @@
                     <h:panelGrid columns="2">
                         <span>Total Amount</span>
                         <h:outputText value="#{purchaseOrderController.totalAmount}" class="field-shade">
-                            <f:convertNumber pattern="#{appSession.currentUser.currency} #{msg.money_pattern}"/>
+                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>
                 </center>
@@ -116,7 +116,7 @@
             <hr/>
             <center>
                 <h:form>
-                    <p:commandButton icon="#{msg.check_icon}" value="Save All" action="#{purchaseOrderController.saveAll()}" class="kbtn-success mr-5" update=":purchaseOrderItemTable"/>
+                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" icon="#{msg.check_icon}" value="Save All" action="#{purchaseOrderController.saveAll()}" class="kbtn-success mr-5" update=":purchaseOrderItemTable"/>
 
                 <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{purchaseOrderController.closePage()}">
                     <p:ajax update=":mainPanel"/>

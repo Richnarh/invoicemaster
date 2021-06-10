@@ -29,7 +29,7 @@ public class LoginController implements Serializable
     @Inject private AppSession appSession;
     @Inject private UserAccountService userAccountService;
     
-    private String username;
+    private String UserEmail;
     private String password;
     
     private UserModel userModel = new UserModel();
@@ -39,7 +39,7 @@ public class LoginController implements Serializable
         try
         {
 
-            userModel.setUsername(username);
+            userModel.setUserEmail(UserEmail);
             userModel.setPassword(password);
 
             UserAccount account = userAccountService.login(userModel);
@@ -101,14 +101,14 @@ public class LoginController implements Serializable
         return null;
     }
 
-    public String getUsername()
+    public String getUserEmail()
     {
-        return username;
+        return UserEmail;
     }
 
-    public void setUsername(String username)
+    public void setUserEmail(String UserEmail)
     {
-        this.username = username;
+        this.UserEmail = UserEmail;
     }
 
     public String getPassword()

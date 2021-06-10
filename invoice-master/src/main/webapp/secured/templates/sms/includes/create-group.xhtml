@@ -16,7 +16,7 @@
                 
 
                 <div class="pt-3 mx-auto">
-                    <p:commandButton class="kbtn-success mr-3" value="#{smsGrupController.optionText}" update="@form"
+                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success mr-3" value="#{smsGrupController.optionText}" update="@form"
                                      action="#{smsGrupController.saveSMSGrup()}" />
 
                     <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"

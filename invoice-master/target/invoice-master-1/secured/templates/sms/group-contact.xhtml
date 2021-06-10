@@ -38,7 +38,7 @@
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="pt-3">
-                                        <p:commandButton class="kbtn-success mr-3" value="#{contactGroupController.optionText}" update="@form, :contactGroupTable"
+                                        <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success mr-3" value="#{contactGroupController.optionText}" update="@form, :contactGroupTable"
                                                          action="#{contactGroupController.saveContactGroup()}"/>
 
                                         <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
@@ -73,12 +73,12 @@
                                             #{group.smsGrup.groupName}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                        <p:column rendered="#{appSession.currentUser.permUpdate == true}" headerText="#{msg.action}" exportable="false" style="width: 80px;">
                                             <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update="@form, :contactGroupForm"
                                                              action="#{contactGroupController.editContactGroup(group)}"/>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                        <p:column rendered="#{appSession.currentUser.permDelete == true}" headerText="#{msg.action}" exportable="false" style="width: 100px;">
                                             <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{contactGroupController.deleteContactGroup(group)}" 
                                                              onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                                         </p:column>

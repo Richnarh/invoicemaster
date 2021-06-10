@@ -19,7 +19,7 @@
 
                         <div class="row">
                             <div class="col-md-8">
-                                <h:form>
+                                <h:form id="accountForm">
                                     <h:panelGrid columns="6" class="spaced-form">
                                         <span>Branch<span class="text-danger">*</span></span>
                                         <p:selectOneMenu class="col" value="#{userAccountController.userAccount.companyBranch}" required="true">
@@ -29,9 +29,6 @@
 
                                         <span>#{msg.fullname} <span class="text-danger">*</span></span>
                                         <p:inputText value="#{userAccountController.userAccount.fullname}" required="true"/>
-
-                                        <span>Username</span>
-                                        <p:inputText value="#{userAccountController.userAccount.username}"/>
 
                                         <span>Email<span class="text-danger">*</span></span>
                                         <p:inputText value="#{userAccountController.userAccount.email}" required="true"/>
@@ -70,30 +67,33 @@
                                         </p:selectOneMenu>
 
                                     </h:panelGrid>
-                                    <center>
-                                        <p:commandButton class="kbtn-success" value="Save" action="#{userAccountController.saveUserAccount()}"/>
-                                        <p:commandButton class="kbtn-cancel" value="Clear" action="#{userAccountController.clear()}"/>
+                                    <center class="pt-3">
+                                        <p:commandButton class="kbtn-success" value="#{userAccountController.optionText}" action="#{userAccountController.saveUserAccount()}" update="@form, :accountTable"/>
+                                        <p:commandButton class="kbtn-cancel" value="Clear" action="#{userAccountController.clear()}" immediate="true" update="@form"/>
                                     </center>
                                 </h:form>
                             </div>
                             <div class="col-md-4">
-                                <h:form>
+                                <h:form id="authForm">
                                     <p:panel header="Set password" class="float-right">
                                         <h:panelGrid columns="2">
                                             <span>Email</span>
-                                            <h:outputText class="field-shade"/>
+                                            <h:outputText value="#{userAccountController.userAccount.email}" class="field-shade"/>
                                             <span>Password</span>
-                                            <p:password/>
+                                            <p:password required="true" value="#{userAccountController.userAccount.password}"/>
                                             <br/><br/>
-                                            <h:commandButton class="btn btn-light btn-sm" value="#{msg.save}"/>
                                         </h:panelGrid>
+                                            <h:commandButton class="btn btn-secondary btn-sm mr-3" value="#{msg.save}" action="#{userAccountController.updatePassword()}"/>
+                                            <h:commandButton class="btn btn-danger btn-sm" value="#{msg.clear}" action="#{userAccountController.clear()}">
+                                                <p:ajax update="@form"/>
+                                            </h:commandButton>
                                     </p:panel>
                                 </h:form>
                             </div>
                         </div>
                         <hr/>
                         <div>
-                            <h:form>
+                            <h:form id="accountTable">
                                 <p:dataTable value="#{userAccountController.userAccountList}" var="userAccount" scrollable="true" scrollHeight="400">
                                     <p:column style="width: 37px;">
                                         <p:rowToggler/>
@@ -114,16 +114,12 @@
 
                                             <span>#{msg.width}</span>
                                             <h:outputText value="#{userAccount.width}"/>
-
+                                            
                                         </h:panelGrid>
                                     </p:rowExpansion>
 
                                     <p:column headerText="Full name">
                                         #{userAccount.fullname}
-                                    </p:column>
-
-                                    <p:column headerText="Username">
-                                        #{userAccount.username}
                                     </p:column>
 
                                     <p:column headerText="Phone No.">
@@ -138,16 +134,12 @@
                                         #{userAccount.status}
                                     </p:column>
 
-                                    <p:column headerText="#{msg.tin_no}">
-                                        #{userAccount.tinNo}
-                                    </p:column>
-
                                     <p:column headerText="#{msg.action}" style="width: 80px;">
-                                        <p:commandButton value="#{msg.edit}" action="#{userAccountController.editUserAccount(userAccount)}" update="@form"/>
+                                        <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{userAccountController.editUserAccount(userAccount)}" update=":accountForm, :authForm"/>
                                     </p:column>
 
                                     <p:column headerText="#{msg.action}" style="width: 100px;">
-                                        <p:commandButton value="#{msg.delete}" action="#{userAccountController.deleteUserAccount(userAccount)}" update="@form"/>
+                                        <p:commandButton class="kbtn-danger" value="#{msg.delete}" action="#{userAccountController.deleteUserAccount(userAccount)}" update="@form"/>
                                     </p:column>
 
                                 </p:dataTable>

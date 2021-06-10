@@ -45,7 +45,7 @@
                                             #{sms.message}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                        <p:column rendered="#{appSession.currentUser.permDelete == true}" headerText="#{msg.action}" exportable="false" style="width: 100px;">
                                             <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" action="#{smsController.deleteSms(sms)}"
                                                              onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                                         </p:column>

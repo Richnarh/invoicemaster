@@ -14,7 +14,7 @@
 
             <ui:define name="pageContent">
                 <div class="card">
-                    <h5 class="card-title">Company Profile</h5>
+                    <h5 class="card-header">Company Profile</h5>
                     <div class="card-body">
                         <h:form id="profileForm">
                               <h:panelGrid columns="4" class="spaced-form">
@@ -50,7 +50,9 @@
                                 <p:rowExpansion>
                                     <h:panelGrid columns="2">
                                         <span>#{msg.created_date}</span>
-                                        <h:outputText/>
+                                        <h:outputText value="#{companyProfile.valueDate}">
+                                            <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                        </h:outputText>
                                     </h:panelGrid>
                                 </p:rowExpansion>
                                 
