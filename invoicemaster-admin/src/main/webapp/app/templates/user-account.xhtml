@@ -18,11 +18,11 @@
                     <div class="card-body">
 
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <h:form id="accountForm">
-                                    <h:panelGrid columns="6" class="spaced-form">
+                                    <h:panelGrid columns="4" class="spaced-form">
                                         <span>Branch<span class="text-danger">*</span></span>
-                                        <p:selectOneMenu class="col" value="#{userAccountController.userAccount.companyBranch}" required="true">
+                                        <p:selectOneMenu class="col" value="#{userAccountController.userAccount.companyBranch}" filter="true" filterMatchMode="contains" required="true">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{userCommonClazz.companyBranchList}"/>
                                         </p:selectOneMenu>
@@ -67,13 +67,14 @@
                                         </p:selectOneMenu>
 
                                     </h:panelGrid>
-                                    <center class="pt-3">
-                                        <p:commandButton class="kbtn-success" value="#{userAccountController.optionText}" action="#{userAccountController.saveUserAccount()}" update="@form, :accountTable"/>
+                                    <hr/>
+                                    <center>
+                                        <p:commandButton class="kbtn-success mr-2" value="#{userAccountController.optionText}" action="#{userAccountController.saveUserAccount()}" update="@form, :accountTable"/>
                                         <p:commandButton class="kbtn-cancel" value="Clear" action="#{userAccountController.clear()}" immediate="true" update="@form"/>
                                     </center>
                                 </h:form>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <h:form id="authForm">
                                     <p:panel header="Set password" class="float-right">
                                         <h:panelGrid columns="2">

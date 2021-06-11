@@ -81,13 +81,12 @@ public class UserAccountService
     {
         try
         {
-            String qryString = "SELECT permDelete, permUpdate, permSave, permPrint from UserAccount e WHERE e.email=?1";
+            String qryString = "SELECT e FROM UserAccount e WHERE e.email=?1";
             return crudApi.getEm().createQuery(qryString, UserAccount.class).setParameter(1, userAccount.getEmail()).getResultList();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
-
         return Collections.emptyList();
     }
 }

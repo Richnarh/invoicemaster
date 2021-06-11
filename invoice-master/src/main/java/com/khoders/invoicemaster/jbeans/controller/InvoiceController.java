@@ -51,14 +51,10 @@ import org.primefaces.event.TabChangeEvent;
 public class InvoiceController implements Serializable
 {
 
-    @Inject
-    private CrudApi crudApi;
-    @Inject
-    private AppSession appSession;
-    @Inject
-    private InvoiceService invoiceService;
-    @Inject
-    private ReportHandler reportHandler;
+    @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private InvoiceService invoiceService;
+    @Inject private ReportHandler reportHandler;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();

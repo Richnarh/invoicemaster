@@ -58,11 +58,11 @@
                                             </h:panelGrid>
                                         </p:rowExpansion>
 
-                                        <p:column headerText="Product Code" filterBy="#{inventory.product.productName}" filterMatchMode="contains">
+                                        <p:column headerText="Product Code" filterBy="#{inventory.product.productCode}" filterMatchMode="contains">
                                             #{inventory.product.productCode}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.product}">
+                                        <p:column headerText="#{msg.product}" filterBy="#{inventory.product.productName}" filterMatchMode="contains">
                                             #{inventory.product.productName}
                                         </p:column>
 
@@ -123,7 +123,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">#{msg.product} Name <span class="text-danger">*</span> </label>
                                                 <div class="col-md-8">
-                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.product}" required="true">
+                                                    <p:selectOneMenu class="col" value="#{inventoryController.inventory.product}" filter="true" filterMatchMode="contains" required="true">
                                                         <f:selectItem itemLabel="#{msg.choose}"/>
                                                         <f:selectItems value="#{userCommonClass.productList}"/>
                                                     </p:selectOneMenu>

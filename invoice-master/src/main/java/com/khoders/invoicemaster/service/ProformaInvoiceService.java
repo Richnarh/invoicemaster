@@ -41,10 +41,11 @@ public class ProformaInvoiceService
     {
         try
         {
-          String query = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1";
+          String query = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1 AND e.userAccount=?2";
         
         TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(query, ProformaInvoiceItem.class)
-                                .setParameter(1, proformaInvoice);
+                                .setParameter(1, proformaInvoice)
+                                .setParameter(2, appSession.getCurrentUser());
                 return typedQuery.getResultList();      
         } catch (Exception e)
         {
@@ -121,8 +122,9 @@ public class ProformaInvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoice e";
-            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class);
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1";
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                                        .setParameter(1, appSession.getCurrentUser());
                          return typedQuery.getResultList();
                          
         } catch (Exception e)
@@ -138,18 +140,18 @@ public class ProformaInvoiceService
         try {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM ProformaInvoice e";
-                  TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class);
-
-                return typedQuery.getResultList();
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1";
+                  TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
+                                              .setParameter(1, appSession.getCurrentUser());
+                                    return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.issuedDate BETWEEN ?1 AND ?2";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.userAccount=?3";
             
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
                     .setParameter(1, dateRange.getFromDate())
-                    .setParameter(2, dateRange.getToDate());
-            
+                    .setParameter(2, dateRange.getToDate())
+                    .setParameter(3, appSession.getCurrentUser());
            return typedQuery.getResultList();
             
         } catch (Exception e) {
@@ -195,7 +197,8 @@ public class ProformaInvoiceService
         try
         {
             String qryString = "SELECT e FROM Colours e";
-            TypedQuery<Colours> typedQuery = crudApi.getEm().createQuery(qryString, Colours.class);
+            TypedQuery<Colours> typedQuery = crudApi.getEm().createQuery(qryString, Colours.class)
+                    .setParameter(1, appSession.getCurrentUser());
             return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -210,8 +213,9 @@ public class ProformaInvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM Inventory e";
-            TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class);
+            String qryString = "SELECT e FROM Inventory e WHERE e.userAccount=?1";
+            TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class)
+                                    .setParameter(1, appSession.getCurrentUser());
             return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -277,8 +281,9 @@ public class ProformaInvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1";
-            TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoiceItem.class);
+            String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1 AND e.userAccount=?2";
+            TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoiceItem.class)
+                    .setParameter(2, appSession.getCurrentUser());
             typedQuery.setParameter(1, proformaInvoice);
             return typedQuery.getResultList();
             

@@ -30,7 +30,7 @@ public class UserAccountController implements Serializable{
     private UserAccount userAccount = new UserAccount();
     private List<UserAccount> userAccountList = new LinkedList<>();
      private List<UserAccount> userPermissionsList = new LinkedList<>();
-     private UserAccount selectedAccount;
+     private UserAccount selectedAccount=null;
     
     private String optionText;
     
@@ -59,6 +59,8 @@ public class UserAccountController implements Serializable{
        selectedAccount.setPermUpdate(true);
        selectedAccount.setPermDelete(true);
        selectedAccount.setPermPrint(true);
+       selectedAccount.setPermConvert(true);
+       selectedAccount.setPermSendSMS(true);
     }
     public void savePermissions()
     {

@@ -7,6 +7,7 @@ package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.listener.AppSession;
+import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.invoicemaster.service.UserAccountService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -32,7 +33,7 @@ import javax.inject.Named;
 public class ClientController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
-    @Inject UserAccountService userAccountService;
+    @Inject InventoryService inventoryService;
     
     private Client client = new Client();
     private List<Client> clientList =  new LinkedList<>();
@@ -43,7 +44,7 @@ public class ClientController implements Serializable{
     @PostConstruct
     private void init()
     {
-        clientList = userAccountService.getClientList();
+        clientList = inventoryService.getClientList();
         
         clearClient();
     }

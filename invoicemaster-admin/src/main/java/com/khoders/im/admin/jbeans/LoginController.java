@@ -9,6 +9,7 @@ import com.khoders.im.admin.Pages;
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.im.admin.services.UserAccountService;
 import com.khoders.invoicemaster.entities.master.UserAccount;
+import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.utilities.Msg;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
@@ -50,6 +51,13 @@ public class LoginController implements Serializable
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
                 return null;
             }
+           if(account.getAccessLevel() != AccessLevel.SUPER_USER)
+           {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("You are not permitted to access this system!"), null));
+                return null;
+           }
+               
 
             initLogin(account);
 

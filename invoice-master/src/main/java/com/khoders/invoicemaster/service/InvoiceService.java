@@ -16,6 +16,7 @@ import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
+import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -33,17 +34,18 @@ import javax.persistence.TypedQuery;
 public class InvoiceService
 {
 
-    private @Inject
-    CrudApi crudApi;
+    private @Inject CrudApi crudApi;
+    private @Inject AppSession appSession;
 
     public List<InvoiceItem> getInvoiceItemList(Invoice invoice)
     {
         try
         {
-          String query = "SELECT e FROM InvoiceItem e WHERE e.invoice=?1";
+          String query = "SELECT e FROM InvoiceItem e WHERE e.invoice=?1 AND e.userAccount=?2";
         
         TypedQuery<InvoiceItem> typedQuery = crudApi.getEm().createQuery(query, InvoiceItem.class)
-                                .setParameter(1, invoice);
+                                .setParameter(1, invoice)
+                                .setParameter(2, appSession.getCurrentUser());
                 return typedQuery.getResultList();      
         } catch (Exception e)
         {
@@ -58,18 +60,20 @@ public class InvoiceService
         {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                String query = "SELECT e FROM PaymentReceipt e WHERE e.invoice=?1 ORDER BY e.paymentDate DESC";
+                String query = "SELECT e FROM PaymentReceipt e WHERE e.invoice=?1 AND e.userAccount=?2 ORDER BY e.paymentDate DESC";
                 TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(query, PaymentReceipt.class)
-                        .setParameter(1, invoice);
+                        .setParameter(1, invoice)
+                        .setParameter(2, appSession.getCurrentUser());
                 return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM PaymentReceipt e WHERE e.paymentDate BETWEEN ?1 AND ?2 ORDER BY e.paymentDate DESC";
+            String qryString = "SELECT e FROM PaymentReceipt e WHERE e.paymentDate BETWEEN ?1 AND ?2 AND e.userAccount=?3 ORDER BY e.paymentDate DESC";
             
             TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(qryString, PaymentReceipt.class)
                     .setParameter(1, dateRange.getFromDate())
-                    .setParameter(2, dateRange.getToDate());
-            
+                    .setParameter(2, dateRange.getToDate())
+                    .setParameter(3, appSession.getCurrentUser());
+                    
            return typedQuery.getResultList();
                
         } catch (Exception e)
@@ -84,9 +88,10 @@ public class InvoiceService
     {
         try
         {
-            String query = "SELECT e FROM PaymentReceipt e WHERE e.invoice=?1";
+            String query = "SELECT e FROM PaymentReceipt e WHERE e.invoice=?1 AND e.userAccount=?2";
             TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(query, PaymentReceipt.class)
-                    .setParameter(1, invoice);
+                    .setParameter(1, invoice)
+                    .setParameter(2, appSession.getCurrentUser());
             return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -100,10 +105,11 @@ public class InvoiceService
     {
         try
         {
-            String query = "SELECT e FROM PaymentReceipt e WHERE e.id=?1 AND e.invoice=?2";
+            String query = "SELECT e FROM PaymentReceipt e WHERE e.id=?1 AND e.invoice=?2 AND e.userAccount=?3";
             TypedQuery<PaymentReceipt> typedQuery = crudApi.getEm().createQuery(query, PaymentReceipt.class)
                     .setParameter(1, id)
-                    .setParameter(2, invoice);
+                    .setParameter(2, invoice)
+                    .setParameter(3, appSession.getCurrentUser());
             return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -117,9 +123,11 @@ public class InvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM Invoice e ";
-            TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class);
-                         return typedQuery.getResultList();
+            String qryString = "SELECT e FROM Invoice e WHERE e.userAccount=?1";
+            TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
+                               .setParameter(1, appSession.getCurrentUser());
+            
+                           return typedQuery.getResultList();
 
         } catch (Exception e)
         {
@@ -132,10 +140,10 @@ public class InvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM Invoice e WHERE e.paymentStatus=?1";
+            String qryString = "SELECT e FROM Invoice e WHERE e.paymentStatus=?1 AND e.userAccount=?2";
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
-                                .setParameter(1, PaymentStatus.FULLY_PAID);
-            
+                                .setParameter(1, PaymentStatus.FULLY_PAID)
+                                .setParameter(2, appSession.getCurrentUser());
                          return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -150,17 +158,18 @@ public class InvoiceService
         try {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM Invoice e ";
+                  String  queryString = "SELECT e FROM Invoice e WHERE e.userAccount=?1";
                   TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class);
-
+                  typedQuery.setParameter(1, appSession.getCurrentUser());
                 return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2";
+            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.userAccount=?3";
             
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
                     .setParameter(1, dateRange.getFromDate())
-                    .setParameter(2, dateRange.getToDate());
+                    .setParameter(2, dateRange.getToDate())
+                    .setParameter(3, appSession.getCurrentUser());
             
            return typedQuery.getResultList();
             
@@ -176,19 +185,21 @@ public class InvoiceService
         try {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM Invoice e WHERE e.invoiceType=?1";
+                  String  queryString = "SELECT e FROM Invoice e WHERE e.invoiceType=?1 AND e.userAccount=?2";
                   TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class)
-                                .setParameter(1, InvoiceType.STANDARD_INVOICE);
+                                .setParameter(1, InvoiceType.STANDARD_INVOICE)
+                                .setParameter(2, appSession.getCurrentUser());
 
                 return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.invoiceType=?3";
+            String qryString = "SELECT e FROM Invoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.invoiceType=?3 AND e.userAccount=?4";
             
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
                     .setParameter(1, dateRange.getFromDate())
                     .setParameter(2, dateRange.getToDate())
-                    .setParameter(3, InvoiceType.STANDARD_INVOICE);
+                    .setParameter(3, InvoiceType.STANDARD_INVOICE)
+                    .setParameter(4, appSession.getCurrentUser());
             
            return typedQuery.getResultList();
             
@@ -267,9 +278,10 @@ public class InvoiceService
     {
                 try
         {
-            String qryString = "SELECT e FROM InvoiceItem e WHERE e.invoice=?1";
+            String qryString = "SELECT e FROM InvoiceItem e WHERE e.invoice=?1 AND e.userAccount=?2";
             TypedQuery<InvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, InvoiceItem.class);
             typedQuery.setParameter(1, invoice);
+            typedQuery.setParameter(2, appSession.getCurrentUser());
             return typedQuery.getResultList();
             
         } catch (Exception e)

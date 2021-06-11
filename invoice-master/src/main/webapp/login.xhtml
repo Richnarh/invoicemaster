@@ -9,8 +9,8 @@
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/login.css" />    
     </h:head>
     <body>
-        <p:growl/>
         <h:form class="login">
+        <p:messages/>
             <center>Invoice Master</center>
             <input type="text" required="true" jsf:value="#{loginController.userEmail}" placeholder="Username"/>
             <input type="password" required="true" jsf:value="#{loginController.password}" placeholder="Password"/>

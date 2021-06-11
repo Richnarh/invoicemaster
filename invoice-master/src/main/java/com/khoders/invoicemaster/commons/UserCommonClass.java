@@ -37,7 +37,6 @@ import javax.inject.Named;
 @SessionScoped
 public class UserCommonClass implements Serializable{
     @Inject private InvoiceService invoiceService;
-    @Inject private UserAccountService userAccountService;
     @Inject private SmsService smsService;
     @Inject InventoryService inventoryService;
     
@@ -60,7 +59,7 @@ public class UserCommonClass implements Serializable{
         deliveryTermList = invoiceService.getDeliveryTermList();
         validationList = invoiceService.getValidationList();
         invoiceList = invoiceService.getInvoiceList();
-        clientList = userAccountService.getClientList();
+        clientList = inventoryService.getClientList();
         coloursList = invoiceService.getColoursList();
         receivedDocumentList = invoiceService.getReceivedDocumentList();
         inventoryList = inventoryService.getInventoryList();

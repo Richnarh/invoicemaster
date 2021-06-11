@@ -64,21 +64,4 @@ public class UserAccountService
         }
         return false;
     }
-    
-    
-    public List<Client> getClientList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM Client e";
-            TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
-                            return typedQuery.getResultList();
-            
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
-    }
 }

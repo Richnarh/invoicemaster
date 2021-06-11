@@ -29,7 +29,7 @@
                             <div class="card-header">Set Permissions</div>
                             <div class="card-body">
                                 <h:form id="permissionsForm">
-                                    <p:commandButton style="size: 6px;" value="All" icon="fa fa-check-circle" action="#{userAccountController.checkAll()}" update="@form"/>
+                                    <p:commandButton rendered="#{userAccountController.selectedAccount != null}" style="size: 6px;" value="All" icon="fa fa-check-circle" action="#{userAccountController.checkAll()}" update="@form"/>
                                     <hr/>
                                     <h:panelGrid columns="2">
                                         <span>Selected User</span>
@@ -55,7 +55,7 @@
 
                                     </h:panelGrid>
                                     <div class="pt-3">
-                                        <p:commandButton class="kbtn-success" value="#{userAccountController.optionText}" action="#{userAccountController.savePermissions()}" update=":permissionTable, @form"/>
+                                        <p:commandButton rendered="#{userAccountController.selectedAccount != null}" class="kbtn-success" value="#{userAccountController.optionText}" action="#{userAccountController.savePermissions()}" update="@form, :permissionTable"/>
                                         <p:commandButton class="kbtn-cancel" value="#{msg.clear}" action="#{userAccountController.clear()}" update="@form"/>
                                     </div>
                                 </h:form>

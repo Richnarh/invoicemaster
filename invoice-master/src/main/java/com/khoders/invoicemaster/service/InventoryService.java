@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.service;
 
+import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Product;
 import com.khoders.invoicemaster.entites.PurchaseOrder;
@@ -48,8 +49,9 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM Inventory e";
+            String qryString = "SELECT e FROM Inventory e WHERE e.userAccount=?1";
             TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class);
+                            typedQuery.setParameter(1, appSession.getCurrentUser());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -64,8 +66,9 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM PurchaseOrder e";
+            String qryString = "SELECT e FROM PurchaseOrder e WHERE e.userAccount=?1";
             TypedQuery<PurchaseOrder> typedQuery = crudApi.getEm().createQuery(qryString, PurchaseOrder.class);
+                                   typedQuery.setParameter(1, appSession.getCurrentUser());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -80,9 +83,9 @@ public class InventoryService
     {
         try
         {
-           TypedQuery<PurchaseOrderItem> typedQuery = crudApi.getEm().createQuery("SELECT e FROM PurchaseOrderItem e WHERE e.purchaseOrder=?1", PurchaseOrderItem.class);
+           TypedQuery<PurchaseOrderItem> typedQuery = crudApi.getEm().createQuery("SELECT e FROM PurchaseOrderItem e WHERE e.purchaseOrder=?1 AND e.userAccount=?2", PurchaseOrderItem.class);
                             typedQuery.setParameter(1, purchaseOrder);
-                           
+                            typedQuery.setParameter(2, appSession.getCurrentUser());
                             
                             return  typedQuery.getResultList();
            
@@ -93,4 +96,20 @@ public class InventoryService
         return Collections.emptyList();
     }
     
+    public List<Client> getClientList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM Client e WHERE e.userAccount=?1";
+            TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
+                                typedQuery.setParameter(1, appSession.getCurrentUser());
+                            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
 }
