@@ -9,6 +9,7 @@ com\khoders\invoicemaster\jbeans\converter\ValidationConverter.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$Validation.class
 com\khoders\invoicemaster\entites\ReceivedDocumentConfigItems.class
 com\khoders\invoicemaster\jbeans\controller\sms\MessageTemplateController.class
+com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.class
 com\khoders\invoicemaster\jbeans\controller\PaymentReceiptController.class
 com\khoders\invoicemaster\jbeans\converter\ClientConverter.class
 com\khoders\invoicemaster\entites\sms\MessageTemplate.class
@@ -46,6 +47,7 @@ com\khoders\invoicemaster\entites\PurchaseOrder.class
 com\khoders\invoicemaster\entites\sms\GroupContact.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$DeliveryTerm.class
+com\khoders\invoicemaster\entites\ProductType.class
 com\khoders\invoicemaster\entites\sms\Sms.class
 com\khoders\invoicemaster\entites\enums\InvoiceType.class
 com\khoders\invoicemaster\entites\Inventory.class

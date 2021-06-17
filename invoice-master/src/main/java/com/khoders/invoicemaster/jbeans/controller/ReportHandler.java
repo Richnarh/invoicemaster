@@ -5,15 +5,12 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.jbeans.ReportFiles;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  *

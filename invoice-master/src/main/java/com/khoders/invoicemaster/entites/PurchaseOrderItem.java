@@ -23,9 +23,31 @@ public class PurchaseOrderItem extends UserAccountRecord
     @Column(name = "order_item_code")
     private String orderItemCode;
     
-    @JoinColumn(name = "purchase_order")
+    @JoinColumn(name = "purchase_order", referencedColumnName = "id")
     @ManyToOne
     private PurchaseOrder purchaseOrder;
+    
+    @JoinColumn(name = "product_type", referencedColumnName = "id")
+    @ManyToOne
+    private ProductType productType;
+    
+    @Column(name = "model")
+    private String model;
+    
+    @Column(name = "accessories")
+    private String accessories;
+    
+    @Column(name = "description")
+    private String description;
+    
+    @Column(name = "right_qty")
+    private int rightQty;
+    
+    @Column(name = "left_qty")
+    private int leftQty;
+    
+    @Column(name = "unit_price")
+    private double unitPrice;
     
     @JoinColumn(name = "product", referencedColumnName = "id")
     @ManyToOne
@@ -34,17 +56,17 @@ public class PurchaseOrderItem extends UserAccountRecord
     @Column(name = "frame_size")
     private int frameSize;
 
+    @Column(name = "wings")
+    private String wings;
+
     @Column(name = "width")
     private int width;
 
     @Column(name = "height")
     private int height;
 
-    @Column(name = "quantity")
-    private int quantity;
-    
-    @Column(name = "unit_price")
-    private double unitPrice;
+    @Column(name = "total_qty")
+    private int totaltQty;
     
     @Column(name = "selling_price")
     private double sellingPrice;
@@ -109,14 +131,14 @@ public class PurchaseOrderItem extends UserAccountRecord
         this.height = height;
     }
 
-    public int getQuantity()
+    public int getTotaltQty()
     {
-        return quantity;
+        return totaltQty;
     }
 
-    public void setQuantity(int quantity)
+    public void setTotaltQty(int totaltQty)
     {
-        this.quantity = quantity;
+        this.totaltQty = totaltQty;
     }
 
     public double getUnitPrice()
@@ -139,6 +161,76 @@ public class PurchaseOrderItem extends UserAccountRecord
         this.sellingPrice = sellingPrice;
     }
 
+    public ProductType getProductType()
+    {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType)
+    {
+        this.productType = productType;
+    }
+
+    public String getModel()
+    {
+        return model;
+    }
+
+    public void setModel(String model)
+    {
+        this.model = model;
+    }
+
+    public String getAccessories()
+    {
+        return accessories;
+    }
+
+    public void setAccessories(String accessories)
+    {
+        this.accessories = accessories;
+    }
+
+    public String getWings()
+    {
+        return wings;
+    }
+
+    public void setWings(String wings)
+    {
+        this.wings = wings;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public int getRightQty()
+    {
+        return rightQty;
+    }
+
+    public void setRightQty(int rightQty)
+    {
+        this.rightQty = rightQty;
+    }
+
+    public int getLeftQty()
+    {
+        return leftQty;
+    }
+
+    public void setLeftQty(int leftQty)
+    {
+        this.leftQty = leftQty;
+    }
+    
     public void genCode()
     {
         if (getOrderItemCode() != null)

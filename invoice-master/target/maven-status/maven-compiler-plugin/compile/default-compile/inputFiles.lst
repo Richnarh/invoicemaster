@@ -41,6 +41,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\DeliveryTermConfigItems.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\SmsService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\sms\SMSGrupController.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProductType.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\sms\GroupContact.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProformaInvoiceItem.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.java
@@ -57,6 +58,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\PurchaseOrder.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\InventoryConverter.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\sms\SenderId.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listener\AppSession.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\InventoryService.java

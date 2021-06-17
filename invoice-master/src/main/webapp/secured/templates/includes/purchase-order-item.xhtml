@@ -17,7 +17,7 @@
                     </p:selectOneMenu>
 
                     <span>#{msg.quantity} <span class="text-danger">*</span> </span>
-                    <p:inputText value="#{purchaseOrderController.purchaseOrderItem.quantity}" required="true"/>
+                    <p:inputText value="#{purchaseOrderController.purchaseOrderItem.totaltQty}" required="true"/>
 
                     <span>Unit Price <span class="text-danger">*</span> </span>
                     <p:inputText value="#{purchaseOrderController.purchaseOrderItem.unitPrice}" required="true"/>
@@ -77,7 +77,7 @@
                     </p:column>
 
                     <p:column headerText="#{msg.quantity}" class="text-right">
-                        #{purchaseOrderItem.quantity}
+                        #{purchaseOrderItem.totaltQty}
                     </p:column>
 
                     <p:column headerText="#{msg.unit_price}" class="text-right">
@@ -87,7 +87,7 @@
                     </p:column>
                     
                     <p:column headerText="Total price" class="text-right">
-                        <h:outputText value="#{purchaseOrderItem.unitPrice * purchaseOrderItem.quantity}">
+                        <h:outputText value="#{purchaseOrderItem.unitPrice * purchaseOrderItem.totaltQty}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>

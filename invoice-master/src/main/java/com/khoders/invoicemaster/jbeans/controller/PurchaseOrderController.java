@@ -114,7 +114,7 @@ public class PurchaseOrderController implements Serializable
               
         for (PurchaseOrderItem items : purchaseOrderItemList) 
         {
-            totalAmount += (items.getQuantity() * items.getUnitPrice());
+            totalAmount += (items.getTotaltQty() * items.getUnitPrice());
         }
        
     }
@@ -123,7 +123,7 @@ public class PurchaseOrderController implements Serializable
     {
         try
         {
-            if (purchaseOrderItem.getQuantity() <= 0)
+            if (purchaseOrderItem.getTotaltQty() <= 0)
             {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter quantity"), null));
@@ -138,7 +138,7 @@ public class PurchaseOrderController implements Serializable
 
             if (purchaseOrderItem != null) {
                
-                totalAmount += purchaseOrderItem.getQuantity() * purchaseOrderItem.getUnitPrice();
+                totalAmount += purchaseOrderItem.getTotaltQty() * purchaseOrderItem.getUnitPrice();
                 
                 purchaseOrderItem.genCode();
                 purchaseOrderItemList.add(purchaseOrderItem);
@@ -190,13 +190,13 @@ public class PurchaseOrderController implements Serializable
     public void editPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem)
     {
         this.purchaseOrderItem = purchaseOrderItem;
-        totalAmount -= (purchaseOrderItem.getQuantity() * purchaseOrderItem.getUnitPrice());
+        totalAmount -= (purchaseOrderItem.getTotaltQty() * purchaseOrderItem.getUnitPrice());
         purchaseOrderItemList.remove(purchaseOrderItem);
     }
     
     public void removePurchaseOrderItem(PurchaseOrderItem purchaseOrderItem)
     {
-        totalAmount -= (purchaseOrderItem.getQuantity() * purchaseOrderItem.getUnitPrice());
+        totalAmount -= (purchaseOrderItem.getTotaltQty() * purchaseOrderItem.getUnitPrice());
         removedOrderItemList = CollectionList.washList(removedOrderItemList, purchaseOrderItem);
         purchaseOrderItemList.remove(purchaseOrderItem);
         
@@ -222,7 +222,7 @@ public class PurchaseOrderController implements Serializable
              
             for (PurchaseOrderItem items : orderItemList)
             {
-                itemCost += (items.getQuantity() * items.getUnitPrice());
+                itemCost += (items.getTotaltQty() * items.getUnitPrice());
             }
             
              if(purchaseOrder.getTotalAmount() != itemCost)
@@ -241,7 +241,7 @@ public class PurchaseOrderController implements Serializable
                 inventory.setFrameSize(item.getFrameSize());
                 inventory.setWidth(item.getWidth());
                 inventory.setHeight(item.getHeight());
-                inventory.setQuantity(item.getQuantity());
+                inventory.setQuantity(item.getTotaltQty());
                 inventory.setSellingPrice(item.getSellingPrice());
                 inventory.setUnitPrice(item.getUnitPrice());
                 inventory.setUserAccount(appSession.getCurrentUser());

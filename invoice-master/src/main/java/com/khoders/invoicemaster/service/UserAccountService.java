@@ -5,13 +5,10 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.entities.master.UserAccount;
 import com.khoders.invoicemaster.jbeans.UserModel;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
-import java.util.Collections;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
