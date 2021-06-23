@@ -27,6 +27,8 @@ public class ReportFiles
     
     public static final String PAYMENT_RECEIPT_FILE = BASE_DIR+"payment_receipt.jasper";
     public static final String PROFORMA_INVOICE_FILE = BASE_DIR+"proforma_invoice.jasper";
+    public static final String PRO_INVOICE_FILE = BASE_DIR+"pro_invoice.jasper";
+    public static final String PRO_INVOICE_COVER = BASE_DIR+"pro_invoice_cover.jasper";
     public static final String INVOICE_FILE = BASE_DIR+"invoice.jasper";
     
 }

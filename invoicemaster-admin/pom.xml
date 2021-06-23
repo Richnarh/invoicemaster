@@ -28,7 +28,7 @@
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>
-                <dependency>
+        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
             <version>5.13.0</version>

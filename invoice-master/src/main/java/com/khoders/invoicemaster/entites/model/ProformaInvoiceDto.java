@@ -31,6 +31,7 @@ public class ProformaInvoiceDto
     private String logo;
     private String branchName;
     private String website;
+    private String tinNo;
     
     
     public List<ProformaInvoiceItem> invoiceItemList = new LinkedList<>();
@@ -249,6 +250,16 @@ public class ProformaInvoiceDto
         this.clientCode = clientCode;
     }
 
+    public String getTinNo()
+    {
+        return tinNo;
+    }
+
+    public void setTinNo(String tinNo)
+    {
+        this.tinNo = tinNo;
+    }
+    
     public static class DeliveryTerm
     {
         private String deliveryTerm;
@@ -324,7 +335,7 @@ public class ProformaInvoiceDto
         private int quantity;
         private double unitPrice;
         private double totalAmount;
-        private double charges;
+        private String description;
 
 
         public int getQuantity()
@@ -347,16 +358,16 @@ public class ProformaInvoiceDto
             this.unitPrice = unitPrice;
         }
 
-        public double getCharges()
+        public String getDescription()
         {
-            return charges;
+            return description;
         }
 
-        public void setCharges(double charges)
+        public void setDescription(String description)
         {
-            this.charges = charges;
+            this.description = description;
         }
-
+        
         public double getTotalAmount()
         {
             return totalAmount;

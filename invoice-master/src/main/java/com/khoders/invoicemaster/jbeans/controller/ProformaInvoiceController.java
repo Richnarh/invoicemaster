@@ -58,6 +58,7 @@ public class ProformaInvoiceController implements Serializable
     @Inject private AppSession appSession;
     @Inject private ProformaInvoiceService proformaInvoiceService;
     @Inject private ReportHandler reportHandler;
+    @Inject private ReportHandler coverHandler;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -596,7 +597,7 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(grandTotalAmount);
             
-            if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
+        if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
         {
             proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
         }
@@ -615,6 +616,10 @@ public class ProformaInvoiceController implements Serializable
         if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite() != null)
         {
             proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo() != null)
+        {
+            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
         }
             
         for (DeliveryTermConfigItems configItems : deliveryTermList)
@@ -660,6 +665,7 @@ public class ProformaInvoiceController implements Serializable
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
+            invoiceItemDto.setDescription(invoiceItem.getDescription());
             
             if(appSession.getCurrentUser().getFrame() != null)
             {
@@ -684,18 +690,20 @@ public class ProformaInvoiceController implements Serializable
         try
         {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
-            JasperReport deliveryTermReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.DELIVERY_TERM_FILE));
-            JasperReport validationReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.VALIDATION_FILE));
-            JasperReport receiveDocumentReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.RECEIVED_DOCUMENT_FILE));
-            JasperReport coloursReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.COLOURS_FILE));
+//            JasperReport deliveryTermReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.DELIVERY_TERM_FILE));
+//            JasperReport validationReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.VALIDATION_FILE));
+//            JasperReport receiveDocumentReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.RECEIVED_DOCUMENT_FILE));
+//            JasperReport coloursReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.COLOURS_FILE));
             JasperReport proformaInvoiceItemReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_ITEM_FILE));
-            InputStream stream = getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_FILE);
+            InputStream stream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_FILE);
+            
             
             reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-            reportHandler.reportParams.put("deliveryTerm", deliveryTermReport);
-            reportHandler.reportParams.put("validation", validationReport);
-            reportHandler.reportParams.put("colours", coloursReport);
-            reportHandler.reportParams.put("receivedDocument", receiveDocumentReport);
+            
+//            reportHandler.reportParams.put("deliveryTerm", deliveryTermReport);
+//            reportHandler.reportParams.put("validation", validationReport);
+//            reportHandler.reportParams.put("colours", coloursReport);
+//            reportHandler.reportParams.put("receivedDocument", receiveDocumentReport);
             reportHandler.reportParams.put("proformaInvoiceItem", proformaInvoiceItemReport);
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
@@ -704,8 +712,68 @@ public class ProformaInvoiceController implements Serializable
             ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
             FacesContext.getCurrentInstance().responseComplete();
-            
+                        
         } catch (IOException | JRException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void printCover(ProformaInvoice proformaInvoice)
+    {
+        List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
+        
+            ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
+            proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
+            proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress());
+            proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
+            proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
+            
+        if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
+        {
+            proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
+        {
+            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getGpsAddress() != null)
+        {
+            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite() != null)
+        {
+            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo() != null)
+        {
+            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail() != null)
+        {
+            proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
+        }
+        
+        proformaInvoiceDtoList.add(proformaInvoiceDto);
+       
+        try
+        {
+             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
+        
+            InputStream coverStream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_COVER);
+            coverHandler.reportParams.put("logo", ReportFiles.LOGO);
+
+            JasperPrint coverPrint = JasperFillManager.fillReport(coverStream, coverHandler.reportParams, dataSource);
+            HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            servletResponse.setContentType("application/pdf");
+            ServletOutputStream outputStream = servletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(coverPrint, outputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
