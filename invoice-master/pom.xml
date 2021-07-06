@@ -88,14 +88,19 @@
         </dependency>
         
         <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
             <groupId>Zenoph.SMSLib</groupId>
             <artifactId>Zenoph.SMSLib</artifactId>
             <version>1</version>
             <scope>system</scope>
-            <!--<systemPath>${project.basedir}/home/pascal/Desktop/Java/smslib2.0.5.java.sgh/Zenoph.SMSLib.jar</systemPath>-->
             <systemPath>${basedir}/libs/Zenoph.SMSLib.jar</systemPath>
             <type>jar</type>
-            <!--            <optional>true</optional>-->
         </dependency>
     </dependencies>
    

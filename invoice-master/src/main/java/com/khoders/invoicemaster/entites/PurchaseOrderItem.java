@@ -49,6 +49,9 @@ public class PurchaseOrderItem extends UserAccountRecord
     @Column(name = "unit_price")
     private double unitPrice;
     
+    @Column(name = "total_price")
+    private double totalPrice;
+    
     @JoinColumn(name = "product", referencedColumnName = "id")
     @ManyToOne
     private Product product;
@@ -229,6 +232,16 @@ public class PurchaseOrderItem extends UserAccountRecord
     public void setLeftQty(int leftQty)
     {
         this.leftQty = leftQty;
+    }
+
+    public double getTotalPrice()
+    {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice)
+    {
+        this.totalPrice = totalPrice;
     }
     
     public void genCode()

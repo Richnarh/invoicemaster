@@ -8,6 +8,7 @@ package com.khoders.invoicemaster.service;
 import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Product;
+import com.khoders.invoicemaster.entites.ProductType;
 import com.khoders.invoicemaster.entites.PurchaseOrder;
 import com.khoders.invoicemaster.entites.PurchaseOrderItem;
 import com.khoders.invoicemaster.listener.AppSession;
@@ -35,6 +36,22 @@ public class InventoryService
             String qryString = "SELECT e FROM Product e";
             TypedQuery<Product> typedQuery = crudApi.getEm().createQuery(qryString, Product.class);
                             return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+    
+    public List<ProductType> getProductTypeList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ProductType e";
+            TypedQuery<ProductType> typedQuery = crudApi.getEm().createQuery(qryString, ProductType.class);
+                                    return typedQuery.getResultList();
             
         } catch (Exception e)
         {

@@ -11,6 +11,7 @@ import com.khoders.invoicemaster.entites.DeliveryTerm;
 import com.khoders.invoicemaster.entites.Inventory;
 import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.Product;
+import com.khoders.invoicemaster.entites.ProductType;
 import com.khoders.invoicemaster.entites.ReceivedDocument;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.sms.MessageTemplate;
@@ -51,6 +52,7 @@ public class UserCommonClass implements Serializable{
     private List<SenderId> senderIdList = new LinkedList<>();
     private List<Product> productList = new LinkedList<>();
     private List<SMSGrup> smsGroupList = new LinkedList<>();
+    private List<ProductType> productTypeList = new LinkedList<>();
     
     @PostConstruct
     @Asynchronous
@@ -64,6 +66,7 @@ public class UserCommonClass implements Serializable{
         receivedDocumentList = invoiceService.getReceivedDocumentList();
         inventoryList = inventoryService.getInventoryList();
         productList = inventoryService.getProductList();
+        productTypeList = inventoryService.getProductTypeList();
         messageTemplateList = smsService.getMessageTemplateList();
         senderIdList = smsService.getSenderIdList();
         smsGroupList = smsService.getGroupList();
@@ -121,6 +124,11 @@ public class UserCommonClass implements Serializable{
     public List<SMSGrup> getSmsGroupList()
     {
         return smsGroupList;
+    }
+
+    public List<ProductType> getProductTypeList()
+    {
+        return productTypeList;
     }
     
 }

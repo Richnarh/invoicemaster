@@ -25,10 +25,10 @@
                                         <span>Product Name</span>
                                         <p:inputText required="true" value="#{productController.product.productName}"/>
                                        
-                                        <span>Door Type</span>
-                                        <p:selectOneMenu value="#{productController.product.doorType}">
+                                        <span>Product Type</span>
+                                        <p:selectOneMenu value="#{productController.product.productType}">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{commonClass.doorTypeList}"/>
+                                            <f:selectItems value="#{userCommonClass.productTypeList}"/>
                                         </p:selectOneMenu>
                                     </h:panelGrid>
 
@@ -53,8 +53,8 @@
                                             #{product.productName}
                                         </p:column>
                                                                                 
-                                        <p:column headerText="Door Type">
-                                            #{product.doorType.label}
+                                        <p:column headerText="Produt Type">
+                                            #{product.productType.productTypeName}
                                         </p:column>
                                                                                 
                                         <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">

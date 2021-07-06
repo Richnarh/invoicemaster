@@ -1,5 +1,6 @@
 com\khoders\invoicemaster\entites\PaymentReceipt.class
 com\khoders\invoicemaster\jbeans\converter\InvoiceConverter.class
+com\khoders\invoicemaster\jbeans\controller\ProductTypeController.class
 com\khoders\invoicemaster\entites\Product.class
 com\khoders\invoicemaster\entites\ProformaInvoice.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
@@ -34,6 +35,7 @@ com\khoders\invoicemaster\Pages.class
 com\khoders\invoicemaster\service\ProformaInvoiceService.class
 com\khoders\invoicemaster\jbeans\converter\SMSGrupConverter.class
 com\khoders\invoicemaster\entites\enums\SMSType.class
+com\khoders\invoicemaster\jbeans\controller\PurchaseOrderUploadController.class
 com\khoders\invoicemaster\jbeans\converter\DeliveryTermConverter.class
 com\khoders\invoicemaster\jbeans\controller\sms\SMSGrupController.class
 com\khoders\invoicemaster\entites\enums\MessagingType.class

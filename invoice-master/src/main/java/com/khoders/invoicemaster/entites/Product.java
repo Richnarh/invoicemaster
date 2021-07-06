@@ -8,8 +8,8 @@ package com.khoders.invoicemaster.entites;
 import com.khoders.invoicemaster.entites.enums.DoorType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,9 +26,9 @@ public class Product extends UserAccountRecord
     @Column(name = "product_code")
     private String productCode;
     
-    @Column(name = "door_type")
-    @Enumerated(EnumType.STRING)
-    private DoorType doorType;
+    @JoinColumn(name = "product_type")
+    @ManyToOne
+    private ProductType productType;
 
 
     public String getProductName()
@@ -51,15 +51,16 @@ public class Product extends UserAccountRecord
         this.productCode = productCode;
     }
 
-    public DoorType getDoorType()
+    public ProductType getProductType()
     {
-        return doorType;
+        return productType;
     }
 
-    public void setDoorType(DoorType doorType)
+    public void setProductType(ProductType productType)
     {
-        this.doorType = doorType;
+        this.productType = productType;
     }
+    
 
     @Override
     public String toString()

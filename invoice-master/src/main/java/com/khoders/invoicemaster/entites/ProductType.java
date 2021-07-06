@@ -29,4 +29,12 @@ public class ProductType extends UserAccountRecord
     {
         this.productTypeName = productTypeName;
     }
+
+    @Override
+    public String toString()
+    {
+        return productTypeName;
+    }
+    
+    
 }

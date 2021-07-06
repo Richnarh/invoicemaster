@@ -89,7 +89,6 @@
         </ul>
     </li>
 
-    <ui:remove>
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-book"></i>
@@ -100,21 +99,13 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="#{application.contextPath}/#{msg.farm_menu_url}/reports.xhtml" class="nav-link">
+                    <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/upload-order.xhtml" class="nav-link">
                         <i class="fa fa-check-circle nav-icon"></i>
-                        <p>#{msg.report}s</p>
+                        <p>Order Upload</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#{application.contextPath}/#{msg.farm_menu_url}/uploads.xhtml" class="nav-link">
-                        <i class="fa fa-check-circle nav-icon"></i>
-                        <p>#{msg.upload}s</p>
-                    </a>
-                </li>
-
             </ul>
         </li>
-    </ui:remove>
 
 
 </f:subview>
