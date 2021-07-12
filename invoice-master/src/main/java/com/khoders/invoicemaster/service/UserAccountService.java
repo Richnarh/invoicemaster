@@ -24,7 +24,9 @@ public class UserAccountService
     
     public UserAccount login(UserModel userModel)
     {
-        
+         System.out.println("Username: "+userModel.getUserEmail());
+         System.out.println("Password: "+userModel.getPassword());
+
         try
         {
             String qryString = "SELECT e FROM UserAccount e WHERE e.email=?1 AND e.password=?2";

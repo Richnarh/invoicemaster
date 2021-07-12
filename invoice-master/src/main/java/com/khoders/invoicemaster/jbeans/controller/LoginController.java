@@ -44,7 +44,7 @@ public class LoginController implements Serializable
             userModel.setPassword(password);
 
             UserAccount account = userAccountService.login(userModel);
-
+            
             if (account == null)
             {
                 FacesContext.getCurrentInstance().addMessage(null, 
@@ -62,7 +62,7 @@ public class LoginController implements Serializable
         return null;
     }
         
-    public String initLogin(UserAccount userAccount)
+    public void initLogin(UserAccount userAccount)
     {
         try
         {
@@ -70,18 +70,20 @@ public class LoginController implements Serializable
             {
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
-                return null;
+                return;
             }
             appSession.login(userAccount);
             
             Faces.redirect(Pages.index);
 
+            System.out.println("baseURL => "+ Faces.getRequestBaseURL());
+            System.out.println("Redirect => "+Pages.index);
+            
+            System.out.println("SessionUR => "+appSession.getCurrentUser());
         } catch (Exception e)
         {
             e.printStackTrace();
         }
-
-        return null;
     }
 
     public String doLogout()

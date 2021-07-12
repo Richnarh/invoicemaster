@@ -162,12 +162,12 @@ public class PurchaseOrderController implements Serializable
             for (PurchaseOrderItem orderItem : purchaseOrderItemList)
             {
 
-                if (totalAmount != purchaseOrder.getTotalAmount())
-                {
-                    FacesContext.getCurrentInstance().addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: " + (totalAmount) + " is not equivalent to the purchase order total: " + purchaseOrder.getTotalAmount()), null));
-                        return;
-                }
+//                if (totalAmount != purchaseOrder.getTotalAmount())
+//                {
+//                    FacesContext.getCurrentInstance().addMessage(null,
+//                            new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: " + (totalAmount) + " is not equivalent to the purchase order total: " + purchaseOrder.getTotalAmount()), null));
+//                        return;
+//                }
                 crudApi.save(orderItem);
 
             }
@@ -225,12 +225,12 @@ public class PurchaseOrderController implements Serializable
                 itemCost += (items.getTotaltQty() * items.getUnitPrice());
             }
             
-             if(purchaseOrder.getTotalAmount() != itemCost)
-             {
-                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The total cost of items is different from the entered total amount."), null));  
-                 return; 
-             }
+//             if(purchaseOrder.getTotalAmount() != itemCost)
+//             {
+//                 FacesContext.getCurrentInstance().addMessage(null,
+//                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The total cost of items is different from the entered total amount."), null));  
+//                 return; 
+//             }
              
             for (PurchaseOrderItem item : orderItemList)
             {

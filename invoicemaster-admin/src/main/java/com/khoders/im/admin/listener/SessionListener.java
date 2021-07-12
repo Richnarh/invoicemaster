@@ -6,8 +6,8 @@
 package com.khoders.im.admin.listener;
 
 import com.khoders.im.admin.Pages;
+import java.util.Date;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -27,36 +27,37 @@ public class SessionListener implements PhaseListener
     @Inject
     private AppSession appSession;
 
+    public SessionListener()
+    {
+    }
+
     @Override
-    public void beforePhase(final PhaseEvent event)
+    public void beforePhase(PhaseEvent event)
     {
         if (event.getPhaseId() == PhaseId.RENDER_RESPONSE)
         {
-            FacesContext facesContext = event.getFacesContext();
-
-            String viewId = facesContext.getViewRoot().getViewId();
+            String viewId = event.getFacesContext().getViewRoot().getViewId();
+            System.out.println(viewId);
+            if (!viewId.contains("app"))
+            {
+                return;
+            }
+            
             if (appSession != null)
             {
-                if (viewId.contains("app"))
+                if (appSession.getCurrentUser() == null)
                 {
-                    if (appSession.getCurrentUser() == null)
+                    try
                     {
-                        try
-                        {
-                            Faces.redirect(Pages.login);
-                        } catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                        System.out.println("redirecting.... " + new Date());
+                        Faces.redirect(Pages.login);
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public void afterPhase(PhaseEvent pe)
-    {
 
     }
 
@@ -66,4 +67,9 @@ public class SessionListener implements PhaseListener
         return PhaseId.ANY_PHASE;
     }
 
+    @Override
+    public void afterPhase(PhaseEvent pe)
+    {
+
+    }
 }

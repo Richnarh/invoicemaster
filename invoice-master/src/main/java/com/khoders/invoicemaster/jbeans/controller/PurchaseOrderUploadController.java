@@ -69,12 +69,12 @@ public class PurchaseOrderUploadController implements Serializable
                
                System.out.println("type ==> "+extension);
                
-               if(!extension.equals(FileExtension.xls.name()) || !extension.equals(FileExtension.xlsx.name()))
-               {
-                 FacesContext.getCurrentInstance().addMessage(null, 
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("File not supported!"), null));  
-                 return;
-               }
+//               if(!extension.equals(FileExtension.xls.name()) || !extension.equals(FileExtension.xlsx.name()))
+//               {
+//                 FacesContext.getCurrentInstance().addMessage(null, 
+//                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("File not supported!"), null));  
+//                 return;
+//               }
                 
                 InputStream inputStream = file.getInputStream();
                 XSSFWorkbook workbook = new XSSFWorkbook(inputStream);

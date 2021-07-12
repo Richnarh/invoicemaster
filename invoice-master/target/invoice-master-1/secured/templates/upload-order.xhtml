@@ -32,7 +32,7 @@
                                             <p:inputText value="#{purchaseOrderUploadController.purchaseOrder.totalAmount}" required="true" placeholder="Enter total amount"/>
                                        
                                             <span>#{msg.client}</span>
-                                            <p:selectOneMenu class="col" value="#{purchaseOrderUploadController.purchaseOrder.client}">
+                                            <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{purchaseOrderUploadController.purchaseOrder.client}">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{userCommonClass.clientList}"/>
                                             </p:selectOneMenu>
