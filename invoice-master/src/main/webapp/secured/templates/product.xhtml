@@ -14,26 +14,30 @@
             <ui:define name="pageContent">
                 <div class="card wow zoomIn">
                     <div class="card-header">SetUp product</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h:form id="productForm" class="spaced-form">
-                                    <h:panelGrid columns="2">
+                    <div class="card-body shadow-sm">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <h:form id="productForm" class="spaced-form" enctype="multipart/form-data">
+                                    <h:panelGrid columns="8">
                                         <span>Product Code</span>
                                         <p:inputText required="true" value="#{productController.product.productCode}"/>
-                                        
+
                                         <span>Product Name</span>
                                         <p:inputText required="true" value="#{productController.product.productName}"/>
-                                       
+
                                         <span>Product Type</span>
                                         <p:selectOneMenu value="#{productController.product.productType}">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{userCommonClass.productTypeList}"/>
                                         </p:selectOneMenu>
+
+                                        <span>Product Image</span>
+                                        <p:fileUpload value="#{productController.file}"  mode="simple" skinSimple="true"/>
+
                                     </h:panelGrid>
 
                                     <div class="pt-3">
-                                        <p:commandButton class="kbtn-success mr-3" value="#{productController.optionText}" update="@form, :productTable"
+                                        <p:commandButton class="kbtn-success mr-3" value="#{productController.optionText}" ajax="false"
                                                          action="#{productController.saveProduct()}" />
 
                                         <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
@@ -42,36 +46,43 @@
                                 </h:form>
                             </div>
 
-                            <div class="col-md-8">
-                                <h:form id="productTable">
-                                    <p:dataTable value="#{productController.productList}" var="product" scrollable="true" scrollHeight="300">
-                                        <p:column headerText="#{msg.product} code">
-                                            #{product.productCode}
-                                        </p:column>
-                                                                                
-                                        <p:column headerText="#{msg.product} name">
-                                            #{product.productName}
-                                        </p:column>
-                                                                                
-                                        <p:column headerText="Produt Type">
-                                            #{product.productType.productTypeName}
-                                        </p:column>
-                                                                                
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                            <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update="@form, :productForm"
-                                                             action="#{productController.editProduct(product)}"/>
-                                        </p:column>
+                        </div>
+                        <div class="col-md-12">
+                            <h:form id="productTable">
+                                <p:dataTable value="#{productController.productList}" var="product" scrollable="true" scrollHeight="500">
+                                    <p:column headerText="Product Image">
+                                        <p:graphicImage height="100" value="#{productController.productImge}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg.product} code">
+                                        #{product.productCode}
+                                    </p:column>
 
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
-                                            <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{productController.deleteProduct(product)}" 
-                                                             onclick="return confirm('#{msg.delete_message}')" update="@form"/>
-                                        </p:column>
-                                    </p:dataTable>
-                                </h:form>
-                            </div>
+                                    <p:column headerText="#{msg.product} name">
+                                        #{product.productName}
+                                    </p:column>
+
+                                    <p:column headerText="Produt Type">
+                                        #{product.productType.productTypeName}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}" exportable="false" style="width: 130px;">
+                                        <p:menuButton value="Choose..">
+                                            <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" immediate="true" update="@form, :productForm" action="#{productController.editProduct(product)}"/>
+                                            <p:menuitem icon="fa fa-upload" class="text-info" action="#{productController.selectedProductImage(product.id)}" value="View Image" immediate="true" update=":imageModal" oncomplete="PF('productImageForm').show()"/>
+                                            <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" action="#{productController.deleteProduct(product)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                        </p:menuButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
                         </div>
                     </div>
                 </div>
+                
+                <p:dialog resizable="true" widgetVar="productImageForm" closeOnEscape="true" modal="true" id="imageModal" height="380"  width="500">
+                    <center>
+                        <ui:include src="includes/product-image.xhtml"/>
+                    </center>
+                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

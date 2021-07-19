@@ -28,9 +28,6 @@ public class CompanyBranch extends BaseModel implements Serializable
     @Column(name = "branch_name")
     private String branchName;
     
-    @Column(name = "box_address")
-    private String boxAddress;
-
     @Column(name = "gps_address")
     private String gpsAddress;
 
@@ -61,17 +58,7 @@ public class CompanyBranch extends BaseModel implements Serializable
     {
         this.branchName = branchName;
     }
-
-    public String getBoxAddress()
-    {
-        return boxAddress;
-    }
-
-    public void setBoxAddress(String boxAddress)
-    {
-        this.boxAddress = boxAddress;
-    }
-
+    
     public String getGpsAddress()
     {
         return gpsAddress;

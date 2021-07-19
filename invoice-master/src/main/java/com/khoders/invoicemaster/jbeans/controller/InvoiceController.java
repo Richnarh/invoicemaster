@@ -317,7 +317,6 @@ public class InvoiceController implements Serializable
         {
             cashInvoiceAmount += item.getTotalAmount();
         });
-        System.out.println("cashInvoiceAmount -- " + cashInvoiceAmount);
     }
 
     public void onTabChange(TabChangeEvent event)
@@ -366,10 +365,6 @@ public class InvoiceController implements Serializable
         if (invoice.getPaymentStatus() != null)
         {
             invoiceDto.setPaymentStatus(invoice.getPaymentStatus().getLabel());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
-        {
-            invoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
         }
         if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
         {

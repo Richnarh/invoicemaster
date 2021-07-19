@@ -21,11 +21,7 @@ public class AppSession implements Serializable{
     
     public void login(UserAccount userAccount)
     {
-        System.out.println("Currentuser Email => "+userAccount.getEmail());
-        System.out.println("Currentuser => "+userAccount);
         this.currentUser = userAccount;
-        
-        System.out.println("this.currentUser => "+this.currentUser);
     }
     
     public void logout()

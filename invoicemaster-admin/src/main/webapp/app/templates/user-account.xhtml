@@ -20,12 +20,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h:form id="accountForm">
+                                    <span>Branch<span class="text-danger">*</span></span>
+                                    <p:selectOneMenu class="col" value="#{userAccountController.userAccount.companyBranch}" filter="true" filterMatchMode="contains" required="true">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{userCommonClazz.companyBranchList}"/>
+                                    </p:selectOneMenu>
                                     <h:panelGrid columns="4" class="spaced-form">
-                                        <span>Branch<span class="text-danger">*</span></span>
-                                        <p:selectOneMenu class="col" value="#{userAccountController.userAccount.companyBranch}" filter="true" filterMatchMode="contains" required="true">
-                                            <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{userCommonClazz.companyBranchList}"/>
-                                        </p:selectOneMenu>
 
                                         <span>#{msg.fullname} <span class="text-danger">*</span></span>
                                         <p:inputText value="#{userAccountController.userAccount.fullname}" required="true"/>

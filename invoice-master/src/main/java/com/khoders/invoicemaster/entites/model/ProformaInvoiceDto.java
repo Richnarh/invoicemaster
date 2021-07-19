@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.entites.model;
 
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -326,7 +327,7 @@ public class ProformaInvoiceDto
     public static class ProformaInvoiceItem
     {
         private String productCode;
-        private String productName;
+        private InputStream productImage;
         private String frameUnit;
         private String widthHeightUnits;
         private int frameSize;
@@ -387,17 +388,7 @@ public class ProformaInvoiceDto
         {
             this.productCode = productCode;
         }
-
-        public String getProductName()
-        {
-            return productName;
-        }
-
-        public void setProductName(String productName)
-        {
-            this.productName = productName;
-        }
-
+        
         public int getFrameSize()
         {
             return frameSize;
@@ -446,6 +437,16 @@ public class ProformaInvoiceDto
         public void setWidthHeightUnits(String widthHeightUnits)
         {
             this.widthHeightUnits = widthHeightUnits;
+        }
+
+        public InputStream getProductImage()
+        {
+            return productImage;
+        }
+
+        public void setProductImage(InputStream productImage)
+        {
+            this.productImage = productImage;
         }
         
     }

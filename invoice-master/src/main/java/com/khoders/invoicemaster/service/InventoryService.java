@@ -33,8 +33,9 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM Product e";
+            String qryString = "SELECT e FROM Product e WHERE  e.userAccount=?1";
             TypedQuery<Product> typedQuery = crudApi.getEm().createQuery(qryString, Product.class);
+                                typedQuery.setParameter(1, appSession.getCurrentUser());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -45,12 +46,32 @@ public class InventoryService
         return Collections.emptyList();
     }
     
+    public Product getsingleImage(String id)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM Product e WHERE e.id=?1 AND  e.userAccount=?2";
+            TypedQuery<Product> typedQuery = crudApi.getEm().createQuery(qryString, Product.class);
+                                typedQuery.setParameter(1, id);
+                                typedQuery.setParameter(2, appSession.getCurrentUser());
+                                
+                            return typedQuery.getResultStream().findFirst().orElse(null);
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
     public List<ProductType> getProductTypeList()
     {
         try
         {
-            String qryString = "SELECT e FROM ProductType e";
+            String qryString = "SELECT e FROM ProductType e WHERE e.userAccount=?1";
             TypedQuery<ProductType> typedQuery = crudApi.getEm().createQuery(qryString, ProductType.class);
+                                    typedQuery.setParameter(1, appSession.getCurrentUser());
                                     return typedQuery.getResultList();
             
         } catch (Exception e)

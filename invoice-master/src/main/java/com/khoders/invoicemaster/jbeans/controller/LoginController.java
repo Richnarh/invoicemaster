@@ -76,10 +76,6 @@ public class LoginController implements Serializable
             
             Faces.redirect(Pages.index);
 
-            System.out.println("baseURL => "+ Faces.getRequestBaseURL());
-            System.out.println("Redirect => "+Pages.index);
-            
-            System.out.println("SessionUR => "+appSession.getCurrentUser());
         } catch (Exception e)
         {
             e.printStackTrace();

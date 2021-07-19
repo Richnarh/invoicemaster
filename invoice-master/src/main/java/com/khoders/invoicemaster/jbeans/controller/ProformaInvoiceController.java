@@ -22,6 +22,8 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -31,6 +33,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletOutputStream;
@@ -44,6 +47,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
+import static sun.security.krb5.Confounder.bytes;
 
 /**
  *
@@ -597,10 +601,6 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(grandTotalAmount);
             
-        if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
-        {
-            proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
-        }
         if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
         {
             proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
@@ -657,8 +657,22 @@ public class ProformaInvoiceController implements Serializable
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
             ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
+            try
+            {
+                byte[] image = invoiceItem.getInventory().getProduct().getProductImage();
+                if(image != null)
+                {
+                    InputStream inputStream = new ByteArrayInputStream(image);
+//                    BufferedImage bufferedImage = ImageIO.read(inputStream);
+                    invoiceItemDto.setProductImage(inputStream);  
+                }
+                
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            
             invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
-            invoiceItemDto.setProductName(invoiceItem.getInventory().getProduct().getProductName());
             invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
             invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
             invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
@@ -729,10 +743,6 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
             proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
             
-        if (appSession.getCurrentUser().getCompanyBranch().getBoxAddress() != null)
-        {
-            proformaInvoiceDto.setBoxAddress(appSession.getCurrentUser().getCompanyBranch().getBoxAddress());
-        }
         if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
         {
             proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());

@@ -9,6 +9,7 @@ com\khoders\im\admin\jbeans\CompanyProfileController.class
 com\khoders\im\admin\jbeans\UserAccountController.class
 com\khoders\im\admin\jbeans\CompanyBranchController.class
 com\khoders\im\admin\listener\AppSession.class
+com\khoders\im\admin\jbeans\VatSchemeController.class
 com\khoders\im\admin\commons\adminCommons.class
 com\khoders\im\admin\commons\UserCommonClazz.class
 com\khoders\im\admin\services\UserAccountService.class

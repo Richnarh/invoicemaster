@@ -9,7 +9,7 @@
     <h:body>
         <ui:composition template="../../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                SMS-Contact Manager
+                Single Messaging
             </ui:define>
 
             <ui:define name="pageContent">
@@ -28,7 +28,7 @@
                                             </p:column>
 
                                             <p:column headerText="#{msg.mobile_no}" filterBy="#{contact.phone}" filterMatchMode="contains">
-                                                <h:commandLink class="text-link" value="#{contact.phone}" action="#{smsController.manage(contact)}">
+                                                <h:commandLink class="ptext-link" value="#{contact.phone}" action="#{smsController.manage(contact)}">
                                                     <p:ajax update="smsPanel"/>
                                                 </h:commandLink>
                                             </p:column>
@@ -46,7 +46,7 @@
                                         
                                         
                                         
-                                        <ui:include src="../includes/message.xhtml"/>
+                                        <ui:include src="includes/message.xhtml"/>
                                 </div>
                             </div>
                         </h:panelGroup>

@@ -24,9 +24,6 @@ public class UserAccountService
     
     public UserAccount login(UserModel userModel)
     {
-         System.out.println("Username: "+userModel.getUserEmail());
-         System.out.println("Password: "+userModel.getPassword());
-
         try
         {
             String qryString = "SELECT e FROM UserAccount e WHERE e.email=?1 AND e.password=?2";
@@ -34,11 +31,8 @@ public class UserAccountService
                     .setParameter(1, userModel.getUserEmail())
                     .setParameter(2, hashText(userModel.getPassword()));
             
-                 if(typedQuery.getSingleResult() != null)
-                 {
-                    return typedQuery.getSingleResult();
-                 }
-
+                    return typedQuery.getResultStream().findFirst().orElse(null);
+                    
         } catch (Exception e)
         {
             e.printStackTrace();

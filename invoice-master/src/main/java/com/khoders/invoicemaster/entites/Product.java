@@ -25,11 +25,16 @@ public class Product extends UserAccountRecord
 
     @Column(name = "product_code")
     private String productCode;
-    
+        
     @JoinColumn(name = "product_type")
     @ManyToOne
     private ProductType productType;
 
+    @Column(name = "product_image")
+    private byte[] productImage;
+    
+    @Column(name = "image_format")
+    private String imageFormat;
 
     public String getProductName()
     {
@@ -60,7 +65,28 @@ public class Product extends UserAccountRecord
     {
         this.productType = productType;
     }
-    
+
+    public byte[] getProductImage()
+    {
+        return productImage;
+    }
+
+    public void setProductImage(byte[] productImage)
+    {
+        this.productImage = productImage;
+    }
+
+        
+    public String getImageFormat()
+    {
+        return imageFormat;
+    }
+
+    public void setImageFormat(String imageFormat)
+    {
+        this.imageFormat = imageFormat;
+    }
+
 
     @Override
     public String toString()

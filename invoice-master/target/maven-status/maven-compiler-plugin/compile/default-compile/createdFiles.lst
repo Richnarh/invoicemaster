@@ -6,6 +6,7 @@ com\khoders\invoicemaster\entites\ProformaInvoice.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
 com\khoders\invoicemaster\entites\model\InvoiceDto.class
 com\khoders\invoicemaster\jbeans\controller\InventoryController.class
+com\khoders\invoicemaster\jbeans\controller\ProductController$1.class
 com\khoders\invoicemaster\jbeans\converter\ValidationConverter.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$Validation.class
 com\khoders\invoicemaster\entites\ReceivedDocumentConfigItems.class

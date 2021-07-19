@@ -28,11 +28,8 @@
                                 </p:selectOneMenu>
                                 
                                 <span>#{msg.branch_name}</span>
-                                <p:inputText value="#{companyBranchController.companyBranch.branchName}"/>
+                                <p:inputTextarea value="#{companyBranchController.companyBranch.branchName}"/>
                                 
-                                <span>#{msg.box_address}</span>
-                                <p:inputText value="#{companyBranchController.companyBranch.boxAddress}"/>
-
                                 <span>#{msg.gps_address}</span>
                                 <p:inputText value="#{companyBranchController.companyBranch.gpsAddress}"/>
 
@@ -63,18 +60,19 @@
                                 <p:column headerText="#{msg.branch_code}">
                                     #{companyBranch.branchCode}
                                 </p:column>
+                                
                                 <p:column headerText="#{msg.branch_name}">
                                     #{companyBranch.branchName}
                                 </p:column>
+                                
                                 <p:column headerText="#{msg.profile}">
                                     #{companyBranch.companyProfile}
                                 </p:column>
+                                
                                 <p:column headerText="#{msg.gps_address}">
                                     #{companyBranch.gpsAddress}
                                 </p:column>
-                                <p:column headerText="#{msg.box_address}">
-                                    #{companyBranch.boxAddress}
-                                </p:column>
+                                
                                 <p:column headerText="#{msg.telephone_no}">
                                     #{companyBranch.telephoneNo}
                                 </p:column>
