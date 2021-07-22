@@ -10,6 +10,7 @@ import com.khoders.invoicemaster.entites.enums.DoorType;
 import com.khoders.invoicemaster.entites.enums.InvoiceType;
 import com.khoders.invoicemaster.entites.enums.MessagingType;
 import com.khoders.resource.enums.Currency;
+import com.khoders.resource.enums.DiscountType;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.enums.UnitOfMeasurement;
@@ -65,5 +66,9 @@ public class CommonClass implements Serializable
     public List<MessagingType> getMessagingTypeList()
     {
         return Arrays.asList(MessagingType.values());
+    }
+    public List<DiscountType> getDiscountTypeList()
+    {
+        return Arrays.asList(DiscountType.values());
     }
 }

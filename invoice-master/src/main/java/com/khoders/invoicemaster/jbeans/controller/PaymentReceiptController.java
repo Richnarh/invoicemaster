@@ -19,8 +19,10 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -28,6 +30,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Sides;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -111,12 +122,43 @@ public class PaymentReceiptController implements Serializable
             
             reportHandler.reportParams.put("image", ReportFiles.LOGO);
             
-            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
-            HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            httpServletResponse.setContentType("application/pdf");
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-            FacesContext.getCurrentInstance().responseComplete();
+            DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
+            PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
+            patts.add(Sides.DUPLEX);
+            PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
+            if (ps.length == 0)
+            {
+                throw new IllegalStateException("No Printer found");
+            }
+            System.out.println("Available printers: " + Arrays.asList(ps));
+
+            PrintService myService = null;
+            for (PrintService printService : ps)
+            {
+                if (printService.getName().equals("Your printer name"))
+                {
+                    myService = printService;
+                    break;
+                }
+            }
+
+            if (myService == null)
+            {
+                throw new IllegalStateException("Printer not found");
+            }
+
+            FileInputStream fis = new FileInputStream(ReportFiles.PAYMENT_RECEIPT_FILE);
+            Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
+            DocPrintJob printJob = myService.createPrintJob();
+            printJob.print(pdfDoc, new HashPrintRequestAttributeSet());
+            fis.close();
+            
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
+//            HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+//            httpServletResponse.setContentType("application/pdf");
+//            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+//            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+//            FacesContext.getCurrentInstance().responseComplete();
             
         } catch (Exception e)
         {

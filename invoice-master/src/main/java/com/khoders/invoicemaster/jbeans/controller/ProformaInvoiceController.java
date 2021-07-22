@@ -13,6 +13,7 @@ import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
+import com.khoders.invoicemaster.entities.master.TaxScheme;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
@@ -22,7 +23,6 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +33,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletOutputStream;
@@ -47,7 +46,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
-import static sun.security.krb5.Confounder.bytes;
 
 /**
  *
@@ -87,15 +85,19 @@ public class ProformaInvoiceController implements Serializable
     private ReceivedDocumentConfigItems receivedDocumentConfigItems = new ReceivedDocumentConfigItems();
     private List<ReceivedDocumentConfigItems> receivedDocumentConfigItemsList = new LinkedList<>();
     
+    private List<TaxScheme> taxSchemeList = new LinkedList<>();
+    
     private int selectedTabIndex;
     private String optionText;
-    private double totalAmount;
+    private double totalAmount,totalDiscount;
      
+    private ServletOutputStream servletOutputStream = null;
 
     @PostConstruct
     private void init()
     {
         proformaInvoiceList = proformaInvoiceService.getProformaInvoiceList();
+        taxSchemeList = proformaInvoiceService.getTaxSchemeList();
         clearProformaInvoice();
     }
 
@@ -256,12 +258,12 @@ public class ProformaInvoiceController implements Serializable
         {
                 for (ProformaInvoiceItem item : proformaInvoiceItemList) 
                 {
-                    if (totalAmount != proformaInvoice.getTotalAmount())
-                    {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: " + (totalAmount) + " is not equivalent to the proforma invoce total: " + proformaInvoice.getTotalAmount()), null));
-                        return;
-                    }
+//                    if (totalAmount != proformaInvoice.getTotalAmount())
+//                    {
+//                        FacesContext.getCurrentInstance().addMessage(null,
+//                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: " + (totalAmount) + " is not equivalent to the proforma invoice total: " + proformaInvoice.getTotalAmount()), null));
+//                        return;
+//                    }
                     crudApi.save(item); 
                 }
                 
@@ -723,7 +725,7 @@ public class ProformaInvoiceController implements Serializable
             JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
             HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             httpServletResponse.setContentType("application/pdf");
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            servletOutputStream = httpServletResponse.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
             FacesContext.getCurrentInstance().responseComplete();
                         
@@ -932,5 +934,15 @@ public class ProformaInvoiceController implements Serializable
     {
         return receivedDocumentConfigItemsList;
     }
-  
+
+    public List<TaxScheme> getTaxSchemeList()
+    {
+        return taxSchemeList;
+    }
+
+    public double getTotalDiscount()
+    {
+        return totalDiscount;
+    }
+    
 }

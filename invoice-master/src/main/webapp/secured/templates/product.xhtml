@@ -50,9 +50,11 @@
                         <div class="col-md-12">
                             <h:form id="productTable">
                                 <p:dataTable value="#{productController.productList}" var="product" scrollable="true" scrollHeight="500">
-                                    <p:column headerText="Product Image">
-                                        <p:graphicImage height="100" value="#{productController.productImge}" />
+                                    <ui:remove>
+                                        <p:column headerText="Images">
+                                        <p:graphicImage cache="false" height="100" value="#{productController.productImge}" />
                                     </p:column>
+                                    </ui:remove>
                                     <p:column headerText="#{msg.product} code">
                                         #{product.productCode}
                                     </p:column>
@@ -68,7 +70,7 @@
                                     <p:column headerText="#{msg.action}" exportable="false" style="width: 130px;">
                                         <p:menuButton value="Choose..">
                                             <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" immediate="true" update="@form, :productForm" action="#{productController.editProduct(product)}"/>
-                                            <p:menuitem icon="fa fa-upload" class="text-info" action="#{productController.selectedProductImage(product.id)}" value="View Image" immediate="true" update=":imageModal" oncomplete="PF('productImageForm').show()"/>
+                                            <p:menuitem icon="fa fa-upload" class="text-info" action="#{productController.selectedProductImage(product.id)}" value="View Image" immediate="true" update=":imageModal" oncomplete="PF('productImageForm').show()" resetValues="true"/>
                                             <p:menuitem icon="fa fa-times" class="text-danger" value="#{msg.delete}" immediate="true" action="#{productController.deleteProduct(product)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                                         </p:menuButton>
                                     </p:column>

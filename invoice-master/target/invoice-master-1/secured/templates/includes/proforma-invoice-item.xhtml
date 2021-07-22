@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
 
     <div class="row">
         <div class="col-lg-4">
@@ -14,7 +15,7 @@
                                      filter="true" filterMatchMode="contains" required="true">
                         <f:selectItem itemLabel="#{msg.choose}"/>
                         <f:selectItems value="#{userCommonClass.inventoryList}"/>
-                        
+
                         <p:ajax listener="#{proformaInvoiceController.inventoryProperties()}" update="sellingPrice"/>
                     </p:selectOneMenu>
 
@@ -24,6 +25,30 @@
                     <span>#{msg.unit_price} <span class="text-danger">*</span> </span>
                     <p:inputText id="sellingPrice" value="#{proformaInvoiceController.proformaInvoiceItem.unitPrice}" required="true"/>
 
+                    <span>#{msg.discount} ?</span>
+                    <h:panelGroup id="discountPanel">
+                        <h:panelGrid columns="4">
+                            <p:selectBooleanCheckbox value="#{proformaInvoiceController.proformaInvoiceItem.applyDiscount}" >
+                                <p:ajax process="@this" update="discountPanel" />
+                            </p:selectBooleanCheckbox>
+
+                            <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.discountRate}" 
+                                         size="5"
+                                         rendered="#{proformaInvoiceController.proformaInvoiceItem.applyDiscount}"/>
+
+                            <p:selectOneMenu value="#{proformaInvoiceController.proformaInvoiceItem.discountType}" 
+                                             rendered="#{proformaInvoiceController.proformaInvoiceItem.applyDiscount}" 
+                                            >
+                                <f:selectItem itemLabel="#{msg.choose}" />
+                                <f:selectItems value="#{commonClass.discountTypeList}" 
+                                               itemValue="#{appType}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+
+                    </h:panelGroup>
+                    
+                    <span>#{msg.description}</span>
+                    <p:inputTextarea value="#{proformaInvoiceController.proformaInvoiceItem.description}"/>
                 </h:panelGrid>
 
                 <div class="py-3">
@@ -46,10 +71,10 @@
                             <h:outputText value="#{proformaInvoiceItem.itemCode}"/>
                             <span>#{msg.frame_size}</span>
                             <h:outputText value="#{proformaInvoiceItem.inventory.frameSize} #{appSession.currentUser.frame}"/>
-                            
+
                             <span>#{msg.width}</span>
                             <h:outputText value="#{proformaInvoiceItem.inventory.width} #{appSession.currentUser.width}"/>
-                            
+
                             <span>#{msg.height}</span>
                             <h:outputText value="#{proformaInvoiceItem.inventory.height} #{appSession.currentUser.height}"/>
                         </p:panelGrid>
@@ -58,7 +83,7 @@
                     <p:column headerText="#{msg.product}">
                         #{proformaInvoiceItem.inventory.product.productName}
                     </p:column>
-                    
+
                     <p:column headerText="#{msg.quantity}" class="text-right">
                         #{proformaInvoiceItem.quantity}
                     </p:column>
@@ -77,8 +102,8 @@
 
                     <p:column headerText="#{msg.action}" style="width: 80px;">
                         <p:commandButton  class="kbtn-info" action="#{proformaInvoiceController.editProformaInvoiceItem(proformaInvoiceItem)}" 
-                                        value="#{msg.edit}" update=":mainTabView:orderItemForm, @form"/>
-                        
+                                          value="#{msg.edit}" update=":mainTabView:orderItemForm, @form"/>
+
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
                         <p:commandButton value="#{msg.delete}" class="kbtn-danger"
@@ -86,22 +111,55 @@
                     </p:column>
                 </p:dataTable>
                 
-                <center class="py-3">
-                    <h:panelGrid columns="2">
-                        <span>Total Amount: </span>
-                        <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
+                <br/>
+                <div class="col-md-6 pull-right shadow-sm">
+                    <table class="table">
+                    <tr>
+                        <td><span class="field-label">#{msg.total_amount}</span></td>
+                        <td  class="text-right"> 
+                            <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
                             <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
                         </h:outputText>
-                    </h:panelGrid>
-                </center>
+                        </td>
+                    </tr>
+                    
+                    <ui:repeat value="#{proformaInvoiceController.taxSchemeList}" var="taxScheme">
+                        <tr>
+                            <td>#{taxScheme.tax.taxName} (#{taxScheme.tax.taxRate} %)</td>
+                            <td  class="text-right">
+                                <h:outputText>
+                                    <f:convertNumber pattern="#,##0.00" />
+                                </h:outputText>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                    
+                    <tr>
+                        <td><span class="field-label">Delivery Fees</span></td>
+                        <td  class="text-right"> 
+                            <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.charges}" 
+                                         styleClass="text-right"/> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="field-label">Total Discount</span></td>
+                        <td class="text-right"> 
+                            <h:outputText value="#{proformaInvoiceController.totalDiscount}" styleClass="field-shade">
+                                <f:convertNumber pattern="#,##0.00" />
+                            </h:outputText>
+                        </td>
+                    </tr>
+                </table>
+                
+                </div>
             </h:form>
-             <hr/>
+            
             <center>
                 <h:form>
                     <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
-                    <p:ajax update=":mainTabView:mainPanel"/>
-                </h:commandButton>
+                        <p:ajax update=":mainTabView:mainPanel"/>
+                    </h:commandButton>
                 </h:form>
             </center>
         </div>

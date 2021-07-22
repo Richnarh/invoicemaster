@@ -5,7 +5,8 @@
  */
 package com.khoders.im.admin.jbeans;
 
-import com.khoders.invoicemaster.entities.master.VatScheme;
+import com.khoders.im.admin.services.CompanyService;
+import com.khoders.invoicemaster.entities.master.TaxScheme;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -24,33 +25,34 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "vatSchemeController")
+@Named(value = "taxSchemeController")
 @SessionScoped
-public class VatSchemeController implements Serializable{
+public class TaxSchemeController implements Serializable{
     @Inject CrudApi crudApi;
+    @Inject CompanyService companyService;
     
     private String optionText;
     
-    private VatScheme vatScheme = new VatScheme();
-    private List<VatScheme> vatSchemeList = new LinkedList<>();
+    private TaxScheme taxScheme = new TaxScheme();
+    private List<TaxScheme> taxSchemeList = new LinkedList<>();
     
     @PostConstruct
     private void init()
     {
-        clearVatScheme();
+        clearTaxScheme();
         
-//        vatSchemeList = smsService.getVatSchemeList();
+        taxSchemeList = companyService.getTaxSchemeList();
     }
     
-   public void saveVatScheme()
+   public void saveTaxScheme()
     {
         try 
         {
-          vatScheme.genCode();
+          taxScheme.genCode();
           
-          if(crudApi.save(vatScheme) != null)
+          if(crudApi.save(taxScheme) != null)
           {
-              vatSchemeList = CollectionList.washList(vatSchemeList, vatScheme);
+              taxSchemeList = CollectionList.washList(taxSchemeList, taxScheme);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -60,26 +62,26 @@ public class VatSchemeController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create sender Id"), null));
           }
-           clearVatScheme();
+           clearTaxScheme();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
    
-    public void editVatScheme(VatScheme vatScheme)
+    public void editTaxScheme(TaxScheme taxScheme)
     {
        optionText = "Update";
-       this.vatScheme=vatScheme;
+       this.taxScheme=taxScheme;
     }
     
-    public void deleteVatScheme(VatScheme vatScheme)
+    public void deleteTaxScheme(TaxScheme taxScheme)
     {
         try
         {
-          if(crudApi.delete(vatScheme))
+          if(crudApi.delete(taxScheme))
           {
-              vatSchemeList.remove(vatScheme);
+              taxSchemeList.remove(taxScheme);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
@@ -95,8 +97,8 @@ public class VatSchemeController implements Serializable{
         }
     }
     
-    public void clearVatScheme() {
-        vatScheme = new VatScheme();
+    public void clearTaxScheme() {
+        taxScheme = new TaxScheme();
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -109,19 +111,19 @@ public class VatSchemeController implements Serializable{
         this.optionText = optionText;
     }
 
-    public VatScheme getVatScheme()
+    public TaxScheme getTaxScheme()
     {
-        return vatScheme;
+        return taxScheme;
     }
 
-    public void setVatScheme(VatScheme vatScheme)
+    public void setTaxScheme(TaxScheme taxScheme)
     {
-        this.vatScheme = vatScheme;
+        this.taxScheme = taxScheme;
     }
 
-    public List<VatScheme> getVatSchemeList()
+    public List<TaxScheme> getTaxSchemeList()
     {
-        return vatSchemeList;
+        return taxSchemeList;
     }
 
 }

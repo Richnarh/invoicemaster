@@ -17,6 +17,7 @@ import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
+import com.khoders.invoicemaster.entities.master.TaxScheme;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -326,5 +327,18 @@ public class ProformaInvoiceService
         }
         
         return invoice;
+    }
+ 
+    public List<TaxScheme> getTaxSchemeList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM TaxScheme e ", TaxScheme.class).getResultList();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 }

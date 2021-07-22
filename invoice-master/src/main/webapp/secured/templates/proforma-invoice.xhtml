@@ -25,7 +25,9 @@
                             </h:panelGroup>
                             <p:growl/>
                             <h:panelGroup rendered="#{proformaInvoiceController.pageView.detailView}">
-                                <div class="row mb-3">
+                                
+                                <ui:remove>
+                                    <div class="row mb-3 d-none">
                                     <div class="col-md-10 mx-auto">
                                         <div class="shadow bg-gray">
                                             <div class="row p-2">
@@ -47,9 +49,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr/>
+                                </ui:remove>
+                                
                                 <fieldset>
-                                    <legend class="text-info text-lg"> <u>Please Add Items On Invoice</u> </legend>
+                                    <legend class="text-info text-lg"> <u>Please Add Items</u> </legend>
                                     <ui:include src="includes/proforma-invoice-item.xhtml"/>
                                 </fieldset>
                             </h:panelGroup>

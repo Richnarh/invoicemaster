@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
 
     <h:body>
         <div class="row wow zoomIn">
@@ -90,10 +91,12 @@
                     <p:menuButton value="#{msg.manage}">
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-plus" class="text-info" value="Delivery Terms" action="#{proformaInvoiceController.manageDeliveryTermItemConfig(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :deliveryTermModal" oncomplete="PF('deliveryTermForm').show()"/>
+                        <ui:remove>
+                            <p:menuitem icon="fa fa-plus" class="text-info" value="Delivery Terms" action="#{proformaInvoiceController.manageDeliveryTermItemConfig(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :deliveryTermModal" oncomplete="PF('deliveryTermForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Validation" action="#{proformaInvoiceController.manageValidationConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :validationModal" oncomplete="PF('validationForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Received Document" action="#{proformaInvoiceController.manageReceivedDocumentConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :receivedDocumentModal" oncomplete="PF('receivedDocumentForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Colours" action="#{proformaInvoiceController.manageColoursConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :coloursModal" oncomplete="PF('coloursForm').show()"/>
+                        </ui:remove>
                         <p:menuitem icon="fa fa-cog" rendered="#{proformaInvoice.converted == false} #{appSession.currentUser.permConvert == true}" class="text-info" action="#{proformaInvoiceController.convertToInvoice(proformaInvoice)}" title="Convert proforma invoice to standard proformaInvoice" value="Convert" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-times" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainTabView:mainPanel"/>
                     </p:menuButton>

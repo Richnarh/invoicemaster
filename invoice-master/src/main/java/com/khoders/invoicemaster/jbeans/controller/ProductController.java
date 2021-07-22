@@ -52,9 +52,32 @@ public class ProductController implements Serializable{
     private void init()
     {
         productList = inventoryService.getProductList();
+    
+        productList.forEach(prdt ->
+        {
+            getImages(prdt.getId());
+            System.out.println("Image Id => "+prdt.getId());
+        });
         clearProduct();
         
     }
+    
+    public void getImages(String id)
+    {
+       try
+        {
+          product = inventoryService.getsingleImage(id);
+          
+          createStreamContent(product);
+          
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+
+        
     public void createStreamContent(Product product)
     {
         try

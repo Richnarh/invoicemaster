@@ -81,7 +81,6 @@ public class CompanyProfileController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
-
     public CompanyProfile getCompanyProfile()
     {
         return companyProfile;

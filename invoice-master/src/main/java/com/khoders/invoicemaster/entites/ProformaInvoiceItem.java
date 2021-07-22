@@ -5,10 +5,13 @@
  */
 package com.khoders.invoicemaster.entites;
 
+import com.khoders.resource.enums.DiscountType;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -22,7 +25,6 @@ import javax.persistence.Table;
 @Table(name = "proforma_invoice_item")
 public class ProformaInvoiceItem extends UserAccountRecord implements Serializable
 {
-
     @Column(name = "item_code")
     private String itemCode;
 
@@ -49,6 +51,16 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne
     private ProformaInvoice proformaInvoice;
+    
+     @Column(name = "apply_discount")
+    private boolean applyDiscount;
+    
+    @Column(name = "discount_rate")
+    private double discountRate;
+
+    @Column(name = "discount_type")
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
 
     public int getQuantity()
     {
@@ -128,6 +140,36 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     public void setCharges(double charges)
     {
         this.charges = charges;
+    }
+
+    public boolean isApplyDiscount()
+    {
+        return applyDiscount;
+    }
+
+    public void setApplyDiscount(boolean applyDiscount)
+    {
+        this.applyDiscount = applyDiscount;
+    }
+
+    public double getDiscountRate()
+    {
+        return discountRate;
+    }
+
+    public void setDiscountRate(double discountRate)
+    {
+        this.discountRate = discountRate;
+    }
+
+    public DiscountType getDiscountType()
+    {
+        return discountType;
+    }
+
+    public void setDiscountType(DiscountType discountType)
+    {
+        this.discountType = discountType;
     }
 
     public void genCode()
