@@ -91,6 +91,7 @@
                     <p:menuButton value="#{msg.manage}">
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
+                        <p:menuitem icon="fa fa-print" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.printReceipt(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <ui:remove>
                             <p:menuitem icon="fa fa-plus" class="text-info" value="Delivery Terms" action="#{proformaInvoiceController.manageDeliveryTermItemConfig(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :deliveryTermModal" oncomplete="PF('deliveryTermForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Validation" action="#{proformaInvoiceController.manageValidationConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :validationModal" oncomplete="PF('validationForm').show()"/>

@@ -11,9 +11,10 @@ import com.khoders.invoicemaster.entites.Invoice;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
+import com.khoders.invoicemaster.entites.SalesTax;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
-import com.khoders.invoicemaster.entities.master.TaxScheme;
+import com.khoders.invoicemaster.entites.Tax;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
@@ -85,11 +86,13 @@ public class ProformaInvoiceController implements Serializable
     private ReceivedDocumentConfigItems receivedDocumentConfigItems = new ReceivedDocumentConfigItems();
     private List<ReceivedDocumentConfigItems> receivedDocumentConfigItemsList = new LinkedList<>();
     
-    private List<TaxScheme> taxSchemeList = new LinkedList<>();
+    private List<Tax> taxList = new LinkedList<>();
+    private List<SalesTax> salesTaxList = new LinkedList<>();
+    private SalesTax taxSales = new SalesTax();
     
     private int selectedTabIndex;
     private String optionText;
-    private double totalAmount,totalDiscount;
+    private double totalAmount,totalDiscount,installationFee,taxAmount,totalPayable;
      
     private ServletOutputStream servletOutputStream = null;
 
@@ -97,7 +100,7 @@ public class ProformaInvoiceController implements Serializable
     private void init()
     {
         proformaInvoiceList = proformaInvoiceService.getProformaInvoiceList();
-        taxSchemeList = proformaInvoiceService.getTaxSchemeList();
+        taxList = proformaInvoiceService.getTaxList();
         clearProformaInvoice();
     }
 
@@ -172,11 +175,10 @@ public class ProformaInvoiceController implements Serializable
         clearProformaInvoiceItem();
         
         proformaInvoiceItemList = proformaInvoiceService.getProformaInvoiceItemList(proformaInvoice);
+        salesTaxList = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-        for (ProformaInvoiceItem items : proformaInvoiceItemList) 
-        {
-            totalAmount += (items.getQuantity() * items.getUnitPrice());
-        }
+         totalAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+
     }
 
     public void manageDeliveryTermItemConfig(ProformaInvoice proformaInvoice)
@@ -231,10 +233,25 @@ public class ProformaInvoiceController implements Serializable
             
              if(proformaInvoiceItem != null)
               {
-                totalAmount += proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
-                double x = proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
-                proformaInvoiceItem.setTotalAmount(x);
+                  double salesAmount = proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice();
+                
+                
+                if (proformaInvoiceItem.getDiscountRate() > 0.0)
+                {
+                    double discountRate = proformaInvoiceItem.getDiscountRate();
+                    double discountValue = salesAmount * (discountRate/100);
+                    proformaInvoiceItem.setTotalAmount(salesAmount - discountValue);
+                    double xyz = salesAmount - discountValue;
+                    System.out.println("Discounted Percentage Value => "+xyz);
+                }
+                else
+                {
+                    proformaInvoiceItem.setTotalAmount(salesAmount);
+                    System.out.println("No Discount Value => "+salesAmount);
+                }
+                setTotalAmount(salesAmount);
                 proformaInvoiceItem.genCode();
+                proformaInvoiceItem.setApplyDiscount(true);
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
                 
@@ -251,27 +268,101 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
+        
+    public void taxCalculation()
+    {
+            totalDiscount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getDiscountRate).sum();
+            double saleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+
+            for (Tax tax : taxList)
+            {
+                SalesTax salesTax = new SalesTax();
+                
+                double calc = saleAmount * (tax.getTaxRate()/100);
+                
+                salesTax.genCode();
+                salesTax.setTaxName(tax.getTaxName());
+                salesTax.setTaxRate(tax.getTaxRate());
+                salesTax.setTaxAmount(calc);
+                salesTax.setReOrder(tax.getReOrder());
+                salesTax.setUserAccount(appSession.getCurrentUser());
+                salesTax.setProformaInvoice(this.proformaInvoice);
+                
+                if(salesTaxList.isEmpty())
+                {
+                    crudApi.save(salesTax);
+                }
+                else
+                {
+                    for (SalesTax tx : salesTaxList)
+                    {
+                        if (tx.getProformaInvoice() == this.proformaInvoice)
+                        {
+                            System.out.println("proforma invoice exist: "+tx.getProformaInvoice());
+                            crudApi.save(tx);
+                        }
+                    }
+                }
+            }
+        calculateVat();
+        salesTaxList = proformaInvoiceService.getSalesTaxList(this.proformaInvoice);
+    }
     
+    private void calculateVat()
+    {
+        double saleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+        installationFee = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getInstallationFee).sum();
+        System.out.println("installationFee => "+installationFee);
+        if(!salesTaxList.isEmpty())
+        {
+            SalesTax nhil = salesTaxList.get(0);
+            SalesTax getFund = salesTaxList.get(1);
+            SalesTax covid19 = salesTaxList.get(2);
+            SalesTax stx = salesTaxList.get(3);
+
+            double totalLevies = nhil.getTaxAmount()+getFund.getTaxAmount()+covid19.getTaxAmount();
+
+            double taxableValue = saleAmount + totalLevies;
+            
+            System.out.println("saleAmount => "+saleAmount);
+            System.out.println("taxableValue => "+taxableValue);
+            System.out.println("totalLevies => "+totalLevies);
+            
+            double vat = taxableValue*(stx.getTaxRate()/100);
+            
+            System.out.println("vat => "+vat);
+
+            totalPayable = vat + taxableValue + installationFee;
+            
+            System.out.println("totalPayable => "+totalPayable);
+
+            stx.setTaxAmount(vat);
+
+            crudApi.save(stx);
+            
+        }
+    }
+
+     
     public void saveAll()
     {
+        totalAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+        
         try 
         {
-                for (ProformaInvoiceItem item : proformaInvoiceItemList) 
+                for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList) 
                 {
-//                    if (totalAmount != proformaInvoice.getTotalAmount())
-//                    {
-//                        FacesContext.getCurrentInstance().addMessage(null,
-//                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The item total sum: " + (totalAmount) + " is not equivalent to the proforma invoice total: " + proformaInvoice.getTotalAmount()), null));
-//                        return;
-//                    }
-                    crudApi.save(item); 
+                  crudApi.save(pInvoiceItem); 
                 }
+                    
                 
                 for (ProformaInvoiceItem invoiceItem : removedProformaInvoiceItemList)
                 {
                     crudApi.delete(invoiceItem);
                     removedProformaInvoiceItemList.remove(invoiceItem);
                 }
+                
+                taxCalculation();
                 
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
@@ -572,24 +663,37 @@ public class ProformaInvoiceController implements Serializable
         }
     }
     
+    public void generateReceipt(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
+            List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
+        
+            double grandTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+            double instFees = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getInstallationFee).sum();
+        
+        
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     
     public void generateProformaInvoice(ProformaInvoice proformaInvoice)
     {
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
-        List<ProformaInvoiceDto.DeliveryTerm> deliveryTermDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.Validation> validationDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.Colours> coloursDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.ReceivedDocument> receivedDocumentDtoList = new LinkedList<>();
         List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto.SalesTax> salesTaxs = new LinkedList<>();
         
-        List<DeliveryTermConfigItems> deliveryTermList  = proformaInvoiceService.getDeliveryTermConfigItemsList(proformaInvoice);
-        List<ValidationConfigItems> validationItemsList  = proformaInvoiceService.getValidationConfigItems(proformaInvoice);
-        List<ReceivedDocumentConfigItems> receivedDocumentItemsList  = proformaInvoiceService.getReceivedDocumentConfigItems(proformaInvoice);
-        List<ColoursConfigItems> coloursItemsList  = proformaInvoiceService.getColoursConfigItems(proformaInvoice);
         List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
+        List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
         double grandTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+        double instFees = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getInstallationFee).sum();
         
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
             proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
@@ -602,6 +706,16 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setClientCode(proformaInvoice.getClient().getClientCode());
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(grandTotalAmount);
+            
+            double taxAmount = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
+            double discount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getDiscountRate).sum();
+            
+            double invoiceValue = taxAmount + grandTotalAmount + instFees;
+            
+            proformaInvoiceDto.setInstallationFee(instFees);
+            proformaInvoiceDto.setTotalDiscount(discount);
+            proformaInvoiceDto.setTotalPayable(invoiceValue);
+        
             
         if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
         {
@@ -623,37 +737,15 @@ public class ProformaInvoiceController implements Serializable
         {
             proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
         }
-            
-        for (DeliveryTermConfigItems configItems : deliveryTermList)
+                
+        for (SalesTax salesTax : salesTaxesList)
         {
-            ProformaInvoiceDto.DeliveryTerm deliveryTerm = new ProformaInvoiceDto.DeliveryTerm();
-            deliveryTerm.setDeliveryTerm(configItems.getDeliveryTerm().getDeliveryTerm());
-            deliveryTermDtoList.add(deliveryTerm);
-        }
-        
-        for (ValidationConfigItems items : validationItemsList)
-        {
-            ProformaInvoiceDto.Validation validation = new ProformaInvoiceDto.Validation();
-            validation.setValidation(items.getValidation().getValidation());
-            validationDtoList.add(validation);
-            
-        }
-        
-        for (ReceivedDocumentConfigItems documentConfigItems : receivedDocumentItemsList)
-        {
-            ProformaInvoiceDto.ReceivedDocument receivedDocument = new ProformaInvoiceDto.ReceivedDocument();
-            receivedDocument.setReceivedDocument(documentConfigItems.getReceivedDocument().getDocumentName());
-            
-            receivedDocumentDtoList.add(receivedDocument);
-            
-        }
-        
-        for (ColoursConfigItems items : coloursItemsList)
-        {
-            ProformaInvoiceDto.Colours colours = new ProformaInvoiceDto.Colours();
-            colours.setColours(items.getColours().getColourName());
-            
-            coloursDtoList.add(colours);
+            ProformaInvoiceDto.SalesTax taxItem = new ProformaInvoiceDto.SalesTax();
+            taxItem.setTaxName(salesTax.getTaxName());
+            taxItem.setTaxRate(salesTax.getTaxRate());
+            taxItem.setTaxAmount(salesTax.getTaxAmount());
+
+            salesTaxs.add(taxItem);
         }
         
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
@@ -665,7 +757,6 @@ public class ProformaInvoiceController implements Serializable
                 if(image != null)
                 {
                     InputStream inputStream = new ByteArrayInputStream(image);
-//                    BufferedImage bufferedImage = ImageIO.read(inputStream);
                     invoiceItemDto.setProductImage(inputStream);  
                 }
                 
@@ -695,31 +786,19 @@ public class ProformaInvoiceController implements Serializable
             
             invoiceItemDtoList.add(invoiceItemDto);
         }
-            proformaInvoiceDto.setDeliveryTermList(deliveryTermDtoList);
-            proformaInvoiceDto.setValidationList(validationDtoList);
-            proformaInvoiceDto.setColoursList(coloursDtoList);
-            proformaInvoiceDto.setReceivedDocumentList(receivedDocumentDtoList);
             proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
+            proformaInvoiceDto.setTaxList(salesTaxs);
             
             proformaInvoiceDtoList.add(proformaInvoiceDto);
             
         try
         {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
-//            JasperReport deliveryTermReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.DELIVERY_TERM_FILE));
-//            JasperReport validationReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.VALIDATION_FILE));
-//            JasperReport receiveDocumentReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.RECEIVED_DOCUMENT_FILE));
-//            JasperReport coloursReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.COLOURS_FILE));
             JasperReport proformaInvoiceItemReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(ReportFiles.PROFORMA_INVOICE_ITEM_FILE));
             InputStream stream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_FILE);
             
             
             reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-            
-//            reportHandler.reportParams.put("deliveryTerm", deliveryTermReport);
-//            reportHandler.reportParams.put("validation", validationReport);
-//            reportHandler.reportParams.put("colours", coloursReport);
-//            reportHandler.reportParams.put("receivedDocument", receiveDocumentReport);
             reportHandler.reportParams.put("proformaInvoiceItem", proformaInvoiceItemReport);
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
@@ -935,14 +1014,59 @@ public class ProformaInvoiceController implements Serializable
         return receivedDocumentConfigItemsList;
     }
 
-    public List<TaxScheme> getTaxSchemeList()
-    {
-        return taxSchemeList;
-    }
-
     public double getTotalDiscount()
     {
         return totalDiscount;
+    }
+    
+    public double getTotalInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public double getTaxAmount()
+    {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(double taxAmount)
+    {
+        this.taxAmount = taxAmount;
+    }
+
+    public List<SalesTax> getSalesTaxList()
+    {
+        return salesTaxList;
+    }
+
+    public double getTotalPayable()
+    {
+        return totalPayable;
+    }
+
+    public List<Tax> getTaxList()
+    {
+        return taxList;
+    }
+
+    public double getInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public void setInstallationFee(double installationFee)
+    {
+        this.installationFee = installationFee;
+    }
+
+    public SalesTax getTaxSales()
+    {
+        return taxSales;
+    }
+
+    public void setTaxSales(SalesTax taxSales)
+    {
+        this.taxSales = taxSales;
     }
     
 }

@@ -15,9 +15,10 @@ import com.khoders.invoicemaster.entites.InvoiceItem;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.ReceivedDocumentConfigItems;
+import com.khoders.invoicemaster.entites.SalesTax;
 import com.khoders.invoicemaster.entites.Validation;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
-import com.khoders.invoicemaster.entities.master.TaxScheme;
+import com.khoders.invoicemaster.entites.Tax;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -45,6 +46,22 @@ public class ProformaInvoiceService
           String query = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1 AND e.userAccount=?2";
         
         TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(query, ProformaInvoiceItem.class)
+                                .setParameter(1, proformaInvoice)
+                                .setParameter(2, appSession.getCurrentUser());
+                return typedQuery.getResultList();      
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    public List<SalesTax> getSalesTaxList(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+          String query = "SELECT e FROM SalesTax e WHERE e.proformaInvoice=?1 AND e.userAccount=?2 ORDER BY e.reOrder ASC";
+        
+        TypedQuery<SalesTax> typedQuery = crudApi.getEm().createQuery(query, SalesTax.class)
                                 .setParameter(1, proformaInvoice)
                                 .setParameter(2, appSession.getCurrentUser());
                 return typedQuery.getResultList();      
@@ -328,12 +345,12 @@ public class ProformaInvoiceService
         
         return invoice;
     }
- 
-    public List<TaxScheme> getTaxSchemeList()
+
+    public List<Tax> getTaxList()
     {
         try
         {
-            return crudApi.getEm().createQuery("SELECT e FROM TaxScheme e ", TaxScheme.class).getResultList();
+            return crudApi.getEm().createQuery("SELECT e FROM Tax e ORDER BY e.reOrder ASC", Tax.class).getResultList();
         } catch (Exception e)
         {
             e.printStackTrace();

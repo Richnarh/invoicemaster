@@ -7,8 +7,6 @@ package com.khoders.im.admin.services;
 
 import com.khoders.invoicemaster.entities.master.CompanyBranch;
 import com.khoders.invoicemaster.entities.master.CompanyProfile;
-import com.khoders.invoicemaster.entities.master.Tax;
-import com.khoders.invoicemaster.entities.master.TaxScheme;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;
 import java.util.List;
@@ -50,29 +48,4 @@ public class CompanyService
         return Collections.emptyList();
     }
 
-    public List<TaxScheme> getTaxSchemeList()
-    {
-        try
-        {
-            return crudApi.getEm().createQuery("SELECT e FROM TaxScheme e ", TaxScheme.class).getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
-    }
-
-    public List<Tax> getTaxList()
-    {
-        try
-        {
-            return crudApi.getEm().createQuery("SELECT e FROM Tax e ", Tax.class).getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
-    }
 }

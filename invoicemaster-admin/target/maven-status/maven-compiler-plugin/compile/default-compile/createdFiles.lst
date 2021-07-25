@@ -11,8 +11,5 @@ com\khoders\im\admin\jbeans\CompanyBranchController.class
 com\khoders\im\admin\listener\AppSession.class
 com\khoders\im\admin\commons\adminCommons.class
 com\khoders\im\admin\commons\UserCommonClazz.class
-com\khoders\im\admin\jbeans\converter\TaxConverter.class
-com\khoders\im\admin\jbeans\TaxController.class
 com\khoders\im\admin\services\UserAccountService.class
 com\khoders\im\admin\jbeans\converter\CompanyBranchConverter.class
-com\khoders\im\admin\jbeans\TaxSchemeController.class

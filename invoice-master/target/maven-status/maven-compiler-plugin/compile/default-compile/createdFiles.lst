@@ -1,4 +1,5 @@
 com\khoders\invoicemaster\entites\PaymentReceipt.class
+com\khoders\invoicemaster\jbeans\controller\TaxController.class
 com\khoders\invoicemaster\jbeans\converter\InvoiceConverter.class
 com\khoders\invoicemaster\jbeans\controller\ProductTypeController.class
 com\khoders\invoicemaster\entites\Product.class
@@ -22,6 +23,7 @@ com\khoders\invoicemaster\commons\CommonClass.class
 com\khoders\invoicemaster\entites\model\ConvertToWords.class
 com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\entites\sms\SenderId.class
+com\khoders\invoicemaster\entites\SalesTax.class
 com\khoders\invoicemaster\entites\UserAccountRecord.class
 com\khoders\invoicemaster\entites\model\PaymentReceiptDto.class
 com\khoders\invoicemaster\entites\ValidationConfigItems.class
@@ -32,10 +34,14 @@ com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class
 com\khoders\invoicemaster\entites\enums\DoorType.class
 com\khoders\invoicemaster\entites\sms\SMSGrup.class
 com\khoders\invoicemaster\service\InventoryService.class
+com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$TaxScheme.class
+com\khoders\invoicemaster\entites\Tax.class
 com\khoders\invoicemaster\Pages.class
 com\khoders\invoicemaster\service\ProformaInvoiceService.class
 com\khoders\invoicemaster\jbeans\converter\SMSGrupConverter.class
 com\khoders\invoicemaster\entites\enums\SMSType.class
+com\khoders\invoicemaster\jbeans\controller\ProformaBuckup.class
+com\khoders\invoicemaster\jbeans\converter\TaxConverter.class
 com\khoders\invoicemaster\jbeans\controller\PurchaseOrderUploadController.class
 com\khoders\invoicemaster\jbeans\converter\DeliveryTermConverter.class
 com\khoders\invoicemaster\jbeans\controller\sms\SMSGrupController.class
@@ -79,6 +85,7 @@ com\khoders\invoicemaster\jbeans\controller\InvoiceController.class
 com\khoders\invoicemaster\jbeans\controller\sms\SmsController$1.class
 com\khoders\invoicemaster\jbeans\ReportFiles.class
 com\khoders\invoicemaster\jbeans\SmsAccess.class
+com\khoders\invoicemaster\entites\SalesLog.class
 com\khoders\invoicemaster\entites\ColoursConfigItems.class
 com\khoders\invoicemaster\jbeans\UserModel.class
 com\khoders\invoicemaster\entites\Invoice.class

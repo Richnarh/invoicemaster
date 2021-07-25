@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class ProformaInvoiceDto
 {
+
     private LocalDate issuedDate;
     private LocalDate expiryDate;
     private String clientName;
@@ -33,9 +34,12 @@ public class ProformaInvoiceDto
     private String branchName;
     private String website;
     private String tinNo;
-    
-    
+    private double installationFee;
+    private double totalDiscount;
+    private double totalPayable;
+
     public List<ProformaInvoiceItem> invoiceItemList = new LinkedList<>();
+    public List<SalesTax> taxList = new LinkedList<>();
     public List<DeliveryTerm> deliveryTermList = new LinkedList<>();
     public List<Validation> validationList = new LinkedList<>();
     public List<Colours> coloursList = new LinkedList<>();
@@ -70,7 +74,7 @@ public class ProformaInvoiceDto
     {
         this.branchName = branchName;
     }
-    
+
     public String getLogo()
     {
         return logo;
@@ -90,7 +94,7 @@ public class ProformaInvoiceDto
     {
         this.website = website;
     }
-    
+
     public String getClientName()
     {
         return clientName;
@@ -100,7 +104,7 @@ public class ProformaInvoiceDto
     {
         this.clientName = clientName;
     }
-   
+
     public double getTotalAmount()
     {
         return totalAmount;
@@ -130,7 +134,17 @@ public class ProformaInvoiceDto
     {
         this.invoiceItemList = invoiceItemList;
     }
-    
+
+    public List<SalesTax> getTaxList()
+    {
+        return taxList;
+    }
+
+    public void setTaxList(List<SalesTax> taxList)
+    {
+        this.taxList = taxList;
+    }
+
     public LocalDate getExpiryDate()
     {
         return expiryDate;
@@ -245,7 +259,7 @@ public class ProformaInvoiceDto
     {
         this.gpsAddress = gpsAddress;
     }
-    
+
     public void setClientCode(String clientCode)
     {
         this.clientCode = clientCode;
@@ -260,9 +274,40 @@ public class ProformaInvoiceDto
     {
         this.tinNo = tinNo;
     }
-    
+
+    public double getInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public void setInstallationFee(double installationFee)
+    {
+        this.installationFee = installationFee;
+    }
+
+    public double getTotalDiscount()
+    {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(double totalDiscount)
+    {
+        this.totalDiscount = totalDiscount;
+    }
+
+    public double getTotalPayable()
+    {
+        return totalPayable;
+    }
+
+    public void setTotalPayable(double totalPayable)
+    {
+        this.totalPayable = totalPayable;
+    }
+
     public static class DeliveryTerm
     {
+
         private String deliveryTerm;
 
         public String getDeliveryTerm()
@@ -274,11 +319,12 @@ public class ProformaInvoiceDto
         {
             this.deliveryTerm = deliveryTerm;
         }
-        
+
     }
-    
+
     public static class Validation
     {
+
         private String validation;
 
         public String getValidation()
@@ -290,11 +336,12 @@ public class ProformaInvoiceDto
         {
             this.validation = validation;
         }
-        
+
     }
-    
+
     public static class Colours
     {
+
         private String colours;
 
         public String getColours()
@@ -307,9 +354,49 @@ public class ProformaInvoiceDto
             this.colours = colours;
         }
     }
-    
+
+    public static class SalesTax
+    {
+
+        private String taxName;
+        private double taxRate;
+        private double taxAmount;
+
+        public String getTaxName()
+        {
+            return taxName;
+        }
+
+        public void setTaxName(String taxName)
+        {
+            this.taxName = taxName;
+        }
+
+        public double getTaxRate()
+        {
+            return taxRate;
+        }
+
+        public void setTaxRate(double taxRate)
+        {
+            this.taxRate = taxRate;
+        }
+
+        public double getTaxAmount()
+        {
+            return taxAmount;
+        }
+
+        public void setTaxAmount(double taxAmount)
+        {
+            this.taxAmount = taxAmount;
+        }
+
+    }
+
     public static class ReceivedDocument
     {
+
         private String receivedDocument;
 
         public String getReceivedDocument()
@@ -321,11 +408,12 @@ public class ProformaInvoiceDto
         {
             this.receivedDocument = receivedDocument;
         }
-        
+
     }
-    
+
     public static class ProformaInvoiceItem
     {
+
         private String productCode;
         private InputStream productImage;
         private String frameUnit;
@@ -337,7 +425,6 @@ public class ProformaInvoiceDto
         private double unitPrice;
         private double totalAmount;
         private String description;
-
 
         public int getQuantity()
         {
@@ -368,7 +455,7 @@ public class ProformaInvoiceDto
         {
             this.description = description;
         }
-        
+
         public double getTotalAmount()
         {
             return totalAmount;
@@ -388,7 +475,7 @@ public class ProformaInvoiceDto
         {
             this.productCode = productCode;
         }
-        
+
         public int getFrameSize()
         {
             return frameSize;
@@ -398,7 +485,7 @@ public class ProformaInvoiceDto
         {
             this.frameSize = frameSize;
         }
-        
+
         public int getWidth()
         {
             return width;
@@ -448,6 +535,6 @@ public class ProformaInvoiceDto
         {
             this.productImage = productImage;
         }
-        
+
     }
 }

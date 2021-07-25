@@ -25,28 +25,12 @@
                     <span>#{msg.unit_price} <span class="text-danger">*</span> </span>
                     <p:inputText id="sellingPrice" value="#{proformaInvoiceController.proformaInvoiceItem.unitPrice}" required="true"/>
 
-                    <span>#{msg.discount} ?</span>
-                    <h:panelGroup id="discountPanel">
-                        <h:panelGrid columns="4">
-                            <p:selectBooleanCheckbox value="#{proformaInvoiceController.proformaInvoiceItem.applyDiscount}" >
-                                <p:ajax process="@this" update="discountPanel" />
-                            </p:selectBooleanCheckbox>
+                    <span>#{msg.discount} (%)</span>
+                    <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.discountRate}"/>
 
-                            <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.discountRate}" 
-                                         size="5"
-                                         rendered="#{proformaInvoiceController.proformaInvoiceItem.applyDiscount}"/>
+                    <span>Installation Fees</span>
+                    <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.installationFee}"/>
 
-                            <p:selectOneMenu value="#{proformaInvoiceController.proformaInvoiceItem.discountType}" 
-                                             rendered="#{proformaInvoiceController.proformaInvoiceItem.applyDiscount}" 
-                                            >
-                                <f:selectItem itemLabel="#{msg.choose}" />
-                                <f:selectItems value="#{commonClass.discountTypeList}" 
-                                               itemValue="#{appType}"/>
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-
-                    </h:panelGroup>
-                    
                     <span>#{msg.description}</span>
                     <p:inputTextarea value="#{proformaInvoiceController.proformaInvoiceItem.description}"/>
                 </h:panelGrid>
@@ -67,8 +51,14 @@
 
                     <p:rowExpansion>
                         <p:panelGrid columns="2">
+                            <span>Installation Fees</span>
+                            <h:outputText value="#{proformaInvoiceItem.installationFee}">
+                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                            </h:outputText>
+                            
                             <span>#{msg.code}</span>
                             <h:outputText value="#{proformaInvoiceItem.itemCode}"/>
+                            
                             <span>#{msg.frame_size}</span>
                             <h:outputText value="#{proformaInvoiceItem.inventory.frameSize} #{appSession.currentUser.frame}"/>
 
@@ -80,16 +70,22 @@
                         </p:panelGrid>
                     </p:rowExpansion>
 
-                    <p:column headerText="#{msg.product}">
+                    <p:column headerText="System">
                         #{proformaInvoiceItem.inventory.product.productName}
                     </p:column>
 
-                    <p:column headerText="#{msg.quantity}" class="text-right">
+                    <p:column headerText="#{msg.qty}" class="text-right" style="width: 40px;">
                         #{proformaInvoiceItem.quantity}
                     </p:column>
 
                     <p:column headerText="#{msg.unit_price}" class="text-right">
                         <h:outputText value="#{proformaInvoiceItem.unitPrice}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg.discount}" class="text-right">
+                        <h:outputText value="#{proformaInvoiceItem.discountRate}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
@@ -110,52 +106,61 @@
                                          action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" update="@form"/>
                     </p:column>
                 </p:dataTable>
-                
+
                 <br/>
                 <div class="col-md-6 pull-right shadow-sm">
                     <table class="table">
-                    <tr>
-                        <td><span class="field-label">#{msg.total_amount}</span></td>
-                        <td  class="text-right"> 
-                            <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
-                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
-                        </h:outputText>
-                        </td>
-                    </tr>
-                    
-                    <ui:repeat value="#{proformaInvoiceController.taxSchemeList}" var="taxScheme">
                         <tr>
-                            <td>#{taxScheme.tax.taxName} (#{taxScheme.tax.taxRate} %)</td>
-                            <td  class="text-right">
-                                <h:outputText>
+                            <td><span class="field-label">#{msg.total_amount}</span></td>
+                            <td  class="text-right"> 
+                                <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
+                                    <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
+                                </h:outputText>
+                            </td>
+                        </tr>
+
+                        <ui:repeat value="#{proformaInvoiceController.salesTaxList}" var="salesTax">
+                            <tr>
+                                <td>#{salesTax.taxName} (#{salesTax.taxRate} %)</td>
+                                <td class="text-right">
+                                    <h:outputText value="#{salesTax.taxAmount}">
+                                        <f:convertNumber pattern="#,##0.00" />
+                                    </h:outputText>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+
+                        <tr>
+                            <td><span class="field-label">Installation Fee</span></td>
+                            <td  class="text-right"> 
+                                <p:inputText value="#{proformaInvoiceController.installationFee}"
+                                             styleClass="text-right"/> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="field-label">Total Discount</span></td>
+                            <td class="text-right"> 
+                                <h:outputText value="#{proformaInvoiceController.totalDiscount} %">
                                     <f:convertNumber pattern="#,##0.00" />
                                 </h:outputText>
                             </td>
                         </tr>
-                    </ui:repeat>
-                    
-                    <tr>
-                        <td><span class="field-label">Delivery Fees</span></td>
-                        <td  class="text-right"> 
-                            <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.charges}" 
-                                         styleClass="text-right"/> 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="field-label">Total Discount</span></td>
-                        <td class="text-right"> 
-                            <h:outputText value="#{proformaInvoiceController.totalDiscount}" styleClass="field-shade">
-                                <f:convertNumber pattern="#,##0.00" />
-                            </h:outputText>
-                        </td>
-                    </tr>
-                </table>
-                
+                        <tr>
+                            <td><span class="field-label">Total Payable</span></td>
+                            <td class="text-right"> 
+                                <h:outputText value="#{proformaInvoiceController.totalPayable}" styleClass="field-shade">
+                                    <f:convertNumber pattern="#,##0.00" />
+                                </h:outputText>
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
             </h:form>
-            
+
             <center>
                 <h:form>
+                    <p:commandButton value="Trigger Test" action="#{proformaInvoiceController.testTax()}" update=":mainTabView:mainPanel"/>
                     <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
                         <p:ajax update=":mainTabView:mainPanel"/>

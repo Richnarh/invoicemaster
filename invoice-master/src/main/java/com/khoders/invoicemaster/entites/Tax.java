@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.entities.master;
+package com.khoders.invoicemaster.entites;
 
 import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,11 +20,30 @@ import javax.persistence.Table;
 @Table(name = "tax")
 public class Tax extends BaseModel implements Serializable
 {
+  @Column(name = "tax_id")
+  private String taxId;
+  
   @Column(name = "tax_name")
   private String taxName;
   
   @Column(name = "tax_rate")
   private double taxRate;
+  
+  @Column(name = "tax_amount")
+  private double taxAmount;
+  
+  @Column(name = "reorder")
+  private int reOrder;
+
+    public String getTaxId()
+    {
+        return taxId;
+    }
+
+    public void setTaxId(String taxId)
+    {
+        this.taxId = taxId;
+    }
 
     public String getTaxName()
     {
@@ -45,6 +65,37 @@ public class Tax extends BaseModel implements Serializable
         this.taxRate = taxRate;
     }
 
+    public int getReOrder()
+    {
+        return reOrder;
+    }
+
+    public void setReOrder(int reOrder)
+    {
+        this.reOrder = reOrder;
+    }
+
+    public double getTaxAmount()
+    {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(double taxAmount)
+    {
+        this.taxAmount = taxAmount;
+    }
+
+    public void genCode()
+    {
+        if (getTaxId() != null)
+        {
+            setTaxId(getTaxId());
+        } else
+        {
+            setTaxId(SystemUtils.generateCode());
+        }
+    }
+        
     @Override
     public String toString()
     {

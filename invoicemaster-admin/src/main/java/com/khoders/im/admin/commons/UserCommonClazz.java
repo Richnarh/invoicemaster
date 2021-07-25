@@ -8,7 +8,6 @@ package com.khoders.im.admin.commons;
 import com.khoders.im.admin.services.CompanyService;
 import com.khoders.invoicemaster.entities.master.CompanyBranch;
 import com.khoders.invoicemaster.entities.master.CompanyProfile;
-import com.khoders.invoicemaster.entities.master.TaxScheme;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -31,14 +30,12 @@ public class UserCommonClazz implements Serializable
    
    private List<CompanyBranch> companyBranchList = new LinkedList<>();
    private List<CompanyProfile> companyProfileList = new LinkedList<>();
-   private List<TaxScheme> taxSchemeList = new LinkedList<>();
    
    @PostConstruct
    public void init()
    {
        companyBranchList = companyService.getCompanyBranchList();
        companyProfileList = companyService.getCompanyProfileList();
-       taxSchemeList = companyService.getTaxSchemeList();
    }
 
     public List<CompanyBranch> getCompanyBranchList()
@@ -50,10 +47,4 @@ public class UserCommonClazz implements Serializable
     {
         return companyProfileList;
     }
-
-    public List<TaxScheme> getTaxSchemeList()
-    {
-        return taxSchemeList;
-    }
-   
 }

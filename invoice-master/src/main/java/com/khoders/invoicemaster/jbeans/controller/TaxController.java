@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.im.admin.jbeans;
+package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.im.admin.services.CompanyService;
-import com.khoders.invoicemaster.entities.master.TaxScheme;
+import com.khoders.invoicemaster.entites.Tax;
+import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -25,34 +25,32 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "taxSchemeController")
+@Named(value = "taxController")
 @SessionScoped
-public class TaxSchemeController implements Serializable{
+public class TaxController implements Serializable{
     @Inject CrudApi crudApi;
-    @Inject CompanyService companyService;
+    @Inject ProformaInvoiceService proformaInvoiceService;
     
     private String optionText;
     
-    private TaxScheme taxScheme = new TaxScheme();
-    private List<TaxScheme> taxSchemeList = new LinkedList<>();
+    private Tax tax = new Tax();
+    private List<Tax> taxList = new LinkedList<>();
     
     @PostConstruct
     private void init()
     {
-        clearTaxScheme();
+        clearTax();
         
-        taxSchemeList = companyService.getTaxSchemeList();
+        taxList = proformaInvoiceService.getTaxList();
     }
     
-   public void saveTaxScheme()
+   public void saveTax()
     {
         try 
         {
-          taxScheme.genCode();
-          
-          if(crudApi.save(taxScheme) != null)
+          if(crudApi.save(tax) != null)
           {
-              taxSchemeList = CollectionList.washList(taxSchemeList, taxScheme);
+              taxList = CollectionList.washList(taxList, tax);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -62,26 +60,26 @@ public class TaxSchemeController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create sender Id"), null));
           }
-           clearTaxScheme();
+           clearTax();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
    
-    public void editTaxScheme(TaxScheme taxScheme)
+    public void editTax(Tax tax)
     {
        optionText = "Update";
-       this.taxScheme=taxScheme;
+       this.tax=tax;
     }
     
-    public void deleteTaxScheme(TaxScheme taxScheme)
+    public void deleteTax(Tax tax)
     {
         try
         {
-          if(crudApi.delete(taxScheme))
+          if(crudApi.delete(tax))
           {
-              taxSchemeList.remove(taxScheme);
+              taxList.remove(tax);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
@@ -97,8 +95,8 @@ public class TaxSchemeController implements Serializable{
         }
     }
     
-    public void clearTaxScheme() {
-        taxScheme = new TaxScheme();
+    public void clearTax() {
+        tax = new Tax();
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -111,19 +109,19 @@ public class TaxSchemeController implements Serializable{
         this.optionText = optionText;
     }
 
-    public TaxScheme getTaxScheme()
+    public Tax getTax()
     {
-        return taxScheme;
+        return tax;
     }
 
-    public void setTaxScheme(TaxScheme taxScheme)
+    public void setTax(Tax tax)
     {
-        this.taxScheme = taxScheme;
+        this.tax = tax;
     }
 
-    public List<TaxScheme> getTaxSchemeList()
+    public List<Tax> getTaxList()
     {
-        return taxSchemeList;
+        return taxList;
     }
-
+    
 }

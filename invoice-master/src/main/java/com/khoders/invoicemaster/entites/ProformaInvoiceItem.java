@@ -57,6 +57,9 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     
     @Column(name = "discount_rate")
     private double discountRate;
+    
+    @Column(name = "installation_fee")
+    private double installationFee;
 
     @Column(name = "discount_type")
     @Enumerated(EnumType.STRING)
@@ -170,6 +173,16 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     public void setDiscountType(DiscountType discountType)
     {
         this.discountType = discountType;
+    }
+
+    public double getInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public void setInstallationFee(double installationFee)
+    {
+        this.installationFee = installationFee;
     }
 
     public void genCode()
