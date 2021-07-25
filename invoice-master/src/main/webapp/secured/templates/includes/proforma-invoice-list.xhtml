@@ -53,6 +53,9 @@
                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                             </h:outputText>
                         
+                        <span>Converted</span>
+                        <p:selectBooleanCheckbox value="#{proformaInvoice.converted}" disabled="true"/>
+                        
                         <span>#{msg.description}</span>
                         <h:outputText value="#{proformaInvoice.description}"/>
                     </h:panelGrid>
@@ -79,19 +82,18 @@
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Converted" style="width: 120px;">
-                    <p:selectBooleanCheckbox value="#{proformaInvoice.converted}" disabled="true"/>
-                </p:column>
-                <p:column style="width: 120px;">
+                <p:column>
                     <h:commandLink class="ptext-link" value="Print" target="_blank" action="#{proformaInvoiceController.generateProformaInvoice(proformaInvoice)}"/>
                     <span class="mx-2">|</span>
                     <h:commandLink class="ptext-link" value="Cover" target="_blank" action="#{proformaInvoiceController.printCover(proformaInvoice)}"/>
+                </p:column>
+                <p:column>
+                    <h:commandLink class="ptext-link" value="Print Receipt" target="_blank" action="#{proformaInvoiceController.generateReceipt(proformaInvoice)}"/>
                 </p:column>
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.manage}">
                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
-                        <p:menuitem icon="fa fa-print" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.printReceipt(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                         <ui:remove>
                             <p:menuitem icon="fa fa-plus" class="text-info" value="Delivery Terms" action="#{proformaInvoiceController.manageDeliveryTermItemConfig(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :deliveryTermModal" oncomplete="PF('deliveryTermForm').show()"/>
                         <p:menuitem icon="fa fa-plus" class="text-info" value="Validation" action="#{proformaInvoiceController.manageValidationConfigItems(proformaInvoice)}" immediate="true" update=":mainTabView:mainPanel, :validationModal" oncomplete="PF('validationForm').show()"/>

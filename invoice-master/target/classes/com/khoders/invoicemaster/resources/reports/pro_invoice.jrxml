@@ -958,7 +958,7 @@
 						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#E0E0E0"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<text><![CDATA[Discount Amount]]></text>
+					<text><![CDATA[Discount Amount (%)]]></text>
 				</staticText>
 				<textField pattern="#,##0.00">
 					<reportElement style="field-label" positionType="Float" x="104" y="44" width="100" height="15" uuid="8e76704e-ac97-4147-a170-871186e0cb0b">
@@ -974,7 +974,7 @@
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{installationFee}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00">
+				<textField pattern="GH¢ #,##0.00">
 					<reportElement style="field-label" positionType="Float" x="104" y="4" width="100" height="15" uuid="f6257886-634a-4624-aa93-2913eedb426f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -986,7 +986,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{installationFee}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement style="detail-data" positionType="Float" x="0" y="4" width="104" height="15" uuid="a1bbda28-e7bf-4b42-b8fe-ddee594e0bfa">
@@ -999,7 +999,7 @@
 						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#E0E0E0"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<text><![CDATA[Installation Fee]]></text>
+					<text><![CDATA[Total Amount]]></text>
 				</staticText>
 			</frame>
 		</band>

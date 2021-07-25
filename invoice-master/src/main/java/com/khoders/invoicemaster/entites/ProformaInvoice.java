@@ -5,11 +5,14 @@
  */
 package com.khoders.invoicemaster.entites;
 
+import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -38,6 +41,10 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
 
     @Column(name = "total_amount")
     private double totalAmount;
+
+    @Column(name = "mode_of_payment")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod modeOfPayment;
 
     @Column(name = "converted")
     private boolean converted;
@@ -114,6 +121,16 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public PaymentMethod getModeOfPayment()
+    {
+        return modeOfPayment;
+    }
+
+    public void setModeOfPayment(PaymentMethod modeOfPayment)
+    {
+        this.modeOfPayment = modeOfPayment;
     }
 
     public void genCode()

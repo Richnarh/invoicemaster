@@ -34,7 +34,6 @@ com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class
 com\khoders\invoicemaster\entites\enums\DoorType.class
 com\khoders\invoicemaster\entites\sms\SMSGrup.class
 com\khoders\invoicemaster\service\InventoryService.class
-com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$TaxScheme.class
 com\khoders\invoicemaster\entites\Tax.class
 com\khoders\invoicemaster\Pages.class
 com\khoders\invoicemaster\service\ProformaInvoiceService.class
@@ -60,6 +59,7 @@ com\khoders\invoicemaster\entites\ProductType.class
 com\khoders\invoicemaster\entites\sms\Sms.class
 com\khoders\invoicemaster\entites\enums\InvoiceType.class
 com\khoders\invoicemaster\entites\Inventory.class
+com\khoders\invoicemaster\entites\model\Receipt.class
 com\khoders\invoicemaster\listener\AppSession.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$ReceivedDocument.class
 com\khoders\invoicemaster\jbeans\controller\ReportHandler.class
@@ -79,6 +79,7 @@ com\khoders\invoicemaster\service\UserAccountService.class
 com\khoders\invoicemaster\entites\DeliveryTerm.class
 com\khoders\invoicemaster\entites\DeliveryTermConfigItems.class
 com\khoders\invoicemaster\jbeans\controller\ProductController.class
+com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$SalesTax.class
 com\khoders\invoicemaster\entites\model\InvoiceDto$InvoiceItem.class
 com\khoders\invoicemaster\commons\UserCommonClass.class
 com\khoders\invoicemaster\jbeans\controller\InvoiceController.class

@@ -15,6 +15,7 @@ import com.khoders.invoicemaster.entites.SalesTax;
 import com.khoders.invoicemaster.entites.ValidationConfigItems;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entites.Tax;
+import com.khoders.invoicemaster.entites.model.Receipt;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
@@ -28,6 +29,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -665,15 +668,53 @@ public class ProformaInvoiceController implements Serializable
     
     public void generateReceipt(ProformaInvoice proformaInvoice)
     {
+        List<Receipt> receiptList = new LinkedList<>();
         try
         {
             List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
             List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
+            Receipt receipt = new Receipt();
         
-            double grandTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+            double invoiceTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
             double instFees = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getInstallationFee).sum();
+            double totalTax = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
         
+            double invoiceValue = totalTax + invoiceTotalAmount + instFees;
+            
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                receipt.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+            }
+            if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile() != null)
+            {
+                receipt.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+            }
+            
+            receipt.setReceiptNumber(proformaInvoice.getQuotationNumber());
+            receipt.setTotalTax(totalTax);
+            receipt.setInstallationFee(instFees);
+            receipt.setTotalAmount(invoiceTotalAmount);
+            receipt.setDate(LocalDateTime.now());
+            receipt.setTotalPayable(invoiceValue);
+            try
+            {
+                receipt.setModeOfPayment(proformaInvoice.getModeOfPayment().getLabel());
+            } catch (Exception e)
+            {
+            }
+            
+            receiptList.add(receipt);
+            
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(receiptList);
         
+            InputStream coverStream = getClass().getResourceAsStream(ReportFiles.RECEIPT_FILE);
+
+            JasperPrint coverPrint = JasperFillManager.fillReport(coverStream, coverHandler.reportParams, dataSource);
+            HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            servletResponse.setContentType("application/pdf");
+            ServletOutputStream outputStream = servletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(coverPrint, outputStream);
+            FacesContext.getCurrentInstance().responseComplete();
             
         } catch (Exception e)
         {
@@ -707,17 +748,17 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(grandTotalAmount);
             
-            double taxAmount = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
+            double sTaxAmount = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
             double discount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getDiscountRate).sum();
             
-            double invoiceValue = taxAmount + grandTotalAmount + instFees;
+            double invoiceValue = sTaxAmount + grandTotalAmount + instFees;
             
             proformaInvoiceDto.setInstallationFee(instFees);
             proformaInvoiceDto.setTotalDiscount(discount);
             proformaInvoiceDto.setTotalPayable(invoiceValue);
         
             
-        if (appSession.getCurrentUser().getCompanyBranch().getTelephoneNo() != null)
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
         {
             proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
         }
@@ -725,15 +766,15 @@ public class ProformaInvoiceController implements Serializable
         {
             proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
         }
-        if (appSession.getCurrentUser().getCompanyBranch().getGpsAddress() != null)
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
         {
             proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
         }
-        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite() != null)
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
         {
             proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
         }
-        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo() != null)
+        if (appSession.getCurrentUser().getCompanyBranch().getCompanyProfile() != null)
         {
             proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
         }

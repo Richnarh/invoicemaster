@@ -44,6 +44,7 @@ C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicema
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\enums\MessagingType.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ReceivedDocumentConfigItems.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\DeliveryTermConfigItems.java
+C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\model\Receipt.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\SmsService.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\sms\SMSGrupController.java
 C:\khoders\Java\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\entites\ProductType.java
