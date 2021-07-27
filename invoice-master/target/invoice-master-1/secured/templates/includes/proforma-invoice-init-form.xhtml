@@ -48,6 +48,16 @@
                                     </div>
                                     
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Mode of payment</label>
+                                        <div class="col-md-8">
+                                            <p:selectOneMenu class="col" value="#{proformaInvoiceController.proformaInvoice.modeOfPayment}">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.paymentMethodList}"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.total_amount} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">
                                             <input type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.totalAmount}" required="true" class="form-control" placeholder="Enter total amount"/>

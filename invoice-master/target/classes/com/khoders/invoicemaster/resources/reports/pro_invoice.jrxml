@@ -514,7 +514,7 @@
 							<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 						</textField>
 						<image hAlign="Center" vAlign="Middle">
-							<reportElement style="detail-data" x="40" y="0" width="90" height="90" uuid="79476a56-a278-4812-8024-fda6ca38e28e"/>
+							<reportElement style="detail-data" x="40" y="5" width="90" height="90" uuid="79476a56-a278-4812-8024-fda6ca38e28e"/>
 							<box>
 								<pen lineWidth="0.25"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

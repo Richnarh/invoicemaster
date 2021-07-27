@@ -49,6 +49,7 @@
 			<variableExpression><![CDATA[$F{productCode}]]></variableExpression>
 		</variable>
 	</subDataset>
+	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -93,7 +94,7 @@
 			<frame>
 				<reportElement x="0" y="-37" width="186" height="37" uuid="f7f55cff-78b1-47ff-8640-8438fe283424"/>
 				<staticText>
-					<reportElement style="field-label" x="0" y="0" width="186" height="15" uuid="97d7fff1-6931-4ed9-806a-b0601b3da6f4">
+					<reportElement style="field-label" x="50" y="0" width="136" height="15" uuid="97d7fff1-6931-4ed9-806a-b0601b3da6f4">
 						<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					</reportElement>
@@ -104,7 +105,7 @@
 					<text><![CDATA[Dolphin Doors LTD]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="field-label" x="10" y="16" width="165" height="15" uuid="abbef05a-00bb-4cde-937c-0bd1668e6471">
+					<reportElement style="field-label" x="51" y="18" width="130" height="15" uuid="abbef05a-00bb-4cde-937c-0bd1668e6471">
 						<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					</reportElement>
@@ -114,6 +115,10 @@
 					</textElement>
 					<text><![CDATA[CASH RECEIPT]]></text>
 				</staticText>
+				<image>
+					<reportElement x="3" y="0" width="47" height="37" uuid="be9b290a-3905-4a5a-93e1-99cbc76d01ad"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
 			</frame>
 			<textField isBlankWhenNull="true">
 				<reportElement style="field-value" x="70" y="6" width="116" height="15" uuid="72b2d38f-cfdb-4dae-adcd-a85512fa2243">
@@ -313,7 +318,7 @@
 				<textFieldExpression><![CDATA[$F{modeOfPayment}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="0" width="186" height="1" uuid="9b210f46-b718-45c7-96de-1518e0374c34"/>
+				<reportElement x="2" y="0" width="186" height="1" uuid="9b210f46-b718-45c7-96de-1518e0374c34"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
