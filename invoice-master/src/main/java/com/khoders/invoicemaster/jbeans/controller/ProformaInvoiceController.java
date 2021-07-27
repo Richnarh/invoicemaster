@@ -731,9 +731,7 @@ public class ProformaInvoiceController implements Serializable
             InputStream filePath = getClass().getResourceAsStream("/com/khoders/invoicemaster/resources/receipt/");
             
             String realPath = new String(filePath.readAllBytes(), StandardCharsets.UTF_8);;
-            System.out.println("realPath path: "+filePath);
-            System.out.println("realPath path: "+realPath);
-  
+ 
             JasperExportManager.exportReportToPdfFile(receiptPrint, realPath+SystemUtils.generateCode()+"_receipt.pdf");
             FacesContext.getCurrentInstance().responseComplete();
             
