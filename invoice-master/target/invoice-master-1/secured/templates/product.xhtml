@@ -13,9 +13,9 @@
             </ui:define>
             <ui:define name="pageContent">
                 <div class="card wow zoomIn">
-                    <div class="card-header">SetUp product</div>
+                    <div class="card-header">Setup product</div>
                     <div class="card-body shadow-sm">
-                        <div class="row mb-2">
+                        <div class="row mb-2 shadow-sm p-3">
                             <div class="col-md-12">
                                 <h:form id="productForm" class="spaced-form" enctype="multipart/form-data">
                                     <h:panelGrid columns="8">
@@ -40,13 +40,15 @@
                                         <p:commandButton class="kbtn-success mr-3" value="#{productController.optionText}" ajax="false"
                                                          action="#{productController.saveProduct()}" />
 
-                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
+                                        <p:commandButton class="kbtn-default" value="#{msg.clear}" icon="#{msg.clear_icon}" immediate="true"
                                                          action="#{productController.clearProduct()}" update="@form"/>
+                                        
                                     </div>
                                 </h:form>
                             </div>
-
+                            
                         </div>
+                        <br/>
                         <div class="col-md-12">
                             <h:form id="productTable">
                                 <p:dataTable value="#{productController.productList}" var="product" scrollable="true" scrollHeight="500">
@@ -55,11 +57,11 @@
                                         <p:graphicImage cache="false" height="100" value="#{productController.productImge}" />
                                     </p:column>
                                     </ui:remove>
-                                    <p:column headerText="#{msg.product} code">
+                                    <p:column headerText="#{msg.product} code" filterBy="#{product.productCode}" filterMatchMode="contains">
                                         #{product.productCode}
                                     </p:column>
 
-                                    <p:column headerText="#{msg.product} name">
+                                    <p:column headerText="#{msg.product} name" filterBy="#{product.productName}" filterMatchMode="contains">
                                         #{product.productName}
                                     </p:column>
 

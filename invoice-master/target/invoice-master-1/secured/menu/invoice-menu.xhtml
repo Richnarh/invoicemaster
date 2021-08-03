@@ -14,7 +14,7 @@
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml" class="nav-link">
+                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>#{msg.invoice}</p>
                 </a>
@@ -25,23 +25,11 @@
                     <p>#{msg.purchase_order}</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/configure-invoice.xhtml" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon"></i>
-                    <p>Configure Invoice</p>
-                </a>
-            </li>
             
-            <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/payment-receipt.xhtml" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon"></i>
-                    <p>#{msg.payment}s</p>
-                </a>
-            </li>
             <li class="nav-item">
                 <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/product.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
-                    <p>New #{msg.product}</p>
+                    <p>#{msg.product}</p>
                 </a>
             </li>
         </ul>
@@ -84,6 +72,19 @@
                 <a href="#{application.contextPath}/#{msg.sms_menu_uri}/message-log.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>#{msg.sms} Log</p>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/group.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>Create Group</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.settings_menu_url}/message-template.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.message_template}</p>
                 </a>
             </li>
         </ul>

@@ -2,30 +2,30 @@
 <!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proforma_invoice" pageWidth="226" pageHeight="842" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="427ac2ea-a5fe-42e9-86c5-b0e0e91759e7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<style name="static-text-style" fontName="Corbel" fontSize="10" isBold="true">
+	<style name="static-text-style" fontName="Times New Roman" fontSize="10" isBold="true">
 		<box>
 			<pen lineColor="#F5F5F5"/>
 			<bottomPen lineWidth="1.0" lineColor="#F5F5F5"/>
 		</box>
 		<paragraph leftIndent="2" rightIndent="0" spacingBefore="0"/>
 	</style>
-	<style name="field-label" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10" isBold="true"/>
-	<style name="field-value" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10"/>
-	<style name="detail-background" mode="Transparent" backcolor="#DBDBDB" fontName="Corbel">
+	<style name="field-label" vTextAlign="Middle" isBlankWhenNull="true" fontName="Times New Roman" fontSize="10" isBold="true"/>
+	<style name="field-value" vTextAlign="Middle" isBlankWhenNull="true" fontName="Times New Roman" fontSize="10"/>
+	<style name="detail-background" mode="Transparent" backcolor="#DBDBDB" fontName="Times New Roman">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{no} % 2 == 1]]></conditionExpression>
 			<style mode="Opaque" backcolor="rgba(242, 242, 242, 0.94509804)"/>
 		</conditionalStyle>
 	</style>
-	<style name="detail-data" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10"/>
-	<style name="main-title" fontName="Corbel"/>
-	<style name="title" fontName="Corbel" isBold="true">
+	<style name="detail-data" vTextAlign="Middle" isBlankWhenNull="true" fontName="Times New Roman" fontSize="10"/>
+	<style name="main-title" fontName="Times New Roman"/>
+	<style name="title" fontName="Times New Roman" isBold="true">
 		<box>
 			<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#003366"/>
 		</box>
 		<paragraph leftIndent="2" spacingBefore="1"/>
 	</style>
-	<style name="title-background" mode="Opaque" forecolor="#FFFFFF" backcolor="#D6A73E" fontName="Corbel" isBold="true">
+	<style name="title-background" mode="Opaque" forecolor="#FFFFFF" backcolor="#D6A73E" fontName="Times New Roman" isBold="true">
 		<box>
 			<bottomPen lineWidth="1.0"/>
 		</box>

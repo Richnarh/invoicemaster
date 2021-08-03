@@ -2,30 +2,30 @@
 <!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proforma_invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="427ac2ea-a5fe-42e9-86c5-b0e0e91759e7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<style name="static-text-style" fontName="Corbel" fontSize="10" isBold="true">
+	<style name="static-text-style" fontName="Times New Roman" fontSize="10" isBold="true">
 		<box>
 			<pen lineColor="#F5F5F5"/>
 			<bottomPen lineWidth="1.0" lineColor="#F5F5F5"/>
 		</box>
 		<paragraph leftIndent="2" rightIndent="0" spacingBefore="0"/>
 	</style>
-	<style name="field-label" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10" isBold="true"/>
-	<style name="field-value" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10"/>
-	<style name="detail-background" mode="Transparent" backcolor="#DBDBDB" fontName="Corbel">
+	<style name="field-label" vTextAlign="Middle" isBlankWhenNull="true" fontName="Times New Roman" fontSize="10" isBold="true"/>
+	<style name="field-value" vTextAlign="Middle" isBlankWhenNull="true" fontName="Times New Roman" fontSize="10"/>
+	<style name="detail-background" mode="Transparent" backcolor="#DBDBDB" fontName="Times New Roman">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{no} % 2 == 1]]></conditionExpression>
 			<style mode="Opaque" backcolor="rgba(242, 242, 242, 0.94509804)"/>
 		</conditionalStyle>
 	</style>
-	<style name="detail-data" vTextAlign="Middle" isBlankWhenNull="true" fontName="Corbel" fontSize="10"/>
-	<style name="main-title" fontName="Corbel"/>
-	<style name="title" fontName="Corbel" isBold="true">
+	<style name="detail-data" vTextAlign="Middle" isBlankWhenNull="true" fontName="Times New Roman" fontSize="10"/>
+	<style name="main-title" fontName="Times New Roman"/>
+	<style name="title" fontName="Times New Roman" isBold="true">
 		<box>
 			<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#003366"/>
 		</box>
 		<paragraph leftIndent="2" spacingBefore="1"/>
 	</style>
-	<style name="title-background" mode="Opaque" forecolor="#FFFFFF" backcolor="#D6A73E" fontName="Corbel" isBold="true">
+	<style name="title-background" mode="Opaque" forecolor="#FFFFFF" backcolor="#D6A73E" fontName="Times New Roman" isBold="true">
 		<box>
 			<bottomPen lineWidth="1.0"/>
 		</box>
@@ -153,7 +153,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="10"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[Date]]></text>
@@ -163,7 +163,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="10"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[Offer number]]></text>
@@ -173,7 +173,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="10" isItalic="true"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[Attention to]]></text>
@@ -182,18 +182,27 @@
 					<reportElement style="field-value" x="442" y="15" width="113" height="15" uuid="3bb888bf-4d48-40b9-abd2-a1e12bee2dde">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
+					<textElement>
+						<font isItalic="true"/>
+					</textElement>
 					<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy").format($F{issuedDate})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="field-value" x="82" y="0" width="108" height="15" forecolor="#E31C19" uuid="caad2748-c0d7-484c-8a01-b88a14952187">
+					<reportElement style="field-value" x="82" y="0" width="197" height="15" forecolor="#E31C19" uuid="caad2748-c0d7-484c-8a01-b88a14952187">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
+					<textElement>
+						<font isBold="true" isItalic="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{clientName}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="field-value" x="442" y="0" width="113" height="15" uuid="b11bf208-f0da-4bf0-8bc8-05d33c56313a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
+					<textElement>
+						<font isItalic="true"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{quotationNumber}]]></textFieldExpression>
 				</textField>
 				<staticText>
@@ -231,7 +240,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="10" isItalic="true"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[Adddress]]></text>
@@ -247,9 +256,12 @@
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement style="field-value" x="82" y="15" width="108" height="15" forecolor="#E31C19" uuid="392c71f4-3d9f-4c1c-9167-eee099d959c9">
+					<reportElement style="field-value" x="82" y="15" width="197" height="15" forecolor="#E31C19" uuid="392c71f4-3d9f-4c1c-9167-eee099d959c9">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
+					<textElement>
+						<font isBold="true" isItalic="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 				</textField>
 				<staticText>
@@ -268,7 +280,7 @@
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font isBold="false"/>
+						<font isBold="false" isItalic="true"/>
 						<paragraph firstLineIndent="0" rightIndent="0"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{emailAddress}]]></textFieldExpression>
@@ -278,7 +290,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="10"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[Email]]></text>
@@ -288,7 +300,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="12"/>
+						<font size="12" isItalic="true"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[Price Submission for Doors]]></text>
@@ -298,7 +310,7 @@
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="10" isItalic="true"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<text><![CDATA[TIN]]></text>
@@ -314,9 +326,12 @@
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement style="field-value" x="82" y="31" width="108" height="15" forecolor="#E31C19" uuid="e70085fb-8ab3-4db1-8758-e718d7e13ecf">
+					<reportElement style="field-value" x="82" y="31" width="197" height="15" forecolor="#E31C19" uuid="e70085fb-8ab3-4db1-8758-e718d7e13ecf">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
+					<textElement>
+						<font isBold="true" isItalic="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{tinNo}]]></textFieldExpression>
 				</textField>
 			</frame>
@@ -329,26 +344,26 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="478" splitType="Stretch">
+		<band height="466" splitType="Stretch">
 			<staticText>
-				<reportElement style="title" x="1" y="127" width="169" height="19" uuid="ad65f2a0-bcb4-42a1-9f93-3db52dc86f94">
+				<reportElement style="title" x="1" y="181" width="209" height="19" uuid="ad65f2a0-bcb4-42a1-9f93-3db52dc86f94">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box>
 					<leftPen lineWidth="1.25" lineColor="#FFFFFF"/>
 					<bottomPen lineWidth="1.0" lineColor="#0A0202"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font size="9" isItalic="true"/>
-					<paragraph leftIndent="4" spacingBefore="2" spacingAfter="0"/>
+					<font size="10" isItalic="true"/>
+					<paragraph leftIndent="0" spacingBefore="2" spacingAfter="0"/>
 				</textElement>
-				<text><![CDATA[DESCRIPTION OF DOORS & OTHER ITEMS]]></text>
+				<text><![CDATA[DESCRIPTION OF DOORS & OTHER ITEMS :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="main-title" x="1" y="160" width="159" height="19" uuid="cadf776b-8fc0-4022-82a3-1b3b933603ce">
+				<reportElement style="main-title" x="1" y="221" width="188" height="19" uuid="cadf776b-8fc0-4022-82a3-1b3b933603ce">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -356,13 +371,13 @@
 					<bottomPen lineWidth="1.0" lineColor="#0A0202"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font size="9" isBold="true" isItalic="true"/>
-					<paragraph leftIndent="5"/>
+					<font size="10" isBold="true" isItalic="true"/>
+					<paragraph leftIndent="0"/>
 				</textElement>
-				<text><![CDATA[DESCRIPTION OF DOORS TYPOLOGY]]></text>
+				<text><![CDATA[DESCRIPTION OF DOORS TYPOLOGY  :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title" x="0" y="299" width="118" height="20" uuid="0fb6e073-f635-4449-b239-25ce7cff06a7">
+				<reportElement style="title" x="0" y="299" width="150" height="20" uuid="0fb6e073-f635-4449-b239-25ce7cff06a7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -370,26 +385,25 @@
 					<bottomPen lineWidth="1.0" lineColor="#0A0202"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Corbel" size="9" isItalic="true"/>
+					<font fontName="Times New Roman" size="10" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[RECEIVED DOCUMENT LIST  :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="main-title" x="1" y="189" width="49" height="19" uuid="2253a40d-1fee-46ff-8630-7c5ae58dfd35">
+				<reportElement style="main-title" x="1" y="261" width="58" height="19" uuid="2253a40d-1fee-46ff-8630-7c5ae58dfd35">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0" lineColor="#0A0202"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font size="9" isBold="true" isItalic="true"/>
-					<paragraph leftIndent="5"/>
+					<font size="10" isBold="true" isItalic="true"/>
+					<paragraph leftIndent="0"/>
 				</textElement>
-				<text><![CDATA[COLOURS :]]></text>
+				<text><![CDATA[COLOURS  :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="main-title" x="279" y="207" width="274" height="63" forecolor="#E31C19" uuid="54f7dd17-54d1-42a5-b8ba-fa392d80cadd">
+				<reportElement style="main-title" x="279" y="256" width="274" height="63" forecolor="#E31C19" uuid="54f7dd17-54d1-42a5-b8ba-fa392d80cadd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -403,7 +417,7 @@
 				<text><![CDATA[DOLPHIN DOORS STANDARD - To be approved prior to confirmation and lock inclusive will attract extra additional cost.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="main-title" x="280" y="170" width="90" height="19" forecolor="#E31C19" uuid="ae3cfac9-0d7c-42c2-b1dc-807f1e10d153">
+				<reportElement style="main-title" x="280" y="219" width="90" height="19" forecolor="#E31C19" uuid="ae3cfac9-0d7c-42c2-b1dc-807f1e10d153">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -417,7 +431,7 @@
 				<text><![CDATA[AS SPECIFIED]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="main-title" x="280" y="130" width="90" height="19" forecolor="#E31C19" uuid="30c6bac6-cb00-4c46-81d1-5565c06ceeb4">
+				<reportElement style="main-title" x="280" y="179" width="90" height="19" forecolor="#E31C19" uuid="30c6bac6-cb00-4c46-81d1-5565c06ceeb4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -431,7 +445,7 @@
 				<text><![CDATA[AS SPECIFIED]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="main-title" x="279" y="280" width="90" height="19" forecolor="#E31C19" uuid="c968e8ff-3958-4768-8e69-17adc50c63ca">
+				<reportElement style="main-title" x="279" y="329" width="90" height="19" forecolor="#E31C19" uuid="c968e8ff-3958-4768-8e69-17adc50c63ca">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -445,33 +459,37 @@
 				<text><![CDATA[AS SPECIFIED]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title" x="1" y="332" width="118" height="20" uuid="00d76709-ffa3-40d9-ae74-367b1e1d1beb">
+				<reportElement style="title" x="1" y="332" width="119" height="20" uuid="00d76709-ffa3-40d9-ae74-367b1e1d1beb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineColor="#FFFFFF"/>
 					<bottomPen lineWidth="1.0" lineColor="#0A0202"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Corbel" size="9" isItalic="true"/>
+					<font fontName="Times New Roman" size="10" isItalic="true"/>
+					<paragraph leftIndent="0"/>
 				</textElement>
-				<text><![CDATA[RECEIVED DOCUMENT LIST  :]]></text>
+				<text><![CDATA[TERMS OF DELIVERY  :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="title" x="0" y="424" width="60" height="20" uuid="2b0d5b8d-80f4-41b9-8e34-27470154c523">
+				<reportElement style="title" x="0" y="424" width="70" height="20" uuid="2b0d5b8d-80f4-41b9-8e34-27470154c523">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineColor="#FFFFFF"/>
 					<bottomPen lineWidth="1.0" lineColor="#0A0202"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Corbel" size="9" isItalic="true"/>
+					<font fontName="Times New Roman" size="10" isItalic="true"/>
+					<paragraph leftIndent="0"/>
 				</textElement>
-				<text><![CDATA[VALIDATION  :]]></text>
+				<text><![CDATA[VALIDATION :]]></text>
 			</staticText>
 			<image>
-				<reportElement style="static-text-style" x="102" y="5" width="310" height="104" uuid="459e6adf-39cc-4456-9e95-564731d24bfd"/>
+				<reportElement style="static-text-style" x="70" y="5" width="410" height="165" uuid="459e6adf-39cc-4456-9e95-564731d24bfd"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>

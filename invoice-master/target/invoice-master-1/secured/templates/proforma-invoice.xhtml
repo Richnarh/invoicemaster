@@ -8,73 +8,68 @@
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/invoice.xhtml">Invoices</a><small>/proforma invoice</small>
+               Proforma Invoice
             </ui:define>
 
             <ui:define name="pageContent">
-                <p:tabView id="mainTabView" activeIndex="#{proformaInvoiceController.selectedTabIndex}">
-                    <p:ajax event="tabChange" listener="#{proformaInvoiceController.onTabChange}"/>
-                    <p:tab id="firstTabView" title="Proforma Invoice">
-                        <h:panelGroup id="mainPanel">
-                            <h:panelGroup rendered="#{proformaInvoiceController.pageView.listView}">
-                                <ui:include src="includes/proforma-invoice-list.xhtml"/>
-                            </h:panelGroup>
+                <h:panelGroup id="mainPanel">
+                    <h:panelGroup rendered="#{proformaInvoiceController.pageView.listView}">
+                        <ui:include src="includes/proforma-invoice-list.xhtml"/>
+                    </h:panelGroup>
 
-                            <h:panelGroup rendered="#{proformaInvoiceController.pageView.createView}">
-                                <ui:include src="includes/proforma-invoice-init-form.xhtml"/>
-                            </h:panelGroup>
-                            <p:growl/>
-                            <h:panelGroup rendered="#{proformaInvoiceController.pageView.detailView}">
-                                
-                                <ui:remove>
-                                    <div class="row mb-3 d-none">
-                                    <div class="col-md-10 mx-auto">
-                                        <div class="shadow bg-gray">
-                                            <div class="row p-2">
-                                                <span class="p-2 mx-2 field-label">#{msg.client}</span>
-                                                <h:outputText value="#{proformaInvoiceController.proformaInvoice.client.clientName}" class="field-shade"/>
-                                                
-                                                <span class="p-2 mx-2 field-label">#{msg.issued_date}</span>
-                                                <h:outputText value="#{proformaInvoiceController.proformaInvoice.issuedDate}" class="col-sm-2 field-shade">
-                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                                </h:outputText>
-                                                <span class="p-2 mx-2 field-label">#{msg.ref_no}</span>
-                                                <h:outputText value="#{proformaInvoiceController.proformaInvoice.quotationNumber}" class="field-shade"/>
-                                                 
-                                                <span class="p-2 mx-2 field-label">#{msg.total_amount}</span>
-                                                 <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{proformaInvoiceController.proformaInvoice.totalAmount}" class="field-shade">
-                                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
-                                                </h:outputText> 
-                                            </div>
+                    <h:panelGroup rendered="#{proformaInvoiceController.pageView.createView}">
+                        <ui:include src="includes/proforma-invoice-init-form.xhtml"/>
+                    </h:panelGroup>
+                    <!--<p:growl/>-->
+                    <h:panelGroup rendered="#{proformaInvoiceController.pageView.detailView}">
+
+                        <ui:remove>
+                            <div class="row mb-3 d-none">
+                                <div class="col-md-10 mx-auto">
+                                    <div class="shadow bg-gray">
+                                        <div class="row p-2">
+                                            <span class="p-2 mx-2 field-label">#{msg.client}</span>
+                                            <h:outputText value="#{proformaInvoiceController.proformaInvoice.client.clientName}" class="field-shade"/>
+
+                                            <span class="p-2 mx-2 field-label">#{msg.issued_date}</span>
+                                            <h:outputText value="#{proformaInvoiceController.proformaInvoice.issuedDate}" class="col-sm-2 field-shade">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+                                            <span class="p-2 mx-2 field-label">#{msg.ref_no}</span>
+                                            <h:outputText value="#{proformaInvoiceController.proformaInvoice.quotationNumber}" class="field-shade"/>
+
+                                            <span class="p-2 mx-2 field-label">#{msg.total_amount}</span>
+                                            <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{proformaInvoiceController.proformaInvoice.totalAmount}" class="field-shade">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText> 
                                         </div>
                                     </div>
                                 </div>
-                                </ui:remove>
-                                
-                                <fieldset>
-                                    <legend class="text-info text-lg"> <u>Please Add Items</u> </legend>
-                                    <ui:include src="includes/proforma-invoice-item.xhtml"/>
-                                </fieldset>
-                            </h:panelGroup>
-                            
-                        </h:panelGroup>
-                    </p:tab>
-                </p:tabView>
-                
+                            </div>
+                        </ui:remove>
+
+                        <fieldset>
+                            <legend class="text-info text-lg"> <u>Please Add Items</u> </legend>
+                            <ui:include src="includes/proforma-invoice-item.xhtml"/>
+                        </fieldset>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+
                 <p:dialog resizable="true" widgetVar="deliveryTermForm" closeOnEscape="true" modal="true" id="deliveryTermModal" height="400"  width="960">
-                    <ui:include src="includes/deliveryterm-config-items.xhtml"/>
+                    <!--<ui:include src="includes/deliveryterm-config-items.xhtml"/>-->
                 </p:dialog>
-                
+
                 <p:dialog resizable="true" widgetVar="receivedDocumentForm" closeOnEscape="true" modal="true" id="receivedDocumentModal" height="400"  width="960">
-                    <ui:include src="includes/received-doc-config-items.xhtml"/>
+                    <!--<ui:include src="includes/received-doc-config-items.xhtml"/>-->
                 </p:dialog>
-                
+
                 <p:dialog resizable="true" widgetVar="validationForm" closeOnEscape="true" modal="true" id="validationModal" height="400"  width="660">
-                    <ui:include src="includes/validation-config-items.xhtml"/>
+                    <!--<ui:include src="includes/validation-config-items.xhtml"/>-->
                 </p:dialog>
-                
+
                 <p:dialog resizable="true" widgetVar="coloursForm" closeOnEscape="true" modal="true" id="coloursModal" height="400"  width="860">
-                    <ui:include src="includes/colour-config-items.xhtml"/>
+                    <!--<ui:include src="includes/colour-config-items.xhtml"/>-->
                 </p:dialog>
             </ui:define>
         </ui:composition>

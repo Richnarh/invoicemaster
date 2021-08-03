@@ -36,7 +36,7 @@
                 </h:panelGrid>
 
                 <div class="py-3">
-                    <p:commandButton value="Add to list" icon="#{msg.add_icon}" class="kbtn-info" action="#{proformaInvoiceController.addProformaInvoiceItem()}" update=":mainTabView:proformaInvoiceItemTable, orderItemForm"/>
+                    <p:commandButton value="Add to list" icon="#{msg.add_icon}" class="kbtn-info" action="#{proformaInvoiceController.addProformaInvoiceItem()}" update=":proformaInvoiceItemTable, orderItemForm"/>
 
                     <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="#{msg.clear_icon}" immediate="true" action="#{proformaInvoiceController.clearProformaInvoiceItem()}" update="@form"/>
                 </div>
@@ -98,7 +98,7 @@
 
                     <p:column headerText="#{msg.action}" style="width: 80px;">
                         <p:commandButton  class="kbtn-info" action="#{proformaInvoiceController.editProformaInvoiceItem(proformaInvoiceItem)}" 
-                                          value="#{msg.edit}" update=":mainTabView:orderItemForm, @form"/>
+                                          value="#{msg.edit}" update=":orderItemForm, @form"/>
 
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
@@ -160,10 +160,10 @@
 
             <center>
                 <h:form>
-                    <p:commandButton value="Trigger Test" action="#{proformaInvoiceController.testTax()}" update=":mainTabView:mainPanel"/>
-                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:proformaInvoiceItemTable"/>
+                    <p:commandButton value="Trigger Test" action="#{proformaInvoiceController.testTax()}" update=":mainPanel"/>
+                    <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":proformaInvoiceItemTable"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
-                        <p:ajax update=":mainTabView:mainPanel"/>
+                        <p:ajax update=":mainPanel"/>
                     </h:commandButton>
                 </h:form>
             </center>

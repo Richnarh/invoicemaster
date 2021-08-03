@@ -72,7 +72,7 @@ public class ClientController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearClient();
+          closePage();
         } catch (Exception e) 
         {
             e.printStackTrace();
