@@ -14,6 +14,7 @@ com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$ProformaInvoiceItem.c
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
 com\khoders\invoicemaster\entites\model\InvoiceDto.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$DeliveryTerm.class
+com\khoders\invoicemaster\entites\PosPrinter.class
 com\khoders\invoicemaster\entites\ProductType.class
 com\khoders\invoicemaster\jbeans\controller\ProductController$1.class
 com\khoders\invoicemaster\entites\sms\Sms.class
@@ -41,6 +42,7 @@ com\khoders\invoicemaster\entites\UserAccountRecord.class
 com\khoders\invoicemaster\entites\model\PaymentReceiptDto.class
 com\khoders\invoicemaster\entites\ValidationConfigItems.class
 com\khoders\invoicemaster\entites\ProformaInvoiceItem.class
+com\khoders\invoicemaster\jbeans\controller\PosPrinterController.class
 com\khoders\invoicemaster\jbeans\converter\PurchaseConverter.class
 com\khoders\invoicemaster\jbeans\controller\sms\SmsController.class
 com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class

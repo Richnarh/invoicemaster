@@ -1,0 +1,7 @@
+HP Color LaserJet Pro M478f-9f [A7EC68]
+
+C:\khoders\Java\invoicemaster\invoice-master\src\main\resources\com\khoders\invoicemaster\resources\receipt
+
+C:\khoders\Java\invoicemaster\invoice-master\src\main\webapp\res
+
+C:\khoders\Java\invoicemaster\invoice-master\src\main\resources\com\khoders\invoicemaster\resources\receipt

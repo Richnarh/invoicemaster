@@ -160,7 +160,7 @@
 
             <center>
                 <h:form>
-                    <p:commandButton value="Trigger Test" action="#{proformaInvoiceController.testTax()}" update=":mainPanel"/>
+                    <!--<p:commandButton value="Trigger Test" action="{proformaInvoiceController.testTax()}" update=":mainPanel"/>-->
                     <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":proformaInvoiceItemTable"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
                         <p:ajax update=":mainPanel"/>

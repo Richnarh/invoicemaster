@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.entites.PosPrinter;
 import com.khoders.invoicemaster.entites.ProformaInvoice;
 import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entites.SalesTax;
@@ -20,6 +21,7 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
+import java.awt.print.PrinterJob;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,6 +54,8 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -263,11 +267,11 @@ public class ProformaInvoiceController implements Serializable
         if(!salesTaxList.isEmpty())
         {
             SalesTax nhil = salesTaxList.get(0);
-            SalesTax getFund = salesTaxList.get(1);
-            SalesTax covid19 = salesTaxList.get(2);
-            SalesTax stx = salesTaxList.get(3);
+//            SalesTax getFund = salesTaxList.get(1);
+            SalesTax covid19 = salesTaxList.get(1);
+            SalesTax stx = salesTaxList.get(2);
 
-            double totalLevies = nhil.getTaxAmount()+getFund.getTaxAmount()+covid19.getTaxAmount();
+            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
 
             double taxableValue = saleAmount + totalLevies;
             
@@ -367,17 +371,9 @@ public class ProformaInvoiceController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
-    public void onTabChange(TabChangeEvent event)
+    public void setPrinter(PosPrinter posPrinter)
     {
-        try
-        {
-            TabView tabView = (TabView) event.getComponent();
-            selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//      activePrinter = posPrinter.getPrinterName();
     }
     
     public void generateReceipt(ProformaInvoice proformaInvoice)
@@ -427,27 +423,20 @@ public class ProformaInvoiceController implements Serializable
             HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             servletResponse.setContentType("application/pdf");
             servletOutputStream = servletResponse.getOutputStream();
-           JasperExportManager.exportReportToPdfStream(receiptPrint, servletOutputStream);
+            JasperExportManager.exportReportToPdfStream(receiptPrint, servletOutputStream);
             FacesContext.getCurrentInstance().responseComplete();
-////          InputStream filePath = getClass().getResourceAsStream("/com/khoders/invoicemaster/resources/receipt/");
-//           
-//            System.out.println("filePath => "+filePath);
+            
+            File newFile = new File(this.getClass().getResource("/com/khoders/invoicemaster/resources/receipt").getFile());
+
                         
-//            String convertPath = new String(filePath.readAllBytes(), StandardCharsets.UTF_8);
-            
-            
-            String m = new File("").getAbsolutePath();
-            System.out.println("file path => "+m);
- 
-            JasperExportManager.exportReportToPdfFile(receiptPrint, m+"/"+SystemUtils.generateCode()+"_receipt.pdf");
+            String pdfFile = newFile+File.separator+SystemUtils.generateCode()+"_receipt.pdf";
+            System.out.println("PDF File => "+pdfFile);
+            JasperExportManager.exportReportToPdfFile(receiptPrint, pdfFile);
             FacesContext.getCurrentInstance().responseComplete();
-            
-            File file = new File(m);
-            String path = file.getAbsolutePath();
             
             DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
             PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
-            patts.add(Sides.DUPLEX);
+//            patts.add(Sides.DUPLEX);
             PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
             if (ps.length == 0)
             {
@@ -458,7 +447,8 @@ public class ProformaInvoiceController implements Serializable
             PrintService myService = null;
             for (PrintService printService : ps)
             {
-                if (printService.getName().equals("Your printer name"))
+                System.out.println("Printers => "+printService.getName());
+                if (printService.getName().equalsIgnoreCase("EPSON TM-T20III Receipt"))
                 {
                     myService = printService;
                     break;
@@ -470,11 +460,12 @@ public class ProformaInvoiceController implements Serializable
                 throw new IllegalStateException("Printer not found");
             }
 
-            FileInputStream fis = new FileInputStream(path);
-            Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
-            DocPrintJob printJob = myService.createPrintJob();
-            printJob.print(pdfDoc, new HashPrintRequestAttributeSet());
-            fis.close();
+            PDDocument document = PDDocument.load(new File(pdfFile));
+            
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.setPageable(new PDFPageable(document));
+            job.setPrintService(myService);
+            job.print();
             
         } catch (Exception e)
         {

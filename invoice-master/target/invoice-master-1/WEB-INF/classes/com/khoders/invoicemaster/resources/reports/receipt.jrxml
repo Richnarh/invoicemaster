@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proforma_invoice" pageWidth="226" pageHeight="842" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="427ac2ea-a5fe-42e9-86c5-b0e0e91759e7">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proforma_invoice" pageWidth="226" pageHeight="372" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="20" uuid="427ac2ea-a5fe-42e9-86c5-b0e0e91759e7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="static-text-style" fontName="Times New Roman" fontSize="10" isBold="true">
 		<box>
@@ -66,7 +66,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="36" splitType="Stretch"/>
+		<band height="85" splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
@@ -94,7 +94,7 @@
 			<frame>
 				<reportElement x="0" y="-37" width="186" height="37" uuid="f7f55cff-78b1-47ff-8640-8438fe283424"/>
 				<staticText>
-					<reportElement style="field-label" x="50" y="0" width="136" height="15" uuid="97d7fff1-6931-4ed9-806a-b0601b3da6f4">
+					<reportElement style="field-label" x="6" y="0" width="176" height="15" uuid="97d7fff1-6931-4ed9-806a-b0601b3da6f4">
 						<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					</reportElement>
@@ -105,7 +105,7 @@
 					<text><![CDATA[Dolphin Doors LTD]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="field-label" x="51" y="18" width="130" height="15" uuid="abbef05a-00bb-4cde-937c-0bd1668e6471">
+					<reportElement style="field-label" x="10" y="18" width="170" height="15" uuid="abbef05a-00bb-4cde-937c-0bd1668e6471">
 						<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					</reportElement>
@@ -116,7 +116,7 @@
 					<text><![CDATA[CASH RECEIPT]]></text>
 				</staticText>
 				<image>
-					<reportElement x="3" y="0" width="47" height="37" uuid="be9b290a-3905-4a5a-93e1-99cbc76d01ad"/>
+					<reportElement x="32" y="-47" width="128" height="45" uuid="be9b290a-3905-4a5a-93e1-99cbc76d01ad"/>
 					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 				</image>
 			</frame>
@@ -318,34 +318,33 @@
 				<textFieldExpression><![CDATA[$F{modeOfPayment}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="2" y="0" width="186" height="1" uuid="9b210f46-b718-45c7-96de-1518e0374c34"/>
+				<reportElement x="0" y="0" width="186" height="1" uuid="9b210f46-b718-45c7-96de-1518e0374c34"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 		</band>
-		<band/>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="41" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<textField>
-				<reportElement style="detail-data" x="0" y="27" width="186" height="13" uuid="0d3bab37-646d-4b46-9a15-544ddf9598fd">
+				<reportElement style="detail-data" x="0" y="28" width="186" height="13" uuid="0d3bab37-646d-4b46-9a15-544ddf9598fd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{website}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="0" width="186" height="1" uuid="0a368c82-0b8f-4035-b6a8-bde4fee4d99d"/>
+				<reportElement x="0" y="1" width="186" height="1" uuid="0a368c82-0b8f-4035-b6a8-bde4fee4d99d"/>
 				<graphicElement>
 					<pen lineWidth="1.25" lineStyle="Solid" lineColor="#D6A73E"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement style="title" x="0" y="2" width="186" height="13" uuid="6e5785cc-c7ec-4750-8b68-7dfa380a5e6c">
+				<reportElement style="title" x="0" y="3" width="186" height="13" uuid="6e5785cc-c7ec-4750-8b68-7dfa380a5e6c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -361,7 +360,7 @@
 				<text><![CDATA[Thank you for shopping with us.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement style="field-value" x="0" y="15" width="186" height="12" uuid="d5a6731b-5f18-4e8b-8498-11b7e335ef0c">
+				<reportElement style="field-value" x="0" y="16" width="186" height="12" uuid="d5a6731b-5f18-4e8b-8498-11b7e335ef0c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
