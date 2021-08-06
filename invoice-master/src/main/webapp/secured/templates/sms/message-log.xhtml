@@ -34,7 +34,10 @@
                                             
                                         </p:rowExpansion>
                                         <p:column headerText="#{msg.date}">
-                                            #{sms.smsTime}
+                                            <h:outputText value="#{sms.smsTime}">
+                                                <f:convertDateTime type="localDateTime" pattern="#{msg.formated_date_time_words}"/>
+                                            </h:outputText>
+                                        </p:column>
                                         </p:column>
 
                                         <p:column headerText="#{msg.client}">

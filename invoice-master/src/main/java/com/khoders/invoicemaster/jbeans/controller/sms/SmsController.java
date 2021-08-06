@@ -304,6 +304,9 @@ public class SmsController implements Serializable
             sms.setUserAccount(appSession.getCurrentUser());
            if(crudApi.save(sms) != null)
            {
+               FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("SMS sent to "+selectedClient.getClientName()), null));
+               
                System.out.println("SMS sent and saved -- ");
            }
         } catch (Exception e)
@@ -311,6 +314,7 @@ public class SmsController implements Serializable
             e.printStackTrace();
         }
     }
+      
        
     public void loadSmslog()
     {
