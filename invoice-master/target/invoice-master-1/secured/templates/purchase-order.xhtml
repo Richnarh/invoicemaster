@@ -79,7 +79,7 @@
                                             <p:menuButton value="#{msg.manage}">
                                                 <p:menuitem rendered="#{appSession.currentUser.permUpdate == true}" icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{purchaseOrderController.editPurchaseOrder(purchaseOrder)}" immediate="true" update=":mainPanel"/>
                                             <p:menuitem icon="fa fa-plus" class="text-info" value="Order Item" action="#{purchaseOrderController.managePurchaseOrderItem(purchaseOrder)}" immediate="true" update=":mainPanel"/>
-                                            <p:menuitem rendered="#{purchaseOrder.postedToInventory == false} #{appSession.currentUser.permConvert == true}" icon="fa fa-cog" class="text-info" value="Post to inventory" action="#{purchaseOrderController.postToInventory(purchaseOrder)}" immediate="true" update=":mainPanel"/>
+                                            <p:menuitem rendered="#{purchaseOrder.postedToInventory == false}" icon="fa fa-cog" class="text-info" value="Post to inventory" action="#{purchaseOrderController.postToInventory(purchaseOrder)}" immediate="true" update=":mainPanel"/>
                                             <p:menuitem rendered="#{appSession.currentUser.permDelete == true}" icon="fa fa-remove" class="text-danger" value="#{msg.delete}" action="#{purchaseOrderController.deletePurchaseOrder(purchaseOrder)}" immediate="true"  update=":mainPanel"/>
                                             </p:menuButton>
                                         </p:column>

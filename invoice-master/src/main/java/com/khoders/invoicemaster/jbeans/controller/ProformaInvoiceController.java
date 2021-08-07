@@ -137,7 +137,7 @@ public class ProformaInvoiceController implements Serializable
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
 
-                clearProformaInvoice();
+                closePage();
             } else
 
             {

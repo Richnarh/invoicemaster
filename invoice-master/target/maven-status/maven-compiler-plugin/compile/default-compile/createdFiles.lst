@@ -16,6 +16,7 @@ com\khoders\invoicemaster\entites\model\InvoiceDto.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$DeliveryTerm.class
 com\khoders\invoicemaster\entites\PosPrinter.class
 com\khoders\invoicemaster\entites\ProductType.class
+com\khoders\invoicemaster\jbeans\controller\InventoryController.class
 com\khoders\invoicemaster\jbeans\controller\ProductController$1.class
 com\khoders\invoicemaster\entites\sms\Sms.class
 com\khoders\invoicemaster\jbeans\converter\ValidationConverter.class

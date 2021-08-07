@@ -143,27 +143,23 @@ public class ProductController implements Serializable{
     {
        try 
        {
-        if(file == null)
-         {
-           FacesContext.getCurrentInstance().addMessage(null, 
-                     new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please choose an image file"), null));
-             return;  
-         }
+           if (file.getSize() > 0)
+           {
+               if (!validateImage(file.getContentType()))
+               {
+                   FacesContext.getCurrentInstance().addMessage(null,
+                           new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Upload An Image File: jpeg/jpg/png/gif/tiff"), null));
+                   return;
+               }
+               byte[] bytes = new byte[(int) file.getSize()];
+               file.getInputStream().read(bytes);
+               String encoded = new String(Base64.getEncoder().encode(bytes), "UTF-8");
 
-         if(!validateImage(file.getContentType())){
-             FacesContext.getCurrentInstance().addMessage(null, 
-                     new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Upload An Image File: jpeg/jpg/png/gif/tiff"), null));
-             return;
-         }
+               product.setProductImage(Base64.getDecoder().decode(encoded));
+               product.setImageFormat("data:" + file.getContentType() + ";base64");
+           }
 
-
-         byte[] bytes = new byte[(int)file.getSize()];
-         file.getInputStream().read(bytes);
-         String encoded = new String(Base64.getEncoder().encode(bytes), "UTF-8");
-
-         product.setProductImage(Base64.getDecoder().decode(encoded));
-         product.setImageFormat("data:"+file.getContentType()+";base64");
-
+           product.genCode();
           if(crudApi.save(product) != null)
           {
               productList = CollectionList.washList(productList, product);

@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class Inventory extends UserAccountRecord implements Serializable
 {
     @Column(name = "inventory_code")
-    private String inventoryCode;
+    private String inventoryCode = SystemUtils.generateCode();
     
     @JoinColumn(name = "product", referencedColumnName = "id")
     @ManyToOne

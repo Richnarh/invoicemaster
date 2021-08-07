@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entites;
 
 import com.khoders.invoicemaster.entites.enums.DoorType;
+import com.khoders.resource.utilities.SystemUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -87,7 +88,16 @@ public class Product extends UserAccountRecord
         this.imageFormat = imageFormat;
     }
 
-
+    public void genCode()
+    {
+        if (getProductCode() != null)
+        {
+            setProductCode(getProductCode());
+        } else
+        {
+            setProductCode(SystemUtils.generateShortCode());
+        }
+    }
     @Override
     public String toString()
     {

@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class PurchaseOrder extends UserAccountRecord
 {
     @Column(name = "purchase_order_code")
-    private String purchaseOrderCode = SystemUtils.generateId();
+    private String purchaseOrderCode = SystemUtils.generateCode();
     
     @Column(name = "total_amount")
     private double totalAmount;

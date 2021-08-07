@@ -51,7 +51,7 @@
                                                 <h:outputText value="#{inventory.inventoryCode}"/>
                                                 
                                                 <span>Door Type</span>
-                                                <h:outputText value="#{inventory.product.productType}"/>
+                                                <h:outputText value="#{inventory.product.productType.productTypeName}"/>
                                                 
                                                 <span>#{msg.description}</span>
                                                 <h:outputText value="#{inventory.description}"/>
@@ -130,19 +130,19 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.frame_size} <span class="text-danger">*</span></label>
+                                                <label class="col-sm-4 col-form-label">#{msg.frame_size}</label>
                                                 <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.frameSize}" required="true" class="col" placeholder="Enter frame size"/>
+                                                    <p:inputText value="#{inventoryController.inventory.frameSize}" class="col" placeholder="Enter frame size"/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.width} <span class="text-danger">*</span> </label>
+                                                <label class="col-sm-4 col-form-label">#{msg.width}</label>
                                                 <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.width}" required="true" class="col" placeholder="Enter width"/>
+                                                    <p:inputText value="#{inventoryController.inventory.width}" class="col" placeholder="Enter width"/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.height} <span class="text-danger">*</span> </label>
+                                                <label class="col-sm-4 col-form-label">#{msg.height}</label>
                                                 <div class="col-md-8">
                                                     <p:inputText value="#{inventoryController.inventory.height}" required="true" class="col" placeholder="Enter height"/>
                                                 </div>
@@ -154,17 +154,12 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">#{msg.selling} #{msg.price}</label>
+                                                <label class="col-sm-4 col-form-label">#{msg.selling} #{msg.price} <span class="text-danger">*</span></label>
                                                 <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.sellingPrice}" class="col" placeholder="Enter selling price"/>
+                                                    <p:inputText value="#{inventoryController.inventory.sellingPrice}" required="true" class="col" placeholder="Enter selling price"/>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Unit #{msg.price} <span class="text-danger">*</span></label>
-                                                <div class="col-md-8">
-                                                    <p:inputText value="#{inventoryController.inventory.unitPrice}" class="col" placeholder="Enter cost price"/>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">#{msg.description}</label>
                                                 <div class="col-md-8">
