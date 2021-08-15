@@ -70,7 +70,7 @@
                                     <hr/>
                                     <center>
                                         <p:commandButton class="kbtn-success mr-2" value="#{userAccountController.optionText}" action="#{userAccountController.saveUserAccount()}" update="@form, :accountTable"/>
-                                        <p:commandButton class="kbtn-cancel" value="Clear" action="#{userAccountController.clear()}" immediate="true" update="@form"/>
+                                        <p:commandButton class="kbtn-default" value="Clear" icon="#{msg.clear_icon}" action="#{userAccountController.clear()}" immediate="true" ajax="false"/>
                                     </center>
                                 </h:form>
                             </div>

@@ -28,7 +28,7 @@
 
             <div class="py-3">
                 <p:commandButton rendered="#{appSession.currentUser.permSendSMS == true}" value="Send Message" action="#{smsController.processMessage()}" update="@form" class="kbtn-success mr-3"/>
-                <p:commandButton value="#{msg.clear}" action="#{smsController.clearSMS()}" update="@form" immediate="true" class="kbtn-cancel"/>
+                <p:commandButton value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{smsController.clearSMS()}" update="@form" immediate="true" class="kbtn-default"/>
             </div>
         </h:form>
     </h:body>

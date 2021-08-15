@@ -42,23 +42,29 @@
 
                                         <p:rowExpansion>
                                             <h:panelGrid columns="2">
-                                                <span>#{msg.created_date}</span>
-                                                <h:outputText value="#{inventory.createdDate}">
-                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                                </h:outputText>
                                                 
                                                 <span>#{msg.inventory} Id</span>
                                                 <h:outputText value="#{inventory.inventoryCode}"/>
                                                 
-                                                <span>Door Type</span>
-                                                <h:outputText value="#{inventory.product.productType.productTypeName}"/>
+                                                <span>#{msg.frame_size}</span>
+                                                <h:outputText value="#{inventory.frameSize} #{appSession.currentUser.frame.label}"/>
                                                 
+                                                <span>#{msg.width}</span>
+                                                <h:outputText value="#{inventory.width} #{appSession.currentUser.width.label}"/>
+                                                
+                                                <span>#{msg.height}</span>
+                                                <h:outputText value="#{inventory.height} #{appSession.currentUser.width.label}"/>
+                                                
+                                                <span>#{msg.created_date}</span>
+                                                <h:outputText value="#{inventory.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
                                                 <span>#{msg.description}</span>
                                                 <h:outputText value="#{inventory.description}"/>
                                             </h:panelGrid>
                                         </p:rowExpansion>
 
-                                        <p:column headerText="Product Code" filterBy="#{inventory.product.productCode}" filterMatchMode="contains">
+                                        <p:column headerText="Product Code" filterBy="#{inventory.product.productCode}" filterMatchMode="contains" style="width: 130px;">
                                             #{inventory.product.productCode}
                                         </p:column>
 
@@ -66,34 +72,20 @@
                                             #{inventory.product.productName}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.frame_size}" class="text-right">
-                                            #{inventory.frameSize} #{appSession.currentUser.frame.label}
+                                        <p:column headerText="#{msg.product} Type" style="width: 140px;">
+                                            <h:outputText value="#{inventory.product.productType.productTypeName}"/>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.width}" class="text-right">
-                                            #{inventory.width} #{appSession.currentUser.width.label}
-                                        </p:column>
-
-                                        <p:column headerText="#{msg.height}" class="text-right">
-                                            #{inventory.height} #{appSession.currentUser.height.label}
-                                        </p:column>
-
-                                        <p:column headerText="#{msg.qty}" class="text-right">
+                                        <p:column headerText="#{msg.qty}" class="text-right" style="width: 60px;">
                                             #{inventory.quantity}
                                         </p:column>
 
-                                        <p:column headerText="Selling Price" class="text-right">
+                                        <p:column headerText="Selling Price" class="text-right" style="width: 120px;">
                                             <h:outputText value="#{inventory.sellingPrice}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
                                         </p:column>
-                                        
-                                        <p:column headerText="Cost Price" class="text-right">
-                                            <h:outputText value="#{inventory.unitPrice}">
-                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                                            </h:outputText>
-                                        </p:column>
-
+                            
                                         <p:column headerText="#{msg.action}" style="width: 80px;" rendered="#{appSession.currentUser.permUpdate == true}">
                                             <h:commandButton class="btn btn-outline-info btn-sm" value="#{msg.edit}" immediate="true" action="#{inventoryController.editInventory(inventory)}">
                                                 <p:ajax  update=":mainPanel"/>
