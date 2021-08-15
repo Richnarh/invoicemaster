@@ -14,7 +14,7 @@
 
             <ui:define name="pageContent">
                 <div class="card shadow-sm">
-                    <h5 class="card-header">Register new user</h5>
+                    <h5 class="card-header">Register new employee</h5>
                     <div class="card-body">
 
                         <div class="row">
@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-6">
                                 <h:form id="authForm">
-                                    <p:panel header="Set password" class="float-right">
+                                    <p:panel header="Set password for #{userAccountController.userAccount.fullname}" class="float-right">
                                         <h:panelGrid columns="2">
                                             <span>Email</span>
                                             <h:outputText value="#{userAccountController.userAccount.email}" class="field-shade"/>
@@ -85,9 +85,7 @@
                                             <br/><br/>
                                         </h:panelGrid>
                                             <h:commandButton class="btn btn-secondary btn-sm mr-3" value="#{msg.save}" action="#{userAccountController.updatePassword()}"/>
-                                            <h:commandButton class="btn btn-danger btn-sm" value="#{msg.clear}" action="#{userAccountController.clear()}">
-                                                <p:ajax update="@form"/>
-                                            </h:commandButton>
+                                            <h:commandButton class="btn btn-danger btn-sm" value="#{msg.clear}" immediate="true" action="#{userAccountController.clear()}"/>
                                     </p:panel>
                                 </h:form>
                             </div>

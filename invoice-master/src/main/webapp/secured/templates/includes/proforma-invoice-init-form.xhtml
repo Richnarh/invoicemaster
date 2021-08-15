@@ -14,6 +14,8 @@
                     <div class="card">
                         <h6 class="card-header">Proforma Invoice Processing</h6>
                         <div class="card-body">
+                            <div>
+                            </div>
                             <h:form>
                                 <div class="card-block">
                                     <div class="form-group row">
@@ -29,14 +31,14 @@
                                             <p:datePicker value="#{proformaInvoiceController.proformaInvoice.issuedDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.expiry_date}</label>
                                         <div class="col-md-8">
                                             <p:datePicker value="#{proformaInvoiceController.proformaInvoice.expiryDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.client} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">
@@ -44,9 +46,13 @@
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{userCommonClass.clientList}"/>
                                             </p:selectOneMenu>
+
+                                            <span>
+                                                <p:commandLink value="Add Client" immediate="true" update=":clientModal" oncomplete="PF('clientForm').show()" resetValues="true"/>
+                                            </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">Mode of payment</label>
                                         <div class="col-md-8">
@@ -56,14 +62,14 @@
                                             </p:selectOneMenu>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.total_amount}</label>
                                         <div class="col-md-8">
                                             <input type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.totalAmount}" class="form-control" placeholder="Enter total amount"/>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">#{msg.description}</label>
                                         <div class="col-md-8">
@@ -74,7 +80,7 @@
 
                                 <div class="text-center">
                                     <p:commandButton rendered="#{appSession.currentUser.permSave == true}" value="#{proformaInvoiceController.optionText}" class="kbtn-success" icon="#{msg.check_icon}"
-                                                      action="#{proformaInvoiceController.saveProformaInvoice()}" ajax="false"/>
+                                                     action="#{proformaInvoiceController.saveProformaInvoice()}" ajax="false"/>
 
                                     <p:commandButton value="#{msg.clear}" class="ml-3 kbtn-default" immediate="true" icon="#{msg.clear_icon}" action="#{proformaInvoiceController.clearProformaInvoice()}" update=":mainPanel"/>
 
@@ -90,6 +96,9 @@
                     </div>
                 </div>
             </div>
+            <p:dialog resizable="true" widgetVar="clientForm" closeOnEscape="true" modal="true" id="clientModal" height="460"  width="760">
+                <ui:include src="../includes/client-modal.xhtml"/>
+            </p:dialog>
         </h:panelGroup>
 
     </h:body>

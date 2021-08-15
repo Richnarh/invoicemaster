@@ -24,10 +24,10 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.awt.print.PrinterJob;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -38,15 +38,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.print.Doc;
 import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Sides;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -56,8 +52,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
-import org.primefaces.component.tabview.TabView;
-import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -131,6 +125,10 @@ public class ProformaInvoiceController implements Serializable
     {
         try
         {
+            if(appSession.getCurrentUser() != null){
+                proformaInvoice.setLastModifiedBy(appSession.getCurrentUser().getFullname());
+                proformaInvoice.setLastModifiedDate(LocalDate.now());
+            }
             if (crudApi.save(proformaInvoice) != null)
             {
                 proformaInvoiceList = CollectionList.washList(proformaInvoiceList, proformaInvoice);
@@ -152,6 +150,8 @@ public class ProformaInvoiceController implements Serializable
 
     public void manageProformaInvoiceItem(ProformaInvoice proformaInvoice)
     {
+        totalPayable=0.0;
+        
         this.proformaInvoice = proformaInvoice;
         pageView.restToDetailView();
         
@@ -160,8 +160,9 @@ public class ProformaInvoiceController implements Serializable
         proformaInvoiceItemList = proformaInvoiceService.getProformaInvoiceItemList(proformaInvoice);
         salesTaxList = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-         totalAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
+        totalAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getTotalAmount).sum();
 
+        calculateVat();
     }
 
     public void addProformaInvoiceItem()
@@ -269,7 +270,7 @@ public class ProformaInvoiceController implements Serializable
             SalesTax nhil = salesTaxList.get(0);
 //            SalesTax getFund = salesTaxList.get(1);
             SalesTax covid19 = salesTaxList.get(1);
-            SalesTax stx = salesTaxList.get(2);
+            SalesTax stxVat = salesTaxList.get(2);
 
             double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
 
@@ -279,7 +280,7 @@ public class ProformaInvoiceController implements Serializable
             System.out.println("taxableValue => "+taxableValue);
             System.out.println("totalLevies => "+totalLevies);
             
-            double vat = taxableValue*(stx.getTaxRate()/100);
+            double vat = taxableValue*(stxVat.getTaxRate()/100);
             
             System.out.println("vat => "+vat);
 
@@ -287,9 +288,9 @@ public class ProformaInvoiceController implements Serializable
             
             System.out.println("totalPayable => "+totalPayable);
 
-            stx.setTaxAmount(vat);
+            stxVat.setTaxAmount(vat);
 
-            crudApi.save(stx);
+            crudApi.save(stxVat);
             
         }
     }
@@ -557,14 +558,20 @@ public class ProformaInvoiceController implements Serializable
                 e.printStackTrace();
             }
             
-            invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
+            if(invoiceItem.getInventory() != null)
+            {
+                if(invoiceItem.getInventory().getProduct() != null)
+                {
+                    invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
+                    invoiceItemDto.setDescription(invoiceItem.getInventory().getProduct().getDescription());
+                }
+            }
             invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
             invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
             invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getTotalAmount());
-            invoiceItemDto.setDescription(invoiceItem.getDescription());
             
             if(appSession.getCurrentUser().getFrame() != null)
             {
@@ -749,11 +756,6 @@ public class ProformaInvoiceController implements Serializable
         return totalDiscount;
     }
     
-    public double getTotalInstallationFee()
-    {
-        return installationFee;
-    }
-
     public double getTaxAmount()
     {
         return taxAmount;

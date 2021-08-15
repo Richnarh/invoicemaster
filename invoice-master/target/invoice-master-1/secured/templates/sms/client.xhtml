@@ -15,7 +15,7 @@
 
             <ui:define name="pageContent">
                 <h:panelGroup id="mainPanel">
-                    <div class="card mb-5   wow zoomIn">
+                    <div class="card mb-5 wow zoomIn">
                         <div class="container-fluid">
                             <div class="card-header">Add #{msg.client}s</div>
                             <h:panelGroup rendered="#{clientController.pageView.listView}">
@@ -41,27 +41,20 @@
                                         </p:column>
 
                                         <p:rowExpansion>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.created_date}:</label>
-                                                    <h:outputText value="#{client.createdDate}">
-                                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                                    </h:outputText>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.client} Id:</label>
-                                                    <h:outputText value="#{client.clientCode}"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="col-sm-4 col-form-label">#{msg.description}:</label>
-                                                    <h:outputText value="#{client.description}"/>
-                                                </div>
-                                            </div>
+                                            <h:panelGrid columns="2">
+                                                <span>#{msg.created_date}</span>
+                                                <h:outputText value="#{client.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+
+                                                <span>#{msg.client} ID</span>
+                                                <h:outputText value="#{client.clientCode}"/>
+
+                                                <span>#{msg.description}</span>
+                                                <h:outputText value="#{client.description}"/>
+                                            </h:panelGrid>
                                         </p:rowExpansion>
+
                                         <p:column headerText="#{msg.client} Type">
                                             #{client.clientType.label}
                                         </p:column>

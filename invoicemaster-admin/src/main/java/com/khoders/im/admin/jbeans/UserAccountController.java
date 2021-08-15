@@ -148,7 +148,7 @@ public class UserAccountController implements Serializable{
     
     public void updatePassword()
     {
-        if(userAccount == null)
+        if(userAccount.getEmail() == null)
         {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select a user"), null));

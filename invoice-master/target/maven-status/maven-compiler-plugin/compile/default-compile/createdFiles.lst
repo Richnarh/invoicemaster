@@ -11,6 +11,7 @@ com\khoders\invoicemaster\entites\PurchaseOrder.class
 com\khoders\invoicemaster\entites\ProformaInvoice.class
 com\khoders\invoicemaster\entites\sms\GroupContact.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$ProformaInvoiceItem.class
+com\khoders\invoicemaster\jbeans\controller\backdoorController.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
 com\khoders\invoicemaster\entites\model\InvoiceDto.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$DeliveryTerm.class

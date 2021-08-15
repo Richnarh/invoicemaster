@@ -10,6 +10,7 @@ import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.ByteArrayInputStream;
@@ -48,6 +49,8 @@ public class ProductController implements Serializable{
     
     private UploadedFile file = null;
     
+    private FormView pageView = FormView.listForm();
+    
     @PostConstruct
     private void init()
     {
@@ -61,6 +64,13 @@ public class ProductController implements Serializable{
         clearProduct();
         
     }
+    
+    public void initProduct()
+    {
+        clearProduct();
+        pageView.restToCreateView();
+    }
+    
     
     public void getImages(String id)
     {
@@ -168,6 +178,8 @@ public class ProductController implements Serializable{
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
               
               createStreamContent(product);
+              
+               closePage();
           }
           else
           {
@@ -184,8 +196,9 @@ public class ProductController implements Serializable{
    
     public void editProduct(Product product)
     {
-       optionText = "Update";
+       pageView.restToCreateView();
        this.product=product;
+       optionText = "Update";
     }
     
     public void deleteProduct(Product product)
@@ -210,6 +223,13 @@ public class ProductController implements Serializable{
         }
     }
     
+    public void closePage()
+    {
+       product = new Product();
+       optionText = "Save Changes";
+       pageView.restToListView();
+    }
+        
     public void clearProduct() {
         product = new Product();
         file = null;
@@ -254,6 +274,16 @@ public class ProductController implements Serializable{
     public StreamedContent getProductImge()
     {
         return productImge;
+    }
+
+    public FormView getPageView()
+    {
+        return pageView;
+    }
+
+    public void setPageView(FormView pageView)
+    {
+        this.pageView = pageView;
     }
     
 }

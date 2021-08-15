@@ -5,10 +5,10 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.commons.UserCommonClass;
 import com.khoders.invoicemaster.entites.Client;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InventoryService;
-import com.khoders.invoicemaster.service.UserAccountService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -31,12 +31,13 @@ import javax.inject.Named;
 @Named(value = "clientController")
 @SessionScoped
 public class ClientController implements Serializable{
-    @Inject CrudApi crudApi;
-    @Inject AppSession appSession;
-    @Inject InventoryService inventoryService;
+    @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private InventoryService inventoryService;
     
     private Client client = new Client();
     private List<Client> clientList =  new LinkedList<>();
+    
     
     private FormView pageView = FormView.listForm();
     private String optionText;
@@ -66,6 +67,7 @@ public class ClientController implements Serializable{
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              
           }
           else
           {

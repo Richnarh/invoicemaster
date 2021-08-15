@@ -36,7 +36,7 @@
                 </h:panelGrid>
 
                 <div class="py-3">
-                    <p:commandButton value="Add to list" icon="#{msg.add_icon}" class="kbtn-info" action="#{proformaInvoiceController.addProformaInvoiceItem()}" update=":proformaInvoiceItemTable, orderItemForm"/>
+                    <p:commandButton value="Add to table" icon="#{msg.add_icon}" class="kbtn-info" action="#{proformaInvoiceController.addProformaInvoiceItem()}" update=":proformaInvoiceItemTable, orderItemForm"/>
 
                     <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="#{msg.clear_icon}" immediate="true" action="#{proformaInvoiceController.clearProformaInvoiceItem()}" update="@form"/>
                 </div>
@@ -102,13 +102,13 @@
 
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
-                        <p:commandButton value="#{msg.delete}" class="kbtn-danger"
+                        <p:commandButton value="#{msg.remove}" class="kbtn-secondary"
                                          action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" update="@form"/>
                     </p:column>
                 </p:dataTable>
 
                 <br/>
-                <div class="col-md-6 pull-right shadow-sm">
+                <div class="col-md-6 pull-right shadow-sm mb-2 bg-white">
                     <table class="table">
                         <tr>
                             <td><span class="field-label">#{msg.total_amount}</span></td>
@@ -124,7 +124,7 @@
                                 <td>#{salesTax.taxName} (#{salesTax.taxRate} %)</td>
                                 <td class="text-right">
                                     <h:outputText value="#{salesTax.taxAmount}">
-                                        <f:convertNumber pattern="#,##0.00" />
+                                        <f:convertNumber pattern="#{msg.money_pattern}" />
                                     </h:outputText>
                                 </td>
                             </tr>
@@ -133,23 +133,24 @@
                         <tr>
                             <td><span class="field-label">Installation Fee</span></td>
                             <td  class="text-right"> 
-                                <p:inputText value="#{proformaInvoiceController.installationFee}"
-                                             styleClass="text-right"/> 
+                                <h:outputText value="#{proformaInvoiceController.installationFee}">
+                                    <f:convertNumber pattern="#{msg.money_pattern}" />
+                                </h:outputText>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="field-label">Total Discount</span></td>
                             <td class="text-right"> 
                                 <h:outputText value="#{proformaInvoiceController.totalDiscount} %">
-                                    <f:convertNumber pattern="#,##0.00" />
+                                    <f:convertNumber pattern="#{msg.money_pattern}" />
                                 </h:outputText>
                             </td>
                         </tr>
-                        <tr>
-                            <td><span class="field-label">Total Payable</span></td>
+                        <tr class="bg-gradient-gray">
+                            <td><span class="field-label text-uppercase font-weight-bold">Total Payable</span></td>
                             <td class="text-right"> 
                                 <h:outputText value="#{proformaInvoiceController.totalPayable}" styleClass="field-shade">
-                                    <f:convertNumber pattern="#,##0.00" />
+                                    <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}" />
                                 </h:outputText>
                             </td>
                         </tr>

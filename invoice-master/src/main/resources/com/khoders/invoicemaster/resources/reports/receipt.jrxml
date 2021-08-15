@@ -329,7 +329,7 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="43" splitType="Stretch">
+		<band height="58" splitType="Stretch">
 			<textField>
 				<reportElement style="detail-data" x="0" y="28" width="186" height="13" uuid="0d3bab37-646d-4b46-9a15-544ddf9598fd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -368,6 +368,15 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{branchName}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement style="field-value" x="10" y="47" width="167" height="11" uuid="70479855-313f-4023-88da-464d0a5e59a9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="7" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Designed by: Khoders Technologies - 0574417585]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

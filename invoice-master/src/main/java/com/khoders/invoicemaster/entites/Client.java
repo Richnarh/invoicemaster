@@ -144,7 +144,7 @@ public class Client extends UserAccountRecord implements Serializable
     @Override
     public String toString()
     {
-        return clientName;
+        return clientName +" - "+phone;
     }
     
     

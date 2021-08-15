@@ -620,7 +620,7 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 						</textField>
-						<textField pattern="GH¢ #,##0.00" isBlankWhenNull="true">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
 							<reportElement style="detail-data" x="430" y="0" width="60" height="102" uuid="9d5ec5a5-2f64-43ba-bdbf-cf1c53b40962">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -656,7 +656,7 @@
 							</textElement>
 							<text><![CDATA[X]]></text>
 						</staticText>
-						<textField pattern="GH¢ #,##0.00" isBlankWhenNull="true">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
 							<reportElement style="detail-data" x="490" y="0" width="65" height="102" uuid="82d059e6-bb57-47d8-8025-fa29018caf88">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -1033,7 +1033,7 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="60" splitType="Stretch">
+		<band height="67" splitType="Stretch">
 			<textField>
 				<reportElement style="detail-data" x="0" y="19" width="555" height="15" uuid="2955d40d-ef75-4c7d-b72e-7905ec2b4d26">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -1061,6 +1061,15 @@
 					<pen lineWidth="1.25" lineStyle="Solid" lineColor="#D6A73E"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement style="field-value" x="201" y="51" width="171" height="15" uuid="3e5b84fc-463c-4e52-a2b9-2e8397be7fa3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="7" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Designed by: Khoders Technologies - 0574417585]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

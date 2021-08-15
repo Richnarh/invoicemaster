@@ -14,18 +14,6 @@
             <ui:define name="pageContent">
                 <div class="row wow zoomIn">
                     <div class="col-12 col-sm-6 col-md-3">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-info elevation-1"><i class="fa fa-folder-open-o"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Issued #{msg.invoice}</span>
-                                <span class="info-box-number">
-                                    #{invoiceController.invoiceList.size()}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-folder-open-o"></i></span>
                             <div class="info-box-content">
@@ -38,8 +26,21 @@
                         </div>
                         <!-- /.info-box -->
                     </div>
+                    <ui:remove>
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fa fa-folder-open-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Issued #{msg.invoice}</span>
+                                <span class="info-box-number">
+                                    #{invoiceController.invoiceList.size()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                     <!-- /.col -->
-
+                    <!-- /.col -->
+                    
                     <!-- fix for small devices only -->
                     <div class="clearfix hidden-md-up"></div>
 
@@ -50,7 +51,7 @@
                             <div class="info-box-content">
                                 <span class="info-box-text" title="Total number of paid invoices">Paid #{msg.invoice}</span>
                                 <span class="info-box-number">
-                                    #{invoiceController.getPaidInvoiceCount()}
+                                    
                                 </span>
                             </div>
                         </div>
@@ -63,7 +64,7 @@
                             <div class="info-box-content">
                                 <span class="info-box-text" title="Total amount on paid invoices">Cash #{msg.invoice}</span>
                                 <span class="info-box-number">
-                                    <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{invoiceController.cashInvoiceAmount}">
+                                    <h:outputText>
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>
                                 </span>
@@ -72,6 +73,7 @@
                         </div>
                         <!-- /.info-box -->
                     </div>
+                    </ui:remove>
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->

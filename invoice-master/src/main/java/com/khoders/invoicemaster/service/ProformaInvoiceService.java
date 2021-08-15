@@ -91,7 +91,7 @@ public class ProformaInvoiceService
                                     return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.issuedDate BETWEEN ?1 AND ?2 AND e.userAccount=?3";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.userAccount=?3";
             
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
                     .setParameter(1, dateRange.getFromDate())

@@ -42,7 +42,6 @@ public class UserCommonClass implements Serializable{
     private List<ProductType> productTypeList = new LinkedList<>();
     
     @PostConstruct
-    @Asynchronous
     public void init()
     {
         clientList = inventoryService.getClientList();

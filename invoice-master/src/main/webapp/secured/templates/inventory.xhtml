@@ -35,8 +35,8 @@
 
                                 <h:form id="inventoryTable" class="mb-3 wow">
                                     <p:dataTable value="#{inventoryController.inventoryList}" reflow="true" var="inventory"
-                                                 paginator="true" draggableColumns="true" paginatorPosition="bottom" rows="8">
-                                        <p:column exportable="false" class="row-toggler">
+                                                  scrollable="true" scrollHeight="500">
+                                        <p:column style="width: 37px;" exportable="false">
                                             <p:rowToggler/>
                                         </p:column>
 

@@ -5,11 +5,11 @@
  */
 package com.khoders.invoicemaster.entites;
 
-import com.khoders.invoicemaster.entites.enums.DoorType;
 import com.khoders.resource.utilities.SystemUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -36,6 +36,10 @@ public class Product extends UserAccountRecord
     
     @Column(name = "image_format")
     private String imageFormat;
+   
+    @Lob
+    @Column(name = "description")
+    private String description;
 
     public String getProductName()
     {
@@ -86,6 +90,16 @@ public class Product extends UserAccountRecord
     public void setImageFormat(String imageFormat)
     {
         this.imageFormat = imageFormat;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public void genCode()
