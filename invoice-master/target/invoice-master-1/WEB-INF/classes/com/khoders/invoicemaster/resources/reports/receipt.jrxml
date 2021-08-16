@@ -375,7 +375,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="7" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Designed by: Khoders Technologies - 0574417585]]></text>
+				<text><![CDATA[Designer: Khoders Tech. - 0574417585]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
