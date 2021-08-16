@@ -316,6 +316,10 @@ public class ProformaInvoiceController implements Serializable
                 
                 taxCalculation();
                 
+                proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
+                proformaInvoice.setTotalAmount(totalAmount);
+                crudApi.save(proformaInvoice);
+                
                 FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
             

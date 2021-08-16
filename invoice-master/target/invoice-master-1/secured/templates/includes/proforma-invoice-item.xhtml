@@ -44,7 +44,7 @@
         </div>
         <div class="col-lg-8">
             <h:form id="proformaInvoiceItemTable">
-                <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem">
+                <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem" lazy="true">
                     <p:column class="row-toggler">
                         <p:rowToggler/>
                     </p:column>
@@ -162,11 +162,12 @@
             <center>
                 <h:form>
                     <!--<p:commandButton value="Trigger Test" action="{proformaInvoiceController.testTax()}" update=":mainPanel"/>-->
-                    <p:commandButton id="saveAll" rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" update=":proformaInvoiceItemTable"/>
+                    <p:commandButton id="saveAll" rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" ajax="false"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
                         <p:ajax update=":mainPanel"/>
                     </h:commandButton>
-                <p:tooltip for="saveAll" value="Click to save records in the table" position="bottom"/>
+                   <p:tooltip for="saveAll" value="Click to save records in the table" position="bottom"/>
+                   
                 </h:form>
                 
             </center>

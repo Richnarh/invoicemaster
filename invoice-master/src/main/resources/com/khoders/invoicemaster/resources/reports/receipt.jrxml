@@ -369,10 +369,10 @@
 				<textFieldExpression><![CDATA[$F{branchName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="field-value" x="10" y="47" width="167" height="11" uuid="70479855-313f-4023-88da-464d0a5e59a9">
+				<reportElement style="field-value" x="0" y="47" width="186" height="11" uuid="70479855-313f-4023-88da-464d0a5e59a9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="7" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Designed by: Khoders Technologies - 0574417585]]></text>

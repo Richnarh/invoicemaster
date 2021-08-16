@@ -1062,10 +1062,10 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement style="field-value" x="201" y="51" width="171" height="15" uuid="3e5b84fc-463c-4e52-a2b9-2e8397be7fa3">
+				<reportElement style="field-value" x="1" y="51" width="552" height="15" uuid="3e5b84fc-463c-4e52-a2b9-2e8397be7fa3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="7" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Designed by: Khoders Technologies - 0574417585]]></text>

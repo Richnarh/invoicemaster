@@ -33,6 +33,7 @@
                             <p:ajax update=":mainPanel"/>
                         </h:commandButton>
                     </div>
+                    
                 </h:form>      
             </div>
         </div>
@@ -92,8 +93,13 @@
                         <p:menuitem icon="fa fa-times" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainPanel"/>
                     </p:menuButton>
                     <p:tooltip for="invoiceItem" value="Add items to this invoice" position="left"/>
+                    <p:blockUI block="@form" trigger="invoiceItem">
+                        <img src="#{application.contextPath}/vendors/img/loader.gif" height="60px"/>
+                        <p><small>LOADING...</small></p>
+                    </p:blockUI>
                 </p:column>
             </p:dataTable>
+            
         </h:form>
     </h:body>
 </html>
