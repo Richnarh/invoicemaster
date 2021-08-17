@@ -13,6 +13,7 @@ import com.khoders.invoicemaster.entites.Tax;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -67,9 +68,10 @@ public class ProformaInvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1 AND e.valueDate=?2";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
-                                        .setParameter(1, appSession.getCurrentUser());
+                                        .setParameter(1, appSession.getCurrentUser())
+                                        .setParameter(2, LocalDate.now());
                          return typedQuery.getResultList();
                          
         } catch (Exception e)

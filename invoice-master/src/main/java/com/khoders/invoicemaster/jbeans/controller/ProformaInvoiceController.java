@@ -87,10 +87,9 @@ public class ProformaInvoiceController implements Serializable
     private String optionText;
     private double totalAmount,totalDiscount,installationFee,taxAmount,totalPayable;
      
-    private ServletOutputStream servletOutputStream = null;
 
     @PostConstruct
-    private void init()
+    public void init()
     {
         proformaInvoiceList = proformaInvoiceService.getProformaInvoiceList();
         taxList = proformaInvoiceService.getTaxList();
@@ -427,51 +426,51 @@ public class ProformaInvoiceController implements Serializable
             JasperPrint receiptPrint = JasperFillManager.fillReport(coverStream, coverHandler.reportParams, dataSource);
             HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             servletResponse.setContentType("application/pdf");
-            servletOutputStream = servletResponse.getOutputStream();
-            JasperExportManager.exportReportToPdfStream(receiptPrint, servletOutputStream);
+            ServletOutputStream servletStream = servletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(receiptPrint, servletStream);
             FacesContext.getCurrentInstance().responseComplete();
             
-            File newFile = new File(this.getClass().getResource("/com/khoders/invoicemaster/resources/receipt").getFile());
-
-                        
-            String pdfFile = newFile+File.separator+SystemUtils.generateCode()+"_receipt.pdf";
-            System.out.println("PDF File => "+pdfFile);
-            JasperExportManager.exportReportToPdfFile(receiptPrint, pdfFile);
-            FacesContext.getCurrentInstance().responseComplete();
-            
-            DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
-            PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
-//            patts.add(Sides.DUPLEX);
-            PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
-            if (ps.length == 0)
-            {
-                throw new IllegalStateException("No Printer found");
-            }
-            System.out.println("Available printers: " + Arrays.asList(ps));
-
-            PrintService myService = null;
-            for (PrintService printService : ps)
-            {
-                System.out.println("Printers => "+printService.getName());
-                if (printService.getName().equalsIgnoreCase("EPSON TM-T20III Receipt"))
-                {
-                    myService = printService;
-                    break;
-                }
-            }
-
-            if (myService == null)
-            {
-                throw new IllegalStateException("Printer not found");
-            }
-
-            PDDocument document = PDDocument.load(new File(pdfFile));
-            
-            PrinterJob job = PrinterJob.getPrinterJob();
-            job.setPageable(new PDFPageable(document));
-            job.setPrintService(myService);
-            job.print();
-            
+//            File newFile = new File(this.getClass().getResource("/com/khoders/invoicemaster/resources/receipt").getFile());
+//
+//                        
+//            String pdfFile = newFile+File.separator+SystemUtils.generateCode()+"_receipt.pdf";
+//            System.out.println("PDF File => "+pdfFile);
+//            JasperExportManager.exportReportToPdfFile(receiptPrint, pdfFile);
+//            FacesContext.getCurrentInstance().responseComplete();
+//            
+//            DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
+//            PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
+////            patts.add(Sides.DUPLEX);
+//            PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
+//            if (ps.length == 0)
+//            {
+//                throw new IllegalStateException("No Printer found");
+//            }
+//            System.out.println("Available printers: " + Arrays.asList(ps));
+//
+//            PrintService myService = null;
+//            for (PrintService printService : ps)
+//            {
+//                System.out.println("Printers => "+printService.getName());
+//                if (printService.getName().equalsIgnoreCase("EPSON TM-T20III Receipt"))
+//                {
+//                    myService = printService;
+//                    break;
+//                }
+//            }
+//
+//            if (myService == null)
+//            {
+//                throw new IllegalStateException("Printer not found");
+//            }
+//
+//            PDDocument document = PDDocument.load(new File(pdfFile));
+//            
+//            PrinterJob job = PrinterJob.getPrinterJob();
+//            job.setPageable(new PDFPageable(document));
+//            job.setPrintService(myService);
+//            job.print();
+//            
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -605,8 +604,8 @@ public class ProformaInvoiceController implements Serializable
             JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
             HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
             httpServletResponse.setContentType("application/pdf");
-            servletOutputStream = httpServletResponse.getOutputStream();
-            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            ServletOutputStream outputStream = httpServletResponse.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
             FacesContext.getCurrentInstance().responseComplete();
                         
         } catch (IOException | JRException e)

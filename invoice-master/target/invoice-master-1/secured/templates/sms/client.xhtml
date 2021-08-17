@@ -47,6 +47,12 @@
                                                     <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                                 </h:outputText>
 
+                                                <span>#{msg.client} Type</span>
+                                                <h:outputText value="#{client.clientType.label}"/>
+
+                                                <span>Business Name</span>
+                                                <h:outputText value="#{client.businessName}"/>
+
                                                 <span>#{msg.client} ID</span>
                                                 <h:outputText value="#{client.clientCode}"/>
 
@@ -55,16 +61,8 @@
                                             </h:panelGrid>
                                         </p:rowExpansion>
 
-                                        <p:column headerText="#{msg.client} Type">
-                                            #{client.clientType.label}
-                                        </p:column>
-
                                         <p:column headerText="#{msg.client} Name" filterBy="#{client.clientName}" filterMatchMode="contains">
                                             #{client.clientName}
-                                        </p:column>
-
-                                        <p:column headerText="#{msg.business} Name">
-                                            #{client.businessName}
                                         </p:column>
 
                                         <p:column headerText="#{msg.phone}" filterBy="#{client.phone}" filterMatchMode="contains">
