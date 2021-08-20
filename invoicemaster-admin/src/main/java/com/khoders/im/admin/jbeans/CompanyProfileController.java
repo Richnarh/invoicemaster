@@ -6,7 +6,7 @@
 package com.khoders.im.admin.jbeans;
 
 import com.khoders.im.admin.services.CompanyService;
-import com.khoders.invoicemaster.entities.master.CompanyProfile;
+import com.khoders.invoicemaster.entities.system.CompanyProfile;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.SystemUtils;

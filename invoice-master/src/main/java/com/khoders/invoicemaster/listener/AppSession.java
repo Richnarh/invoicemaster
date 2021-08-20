@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.listener;
 
-import com.khoders.invoicemaster.entities.master.UserAccount;
+import com.khoders.invoicemaster.entities.UserAccount;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;

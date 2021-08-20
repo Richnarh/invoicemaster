@@ -5,12 +5,12 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.invoicemaster.entites.Client;
-import com.khoders.invoicemaster.entites.Inventory;
-import com.khoders.invoicemaster.entites.Product;
-import com.khoders.invoicemaster.entites.ProductType;
-import com.khoders.invoicemaster.entites.PurchaseOrder;
-import com.khoders.invoicemaster.entites.PurchaseOrderItem;
+import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.Product;
+import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.entities.PurchaseOrder;
+import com.khoders.invoicemaster.entities.PurchaseOrderItem;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;

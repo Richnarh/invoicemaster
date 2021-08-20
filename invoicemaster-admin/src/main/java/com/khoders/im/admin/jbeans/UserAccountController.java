@@ -1,7 +1,7 @@
 package com.khoders.im.admin.jbeans;
 
 import com.khoders.im.admin.services.UserAccountService;
-import com.khoders.invoicemaster.entities.master.UserAccount;
+import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;

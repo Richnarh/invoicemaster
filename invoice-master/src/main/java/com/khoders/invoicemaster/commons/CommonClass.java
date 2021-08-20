@@ -5,10 +5,10 @@
  */
 package com.khoders.invoicemaster.commons;
 
-import com.khoders.invoicemaster.entites.enums.ClientType;
-import com.khoders.invoicemaster.entites.enums.DoorType;
-import com.khoders.invoicemaster.entites.enums.InvoiceType;
-import com.khoders.invoicemaster.entites.enums.MessagingType;
+import com.khoders.invoicemaster.enums.ClientType;
+import com.khoders.invoicemaster.enums.DoorType;
+import com.khoders.invoicemaster.enums.InvoiceType;
+import com.khoders.invoicemaster.enums.MessagingType;
 import com.khoders.resource.enums.Currency;
 import com.khoders.resource.enums.DiscountType;
 import com.khoders.resource.enums.PaymentMethod;

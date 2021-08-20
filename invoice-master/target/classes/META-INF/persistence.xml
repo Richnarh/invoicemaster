@@ -3,10 +3,26 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="invoicemasterPU" transaction-type="JTA">
     <jta-data-source>jdbc/invoicemaster</jta-data-source>
-    <class>com.khoders.invoicemaster.entities.master.CompanyBranch</class>
-    <class>com.khoders.invoicemaster.entities.master.CompanyProfile</class>
-    <class>com.khoders.invoicemaster.entities.master.UserAccount</class>
-    <class>com.khoders.invoicemaster.entities.master.UserPermissions</class>
+    <class>com.khoders.invoicemaster.entities.Client</class>
+    <class>com.khoders.invoicemaster.entities.Inventory</class>
+    <class>com.khoders.invoicemaster.entities.Product</class>
+    <class>com.khoders.invoicemaster.entities.ProductType</class>
+    <class>com.khoders.invoicemaster.entities.ProformaInvoice</class>
+    <class>com.khoders.invoicemaster.entities.ProformaInvoiceItem</class>
+    <class>com.khoders.invoicemaster.entities.PurchaseOrder</class>
+    <class>com.khoders.invoicemaster.entities.PurchaseOrderItem</class>
+    <class>com.khoders.invoicemaster.entities.SalesLog</class>
+    <class>com.khoders.invoicemaster.entities.SalesTax</class>
+    <class>com.khoders.invoicemaster.entities.Tax</class>
+    <class>com.khoders.invoicemaster.entities.UserAccount</class>
+    <class>com.khoders.invoicemaster.entities.system.CompanyBranch</class>
+    <class>com.khoders.invoicemaster.entities.system.CompanyProfile</class>
+    <class>com.khoders.invoicemaster.entities.system.UserPermissions</class>
+    <class>com.khoders.invoicemaster.sms.GroupContact</class>
+    <class>com.khoders.invoicemaster.sms.MessageTemplate</class>
+    <class>com.khoders.invoicemaster.sms.SMSGrup</class>
+    <class>com.khoders.invoicemaster.sms.SenderId</class>
+    <class>com.khoders.invoicemaster.sms.Sms</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

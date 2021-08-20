@@ -6,8 +6,9 @@
 package com.khoders.im.admin.commons;
 
 import com.khoders.im.admin.services.CompanyService;
-import com.khoders.invoicemaster.entities.master.CompanyBranch;
-import com.khoders.invoicemaster.entities.master.CompanyProfile;
+import com.khoders.invoicemaster.entities.UserAccount;
+import com.khoders.invoicemaster.entities.system.CompanyBranch;
+import com.khoders.invoicemaster.entities.system.CompanyProfile;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -30,12 +31,14 @@ public class UserCommonClazz implements Serializable
    
    private List<CompanyBranch> companyBranchList = new LinkedList<>();
    private List<CompanyProfile> companyProfileList = new LinkedList<>();
+   private List<UserAccount> userAccountList = new LinkedList<>();
    
    @PostConstruct
    public void init()
    {
        companyBranchList = companyService.getCompanyBranchList();
        companyProfileList = companyService.getCompanyProfileList();
+       userAccountList = companyService.getUserAccountList();
    }
 
     public List<CompanyBranch> getCompanyBranchList()
@@ -47,4 +50,10 @@ public class UserCommonClazz implements Serializable
     {
         return companyProfileList;
     }
+
+    public List<UserAccount> getUserAccountList()
+    {
+        return userAccountList;
+    }
+    
 }

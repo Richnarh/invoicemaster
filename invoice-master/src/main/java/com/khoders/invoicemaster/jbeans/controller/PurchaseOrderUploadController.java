@@ -5,9 +5,9 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.entites.ProductType;
-import com.khoders.invoicemaster.entites.PurchaseOrder;
-import com.khoders.invoicemaster.entites.PurchaseOrderItem;
+import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.entities.PurchaseOrder;
+import com.khoders.invoicemaster.entities.PurchaseOrderItem;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.excel.FileExtension;
 import com.khoders.resource.jpa.CrudApi;

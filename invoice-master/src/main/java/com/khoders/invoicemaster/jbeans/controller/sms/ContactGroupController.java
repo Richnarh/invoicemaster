@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller.sms;
 
-import com.khoders.invoicemaster.entites.sms.GroupContact;
+import com.khoders.invoicemaster.sms.GroupContact;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.resource.jpa.CrudApi;

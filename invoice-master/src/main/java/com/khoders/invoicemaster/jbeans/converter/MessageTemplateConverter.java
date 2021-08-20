@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.converter;
 
-import com.khoders.invoicemaster.entites.sms.MessageTemplate;
+import com.khoders.invoicemaster.sms.MessageTemplate;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;

@@ -5,12 +5,12 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.entites.PosPrinter;
-import com.khoders.invoicemaster.entites.ProformaInvoice;
-import com.khoders.invoicemaster.entites.ProformaInvoiceItem;
-import com.khoders.invoicemaster.entites.SalesTax;
+import com.khoders.invoicemaster.entities.PosPrinter;
+import com.khoders.invoicemaster.entities.ProformaInvoice;
+import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
+import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
-import com.khoders.invoicemaster.entites.Tax;
+import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entites.model.Receipt;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
@@ -118,6 +118,14 @@ public class ProformaInvoiceController implements Serializable
     public void reset()
     {
         proformaInvoiceList = new LinkedList<>();
+    }
+    
+    public void markAsPaid(ProformaInvoice proformaInvoice)
+    {
+      this.proformaInvoice  = crudApi.getEm().find(ProformaInvoice.class, proformaInvoice.getId());
+      
+      this.proformaInvoice.setMarkAsPaid(true);
+      crudApi.save(this.proformaInvoice);
     }
     
     public void saveProformaInvoice()

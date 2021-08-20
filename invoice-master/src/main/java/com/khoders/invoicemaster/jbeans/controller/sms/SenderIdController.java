@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller.sms;
 
-import com.khoders.invoicemaster.entites.sms.SenderId;
+import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.resource.jpa.CrudApi;
@@ -108,7 +108,6 @@ public class SenderIdController implements Serializable{
     
     public void clearSenderId() {
         senderId = new SenderId();
-        senderId.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

@@ -9,7 +9,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
 import org.omnifaces.converter.SelectItemsConverter;
-import com.khoders.invoicemaster.entities.master.CompanyProfile;
+import com.khoders.invoicemaster.entities.system.CompanyProfile;
 
 /**
  *

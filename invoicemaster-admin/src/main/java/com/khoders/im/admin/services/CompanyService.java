@@ -5,8 +5,9 @@
  */
 package com.khoders.im.admin.services;
 
-import com.khoders.invoicemaster.entities.master.CompanyBranch;
-import com.khoders.invoicemaster.entities.master.CompanyProfile;
+import com.khoders.invoicemaster.entities.UserAccount;
+import com.khoders.invoicemaster.entities.system.CompanyBranch;
+import com.khoders.invoicemaster.entities.system.CompanyProfile;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +41,18 @@ public class CompanyService
         try
         {
             return crudApi.getEm().createQuery("SELECT e FROM CompanyBranch e ORDER BY e.branchName ASC", CompanyBranch.class).getResultList();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+    public List<UserAccount> getUserAccountList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM UserAccount e", UserAccount.class).getResultList();
         } catch (Exception e)
         {
             e.printStackTrace();

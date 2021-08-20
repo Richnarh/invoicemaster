@@ -5,9 +5,9 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.entites.Inventory;
-import com.khoders.invoicemaster.entites.PurchaseOrder;
-import com.khoders.invoicemaster.entites.PurchaseOrderItem;
+import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.PurchaseOrder;
+import com.khoders.invoicemaster.entities.PurchaseOrderItem;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.resource.jpa.CrudApi;

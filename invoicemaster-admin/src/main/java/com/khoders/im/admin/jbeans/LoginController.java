@@ -8,7 +8,7 @@ package com.khoders.im.admin.jbeans;
 import com.khoders.im.admin.Pages;
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.im.admin.services.UserAccountService;
-import com.khoders.invoicemaster.entities.master.UserAccount;
+import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.utilities.Msg;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class LoginController implements Serializable
     @Inject private AppSession appSession;
     @Inject private UserAccountService userAccountService;
     
-    private String UserEmail;
+    private String userEmail;
     private String password;
     
     private UserModel userModel = new UserModel();
@@ -39,8 +39,10 @@ public class LoginController implements Serializable
     {
         try
         {
+            System.out.println("Username => "+userEmail);
+            System.out.println("Password => "+password);
 
-            userModel.setUserEmail(UserEmail);
+            userModel.setUserEmail(userEmail);
             userModel.setPassword(password);
 
             UserAccount account = userAccountService.login(userModel);
@@ -111,12 +113,12 @@ public class LoginController implements Serializable
 
     public String getUserEmail()
     {
-        return UserEmail;
+        return userEmail;
     }
 
-    public void setUserEmail(String UserEmail)
+    public void setUserEmail(String userEmail)
     {
-        this.UserEmail = UserEmail;
+        this.userEmail = userEmail;
     }
 
     public String getPassword()

@@ -5,12 +5,12 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.invoicemaster.entites.Client;
-import com.khoders.invoicemaster.entites.sms.GroupContact;
-import com.khoders.invoicemaster.entites.sms.MessageTemplate;
-import com.khoders.invoicemaster.entites.sms.SMSGrup;
-import com.khoders.invoicemaster.entites.sms.SenderId;
-import com.khoders.invoicemaster.entites.sms.Sms;
+import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.sms.GroupContact;
+import com.khoders.invoicemaster.sms.MessageTemplate;
+import com.khoders.invoicemaster.sms.SMSGrup;
+import com.khoders.invoicemaster.sms.SenderId;
+import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.IOException;
@@ -113,9 +113,8 @@ public class SmsService
     {
         try
         {
-            String qryString = "SELECT e FROM SenderId e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM SenderId e";
             TypedQuery<SenderId> typedQuery = crudApi.getEm().createQuery(qryString, SenderId.class);
-            typedQuery.setParameter(1, appSession.getCurrentUser());
             typedQuery.getResultList();
 
             return typedQuery.getResultList();

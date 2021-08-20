@@ -6,8 +6,8 @@
 package com.khoders.im.admin.services;
 
 import com.khoders.im.admin.jbeans.UserModel;
-import com.khoders.invoicemaster.entities.master.UserAccount;
-import com.khoders.invoicemaster.entities.master.UserPermissions;
+import com.khoders.invoicemaster.entities.UserAccount;
+import com.khoders.invoicemaster.entities.system.UserPermissions;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
 import java.util.Collections;

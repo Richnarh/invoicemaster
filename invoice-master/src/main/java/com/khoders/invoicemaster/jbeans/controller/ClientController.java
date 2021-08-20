@@ -6,7 +6,7 @@
 package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.commons.UserCommonClass;
-import com.khoders.invoicemaster.entites.Client;
+import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.resource.jpa.CrudApi;

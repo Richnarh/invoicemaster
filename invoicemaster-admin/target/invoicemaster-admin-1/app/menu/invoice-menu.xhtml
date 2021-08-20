@@ -40,32 +40,30 @@
         </ul>
     </li>
 
-    <ui:remove>
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-book"></i>
                 <p>
-                    Reports And Uploads
+                    System
                     <i class="fa fa-angle-left right"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="#{application.contextPath}/#{msg.farm_menu_url}/reports.xhtml" class="nav-link">
+                    <a href="#{application.contextPath}/#{msg.app_menu_uri}/sales.xhtml" class="nav-link">
                         <i class="fa fa-check-circle nav-icon"></i>
-                        <p>#{msg.report}s</p>
+                        <p>Sales Log</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#{application.contextPath}/#{msg.farm_menu_url}/uploads.xhtml" class="nav-link">
+                    <a href="#{application.contextPath}/#{msg.app_menu_uri}/stock.xhtml" class="nav-link">
                         <i class="fa fa-check-circle nav-icon"></i>
-                        <p>#{msg.upload}s</p>
+                        <p>Inventory Listing</p>
                     </a>
                 </li>
 
             </ul>
         </li>
-    </ui:remove>
 
 
 </f:subview>

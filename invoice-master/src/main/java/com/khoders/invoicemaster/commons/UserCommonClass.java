@@ -5,20 +5,19 @@
  */
 package com.khoders.invoicemaster.commons;
 
-import com.khoders.invoicemaster.entites.Client;
-import com.khoders.invoicemaster.entites.Inventory;
-import com.khoders.invoicemaster.entites.Product;
-import com.khoders.invoicemaster.entites.ProductType;
-import com.khoders.invoicemaster.entites.sms.MessageTemplate;
-import com.khoders.invoicemaster.entites.sms.SMSGrup;
-import com.khoders.invoicemaster.entites.sms.SenderId;
+import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.Product;
+import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.sms.MessageTemplate;
+import com.khoders.invoicemaster.sms.SMSGrup;
+import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.invoicemaster.service.SmsService;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.Asynchronous;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

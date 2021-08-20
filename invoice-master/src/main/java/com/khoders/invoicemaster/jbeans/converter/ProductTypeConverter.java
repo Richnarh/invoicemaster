@@ -5,8 +5,8 @@
  */
 package com.khoders.invoicemaster.jbeans.converter;
 
-import com.khoders.invoicemaster.entites.Client;
-import com.khoders.invoicemaster.entites.ProductType;
+import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.entities.ProductType;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
