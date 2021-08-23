@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entities;
 
 import com.khoders.resource.utilities.SystemUtils;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "product")
-public class Product extends UserAccountRecord
+public class Product extends UserAccountRecord implements Serializable
 {
     @Column(name = "product_name")
     private String productName;

@@ -13,7 +13,6 @@
             </ui:define>
             <ui:define name="pageContent">
                 <div class="col-md-12">
-
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <h:form id="receiptTable">
@@ -36,12 +35,16 @@
                                 </h:panelGrid>
                             </h:form>
                             
-                            <p:dataTable id="searchTable" value="#{transactionHistoryController.invoiceList}" var="invoice" scrollable="true" scrollHeight="600">
+                            <p:dataTable id="searchTable" value="#{transactionHistoryController.invoiceList}" var="invoice" scrollable="true" scrollHeight="500">
                                 <p:column headerText="#{msg.receipt_no}" filterBy="#{invoice.quotationNumber}" filterMatchMode="contains">
-                                    <h:commandLink class="ptext-link" value="#{invoice.quotationNumber} - (GHS #{invoice.totalAmount})" 
+                                    <h:commandLink class="ptext-link" value="#{invoice.quotationNumber}" 
                                                    action="#{transactionHistoryController.selectSale(invoice)}">
                                         <p:ajax update=":invoiceTable"/>
                                     </h:commandLink>
+                                   
+                                    <h:outputText class="mx-2" value="#{invoice.totalAmount}">
+                                        <f:convertNumber pattern=" - #,##0.00"/>
+                                    </h:outputText>
                                 </p:column>
                             </p:dataTable>
                         </div>

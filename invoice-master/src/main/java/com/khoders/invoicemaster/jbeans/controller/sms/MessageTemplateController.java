@@ -101,6 +101,7 @@ public class MessageTemplateController implements Serializable{
     public void clearMessageTemplate() {
         messageTemplate = new MessageTemplate();
         messageTemplate.setUserAccount(appSession.getCurrentUser());
+        messageTemplate.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

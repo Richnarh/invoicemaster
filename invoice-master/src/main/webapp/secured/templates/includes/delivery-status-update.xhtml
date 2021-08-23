@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+    <h:body>
+        <div class="col-md-10">
+            <h:form>
+                <p:growl/>
+                <div class="form-group row">
+                    <label class="col-form-label">Delivery Status <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                        <h:selectOneMenu id="delivery" label="Delivery Status" class="form-control" value="#{paymentDataController.paymentData.deliveryStatus}" required="true">
+                            <f:selectItem itemLabel="#{msg.choose}"/>
+                            <f:selectItems value="#{commonClass.deliveryStatusList}"/>
+                        </h:selectOneMenu>
+                        <h:message for="delivery" class="text-danger text-sm"/>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p:commandButton class="kbtn-success" value="Update" icon="#{msg.check_icon}" action="#{paymentDataController.savePaymentData()}" update="@form"/>
+                </div>
+
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

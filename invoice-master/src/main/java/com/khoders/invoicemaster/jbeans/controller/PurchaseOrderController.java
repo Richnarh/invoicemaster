@@ -279,6 +279,7 @@ public class PurchaseOrderController implements Serializable
     {
         purchaseOrder = new PurchaseOrder();
         purchaseOrder.setUserAccount(appSession.getCurrentUser());
+        purchaseOrder.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

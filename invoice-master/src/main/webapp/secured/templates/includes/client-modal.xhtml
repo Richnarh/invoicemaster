@@ -7,10 +7,10 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">  
 
     <h:body>
-        <div class="col-md-6 mb-5 pt-3 mx-auto">
+        <div class="mb-5 pt-3 mx-auto">
             <h:form>
                 <div class="card-block">
-                   
+                    <p:messages/>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">#{msg.client_type} <span class="text-danger">*</span> </label>
                         <div class="col-md-8">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="text-center pt-3">
                     <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success" value="#{clientController.optionText}" icon="#{msg.check_icon}" action="#{clientController.saveClient()}" update="@form"/>
-                    <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" action="#{clientController.clearClient()}" update="@form"/>
+                    <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="fa fa-trash" action="#{clientController.clearClient()}" immediate="true" update="@form"/>
                  
                 </div>
 

@@ -23,31 +23,6 @@
                     
                     <h:panelGroup rendered="#{proformaInvoiceController.pageView.detailView}">
 
-                        <ui:remove>
-                            <div class="row mb-3 d-none">
-                                <div class="col-md-10 mx-auto">
-                                    <div class="shadow bg-gray">
-                                        <div class="row p-2">
-                                            <span class="p-2 mx-2 field-label">#{msg.client}</span>
-                                            <h:outputText value="#{proformaInvoiceController.proformaInvoice.client.clientName}" class="field-shade"/>
-
-                                            <span class="p-2 mx-2 field-label">#{msg.issued_date}</span>
-                                            <h:outputText value="#{proformaInvoiceController.proformaInvoice.issuedDate}" class="col-sm-2 field-shade">
-                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                            </h:outputText>
-                                            <span class="p-2 mx-2 field-label">#{msg.ref_no}</span>
-                                            <h:outputText value="#{proformaInvoiceController.proformaInvoice.quotationNumber}" class="field-shade"/>
-
-                                            <span class="p-2 mx-2 field-label">#{msg.total_amount}</span>
-                                            <h:outputText value="#{appSession.currentUser.companyBranch.companyProfile.currency} #{proformaInvoiceController.proformaInvoice.totalAmount}" class="field-shade">
-                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                                            </h:outputText> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </ui:remove>
-
                         <fieldset>
                             <legend class="text-info text-lg"> <u>Please Add Items</u> </legend>
                             <ui:include src="includes/proforma-invoice-item.xhtml"/>
@@ -55,6 +30,10 @@
                     </h:panelGroup>
 
                 </h:panelGroup>
+                
+                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentModal" height="240"  width="540">
+                    <ui:include src="includes/payment-info.xhtml"/>
+                </p:dialog>
 
                 <p:dialog resizable="true" widgetVar="deliveryTermForm" closeOnEscape="true" modal="true" id="deliveryTermModal" height="400"  width="960">
                     <!--<ui:include src="includes/deliveryterm-config-items.xhtml"/>-->

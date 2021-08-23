@@ -30,7 +30,6 @@ import javax.inject.Named;
 @SessionScoped
 public class SenderIdController implements Serializable{
     @Inject CrudApi crudApi;
-    @Inject AppSession appSession;
     @Inject SmsService smsService;
     
     private String optionText;

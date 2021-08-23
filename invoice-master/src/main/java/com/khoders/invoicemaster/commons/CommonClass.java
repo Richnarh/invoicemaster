@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.commons;
 
 import com.khoders.invoicemaster.enums.ClientType;
+import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.DoorType;
 import com.khoders.invoicemaster.enums.InvoiceType;
 import com.khoders.invoicemaster.enums.MessagingType;
@@ -71,4 +72,10 @@ public class CommonClass implements Serializable
     {
         return Arrays.asList(DiscountType.values());
     }
+    
+    public List<DeliveryStatus> getDeliveryStatusList()
+    {
+        return Arrays.asList(DeliveryStatus.values());
+    }
+    
 }

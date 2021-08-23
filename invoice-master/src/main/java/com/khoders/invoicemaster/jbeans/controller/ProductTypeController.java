@@ -60,7 +60,7 @@ public class ProductTypeController implements Serializable{
           else
           {
               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create sender Id"), null));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
            clearProductType();
         } catch (Exception e) 
@@ -77,6 +77,7 @@ public class ProductTypeController implements Serializable{
     
     public void deleteProductType(ProductType productType)
     {
+       
         try
         {
           if(crudApi.delete(productType))
@@ -100,6 +101,7 @@ public class ProductTypeController implements Serializable{
     public void clearProductType() {
         productType = new ProductType();
         productType.setUserAccount(appSession.getCurrentUser());
+        productType.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

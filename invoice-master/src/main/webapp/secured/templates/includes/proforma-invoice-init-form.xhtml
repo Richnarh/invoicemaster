@@ -14,8 +14,7 @@
                     <div class="card">
                         <h6 class="card-header">Proforma Invoice Processing</h6>
                         <div class="card-body">
-                            <div>
-                            </div>
+                             
                             <h:form>
                                 <div class="card-block">
                                     <div class="form-group row">
@@ -40,26 +39,21 @@
                                     </div>
 
                                     <div class="form-group row">
+                                       
                                         <label class="col-sm-4 col-form-label">#{msg.client} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">
-                                            <p:selectOneMenu class="col" value="#{proformaInvoiceController.proformaInvoice.client}" required="true" filter="true" filterMatchMode="contains">
+                                            <p:selectOneMenu id="client" class="col-md-6" value="#{proformaInvoiceController.proformaInvoice.client}" required="true" filter="true" filterMatchMode="contains">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{userCommonClass.clientList}"/>
                                             </p:selectOneMenu>
 
                                             <span>
-                                                <p:commandLink value="Add Client" immediate="true" update=":clientModal" oncomplete="PF('clientForm').show()" resetValues="true"/>
+                                                <h:commandButton value="refresh" id="clientRefresh" class="btn btn-light btn-xs shadow-sm" action="#{userCommonClass.loadClient()}">
+                                                    <p:ajax immediate="true" update="client"/>
+                                                </h:commandButton>
+                                                <p:commandLink class="mx-2" value="Add Client" immediate="true" update=":clientModal" oncomplete="PF('clientForm').show()" resetValues="true"/>
                                             </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Mode of payment</label>
-                                        <div class="col-md-8">
-                                            <p:selectOneMenu class="col" value="#{proformaInvoiceController.proformaInvoice.modeOfPayment}">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.paymentMethodList}"/>
-                                            </p:selectOneMenu>
+                                            <p:tooltip for="clientRefresh" value="Click to refresh the dropdown list" position="top"/>
                                         </div>
                                     </div>
 
@@ -96,8 +90,8 @@
                     </div>
                 </div>
             </div>
-            <p:dialog resizable="true" widgetVar="clientForm" closeOnEscape="true" modal="true" id="clientModal" height="460"  width="760">
-                <ui:include src="../includes/client-modal.xhtml"/>
+            <p:dialog resizable="true" widgetVar="clientForm" closeOnEscape="true" modal="true" id="clientModal" height="460"  width="540">
+                <ui:include src="client-modal.xhtml"/>
             </p:dialog>
         </h:panelGroup>
 

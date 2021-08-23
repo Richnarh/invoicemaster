@@ -101,6 +101,7 @@ public class SMSGrupController implements Serializable{
     public void clearSMSGrup() {
         smsGrup = new SMSGrup();
         smsGrup.setUserAccount(appSession.getCurrentUser());
+        smsGrup.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

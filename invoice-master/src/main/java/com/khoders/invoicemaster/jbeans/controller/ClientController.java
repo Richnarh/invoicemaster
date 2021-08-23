@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.commons.UserCommonClass;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.InventoryService;
@@ -30,117 +29,145 @@ import javax.inject.Named;
  */
 @Named(value = "clientController")
 @SessionScoped
-public class ClientController implements Serializable{
-    @Inject private CrudApi crudApi;
-    @Inject private AppSession appSession;
-    @Inject private InventoryService inventoryService;
-    
+public class ClientController implements Serializable
+{
+
+    @Inject
+    private CrudApi crudApi;
+    @Inject
+    private AppSession appSession;
+    @Inject
+    private InventoryService inventoryService;
+
     private Client client = new Client();
-    private List<Client> clientList =  new LinkedList<>();
-    
-    
+    private List<Client> clientList = new LinkedList<>();
+
     private FormView pageView = FormView.listForm();
     private String optionText;
-    
+
     @PostConstruct
     private void init()
     {
-        clientList = inventoryService.getClientList();
-        
         clearClient();
+        clientList = inventoryService.getClientList();
     }
-    
+
     public void initCLient()
     {
         clearClient();
         pageView.restToCreateView();
     }
-    
+
     public void saveClient()
     {
-        try 
+        System.out.println("Client => " + client.getPhone());
+        if (!optionText.equals("Update"))
         {
-           client.genCode();
-          if(crudApi.save(client) != null)
-          {
-              clientList = CollectionList.washList(clientList, client);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
-              
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
+            if (client != null)
+            {
+                Client object = inventoryService.clientExist(client.getPhone());
+
+                System.out.println("Object => " + object);
+
+                if (object != null)
+                {
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The client with phone number: " + client.getPhone() + " already exist"), null));
+
+                    return;
+                }
+            }
+        }
+        try
+        {
+            client.genCode();
+            client.setUserAccount(appSession.getCurrentUser());
+            client.setCompanyBranch(appSession.getCompanyBranch());
+            if (crudApi.save(client) != null)
+            {
+                clientList = CollectionList.washList(clientList, client);
+
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            } else
+            {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-          }
-          closePage();
-        } catch (Exception e) 
+            }
+            clearClient();
+            closePage();
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteClient(Client client)
     {
-        try 
+        try
         {
-          if(crudApi.delete(client))
-          {
-              clientList.remove(client);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
+            if (crudApi.delete(client))
+            {
+                clientList.remove(client);
+
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            } else
+            {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-          }
-        } catch (Exception e) 
+            }
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
-    
+
     public void editClient(Client client)
     {
         pageView.restToCreateView();
-       this.client=client;
-       optionText = "Update";
+        this.client = client;
+        optionText = "Update";
     }
-    
-    public void clearClient() 
+
+    public void clearClient()
     {
         client = new Client();
         client.setUserAccount(appSession.getCurrentUser());
+        client.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-    
+
     public void closePage()
     {
-       client = new Client();
-       optionText = "Save Changes";
-       pageView.restToListView();
+        client = new Client();
+        optionText = "Save Changes";
+        pageView.restToListView();
     }
-    public List<Client> getClientList() {
+
+    public List<Client> getClientList()
+    {
         return clientList;
     }
 
-    public Client getClient() {
+    public Client getClient()
+    {
         return client;
     }
 
-    public void setClient(Client bird) {
+    public void setClient(Client bird)
+    {
         this.client = bird;
     }
 
-    public String getOptionText() {
+    public String getOptionText()
+    {
         return optionText;
     }
 
-    public void setOptionText(String optionText) {
+    public void setOptionText(String optionText)
+    {
         this.optionText = optionText;
     }
 

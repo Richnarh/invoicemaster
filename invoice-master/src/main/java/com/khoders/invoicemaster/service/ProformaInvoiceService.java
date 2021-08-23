@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
@@ -68,9 +69,10 @@ public class ProformaInvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1 AND e.valueDate=?2 ORDER BY e.issuedDate DESC";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
-                                        .setParameter(1, appSession.getCurrentUser());
+                                        .setParameter(1, appSession.getCurrentUser())
+                                        .setParameter(2, LocalDate.now());
                          return typedQuery.getResultList();
                          
         } catch (Exception e)
@@ -110,9 +112,9 @@ public class ProformaInvoiceService
     {
         try
         {
-            String qryString = "SELECT e FROM Inventory e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM Inventory e WHERE e.companyBranch=?1";
             TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class)
-                                    .setParameter(1, appSession.getCurrentUser());
+                                    .setParameter(1, appSession.getCompanyBranch());
             return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -151,6 +153,20 @@ public class ProformaInvoiceService
             e.printStackTrace();
         }
 
+        return Collections.emptyList();
+    }
+    
+    public List<PaymentData> getPaymentInfoList(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM PaymentData e WHERE e.proformaInvoice=?1";
+            return crudApi.getEm().createQuery(qryString, PaymentData.class)
+                    .setParameter(1, proformaInvoice).getResultList();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return Collections.emptyList();
     }
 }

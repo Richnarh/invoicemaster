@@ -73,6 +73,7 @@ public class LoginController implements Serializable
                 return;
             }
             appSession.login(userAccount);
+            appSession.initBranch(userAccount.getCompanyBranch());
             
             Faces.redirect(Pages.index);
 

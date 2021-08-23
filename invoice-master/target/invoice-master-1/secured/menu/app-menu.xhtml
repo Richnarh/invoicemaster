@@ -29,7 +29,7 @@
                         <h:form>
                             <h:panelGrid columns="6" styleClass="spaced-table">
 
-                                <h:selectOneMenu class="form-control form-control-sm" value="#{smsController.senderId.senderId}">
+                                <h:selectOneMenu class="form-control form-control-sm" value="#{smsController.senderId.senderIdentity}">
                                     <f:selectItem itemLabel="--Sender ID--" />
                                     <f:selectItems  value="#{userCommonClass.senderIdList}" />
                                 </h:selectOneMenu>

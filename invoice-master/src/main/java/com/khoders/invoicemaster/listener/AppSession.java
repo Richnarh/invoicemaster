@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.listener;
 
 import com.khoders.invoicemaster.entities.UserAccount;
+import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -18,10 +19,16 @@ import javax.inject.Named;
 @SessionScoped
 public class AppSession implements Serializable{
     private UserAccount currentUser;
+    private CompanyBranch companyBranch;
     
     public void login(UserAccount userAccount)
     {
         this.currentUser = userAccount;
+    }
+    
+    public void initBranch(CompanyBranch companyBranch)
+    {
+        this.companyBranch=companyBranch;
     }
     
     public void logout()
@@ -37,6 +44,16 @@ public class AppSession implements Serializable{
     public void setCurrentUser(UserAccount currentUser)
     {
         this.currentUser = currentUser;
+    }
+
+    public CompanyBranch getCompanyBranch()
+    {
+        return companyBranch;
+    }
+
+    public void setCompanyBranch(CompanyBranch companyBranch)
+    {
+        this.companyBranch = companyBranch;
     }
     
 }

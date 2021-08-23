@@ -146,6 +146,7 @@ public class PurchaseOrderUploadController implements Serializable
                purchaseOrderItemList.forEach(order ->{
                 order.genCode();
                 order.setUserAccount(appSession.getCurrentUser());
+                order.setCompanyBranch(appSession.getCompanyBranch());
                 order.setPurchaseOrder(purchaseOrder);
                 crudApi.save(order);
             }); 

@@ -59,7 +59,6 @@ public class ProductController implements Serializable{
         productList.forEach(prdt ->
         {
             getImages(prdt.getId());
-            System.out.println("Image Id => "+prdt.getId());
         });
         clearProduct();
         
@@ -234,6 +233,7 @@ public class ProductController implements Serializable{
         product = new Product();
         file = null;
         product.setUserAccount(appSession.getCurrentUser());
+        product.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

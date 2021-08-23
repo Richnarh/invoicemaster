@@ -100,6 +100,7 @@ public class ContactGroupController implements Serializable{
     public void clearContactGroup() {
         contactGroup = new GroupContact();
         contactGroup.setUserAccount(appSession.getCurrentUser());
+        contactGroup.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

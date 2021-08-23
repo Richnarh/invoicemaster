@@ -20,38 +20,38 @@ import javax.persistence.Table;
 @Table(name = "sender_id")
 public class SenderId extends BaseModel implements Serializable
 {
-    @Column(name = "sender_id")
-    private String senderId;
+    @Column(name = "sender_identity")
+    private String senderIdentity;
 
-    public String getSenderId()
+    public String getSenderIdentity()
     {
-        return senderId;
+        return senderIdentity;
     }
 
-    public void setSenderId(String senderId)
+    public void setSenderIdentity(String senderIdentity)
     {
-        this.senderId = senderId;
+        this.senderIdentity = senderIdentity;
     }
     
     @Override
     public String toString()
     {
-        return senderId;
+        return senderIdentity;
     }
     
     public boolean checkSenderIdSize()
     {
-        return senderId.length() > 11;
+        return senderIdentity.length() > 11;
     }
 
     public void genCode()
     {
-        if (getSenderId() != null)
+        if (getSenderIdentity() != null)
         {
-            setSenderId(getSenderId());
+            setSenderIdentity(getSenderIdentity());
         } else
         {
-            setSenderId(SystemUtils.generateCode());
+            setSenderIdentity(SystemUtils.generateCode());
         }
     }
     

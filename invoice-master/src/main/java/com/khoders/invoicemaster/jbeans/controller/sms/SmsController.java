@@ -139,7 +139,7 @@ public class SmsController implements Serializable
                     zsms.addRecipient(number);
                 }
                 
-                zsms.setSenderId(sms.getSenderId().getSenderId());
+                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
                 zsms.setMessageType(MSGTYPE.TEXT);
 
                 List<String[]> response = zsms.submit();
@@ -230,7 +230,7 @@ public class SmsController implements Serializable
                     zsms.addRecipient(number);
                 }
                 
-                zsms.setSenderId(sms.getSenderId().getSenderId());
+                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
                 zsms.setMessageType(MSGTYPE.TEXT);
 
                 List<String[]> response = zsms.submit();
@@ -286,7 +286,7 @@ public class SmsController implements Serializable
                     System.out.println("SMS sent and saved -- ");
                 }  
             }
-            
+            clearSMS();
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -301,7 +301,6 @@ public class SmsController implements Serializable
             sms.setMessage(textMessage);
             sms.setClient(selectedClient);
             sms.setsMSType(SMSType.SINGLE_SMS);
-            sms.setUserAccount(appSession.getCurrentUser());
            if(crudApi.save(sms) != null)
            {
                FacesContext.getCurrentInstance().addMessage(null,
@@ -309,13 +308,13 @@ public class SmsController implements Serializable
                
                System.out.println("SMS sent and saved -- ");
            }
+           clearSMS();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
       
-       
     public void loadSmslog()
     {
         smsList =smsService.loadSmslogList();
@@ -352,6 +351,7 @@ public class SmsController implements Serializable
         sms = new Sms();
         sms.setSenderId(senderId);
         sms.setUserAccount(appSession.getCurrentUser());
+        sms.setCompanyBranch(appSession.getCompanyBranch());
         SystemUtils.resetJsfUI();
     }
 

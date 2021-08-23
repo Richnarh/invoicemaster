@@ -14,11 +14,15 @@ import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.invoicemaster.service.SmsService;
+import com.khoders.resource.utilities.Msg;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -50,6 +54,15 @@ public class UserCommonClass implements Serializable{
         messageTemplateList = smsService.getMessageTemplateList();
         senderIdList = smsService.getSenderIdList();
         smsGroupList = smsService.getGroupList();
+    }
+    
+    public void loadClient()
+    {
+        
+        clientList = inventoryService.getClientList();
+        FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Client list updated!"), null)); 
+        System.out.println("Sizz => "+clientList.size());
     }
 
     public List<Client> getClientList()

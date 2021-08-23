@@ -102,7 +102,7 @@ public class InventoryController implements Serializable{
     
     public void editInventory(Inventory inventory)
     {
-        pageView.restToCreateView();
+       pageView.restToCreateView();
        this.inventory=inventory;
        optionText = "Update";
     }
@@ -111,6 +111,7 @@ public class InventoryController implements Serializable{
     {
         inventory = new Inventory();
         inventory.setUserAccount(appSession.getCurrentUser());
+        inventory.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

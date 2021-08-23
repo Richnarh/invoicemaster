@@ -41,7 +41,7 @@
                                         <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success mr-3" value="#{contactGroupController.optionText}" update="@form, :contactGroupTable"
                                                          action="#{contactGroupController.saveContactGroup()}"/>
 
-                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
+                                        <p:commandButton icon="#{msg.clear_icon}" class="kbtn-default" value="#{msg.clear}" immediate="true"
                                                          action="#{contactGroupController.clearContactGroup()}" update="@form"/>
                                     </div>
                                 </h:form>

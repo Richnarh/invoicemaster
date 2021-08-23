@@ -5,13 +5,13 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.entities.PosPrinter;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entites.model.Receipt;
+import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
@@ -21,15 +21,12 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
-import java.awt.print.PrinterJob;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -38,11 +35,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.print.DocFlavor;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -50,8 +42,6 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.printing.PDFPageable;
 
 /**
  *
@@ -61,7 +51,6 @@ import org.apache.pdfbox.printing.PDFPageable;
 @SessionScoped
 public class ProformaInvoiceController implements Serializable
 {
-
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private ProformaInvoiceService proformaInvoiceService;
@@ -74,7 +63,9 @@ public class ProformaInvoiceController implements Serializable
     private ProformaInvoice proformaInvoice = new ProformaInvoice();
     private ProformaInvoice stdProformaInvoice = new ProformaInvoice();
     private List<ProformaInvoice> proformaInvoiceList = new LinkedList<>();
+    private List<PaymentData> paymentDataList = new LinkedList<>();
 
+    private PaymentData paymentData = new PaymentData();
     private ProformaInvoiceItem proformaInvoiceItem = new ProformaInvoiceItem();
     private List<ProformaInvoiceItem> proformaInvoiceItemList = new LinkedList<>();
     private List<ProformaInvoiceItem> removedProformaInvoiceItemList = new LinkedList<>();
@@ -84,7 +75,7 @@ public class ProformaInvoiceController implements Serializable
     private SalesTax taxSales = new SalesTax();
     
     private int selectedTabIndex;
-    private String optionText;
+    private String optionText,paymentInvoiceNo,paymentClient;
     private double totalAmount,totalDiscount,installationFee,taxAmount,totalPayable;
      
 
@@ -100,7 +91,7 @@ public class ProformaInvoiceController implements Serializable
     {
         if(proformaInvoiceItem.getInventory().getSellingPrice() != 0.0)
         {
-            proformaInvoiceItem.setUnitPrice(proformaInvoiceItem.getInventory().getSellingPrice());
+          proformaInvoiceItem.setUnitPrice(proformaInvoiceItem.getInventory().getSellingPrice());
         }
     }
 
@@ -112,12 +103,12 @@ public class ProformaInvoiceController implements Serializable
       
     public void filterProformaInvoice()
     {
-        proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange, proformaInvoice);   
+      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange, proformaInvoice);   
     }
     
     public void reset()
     {
-        proformaInvoiceList = new LinkedList<>();
+      proformaInvoiceList = new LinkedList<>();
     }
     
     public void markAsPaid(ProformaInvoice proformaInvoice)
@@ -134,7 +125,6 @@ public class ProformaInvoiceController implements Serializable
         {
             if(appSession.getCurrentUser() != null){
                 proformaInvoice.setLastModifiedBy(appSession.getCurrentUser().getFullname());
-                proformaInvoice.setLastModifiedDate(LocalDate.now());
             }
             if (crudApi.save(proformaInvoice) != null)
             {
@@ -153,6 +143,51 @@ public class ProformaInvoiceController implements Serializable
         {
             e.printStackTrace();
         }
+    }
+    
+    public void recordPayment(ProformaInvoice proformaInvoice)
+    {
+        paymentDataList = proformaInvoiceService.getPaymentInfoList(proformaInvoice);
+        
+        paymentClient = proformaInvoice.getClient().getClientName();
+        paymentInvoiceNo = proformaInvoice.getQuotationNumber();
+        
+        paymentData.setCompanyBranch(appSession.getCompanyBranch());
+        paymentData.setUserAccount(appSession.getCurrentUser());
+        paymentData.setProformaInvoice(proformaInvoice);
+        
+    }
+    
+    public void savePaymentData()
+    {
+        try 
+        {
+          paymentData.genCode();
+          if(crudApi.save(paymentData) != null)
+          {
+              paymentDataList = CollectionList.washList(paymentDataList, paymentData);
+              
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+          }
+          else
+          {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+          }
+           clearPaymentData();
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void clearPaymentData() {
+        paymentData = new PaymentData();
+        paymentData.setUserAccount(appSession.getCurrentUser());
+        paymentData.setCompanyBranch(appSession.getCompanyBranch());
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
     }
 
     public void manageProformaInvoiceItem(ProformaInvoice proformaInvoice)
@@ -371,6 +406,7 @@ public class ProformaInvoiceController implements Serializable
         proformaInvoiceItem = new ProformaInvoiceItem();
         proformaInvoiceItem.setProformaInvoice(proformaInvoice);
         proformaInvoiceItem.setUserAccount(appSession.getCurrentUser());
+        proformaInvoiceItem.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -379,15 +415,12 @@ public class ProformaInvoiceController implements Serializable
     {
         proformaInvoice = new ProformaInvoice();
         proformaInvoice.setUserAccount(appSession.getCurrentUser());
+        proformaInvoice.setCompanyBranch(appSession.getCompanyBranch());
+        proformaInvoice.setLastModifiedDate(LocalDate.now());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-    
-    public void setPrinter(PosPrinter posPrinter)
-    {
-//      activePrinter = posPrinter.getPrinterName();
-    }
-    
+ 
     public void generateReceipt(ProformaInvoice proformaInvoice)
     {
         List<Receipt> receiptList = new LinkedList<>();
@@ -810,6 +843,31 @@ public class ProformaInvoiceController implements Serializable
     public void setTaxSales(SalesTax taxSales)
     {
         this.taxSales = taxSales;
+    }
+
+    public PaymentData getPaymentData()
+    {
+        return paymentData;
+    }
+
+    public void setPaymentData(PaymentData paymentData)
+    {
+        this.paymentData = paymentData;
+    }
+
+    public List<PaymentData> getPaymentDataList()
+    {
+        return paymentDataList;
+    }
+
+    public String getPaymentInvoiceNo()
+    {
+        return paymentInvoiceNo;
+    }
+
+    public String getPaymentClient()
+    {
+        return paymentClient;
     }
     
 }

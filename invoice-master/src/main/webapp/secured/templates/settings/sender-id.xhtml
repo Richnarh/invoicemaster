@@ -19,14 +19,14 @@
                                 <h:form id="senderIdForm" class="spaced-form">
                                     <h:panelGrid columns="2">
                                         <span>Sender ID</span>
-                                        <p:inputText required="true" value="#{senderIdController.senderId.senderId}"/>
+                                        <p:inputText required="true" value="#{senderIdController.senderId.senderIdentity}"/>
                                     </h:panelGrid>
 
                                     <div class="pt-3">
-                                        <p:commandButton class="kbtn-success mr-3" value="#{senderIdController.optionText}" update="@form, :senderIdTable"
+                                        <p:commandButton icon="#{msg.save_icon}" class="kbtn-success mr-3" value="#{senderIdController.optionText}" update="@form, :senderIdTable"
                                                          action="#{senderIdController.saveSenderId()}" />
 
-                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
+                                        <p:commandButton class="kbtn-default" icon="#{msg.clear_icon}" value="#{msg.clear}" immediate="true"
                                                          action="#{senderIdController.clearSenderId()}" update="@form"/>
                                     </div>
                                 </h:form>
@@ -36,7 +36,7 @@
                                 <h:form id="senderIdTable">
                                     <p:dataTable value="#{senderIdController.senderIdList}" var="senderId">
                                         <p:column headerText="Sender Id">
-                                            #{senderId.senderId}
+                                            #{senderId.senderIdentity}
                                         </p:column>
                                                                                 
                                         <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
