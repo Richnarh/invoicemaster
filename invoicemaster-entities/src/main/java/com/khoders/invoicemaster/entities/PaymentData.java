@@ -44,6 +44,9 @@ public class PaymentData extends UserAccountRecord implements Serializable
    @Column(name = "payment_status")
    @Enumerated(EnumType.STRING)
    private PaymentStatus paymentStatus;
+   
+   @Column(name = "partial_amount_paid")
+   private double partialAmountPaid;
 
     public String getPaymentCode()
     {
@@ -94,6 +97,14 @@ public class PaymentData extends UserAccountRecord implements Serializable
     {
         this.paymentStatus = paymentStatus;
     }
+
+    public double getPartialAmountPaid() {
+        return partialAmountPaid;
+    }
+
+    public void setPartialAmountPaid(double partialAmountPaid) {
+        this.partialAmountPaid = partialAmountPaid;
+    }
    
     public void genCode()
     {
@@ -102,7 +113,7 @@ public class PaymentData extends UserAccountRecord implements Serializable
             setPaymentCode(getPaymentCode());
         } else
         {
-            setPaymentCode(SystemUtils.generateShortCode());
+            setPaymentCode(SystemUtils.generateCode());
         }
     }
 

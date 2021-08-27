@@ -40,10 +40,6 @@ public class ProformaInvoiceDto
 
     public List<ProformaInvoiceItem> invoiceItemList = new LinkedList<>();
     public List<SalesTax> taxList = new LinkedList<>();
-    public List<DeliveryTerm> deliveryTermList = new LinkedList<>();
-    public List<Validation> validationList = new LinkedList<>();
-    public List<Colours> coloursList = new LinkedList<>();
-    public List<ReceivedDocument> receivedDocumentList = new LinkedList<>();
 
     public LocalDate getIssuedDate()
     {
@@ -165,46 +161,6 @@ public class ProformaInvoiceDto
         this.quotationNumber = quotationNumber;
     }
 
-    public List<DeliveryTerm> getDeliveryTermList()
-    {
-        return deliveryTermList;
-    }
-
-    public void setDeliveryTermList(List<DeliveryTerm> deliveryTermList)
-    {
-        this.deliveryTermList = deliveryTermList;
-    }
-
-    public List<Validation> getValidationList()
-    {
-        return validationList;
-    }
-
-    public void setValidationList(List<Validation> validationList)
-    {
-        this.validationList = validationList;
-    }
-
-    public List<Colours> getColoursList()
-    {
-        return coloursList;
-    }
-
-    public void setColoursList(List<Colours> coloursList)
-    {
-        this.coloursList = coloursList;
-    }
-
-    public List<ReceivedDocument> getReceivedDocumentList()
-    {
-        return receivedDocumentList;
-    }
-
-    public void setReceivedDocumentList(List<ReceivedDocument> receivedDocumentList)
-    {
-        this.receivedDocumentList = receivedDocumentList;
-    }
-
     public String getClientCode()
     {
         return clientCode;
@@ -305,56 +261,6 @@ public class ProformaInvoiceDto
         this.totalPayable = totalPayable;
     }
 
-    public static class DeliveryTerm
-    {
-
-        private String deliveryTerm;
-
-        public String getDeliveryTerm()
-        {
-            return deliveryTerm;
-        }
-
-        public void setDeliveryTerm(String deliveryTerm)
-        {
-            this.deliveryTerm = deliveryTerm;
-        }
-
-    }
-
-    public static class Validation
-    {
-
-        private String validation;
-
-        public String getValidation()
-        {
-            return validation;
-        }
-
-        public void setValidation(String validation)
-        {
-            this.validation = validation;
-        }
-
-    }
-
-    public static class Colours
-    {
-
-        private String colours;
-
-        public String getColours()
-        {
-            return colours;
-        }
-
-        public void setColours(String colours)
-        {
-            this.colours = colours;
-        }
-    }
-
     public static class SalesTax
     {
 
@@ -394,22 +300,6 @@ public class ProformaInvoiceDto
 
     }
 
-    public static class ReceivedDocument
-    {
-
-        private String receivedDocument;
-
-        public String getReceivedDocument()
-        {
-            return receivedDocument;
-        }
-
-        public void setReceivedDocument(String receivedDocument)
-        {
-            this.receivedDocument = receivedDocument;
-        }
-
-    }
 
     public static class ProformaInvoiceItem
     {

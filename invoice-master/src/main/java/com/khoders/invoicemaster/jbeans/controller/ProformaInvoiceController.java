@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.khoders.invoicemaster.jbeans.controller;
-
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
@@ -15,6 +14,7 @@ import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -76,9 +76,10 @@ public class ProformaInvoiceController implements Serializable
     
     private int selectedTabIndex;
     private String optionText,paymentInvoiceNo,paymentClient;
-    private double totalAmount,totalDiscount,installationFee,taxAmount,totalPayable;
+    private double totalAmount,totalDiscount,installationFee,taxAmount,totalPayable,invoiceAmount;
+    
+    private boolean panelFlag=false;
      
-
     @PostConstruct
     public void init()
     {
@@ -151,11 +152,19 @@ public class ProformaInvoiceController implements Serializable
         
         paymentClient = proformaInvoice.getClient().getClientName();
         paymentInvoiceNo = proformaInvoice.getQuotationNumber();
+        invoiceAmount = proformaInvoice.getTotalAmount();
         
         paymentData.setCompanyBranch(appSession.getCompanyBranch());
         paymentData.setUserAccount(appSession.getCurrentUser());
         paymentData.setProformaInvoice(proformaInvoice);
         
+    }
+    
+    public void toggleStatus()
+    {
+        panelFlag = paymentData.getPaymentStatus() == PaymentStatus.PARTIALLY_PAID;
+        
+        System.out.println("Floag => "+panelFlag);
     }
     
     public void savePaymentData()
@@ -868,6 +877,18 @@ public class ProformaInvoiceController implements Serializable
     public String getPaymentClient()
     {
         return paymentClient;
+    }
+
+    public double getInvoiceAmount() {
+        return invoiceAmount;
+    }
+
+    public boolean isPanelFlag() {
+        return panelFlag;
+    }
+
+    public void setPanelFlag(boolean panelFlag) {
+        this.panelFlag = panelFlag;
     }
     
 }

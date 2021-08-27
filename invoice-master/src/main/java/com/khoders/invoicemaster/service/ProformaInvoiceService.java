@@ -88,13 +88,13 @@ public class ProformaInvoiceService
         try {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1";
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1 ORDER BY e.issuedDate DESC";
                   TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
                                               .setParameter(1, appSession.getCurrentUser());
                                     return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.userAccount=?3";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.userAccount=?3 ORDER BY e.issuedDate DESC";
             
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
                     .setParameter(1, dateRange.getFromDate())

@@ -5,9 +5,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">  
     <h:body>
-        <div class="col-md-10">
+        <div class="col-md-12">
             <p>Payment info for client: <span class="font-weight-bold">#{proformaInvoiceController.paymentClient}</span>
-                with invoice #: <span class="font-weight-bold">#{proformaInvoiceController.paymentInvoiceNo}</span></p>
+                with invoice #: <span class="font-weight-bold">#{proformaInvoiceController.paymentInvoiceNo} - 
+                    (<h:outputText value="#{proformaInvoiceController.invoiceAmount}">
+                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                    </h:outputText>)
+                </span>
+            </p>
             <h:form>
                 <div class="card-block">
                     <p:growl/>
@@ -43,6 +48,13 @@
                         </div>
                     </div>
                     
+                    <small class="text-muted">For partial payment, specify the amount paid.</small>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Partial Amount</label>
+                        <div class="col-md-8">
+                            <h:inputText value="#{proformaInvoiceController.paymentData.partialAmountPaid}" class="form-control"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center pt-3">
                     <p:commandButton class="kbtn-success" value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" action="#{proformaInvoiceController.savePaymentData()}" update="@form"/>
