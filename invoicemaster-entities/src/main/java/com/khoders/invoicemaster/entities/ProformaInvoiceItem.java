@@ -33,16 +33,13 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     private Inventory inventory;
 
     @Column(name = "quantity")
-    private int quantity;
+    private int quantity = 1;
 
     @Column(name = "unit_price")
     private double unitPrice;
 
-    @Column(name = "charges")
-    private double charges;
-
-    @Column(name = "total_amount")
-    private double totalAmount;
+    @Column(name = "sub_total")
+    private double subTotal;
 
     @Column(name = "description")
     @Lob
@@ -52,19 +49,6 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     @ManyToOne
     private ProformaInvoice proformaInvoice;
     
-     @Column(name = "apply_discount")
-    private boolean applyDiscount;
-    
-    @Column(name = "discount_rate")
-    private double discountRate;
-    
-    @Column(name = "installation_fee")
-    private double installationFee;
-
-    @Column(name = "discount_type")
-    @Enumerated(EnumType.STRING)
-    private DiscountType discountType;
-
     public int getQuantity()
     {
         return quantity;
@@ -95,14 +79,14 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
         this.unitPrice = unitPrice;
     }
 
-    public double getTotalAmount()
+    public double getSubTotal()
     {
-        return totalAmount;
+        return subTotal;
     }
 
-    public void setTotalAmount(double totalAmount)
+    public void setSubTotal(double subTotal)
     {
-        this.totalAmount = totalAmount;
+        this.subTotal = subTotal;
     }
     
     public String getDescription()
@@ -133,56 +117,6 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     public void setInventory(Inventory inventory)
     {
         this.inventory = inventory;
-    }
-
-    public double getCharges()
-    {
-        return charges;
-    }
-
-    public void setCharges(double charges)
-    {
-        this.charges = charges;
-    }
-
-    public boolean isApplyDiscount()
-    {
-        return applyDiscount;
-    }
-
-    public void setApplyDiscount(boolean applyDiscount)
-    {
-        this.applyDiscount = applyDiscount;
-    }
-
-    public double getDiscountRate()
-    {
-        return discountRate;
-    }
-
-    public void setDiscountRate(double discountRate)
-    {
-        this.discountRate = discountRate;
-    }
-
-    public DiscountType getDiscountType()
-    {
-        return discountType;
-    }
-
-    public void setDiscountType(DiscountType discountType)
-    {
-        this.discountType = discountType;
-    }
-
-    public double getInstallationFee()
-    {
-        return installationFee;
-    }
-
-    public void setInstallationFee(double installationFee)
-    {
-        this.installationFee = installationFee;
     }
 
     public void genCode()

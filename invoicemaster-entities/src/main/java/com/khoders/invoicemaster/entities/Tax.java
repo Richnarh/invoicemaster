@@ -29,9 +29,6 @@ public class Tax extends BaseModel implements Serializable
   @Column(name = "tax_rate")
   private double taxRate;
   
-  @Column(name = "tax_amount")
-  private double taxAmount;
-  
   @Column(name = "reorder")
   private int reOrder;
 
@@ -73,16 +70,6 @@ public class Tax extends BaseModel implements Serializable
     public void setReOrder(int reOrder)
     {
         this.reOrder = reOrder;
-    }
-
-    public double getTaxAmount()
-    {
-        return taxAmount;
-    }
-
-    public void setTaxAmount(double taxAmount)
-    {
-        this.taxAmount = taxAmount;
     }
 
     public void genCode()

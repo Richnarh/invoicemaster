@@ -25,12 +25,6 @@
                     <span>#{msg.unit_price} <span class="text-danger">*</span> </span>
                     <p:inputText id="sellingPrice" value="#{proformaInvoiceController.proformaInvoiceItem.unitPrice}" readonly="true" required="true"/>
 
-                    <span>#{msg.discount} (%)</span>
-                    <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.discountRate}"/>
-
-                    <span>Installation Fees</span>
-                    <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.installationFee}"/>
-
                     <span>#{msg.description}</span>
                     <p:inputTextarea value="#{proformaInvoiceController.proformaInvoiceItem.description}"/>
                 </h:panelGrid>
@@ -44,21 +38,16 @@
         </div>
         <div class="col-lg-8">
             <h:form id="proformaInvoiceItemTable">
-                <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem" lazy="true">
+                <p:dataTable value="#{proformaInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem">
                     <p:column class="row-toggler">
                         <p:rowToggler/>
                     </p:column>
 
                     <p:rowExpansion>
                         <p:panelGrid columns="2">
-                            <span>Installation Fees</span>
-                            <h:outputText value="#{proformaInvoiceItem.installationFee}">
-                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                            </h:outputText>
-                            
                             <span>#{msg.code}</span>
                             <h:outputText value="#{proformaInvoiceItem.itemCode}"/>
-                            
+
                             <span>#{msg.frame_size}</span>
                             <h:outputText value="#{proformaInvoiceItem.inventory.frameSize} #{appSession.currentUser.frame}"/>
 
@@ -84,38 +73,41 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg.discount}" class="text-right" style="width: 90px;">
-                        <h:outputText value="#{proformaInvoiceItem.discountRate}">
+                    <p:column headerText="Total" class="text-right" style="width: 100px;">
+                        <h:outputText value="#{proformaInvoiceItem.subTotal}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Total" class="text-right" style="width: 100px;">
-                        <h:outputText value="#{proformaInvoiceItem.totalAmount}">
-                            <f:convertNumber pattern="#{msg.money_pattern}"/>
-                        </h:outputText>
-                    </p:column>
-                    
                     <p:column headerText="#{msg.action}" style="width: 120px;">
                         <p:menuButton value="#{msg.choose}">
                             <p:menuitem id="edit" icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoiceItem(proformaInvoiceItem)}" immediate="true" update=":orderItemForm, @form"/>
                             <p:menuitem id="remove" icon="fa fa-times" class="text-secondary" value="#{msg.remove}" action="#{proformaInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" immediate="true" update="@form"/>
                         </p:menuButton>
-                            <p:tooltip for="remove" value="Remove from table" position="right"/>
-                            <p:tooltip for="edit" value="Edit this record" position="right"/>
+                        <p:tooltip for="remove" value="Remove from table" position="right"/>
+                        <p:tooltip for="edit" value="Edit this record" position="right"/>
                     </p:column>
-                    
+
                 </p:dataTable>
 
                 <br/>
+            </h:form>
+
+            <h:form>
                 <div class="col-md-6 pull-right shadow-sm mb-2 bg-white">
                     <table class="table">
                         <tr>
                             <td><span class="field-label">#{msg.total_amount}</span></td>
                             <td  class="text-right"> 
-                                <h:outputText value="#{proformaInvoiceController.totalAmount}" class="field-shade">
+                                <h:outputText value="#{proformaInvoiceController.totalSaleAmount}" class="field-shade">
                                     <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
                                 </h:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="field-label">#{msg.discount} (%)</span></td>
+                            <td  class="text-right"> 
+                                <h:inputText class="form-control" value="#{proformaInvoiceController.productDiscountRate}"/>
                             </td>
                         </tr>
 
@@ -133,19 +125,17 @@
                         <tr>
                             <td><span class="field-label">Installation Fee</span></td>
                             <td  class="text-right"> 
-                                <h:outputText value="#{proformaInvoiceController.installationFee}">
-                                    <f:convertNumber pattern="#{msg.money_pattern}" />
-                                </h:outputText>
+                                <h:inputText class="form-control" value="#{proformaInvoiceController.installationFee}"/>
                             </td>
                         </tr>
-                        <tr>
+<!--                        <tr>
                             <td><span class="field-label">Total Discount</span></td>
                             <td class="text-right"> 
-                                <h:outputText value="#{proformaInvoiceController.totalDiscount} %">
-                                    <f:convertNumber pattern="#{msg.money_pattern}" />
+                                <h:outputText value="{proformaInvoiceController.calculatedDiscount}">
+                                    <f:convertNumber pattern="{msg.money_pattern}" />
                                 </h:outputText>
                             </td>
-                        </tr>
+                        </tr>-->
                         <tr class="bg-gradient-gray">
                             <td><span class="field-label text-uppercase font-weight-bold">Total Payable</span></td>
                             <td class="text-right"> 
@@ -157,20 +147,18 @@
                     </table>
 
                 </div>
-            </h:form>
 
-            <center>
-                <h:form>
+                <center>
                     <!--<p:commandButton value="Trigger Test" action="{proformaInvoiceController.testTax()}" update=":mainPanel"/>-->
                     <p:commandButton id="saveAll" rendered="#{appSession.currentUser.permSave == true}" value="Save All" icon="#{msg.check_icon}" action="#{proformaInvoiceController.saveAll()}" class="kbtn-success mr-5" ajax="false"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true"  action="#{proformaInvoiceController.closePage()}">
                         <p:ajax update=":mainPanel"/>
                     </h:commandButton>
-                   <p:tooltip for="saveAll" value="Click to save records in the table" position="bottom"/>
-                   
-                </h:form>
-                
-            </center>
+                    <p:tooltip for="saveAll" value="Click to save records in the table" position="bottom"/>
+
+
+                </center>
+            </h:form>
         </div>
     </div>
 </html>
