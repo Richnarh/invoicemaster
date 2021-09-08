@@ -52,6 +52,9 @@
                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                         </h:outputText>
                         
+                        <span>Mode of payment</span>
+                        <h:outputText value="#{proformaInvoice.modeOfPayment.label}"/>
+                        
                         <span>#{msg.description}</span>
                         <h:outputText value="#{proformaInvoice.description}"/>
                     </h:panelGrid>
@@ -70,7 +73,7 @@
                         <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="#{msg.client}">
+                <p:column headerText="#{msg.client}" filterBy="#{proformaInvoice.client}" filterMatchMode="contains">
                     #{proformaInvoice.client}
                 </p:column>
                 <p:column headerText="#{msg.total_amount}" class="text-right" style="width: 120px;">

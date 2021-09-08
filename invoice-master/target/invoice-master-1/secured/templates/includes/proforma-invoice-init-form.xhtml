@@ -14,7 +14,7 @@
                     <div class="card">
                         <h6 class="card-header">Proforma Invoice Processing</h6>
                         <div class="card-body">
-                             
+
                             <h:form>
                                 <div class="card-block">
                                     <div class="form-group row">
@@ -39,7 +39,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                       
+
                                         <label class="col-sm-4 col-form-label">#{msg.client} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">
                                             <p:selectOneMenu id="client" class="col-md-6" value="#{proformaInvoiceController.proformaInvoice.client}" required="true" filter="true" filterMatchMode="contains">
@@ -61,6 +61,15 @@
                                         <label class="col-sm-4 col-form-label">#{msg.total_amount}</label>
                                         <div class="col-md-8">
                                             <input type="text" jsf:value="#{proformaInvoiceController.proformaInvoice.totalAmount}" class="form-control" placeholder="Enter total amount"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Mode of payment</label>
+                                        <div class="col-md-8">
+                                            <p:selectOneMenu class="col-md-6" value="#{proformaInvoiceController.proformaInvoice.modeOfPayment}">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.paymentMethodList}"/>
+                                            </p:selectOneMenu>
                                         </div>
                                     </div>
 

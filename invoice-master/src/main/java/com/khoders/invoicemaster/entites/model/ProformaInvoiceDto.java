@@ -25,7 +25,6 @@ public class ProformaInvoiceDto
     private String address;
     private String boxAddress;
     private String telephoneNo;
-    private String phone;
     private String gpsAddress;
     private String quotationNumber;
     private double totalAmount;
@@ -49,16 +48,6 @@ public class ProformaInvoiceDto
     public void setIssuedDate(LocalDate issuedDate)
     {
         this.issuedDate = issuedDate;
-    }
-
-    public String getPhone()
-    {
-        return phone;
-    }
-
-    public void setPhone(String phone)
-    {
-        this.phone = phone;
     }
 
     public String getBranchName()
@@ -161,10 +150,6 @@ public class ProformaInvoiceDto
         this.quotationNumber = quotationNumber;
     }
 
-    public String getClientCode()
-    {
-        return clientCode;
-    }
 
     public String getEmailAddress()
     {

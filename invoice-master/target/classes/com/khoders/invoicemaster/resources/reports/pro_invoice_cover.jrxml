@@ -31,83 +31,6 @@
 		</box>
 		<paragraph spacingBefore="2"/>
 	</style>
-	<subDataset name="deliveryList" uuid="b9acbd8e-9be9-45f1-be6d-5cc332d88be7">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="deliveryTerm" class="java.lang.String"/>
-		<variable name="no" class="java.lang.Integer" calculation="Count">
-			<variableExpression><![CDATA[$F{deliveryTerm}]]></variableExpression>
-		</variable>
-	</subDataset>
-	<subDataset name="validationList" uuid="1ee72636-dbc1-41be-ab40-541053dfabb2">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="validation" class="java.lang.String"/>
-		<variable name="no" class="java.lang.Integer" calculation="Count">
-			<variableExpression><![CDATA[$F{validation}]]></variableExpression>
-		</variable>
-	</subDataset>
-	<subDataset name="documentList" uuid="7d6713ff-c886-4463-817d-9dd7bb9664a0">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="receivedDocument" class="java.lang.String"/>
-		<variable name="no" class="java.lang.Integer" calculation="Count">
-			<variableExpression><![CDATA[$F{receivedDocument}]]></variableExpression>
-		</variable>
-	</subDataset>
-	<subDataset name="coloursList" uuid="866bc643-c7d8-4f58-a163-5fbef8d10194">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="colours" class="java.lang.String"/>
-		<variable name="no" class="java.lang.Integer" calculation="Count">
-			<variableExpression><![CDATA[$F{colours}]]></variableExpression>
-		</variable>
-	</subDataset>
-	<subDataset name="proformaInvoiceItemList" uuid="e746dd9e-d357-4ffe-8270-09fe942c9b33">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="productCode" class="java.lang.String"/>
-		<field name="productName" class="java.lang.String"/>
-		<field name="frameSize" class="java.lang.Integer"/>
-		<field name="width" class="java.lang.Integer"/>
-		<field name="height" class="java.lang.Integer"/>
-		<field name="quantity" class="java.lang.Integer"/>
-		<field name="unitPrice" class="java.lang.Double"/>
-		<field name="totalAmount" class="java.lang.Double"/>
-		<field name="frameUnit" class="java.lang.String"/>
-		<field name="widthHeightUnits" class="java.lang.String"/>
-		<field name="description" class="java.lang.String"/>
-		<variable name="no" class="java.lang.Integer" calculation="Count">
-			<variableExpression><![CDATA[$F{productCode}]]></variableExpression>
-		</variable>
-		<variable name="totalSumAmount" class="java.lang.Double" calculation="Sum">
-			<variableExpression><![CDATA[$F{totalAmount}]]></variableExpression>
-		</variable>
-	</subDataset>
-	<subDataset name="invoiceitems" uuid="f28a181b-5c8e-4513-9ba0-8100e2b7ecf0">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-	</subDataset>
-	<subDataset name="Empty Dataset1" uuid="f099e31d-2e65-4245-8bf6-42101d02cca1"/>
-	<subDataset name="innerTable" uuid="b565160e-3aad-4c0c-98e9-5762f6002981">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-	</subDataset>
-	<subDataset name="itemList" uuid="794e750f-1fd6-4fc1-9cac-ef1ee925c1ac">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<variable name="grandTotalAmount" class="java.lang.Double" calculation="Sum"/>
-	</subDataset>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="deliveryTerm" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="validation" class="net.sf.jasperreports.engine.JasperReport"/>
@@ -119,28 +42,14 @@
 	</queryString>
 	<field name="logo" class="java.lang.String"/>
 	<field name="issuedDate" class="java.time.LocalDate"/>
-	<field name="expiryDate" class="java.time.LocalDate"/>
 	<field name="clientName" class="java.lang.String"/>
 	<field name="quotationNumber" class="java.lang.String"/>
-	<field name="clientCode" class="java.lang.String"/>
 	<field name="emailAddress" class="java.lang.String"/>
 	<field name="address" class="java.lang.String"/>
-	<field name="phone" class="java.lang.String"/>
-	<field name="deliveryTermList" class="java.util.List"/>
-	<field name="validationList" class="java.util.List"/>
-	<field name="coloursList" class="java.util.List"/>
-	<field name="receivedDocumentList" class="java.util.List"/>
-	<field name="invoiceItemList" class="java.util.List"/>
 	<field name="telephoneNo" class="java.lang.String"/>
-	<field name="gpsAddress" class="java.lang.String"/>
 	<field name="branchName" class="java.lang.String"/>
 	<field name="website" class="java.lang.String"/>
-	<field name="description" class="java.lang.String"/>
-	<field name="totalAmount" class="java.lang.Double"/>
 	<field name="tinNo" class="java.lang.String"/>
-	<variable name="grandTotalAmount" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{totalAmount}]]></variableExpression>
-	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

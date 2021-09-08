@@ -544,14 +544,16 @@ public class ProformaInvoiceController implements Serializable
 //        double instFees = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getInstallationFee).sum();
         
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
-            proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName().toUpperCase());
-            proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
-            proformaInvoiceDto.setPhone(proformaInvoice.getClient().getPhone());
-            proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress().toUpperCase());
+            
+            if(proformaInvoice.getClient() != null)
+            {
+              proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName().toUpperCase());
+              proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
+              proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress().toUpperCase());  
+            }
             proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
             proformaInvoiceDto.setExpiryDate(proformaInvoice.getExpiryDate());
             proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
-            proformaInvoiceDto.setClientCode(proformaInvoice.getClient().getClientCode());
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(proformaInvoice.getTotalAmount());
             
