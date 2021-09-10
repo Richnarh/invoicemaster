@@ -31,24 +31,6 @@
 		</box>
 		<paragraph spacingBefore="2"/>
 	</style>
-	<subDataset name="proformaInvoiceItemList" uuid="e746dd9e-d357-4ffe-8270-09fe942c9b33">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="productCode" class="java.lang.String"/>
-		<field name="productName" class="java.lang.String"/>
-		<field name="frameSize" class="java.lang.Integer"/>
-		<field name="width" class="java.lang.Integer"/>
-		<field name="height" class="java.lang.Integer"/>
-		<field name="quantity" class="java.lang.Integer"/>
-		<field name="unitPrice" class="java.lang.Double"/>
-		<field name="totalAmount" class="java.lang.Double"/>
-		<field name="frameUnit" class="java.lang.String"/>
-		<field name="widthHeightUnits" class="java.lang.String"/>
-		<variable name="no" class="java.lang.Integer" calculation="Count">
-			<variableExpression><![CDATA[$F{productCode}]]></variableExpression>
-		</variable>
-	</subDataset>
 	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -77,7 +59,7 @@
 	<detail>
 		<band height="179" splitType="Stretch">
 			<staticText>
-				<reportElement style="title" x="0" y="140" width="90" height="15" uuid="c2d55aed-cc42-481f-8ee7-1ced9e2582ab">
+				<reportElement style="title" x="0" y="156" width="90" height="15" uuid="c2d55aed-cc42-481f-8ee7-1ced9e2582ab">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -158,7 +140,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement style="field-value" x="70" y="23" width="116" height="15" uuid="feb55991-95fe-4125-b000-ce4da33530fb"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("MMMM d, yyyy hh:mm a").format($F{date})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy hh:mm a").format($F{date})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="field-label" x="0" y="23" width="60" height="15" uuid="95ef8ff4-0fc4-4d33-a902-cacffbae6881">
@@ -273,7 +255,7 @@
 				<textFieldExpression><![CDATA[$F{installationFee}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="title" x="0" y="160" width="80" height="15" uuid="54dfb602-df89-4556-bf79-72e1aa2e4da3">
+				<reportElement style="title" x="0" y="136" width="80" height="15" uuid="54dfb602-df89-4556-bf79-72e1aa2e4da3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -288,7 +270,7 @@
 				<text><![CDATA[Total Payable]]></text>
 			</staticText>
 			<textField pattern="GH¢ #,##0.00" isBlankWhenNull="true">
-				<reportElement style="title" x="93" y="160" width="93" height="15" uuid="79fa9aa3-98b2-4cea-b11f-3298e14e7c7a">
+				<reportElement style="title" x="93" y="136" width="93" height="15" uuid="79fa9aa3-98b2-4cea-b11f-3298e14e7c7a">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -303,7 +285,7 @@
 				<textFieldExpression><![CDATA[$F{totalPayable}]]></textFieldExpression>
 			</textField>
 			<textField pattern="GH¢ #,##0.00" isBlankWhenNull="true">
-				<reportElement style="title" x="93" y="140" width="93" height="15" uuid="b393277c-1dd7-4680-9dc6-530621dc2cb8">
+				<reportElement style="title" x="93" y="156" width="93" height="15" uuid="b393277c-1dd7-4680-9dc6-530621dc2cb8">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>

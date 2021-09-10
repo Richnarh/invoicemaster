@@ -5,10 +5,11 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.jbeans.ReportFiles;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -21,23 +22,26 @@ import javax.inject.Named;
 public class ReportHandler implements Serializable
 {
     Map<String, Object> reportParams = new HashMap<>();
+    private InputStream inputStream;
     
-    @PostConstruct
-    private void init()
+    
+    public InputStream reportStream(String reportFile)
     {
         try
         {
-            
-            
-            
+          this.inputStream = getClass().getResourceAsStream(reportFile);   
+          return this.inputStream;
+          
         } catch (Exception e)
         {
             e.printStackTrace();
         }
+        return null;
     }
     
     public void addParams(String key, Object value)
     {
         reportParams.put(key, value);
     }
+   
 }

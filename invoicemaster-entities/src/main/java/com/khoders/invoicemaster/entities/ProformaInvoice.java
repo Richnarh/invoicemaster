@@ -46,8 +46,11 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     @Enumerated(EnumType.STRING)
     private PaymentMethod modeOfPayment;
 
-    @Column(name = "mark_as_paid")
-    private boolean markAsPaid;
+    @Column(name = "discount_rate")
+    private double discountRate;
+    
+    @Column(name = "installation_fee")
+    private double installationFee;
 
     @Column(name = "description")
     @Lob
@@ -123,16 +126,26 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
         this.modeOfPayment = modeOfPayment;
     }
 
-    public boolean isMarkAsPaid()
+    public double getDiscountRate()
     {
-        return markAsPaid;
+        return discountRate;
     }
 
-    public void setMarkAsPaid(boolean markAsPaid)
+    public void setDiscountRate(double discountRate)
     {
-        this.markAsPaid = markAsPaid;
+        this.discountRate = discountRate;
     }
 
+    public double getInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public void setInstallationFee(double installationFee)
+    {
+        this.installationFee = installationFee;
+    }
+    
     public void genCode()
     {
         if (getQuotationNumber() != null)

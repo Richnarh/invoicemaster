@@ -19,7 +19,10 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">Issued #{msg.proforma} #{msg.invoice}</span>
                                 <span class="info-box-number">
-                                    #{proformaInvoiceController.proformaInvoiceList.size()}
+                                    <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml" class="ptext-link">
+                                        <i class="fa fa-check nav-icon"></i>
+                                        <span>(#{proformaInvoiceController.proformaInvoiceList.size()})</span>
+                                    </a>
                                 </span>
                             </div>
                             <!-- /.info-box-content -->

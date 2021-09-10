@@ -35,10 +35,7 @@ public class UserAccountService
                     .setParameter(1, userModel.getUserEmail())
                     .setParameter(2, hashText(userModel.getPassword()));
             
-                 if(typedQuery.getSingleResult() != null)
-                 {
-                    return typedQuery.getSingleResult();
-                 }
+                   return typedQuery.getResultStream().findFirst().orElse(null);
 
         } catch (Exception e)
         {
