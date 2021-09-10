@@ -214,7 +214,7 @@
 						<font size="9"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
-					<text><![CDATA[Subject]]></text>
+					<text><![CDATA[SUBJECT]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="field-label" x="87" y="67" width="10" height="15" uuid="4d446dfe-b1f8-45d5-8add-98460a743dc9">
