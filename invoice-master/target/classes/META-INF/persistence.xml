@@ -5,6 +5,7 @@
     <jta-data-source>jdbc/invoicemaster</jta-data-source>
     <class>com.khoders.invoicemaster.entities.Client</class>
     <class>com.khoders.invoicemaster.entities.Inventory</class>
+    <class>com.khoders.invoicemaster.entities.PaymentData</class>
     <class>com.khoders.invoicemaster.entities.Product</class>
     <class>com.khoders.invoicemaster.entities.ProductType</class>
     <class>com.khoders.invoicemaster.entities.ProformaInvoice</class>
@@ -23,7 +24,7 @@
     <class>com.khoders.invoicemaster.sms.SMSGrup</class>
     <class>com.khoders.invoicemaster.sms.SenderId</class>
     <class>com.khoders.invoicemaster.sms.Sms</class>
-    <class>com.khoders.invoicemaster.entities.PaymentData</class>
+    <class>com.khoders.invoicemaster.entities.ReturnGood</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

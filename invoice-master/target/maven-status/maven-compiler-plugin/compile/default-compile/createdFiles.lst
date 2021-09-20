@@ -1,6 +1,8 @@
 com\khoders\invoicemaster\jbeans\controller\PurchaseOrderController.class
 com\khoders\invoicemaster\jbeans\controller\LoginController.class
 com\khoders\invoicemaster\jbeans\controller\TaxController.class
+com\khoders\invoicemaster\service\XtractService.class
+com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
 com\khoders\invoicemaster\jbeans\controller\ProductTypeController.class
 com\khoders\invoicemaster\jbeans\controller\sms\ContactGroupController.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto$ProformaInvoiceItem.class

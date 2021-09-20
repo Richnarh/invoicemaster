@@ -10,6 +10,7 @@ import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entites.model.Receipt;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
@@ -26,8 +27,11 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -115,13 +119,13 @@ public class ProformaInvoiceController implements Serializable
     {
         this.proformaInvoiceItem = proformaInvoiceItem;
         proformaInvoiceItemList.remove(proformaInvoiceItem);
-        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
+//        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
         optionText = "Update";
     }
     
     public void deleteProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
-        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
+//        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
         removedProformaInvoiceItemList = CollectionList.washList(removedProformaInvoiceItemList, proformaInvoiceItem);
         proformaInvoiceItemList.remove(proformaInvoiceItem);
     }
@@ -264,74 +268,54 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-        
+
     public void taxCalculation()
     {
-//            double saleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+      
+        // delete all salesTax for the selected proforma invoice
+        salesTaxList.forEach(salesTax ->
+        {
+            crudApi.delete(salesTax);
+        });
+      
+        for (Tax tax : taxList)
+        {
+            SalesTax salesTax = new SalesTax();
 
-        System.out.println("TotalAmount @TaxCalculation => "+proformaInvoice.getTotalAmount());
-        System.out.println("taxList => "+taxList.size());
-        
-            for (Tax tax : taxList)
-            {
-                System.out.println("I entered the loop");
-                SalesTax salesTax = new SalesTax();
-                
-                System.out.println("\n\n proformaInvoice.getTotalAmount() \n\n=> "+proformaInvoice.getTotalAmount());
-                
-                double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
-                
-                salesTax.genCode();
-                salesTax.setTaxName(tax.getTaxName());
-                salesTax.setTaxRate(tax.getTaxRate());
-                salesTax.setTaxAmount(calc);
-                salesTax.setReOrder(tax.getReOrder());
-                salesTax.setUserAccount(appSession.getCurrentUser());
-                salesTax.setCompanyBranch(appSession.getCompanyBranch());
-                salesTax.setProformaInvoice(proformaInvoice);
-                
-                if(salesTaxList.isEmpty())
-                {
-                    System.out.println("I was saving salesTaxList...");
-                    crudApi.save(salesTax);
-                }
-                else
-                {
-                    for (SalesTax tx : salesTaxList)
-                    {
-                        System.out.println("I entered salesTax");
-                        System.out.println("tx.getProformaInvoice() => "+tx.getProformaInvoice());
-                        System.out.println("proformaInvoice @salesTax => "+proformaInvoice);
-                        if (tx.getProformaInvoice().equals(proformaInvoice))
-                        {
-                            System.out.println("proforma invoice exist: "+tx.getProformaInvoice());
-                            crudApi.save(tx);
-                            System.out.println("Done processing....");
-                        }
-                    }
-                }
-            }
-            System.out.println("I exited!");
+            double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
+
+            salesTax.genCode();
+            salesTax.setTaxName(tax.getTaxName());
+            salesTax.setTaxRate(tax.getTaxRate());
+            salesTax.setTaxAmount(calc);
+            salesTax.setReOrder(tax.getReOrder());
+            salesTax.setUserAccount(appSession.getCurrentUser());
+            salesTax.setCompanyBranch(appSession.getCompanyBranch());
+            salesTax.setProformaInvoice(proformaInvoice);
+
+            crudApi.save(salesTax);
+            
+//                else
+//                {
+//                    for (SalesTax tx : salesTaxList)
+//                    {
+//                        if (tx.getProformaInvoice().equals(proformaInvoice))
+//                        {
+//                            crudApi.save(tx);
+//                        }
+//                    }
+//                }
+        }
             
         salesTaxList = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-        System.out.println("salesTaxList @taxCalcuation Before => "+salesTaxList.size());
-        
         calculateVat();
-        
-        System.out.println("salesTaxList @taxCalcuation After => "+salesTaxList.size());
     }
     
     private void calculateVat()
     {
-//        double saleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
-        
-        System.out.println("installationFee @calculateTax=> "+installationFee);
-        
-        System.out.println("salesTaxList size => "+salesTaxList.size());
         if(!salesTaxList.isEmpty())
         {
-            System.out.println("I dey the vat inside");
             SalesTax nhil = salesTaxList.get(0);
 //            SalesTax getFund = salesTaxList.get(1);
             SalesTax covid19 = salesTaxList.get(1);
@@ -341,86 +325,132 @@ public class ProformaInvoiceController implements Serializable
 
             double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
             
-            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
-            System.out.println("taxableValue => "+taxableValue);
-            System.out.println("totalLevies => "+totalLevies);
-            
+//            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
+//            System.out.println("taxableValue => "+taxableValue);
+//            System.out.println("totalLevies => "+totalLevies);
+//            
             double vat = taxableValue*(salesVat.getTaxRate()/100);
             
-            System.out.println("vat => "+vat);
+//            System.out.println("vat => "+vat);
 
             totalPayable = vat + taxableValue + installationFee;
             
-            System.out.println("totalPayable => "+totalPayable);
-
             salesVat.setTaxAmount(vat);
 
             crudApi.save(salesVat);
             
         }
-        
-        System.out.println("Exit of vat calculation");
     }
 
-     
     public void saveAll()
     {
         totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         
-        System.out.println("Installation fee @SaveAll => "+installationFee);
-        System.out.println("productDiscountRate @SaveAll => "+productDiscountRate);
-        System.out.println("proformaInvoice @SaveAll => "+proformaInvoice);
-        
         try 
         {
-                for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList) 
+                if(proformaInvoiceItemList.isEmpty())
                 {
-                  crudApi.save(pInvoiceItem); 
+                    for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList)
+                    {
+                        Inventory inventory = findById(pInvoiceItem.getInventory().getId());
+
+                        System.out.println("Product => " + inventory.getProduct());
+                        System.out.println("new inventoryQty => " + inventory.getQuantity() + "\n\n");
+
+                        int qtyAtHand = inventory.getQuantity();
+                        int qtyPurchased = pInvoiceItem.getQuantity();
+
+                        if (qtyPurchased > qtyAtHand)
+                        {
+                            FacesContext.getCurrentInstance().addMessage(null,
+                                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Could not complete transaction!, limited amount of '" + pInvoiceItem.getInventory().getProduct() + "' at inventory"), null));
+
+                            return;
+                        }
+
+                        int qtyLeft = qtyAtHand - qtyPurchased;
+
+                        inventory.setQuantity(qtyLeft);
+                        crudApi.save(inventory); // updating inventory quantity after purchase
+
+                        crudApi.save(pInvoiceItem); // saving invoice item
+
+                    }
+                }
+                else
+                {
+                    System.out.println("Checking for differences");
+                    List<ProformaInvoiceItem> newItemList = proformaInvoiceService.getProformaInvoiceItemList(proformaInvoice);
+                    System.out.println("newItemList size => "+newItemList.size());
+                    
+                    List<ProformaInvoiceItem> differences = proformaInvoiceItemList.stream()
+                            .filter(element -> !newItemList.contains(element))
+                            .collect(Collectors.toList());
+                    
+                    for (ProformaInvoiceItem newItem : differences)
+                    {
+                        System.out.println("different: " + newItem.getInventory());
+                        
+                        Inventory inventory = findById(newItem.getInventory().getId());
+
+                        System.out.println("new inventoryQty => " + inventory.getQuantity() + "\n\n");
+
+                        int qtyAtHand = inventory.getQuantity();
+                        int qtyPurchased = newItem.getQuantity();
+
+                        if (qtyPurchased > qtyAtHand)
+                        {
+                            FacesContext.getCurrentInstance().addMessage(null,
+                                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Could not complete transaction!, limited amount of '" + newItem.getInventory().getProduct() + "' at inventory"), null));
+
+                            return;
+                        }
+
+                        int qtyLeft = qtyAtHand - qtyPurchased;
+
+                        inventory.setQuantity(qtyLeft);
+                        crudApi.save(inventory); // updating inventory quantity after purchase
+
+                        crudApi.save(newItem); // saving invoice item
+                    }
+                    
                 }
                 
                 for (ProformaInvoiceItem invoiceItem : removedProformaInvoiceItemList)
                 {
+                    Inventory inventory = findById(invoiceItem.getInventory().getId());
+                    
+                    inventory.setQuantity(invoiceItem.getQuantity() + inventory.getQuantity());
+                    
                     crudApi.delete(invoiceItem);
                     removedProformaInvoiceItemList.remove(invoiceItem);
                 }
                 
-                System.out.println("productDiscountRate ===========>>>> "+productDiscountRate);
-                
                 if (productDiscountRate > 0.0)
                 {
-                    System.out.println("I entered here!");
                     calculatedDiscount = totalSaleAmount * (productDiscountRate/100);
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     proformaInvoice.setTotalAmount(newTotalAmount);
                     
                     setTotalSaleAmount(newTotalAmount); // updating the sales amount with the new totalAmount
                     
-                    System.out.println("newTotalAmount => "+newTotalAmount);
                 }
                 else
                 {
-                   System.out.println("I was at else totalSaleAmount");
                    proformaInvoice.setTotalAmount(totalSaleAmount);
                 }
                 
                 proformaInvoice.setInstallationFee(installationFee);
                 proformaInvoice.setDiscountRate(productDiscountRate);
 
-//                crudApi.save(proformaInvoice);
-                
                 if(crudApi.save(proformaInvoice) != null)
                 {
-                   System.out.println("I was here bro.");
                    taxCalculation();
                    
                    FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
                     
-                    System.out.println("Total Amount After save => "+proformaInvoice.getTotalAmount());
-                    System.out.println("InstallationFee After save => "+proformaInvoice.getInstallationFee());
-                    System.out.println("DiscountRate After save => "+proformaInvoice.getDiscountRate());
-                
                 }
                 else
                 {
@@ -433,16 +463,19 @@ public class ProformaInvoiceController implements Serializable
         }
     }
     
+    private Inventory findById(String id)
+    {
+      return crudApi.find(Inventory.class, id);
+    }
+    
     public void generateReceipt(ProformaInvoice proformaInvoice)
     {
         List<Receipt> receiptList = new LinkedList<>();
         try
         {
-//            List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
             List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
             Receipt receipt = new Receipt();
         
-//            double invoiceTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
             double totalTax = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
         
             double invoiceValue = totalTax + proformaInvoice.getTotalAmount() + proformaInvoice.getInstallationFee();
