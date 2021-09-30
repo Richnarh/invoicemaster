@@ -13,6 +13,7 @@ com\khoders\invoicemaster\jbeans\controller\InventoryController.class
 com\khoders\invoicemaster\jbeans\controller\ProductController$1.class
 com\khoders\invoicemaster\jbeans\controller\sms\MessageTemplateController.class
 com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.class
+com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController$1.class
 com\khoders\invoicemaster\jbeans\converter\ClientConverter.class
 com\khoders\invoicemaster\entites\model\Receipt.class
 com\khoders\invoicemaster\listener\AppSession.class
@@ -21,13 +22,11 @@ com\khoders\invoicemaster\commons\CommonClass.class
 com\khoders\invoicemaster\entites\model\ConvertToWords.class
 com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.class
-com\khoders\invoicemaster\jbeans\controller\PaymentDataController.class
 com\khoders\invoicemaster\entites\model\PaymentReceiptDto.class
 com\khoders\invoicemaster\jbeans\converter\PurchaseConverter.class
 com\khoders\invoicemaster\jbeans\controller\sms\SmsController.class
 com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
-com\khoders\invoicemaster\service\PaymentService.class
 com\khoders\invoicemaster\service\InventoryService.class
 com\khoders\invoicemaster\entites\model\ProformaInvoiceDto.class
 com\khoders\invoicemaster\jbeans\converter\InventoryConverter.class

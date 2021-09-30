@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>invoicemaster</artifactId>
-    <groupId>com.khoders</groupId>
-    <version>1</version>
-  </parent>
+        <artifactId>invoicemaster</artifactId>
+        <groupId>com.khoders</groupId>
+        <version>1</version>
+    </parent>
     <groupId>com.khoders</groupId>
     <artifactId>invoicemaster-admin</artifactId>
     <version>1</version>
@@ -74,9 +74,23 @@
             <version>1</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.17.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>Zenoph.SMSLib</groupId>
+            <artifactId>Zenoph.SMSLib</artifactId>
+            <version>1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/Zenoph.SMSLib.jar</systemPath>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
-     <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

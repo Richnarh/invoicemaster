@@ -22,7 +22,6 @@
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-lg-12">
                                         <h:form class="float-right pt-3" style="margin-bottom: 5px;">
-
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.new} #{msg.inventory}" class="btn btn-outline-primary btn-sm"
                                                                  action="#{inventoryController.initInventory()}">
@@ -30,6 +29,7 @@
                                                 </h:commandButton>
                                             </div>
                                         </h:form>
+                                            <span class="shadow-sm col-1 faded-shade p-1">Count: #{inventoryController.inventoryList.size()}</span>
                                     </div>
                                 </div>
 

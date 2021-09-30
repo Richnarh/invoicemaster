@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package com.khoders.invoicemaster.jbeans.controller;
+import Zenoph.SMSLib.Enums.MSGTYPE;
+import Zenoph.SMSLib.Enums.REQSTATUS;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
@@ -12,9 +15,13 @@ import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entites.model.Receipt;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
+import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.invoicemaster.service.SmsService;
+import com.khoders.invoicemaster.sms.SenderId;
+import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -27,11 +34,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -81,6 +85,9 @@ public class ProformaInvoiceController implements Serializable
     private String optionText,paymentInvoiceNo,paymentClient;
     private double totalSaleAmount,calculatedDiscount,installationFee,taxAmount,totalPayable,invoiceAmount,productDiscountRate;
     
+    Sms sms = new Sms();
+    String phoneNumber=null;
+        
     private boolean panelFlag=false;
      
     @PostConstruct
@@ -186,8 +193,11 @@ public class ProformaInvoiceController implements Serializable
           {
               paymentDataList = CollectionList.washList(paymentDataList, paymentData);
               
+              processPaymentSms(paymentData);
+              
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              
           }
           else
           {
@@ -200,6 +210,90 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
+    
+    public void processPaymentSms(PaymentData paymentData)
+    {
+        SenderId senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+        System.out.println("Sender ID => "+senderId.getSenderIdentity());
+        try 
+        {
+          ZenophSMS zsms = SmsService.extractParams();
+          zsms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!. \n"
+                 + "Contact us: \n "
+                 + "Website: https://dolphindoors.com/ \n"
+                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
+                 + "Email: info@dolphindoors.com");
+          
+          if(paymentData.getProformaInvoice() != null){
+              if(paymentData.getProformaInvoice().getClient() != null)
+              {
+                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
+              }
+            }
+          
+            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+
+            for (String number : numbers)
+            {
+                zsms.addRecipient(number);
+            }
+            
+            zsms.setSenderId(senderId.getSenderIdentity());
+            zsms.setMessageType(MSGTYPE.TEXT);
+
+            List<String[]> response = zsms.submit();
+            for (String[] destination : response)
+            {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null)
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+                        break;
+                    } else
+                    {
+                        switch (reqstatus)
+                        {
+                            case SUCCESS:
+                                saveMessage();
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                                FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+                            default:
+                                FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+                                return;
+                        }
+                    }
+                }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void saveMessage()
+    {
+        try
+        {
+            sms.setSmsTime(LocalDateTime.now());
+            sms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!.");
+            sms.setClient(paymentData.getProformaInvoice().getClient());
+            sms.setsMSType(SMSType.SYSTEM_SMS);
+           if(crudApi.save(sms) != null)
+           {
+               FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("SMS sent to "+paymentData.getProformaInvoice().getClient()), null));
+               
+               System.out.println("SMS sent and saved -- ");
+           }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+      
     
     public void clearPaymentData() {
         paymentData = new PaymentData();
@@ -344,91 +438,30 @@ public class ProformaInvoiceController implements Serializable
 
     public void saveAll()
     {
-        totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+      totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
+        
+        System.out.println("Installation fee @SaveAll => "+installationFee);
+        System.out.println("productDiscountRate @SaveAll => "+productDiscountRate);
+        System.out.println("proformaInvoice @SaveAll => "+proformaInvoice);
         
         try 
         {
-                if(proformaInvoiceItemList.isEmpty())
+                for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList) 
                 {
-                    for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList)
-                    {
-                        Inventory inventory = findById(pInvoiceItem.getInventory().getId());
-
-                        System.out.println("Product => " + inventory.getProduct());
-                        System.out.println("new inventoryQty => " + inventory.getQuantity() + "\n\n");
-
-                        int qtyAtHand = inventory.getQuantity();
-                        int qtyPurchased = pInvoiceItem.getQuantity();
-
-                        if (qtyPurchased > qtyAtHand)
-                        {
-                            FacesContext.getCurrentInstance().addMessage(null,
-                                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Could not complete transaction!, limited amount of '" + pInvoiceItem.getInventory().getProduct() + "' at inventory"), null));
-
-                            return;
-                        }
-
-                        int qtyLeft = qtyAtHand - qtyPurchased;
-
-                        inventory.setQuantity(qtyLeft);
-                        crudApi.save(inventory); // updating inventory quantity after purchase
-
-                        crudApi.save(pInvoiceItem); // saving invoice item
-
-                    }
-                }
-                else
-                {
-                    System.out.println("Checking for differences");
-                    List<ProformaInvoiceItem> newItemList = proformaInvoiceService.getProformaInvoiceItemList(proformaInvoice);
-                    System.out.println("newItemList size => "+newItemList.size());
-                    
-                    List<ProformaInvoiceItem> differences = proformaInvoiceItemList.stream()
-                            .filter(element -> !newItemList.contains(element))
-                            .collect(Collectors.toList());
-                    
-                    for (ProformaInvoiceItem newItem : differences)
-                    {
-                        System.out.println("different: " + newItem.getInventory());
-                        
-                        Inventory inventory = findById(newItem.getInventory().getId());
-
-                        System.out.println("new inventoryQty => " + inventory.getQuantity() + "\n\n");
-
-                        int qtyAtHand = inventory.getQuantity();
-                        int qtyPurchased = newItem.getQuantity();
-
-                        if (qtyPurchased > qtyAtHand)
-                        {
-                            FacesContext.getCurrentInstance().addMessage(null,
-                                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Could not complete transaction!, limited amount of '" + newItem.getInventory().getProduct() + "' at inventory"), null));
-
-                            return;
-                        }
-
-                        int qtyLeft = qtyAtHand - qtyPurchased;
-
-                        inventory.setQuantity(qtyLeft);
-                        crudApi.save(inventory); // updating inventory quantity after purchase
-
-                        crudApi.save(newItem); // saving invoice item
-                    }
-                    
+                  crudApi.save(pInvoiceItem); 
                 }
                 
                 for (ProformaInvoiceItem invoiceItem : removedProformaInvoiceItemList)
                 {
-                    Inventory inventory = findById(invoiceItem.getInventory().getId());
-                    
-                    inventory.setQuantity(invoiceItem.getQuantity() + inventory.getQuantity());
-                    
                     crudApi.delete(invoiceItem);
                     removedProformaInvoiceItemList.remove(invoiceItem);
                 }
                 
+                
                 if (productDiscountRate > 0.0)
                 {
+                    System.out.println("I entered here!");
                     calculatedDiscount = totalSaleAmount * (productDiscountRate/100);
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     proformaInvoice.setTotalAmount(newTotalAmount);
@@ -443,14 +476,14 @@ public class ProformaInvoiceController implements Serializable
                 
                 proformaInvoice.setInstallationFee(installationFee);
                 proformaInvoice.setDiscountRate(productDiscountRate);
-
+                
                 if(crudApi.save(proformaInvoice) != null)
                 {
                    taxCalculation();
                    
                    FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
-                    
+
                 }
                 else
                 {
@@ -462,12 +495,7 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-    
-    private Inventory findById(String id)
-    {
-      return crudApi.find(Inventory.class, id);
-    }
-    
+
     public void generateReceipt(ProformaInvoice proformaInvoice)
     {
         List<Receipt> receiptList = new LinkedList<>();
@@ -759,6 +787,7 @@ public class ProformaInvoiceController implements Serializable
     
     public void closePage()
     {
+        init();
        proformaInvoice = new ProformaInvoice();
        totalSaleAmount = 0;
        optionText = "Save Changes";

@@ -24,8 +24,9 @@
                     <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search Invoice" action="#{proformaInvoiceController.filterProformaInvoice()}"/>
 
                     <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{proformaInvoiceController.reset()}">
-                        <p:ajax update=":proformaInvoiceTable"/>
+                        <p:ajax update=":proformaInvoiceTable, @form"/>
                     </h:commandButton>
+                    
 
                     <div class="float-right">
                         <h:commandButton value="#{msg.new} #{msg.invoice}" class="btn btn-outline-primary btn-sm"
@@ -34,6 +35,7 @@
                         </h:commandButton>
                     </div>
                     
+                    <span class="shadow-sm float-right col-1 faded-shade p-1">Count: #{proformaInvoiceController.proformaInvoiceList.size()}</span>
                 </h:form>      
             </div>
         </div>
