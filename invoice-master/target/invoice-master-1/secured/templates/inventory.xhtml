@@ -15,14 +15,13 @@
 
             <ui:define name="pageContent">
                 <h:panelGroup id="mainPanel">
-                    <div class="card mb-5 wow zoomIn">
+                    <div class="card mb-5">
                         <div class="container-fluid">
                             <div class="card-header">Add #{msg.inventory}</div>
                             <h:panelGroup rendered="#{inventoryController.pageView.listView}">
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-lg-12">
                                         <h:form class="float-right pt-3" style="margin-bottom: 5px;">
-
                                             <div class="float-right">
                                                 <h:commandButton value="#{msg.new} #{msg.inventory}" class="btn btn-outline-primary btn-sm"
                                                                  action="#{inventoryController.initInventory()}">
@@ -30,10 +29,11 @@
                                                 </h:commandButton>
                                             </div>
                                         </h:form>
+                                            <span class="shadow-sm col-1 faded-shade p-1">Count: #{inventoryController.inventoryList.size()}</span>
                                     </div>
                                 </div>
 
-                                <h:form id="inventoryTable" class="mb-3 wow">
+                                <h:form id="inventoryTable" class="mb-3 wow fadeInUp">
                                     <p:dataTable value="#{inventoryController.inventoryList}" reflow="true" var="inventory"
                                                   scrollable="true" scrollHeight="500">
                                         <p:column style="width: 37px;" exportable="false">

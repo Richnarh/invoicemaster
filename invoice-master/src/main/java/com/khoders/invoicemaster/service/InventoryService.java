@@ -10,8 +10,10 @@ import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.PurchaseOrder;
 import com.khoders.invoicemaster.entities.PurchaseOrderItem;
+import com.khoders.invoicemaster.entities.ReturnGood;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;
@@ -36,6 +38,23 @@ public class InventoryService
         {
             String qryString = "SELECT e FROM Product e WHERE  e.companyBranch=?1";
             TypedQuery<Product> typedQuery = crudApi.getEm().createQuery(qryString, Product.class);
+                                typedQuery.setParameter(1, appSession.getCompanyBranch());
+                            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+    
+    public List<ReturnGood> getReturnGoodList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ReturnGood e WHERE  e.companyBranch=?1";
+            TypedQuery<ReturnGood> typedQuery = crudApi.getEm().createQuery(qryString, ReturnGood.class);
                                 typedQuery.setParameter(1, appSession.getCompanyBranch());
                             return typedQuery.getResultList();
             
@@ -166,4 +185,23 @@ public class InventoryService
 
         return null;
     }
+    public ProformaInvoice invoiceExist(String refNo, Client client)
+    {
+        try
+        {
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.quotationNumber=?1 AND e.client=?2";
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                    .setParameter(1, refNo)
+                    .setParameter(2, client);
+            
+                    return typedQuery.getResultStream().findFirst().orElse(null);
+                    
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

@@ -4,16 +4,24 @@
  * and open the template in the editor.
  */
 package com.khoders.invoicemaster.jbeans.controller;
+import Zenoph.SMSLib.Enums.MSGTYPE;
+import Zenoph.SMSLib.Enums.REQSTATUS;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entites.model.Receipt;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
+import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.invoicemaster.service.SmsService;
+import com.khoders.invoicemaster.sms.SenderId;
+import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -77,6 +85,9 @@ public class ProformaInvoiceController implements Serializable
     private String optionText,paymentInvoiceNo,paymentClient;
     private double totalSaleAmount,calculatedDiscount,installationFee,taxAmount,totalPayable,invoiceAmount,productDiscountRate;
     
+    Sms sms = new Sms();
+    String phoneNumber=null;
+        
     private boolean panelFlag=false;
      
     @PostConstruct
@@ -115,13 +126,13 @@ public class ProformaInvoiceController implements Serializable
     {
         this.proformaInvoiceItem = proformaInvoiceItem;
         proformaInvoiceItemList.remove(proformaInvoiceItem);
-        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
+//        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
         optionText = "Update";
     }
     
     public void deleteProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
     {
-        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
+//        totalSaleAmount -= (proformaInvoiceItem.getQuantity() * proformaInvoiceItem.getUnitPrice());
         removedProformaInvoiceItemList = CollectionList.washList(removedProformaInvoiceItemList, proformaInvoiceItem);
         proformaInvoiceItemList.remove(proformaInvoiceItem);
     }
@@ -182,8 +193,11 @@ public class ProformaInvoiceController implements Serializable
           {
               paymentDataList = CollectionList.washList(paymentDataList, paymentData);
               
+              processPaymentSms(paymentData);
+              
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              
           }
           else
           {
@@ -196,6 +210,90 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
+    
+    public void processPaymentSms(PaymentData paymentData)
+    {
+        SenderId senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+        System.out.println("Sender ID => "+senderId.getSenderIdentity());
+        try 
+        {
+          ZenophSMS zsms = SmsService.extractParams();
+          zsms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!. \n"
+                 + "Contact us: \n "
+                 + "Website: https://dolphindoors.com/ \n"
+                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
+                 + "Email: info@dolphindoors.com");
+          
+          if(paymentData.getProformaInvoice() != null){
+              if(paymentData.getProformaInvoice().getClient() != null)
+              {
+                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
+              }
+            }
+          
+            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+
+            for (String number : numbers)
+            {
+                zsms.addRecipient(number);
+            }
+            
+            zsms.setSenderId(senderId.getSenderIdentity());
+            zsms.setMessageType(MSGTYPE.TEXT);
+
+            List<String[]> response = zsms.submit();
+            for (String[] destination : response)
+            {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null)
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+                        break;
+                    } else
+                    {
+                        switch (reqstatus)
+                        {
+                            case SUCCESS:
+                                saveMessage();
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                                FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+                            default:
+                                FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+                                return;
+                        }
+                    }
+                }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void saveMessage()
+    {
+        try
+        {
+            sms.setSmsTime(LocalDateTime.now());
+            sms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!.");
+            sms.setClient(paymentData.getProformaInvoice().getClient());
+            sms.setsMSType(SMSType.SYSTEM_SMS);
+           if(crudApi.save(sms) != null)
+           {
+               FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("SMS sent to "+paymentData.getProformaInvoice().getClient()), null));
+               
+               System.out.println("SMS sent and saved -- ");
+           }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+      
     
     public void clearPaymentData() {
         paymentData = new PaymentData();
@@ -264,74 +362,54 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-        
+
     public void taxCalculation()
     {
-//            double saleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+      
+        // delete all salesTax for the selected proforma invoice
+        salesTaxList.forEach(salesTax ->
+        {
+            crudApi.delete(salesTax);
+        });
+      
+        for (Tax tax : taxList)
+        {
+            SalesTax salesTax = new SalesTax();
 
-        System.out.println("TotalAmount @TaxCalculation => "+proformaInvoice.getTotalAmount());
-        System.out.println("taxList => "+taxList.size());
-        
-            for (Tax tax : taxList)
-            {
-                System.out.println("I entered the loop");
-                SalesTax salesTax = new SalesTax();
-                
-                System.out.println("\n\n proformaInvoice.getTotalAmount() \n\n=> "+proformaInvoice.getTotalAmount());
-                
-                double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
-                
-                salesTax.genCode();
-                salesTax.setTaxName(tax.getTaxName());
-                salesTax.setTaxRate(tax.getTaxRate());
-                salesTax.setTaxAmount(calc);
-                salesTax.setReOrder(tax.getReOrder());
-                salesTax.setUserAccount(appSession.getCurrentUser());
-                salesTax.setCompanyBranch(appSession.getCompanyBranch());
-                salesTax.setProformaInvoice(proformaInvoice);
-                
-                if(salesTaxList.isEmpty())
-                {
-                    System.out.println("I was saving salesTaxList...");
-                    crudApi.save(salesTax);
-                }
-                else
-                {
-                    for (SalesTax tx : salesTaxList)
-                    {
-                        System.out.println("I entered salesTax");
-                        System.out.println("tx.getProformaInvoice() => "+tx.getProformaInvoice());
-                        System.out.println("proformaInvoice @salesTax => "+proformaInvoice);
-                        if (tx.getProformaInvoice().equals(proformaInvoice))
-                        {
-                            System.out.println("proforma invoice exist: "+tx.getProformaInvoice());
-                            crudApi.save(tx);
-                            System.out.println("Done processing....");
-                        }
-                    }
-                }
-            }
-            System.out.println("I exited!");
+            double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
+
+            salesTax.genCode();
+            salesTax.setTaxName(tax.getTaxName());
+            salesTax.setTaxRate(tax.getTaxRate());
+            salesTax.setTaxAmount(calc);
+            salesTax.setReOrder(tax.getReOrder());
+            salesTax.setUserAccount(appSession.getCurrentUser());
+            salesTax.setCompanyBranch(appSession.getCompanyBranch());
+            salesTax.setProformaInvoice(proformaInvoice);
+
+            crudApi.save(salesTax);
+            
+//                else
+//                {
+//                    for (SalesTax tx : salesTaxList)
+//                    {
+//                        if (tx.getProformaInvoice().equals(proformaInvoice))
+//                        {
+//                            crudApi.save(tx);
+//                        }
+//                    }
+//                }
+        }
             
         salesTaxList = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-        System.out.println("salesTaxList @taxCalcuation Before => "+salesTaxList.size());
-        
         calculateVat();
-        
-        System.out.println("salesTaxList @taxCalcuation After => "+salesTaxList.size());
     }
     
     private void calculateVat()
     {
-//        double saleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
-        
-        System.out.println("installationFee @calculateTax=> "+installationFee);
-        
-        System.out.println("salesTaxList size => "+salesTaxList.size());
         if(!salesTaxList.isEmpty())
         {
-            System.out.println("I dey the vat inside");
             SalesTax nhil = salesTaxList.get(0);
 //            SalesTax getFund = salesTaxList.get(1);
             SalesTax covid19 = salesTaxList.get(1);
@@ -341,31 +419,26 @@ public class ProformaInvoiceController implements Serializable
 
             double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
             
-            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
-            System.out.println("taxableValue => "+taxableValue);
-            System.out.println("totalLevies => "+totalLevies);
-            
+//            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
+//            System.out.println("taxableValue => "+taxableValue);
+//            System.out.println("totalLevies => "+totalLevies);
+//            
             double vat = taxableValue*(salesVat.getTaxRate()/100);
             
-            System.out.println("vat => "+vat);
+//            System.out.println("vat => "+vat);
 
             totalPayable = vat + taxableValue + installationFee;
             
-            System.out.println("totalPayable => "+totalPayable);
-
             salesVat.setTaxAmount(vat);
 
             crudApi.save(salesVat);
             
         }
-        
-        System.out.println("Exit of vat calculation");
     }
 
-     
     public void saveAll()
     {
-        totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+      totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         
         System.out.println("Installation fee @SaveAll => "+installationFee);
@@ -385,7 +458,6 @@ public class ProformaInvoiceController implements Serializable
                     removedProformaInvoiceItemList.remove(invoiceItem);
                 }
                 
-                System.out.println("productDiscountRate ===========>>>> "+productDiscountRate);
                 
                 if (productDiscountRate > 0.0)
                 {
@@ -396,31 +468,22 @@ public class ProformaInvoiceController implements Serializable
                     
                     setTotalSaleAmount(newTotalAmount); // updating the sales amount with the new totalAmount
                     
-                    System.out.println("newTotalAmount => "+newTotalAmount);
                 }
                 else
                 {
-                   System.out.println("I was at else totalSaleAmount");
                    proformaInvoice.setTotalAmount(totalSaleAmount);
                 }
                 
                 proformaInvoice.setInstallationFee(installationFee);
                 proformaInvoice.setDiscountRate(productDiscountRate);
-
-//                crudApi.save(proformaInvoice);
                 
                 if(crudApi.save(proformaInvoice) != null)
                 {
-                   System.out.println("I was here bro.");
                    taxCalculation();
                    
                    FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
-                    
-                    System.out.println("Total Amount After save => "+proformaInvoice.getTotalAmount());
-                    System.out.println("InstallationFee After save => "+proformaInvoice.getInstallationFee());
-                    System.out.println("DiscountRate After save => "+proformaInvoice.getDiscountRate());
-                
+
                 }
                 else
                 {
@@ -432,17 +495,15 @@ public class ProformaInvoiceController implements Serializable
             e.printStackTrace();
         }
     }
-    
+
     public void generateReceipt(ProformaInvoice proformaInvoice)
     {
         List<Receipt> receiptList = new LinkedList<>();
         try
         {
-//            List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
             List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
             Receipt receipt = new Receipt();
         
-//            double invoiceTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
             double totalTax = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
         
             double invoiceValue = totalTax + proformaInvoice.getTotalAmount() + proformaInvoice.getInstallationFee();
@@ -726,6 +787,7 @@ public class ProformaInvoiceController implements Serializable
     
     public void closePage()
     {
+        init();
        proformaInvoice = new ProformaInvoice();
        totalSaleAmount = 0;
        optionText = "Save Changes";

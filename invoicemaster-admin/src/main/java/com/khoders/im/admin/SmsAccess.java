@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.enums;
+package com.khoders.im.admin;
 
 /**
  *
  * @author richa
  */
-public enum SMSType
+public class SmsAccess
 {
-    SINGLE_SMS,
-    BULK_SMS,
-    SYSTEM_SMS;
+  public static  String USERNAME = "pascal";
+  public static  String PASSWORD = "pascal001";
 }

@@ -60,7 +60,6 @@ public class ClientController implements Serializable
 
     public void saveClient()
     {
-        System.out.println("Client => " + client.getPhone());
         if (!optionText.equals("Update"))
         {
             if (client != null)

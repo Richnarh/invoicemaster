@@ -290,6 +290,7 @@ public class ProformaInvoiceDto
     {
 
         private String productCode;
+        private String productName;
         private InputStream productImage;
         private String frameUnit;
         private String widthHeightUnits;
@@ -300,6 +301,16 @@ public class ProformaInvoiceDto
         private double unitPrice;
         private double totalAmount;
         private String description;
+
+        public String getProductName()
+        {
+            return productName;
+        }
+
+        public void setProductName(String productName)
+        {
+            this.productName = productName;
+        }
 
         public int getQuantity()
         {
