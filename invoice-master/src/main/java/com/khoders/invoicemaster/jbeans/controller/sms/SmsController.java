@@ -62,6 +62,8 @@ public class SmsController implements Serializable
     private String connectionStatus;
     private String textMessage;
     
+    private SMSType smsType = SMSType.SINGLE_SMS;
+    
     private boolean flag = false;
 
     @PostConstruct
@@ -317,7 +319,7 @@ public class SmsController implements Serializable
       
     public void loadSmslog()
     {
-        smsList =smsService.loadSmslogList();
+        smsList =smsService.loadSmslogList(smsType);
     }
     
     public void loadContactGroup()
@@ -460,5 +462,11 @@ public class SmsController implements Serializable
         return groupContactList;
     }
 
- 
+    public SMSType getSmsType() {
+        return smsType;
+    }
+
+    public void setSmsType(SMSType smsType) {
+        this.smsType = smsType;
+    }
 }

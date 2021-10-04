@@ -47,6 +47,9 @@ public class PaymentData extends UserAccountRecord implements Serializable
    
    @Column(name = "partial_amount_paid")
    private double partialAmountPaid;
+   
+   @Column(name = "payment_message")
+   private boolean paymentMessage=false;
 
     public String getPaymentCode()
     {
@@ -105,7 +108,15 @@ public class PaymentData extends UserAccountRecord implements Serializable
     public void setPartialAmountPaid(double partialAmountPaid) {
         this.partialAmountPaid = partialAmountPaid;
     }
-   
+
+    public boolean isPaymentMessage() {
+        return paymentMessage;
+    }
+
+    public void setPaymentMessage(boolean paymentMessage) {
+        this.paymentMessage = paymentMessage;
+    }
+
     public void genCode()
     {
         if (getPaymentCode() != null)

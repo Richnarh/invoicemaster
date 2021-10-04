@@ -13,7 +13,6 @@ import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entites.model.Receipt;
-import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
@@ -281,6 +280,8 @@ public class ProformaInvoiceController implements Serializable
             sms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!.");
             sms.setClient(paymentData.getProformaInvoice().getClient());
             sms.setsMSType(SMSType.SYSTEM_SMS);
+            sms.setCompanyBranch(appSession.getCompanyBranch());
+            sms.setUserAccount(appSession.getCurrentUser());
            if(crudApi.save(sms) != null)
            {
                FacesContext.getCurrentInstance().addMessage(null,
@@ -441,10 +442,6 @@ public class ProformaInvoiceController implements Serializable
       totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         
-        System.out.println("Installation fee @SaveAll => "+installationFee);
-        System.out.println("productDiscountRate @SaveAll => "+productDiscountRate);
-        System.out.println("proformaInvoice @SaveAll => "+proformaInvoice);
-        
         try 
         {
                 for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList) 
@@ -461,7 +458,6 @@ public class ProformaInvoiceController implements Serializable
                 
                 if (productDiscountRate > 0.0)
                 {
-                    System.out.println("I entered here!");
                     calculatedDiscount = totalSaleAmount * (productDiscountRate/100);
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     proformaInvoice.setTotalAmount(newTotalAmount);
@@ -601,9 +597,6 @@ public class ProformaInvoiceController implements Serializable
         List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-//        double grandTotalAmount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
-//        double instFees = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getInstallationFee).sum();
-        
             ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
             
             if(proformaInvoice.getClient() != null)
@@ -619,7 +612,6 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setTotalAmount(proformaInvoice.getTotalAmount());
             
             double sTaxAmount = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
-//            double discount = invoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getDiscountRate).sum();
             
             double invoiceValue = sTaxAmount + proformaInvoice.getTotalAmount() + proformaInvoice.getInstallationFee();
             
@@ -662,31 +654,31 @@ public class ProformaInvoiceController implements Serializable
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
             ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
-            try
-            {
-                byte[] image = invoiceItem.getInventory().getProduct().getProductImage();
-                if(image != null)
-                {
-                    InputStream imageStream = new ByteArrayInputStream(image);
-                    invoiceItemDto.setProductImage(imageStream);  
-                }
-                
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
             
             if(invoiceItem.getInventory() != null)
             {
-                if(invoiceItem.getInventory().getProduct() != null)
+                if (invoiceItem.getInventory().getProduct() != null)
                 {
+                    try
+                    {
+                        byte[] image = invoiceItem.getInventory().getProduct().getProductImage();
+                        if (image != null)
+                        {
+                            InputStream imageStream = new ByteArrayInputStream(image);
+                            invoiceItemDto.setProductImage(imageStream);
+                        }
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
                     invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
                     invoiceItemDto.setDescription(invoiceItem.getInventory().getProduct().getDescription());
                 }
+                invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
+                invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
+                invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
             }
-            invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
-            invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
-            invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getSubTotal());
