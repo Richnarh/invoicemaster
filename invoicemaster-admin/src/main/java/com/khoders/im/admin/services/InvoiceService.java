@@ -155,4 +155,29 @@ public class InvoiceService
         
         return Collections.emptyList();
     }
+    
+      
+    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange)
+    {
+        try {
+            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
+            {
+                  String  queryString = "SELECT e FROM ProformaInvoice e ORDER BY e.issuedDate DESC";
+                  TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class);
+                                    return typedQuery.getResultList();
+            }
+            
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 ORDER BY e.issuedDate DESC";
+            
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                    .setParameter(1, dateRange.getFromDate())
+                    .setParameter(2, dateRange.getToDate());
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
 }

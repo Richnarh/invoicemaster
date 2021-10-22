@@ -13,7 +13,7 @@
                     <div class="col-md-8">
                         <h:selectOneMenu id="delivery" label="Delivery Status" class="form-control" value="#{paymentDataController.paymentData.deliveryStatus}" required="true">
                             <f:selectItem itemLabel="#{msg.choose}"/>
-                            <f:selectItems value="#{commonClass.deliveryStatusList}"/>
+                            <f:selectItems value="#{adminCommons.deliveryStatusList}"/>
                         </h:selectOneMenu>
                         <h:message for="delivery" class="text-danger text-sm"/>
                     </div>

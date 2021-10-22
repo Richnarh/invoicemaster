@@ -71,6 +71,7 @@ public class PaymentDataController implements Serializable{
     String phoneNumber=null;
     Client client=null;
     SenderId senderId = null;
+    double totalAmount=0.0;
     
     @PostConstruct
     private void init()
@@ -83,6 +84,12 @@ public class PaymentDataController implements Serializable{
     {
         if(paymentStatus == null) return;
         paymentDataStatusList = paymentService.getInvoiceByPaymentStatus(paymentStatus);
+        
+        totalAmount = 0.0;
+        for (PaymentData data : paymentDataStatusList)
+        {
+            totalAmount += data.getProformaInvoice().getTotalAmount();
+        }
     }
     public void fetchByDeliveryStatus()
     {
@@ -258,6 +265,7 @@ public class PaymentDataController implements Serializable{
     {
         try
         {
+            sms.genCode();
             sms.setSmsTime(LocalDateTime.now());
             sms.setMessage("Thanks for shopping with Dolphin Doors, we'll be expecting you next time.");
             sms.setClient(client);
@@ -422,6 +430,11 @@ public class PaymentDataController implements Serializable{
     public List<PaymentData> getPaymentDataDeliveryList()
     {
         return paymentDataDeliveryList;
+    }
+
+    public double getTotalAmount()
+    {
+        return totalAmount;
     }
 
 

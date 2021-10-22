@@ -36,13 +36,11 @@
                                                 <span>SMS ID</span>
                                                 <h:outputText value="#{sms.smsId}"/>
                                                 
-                                                <span>Sender</span>
-                                                <h:outputText value=" #{sms.senderName}"/>
                                             </h:panelGrid>
                                         </p:rowExpansion>
                                         <p:column headerText="#{msg.date}">
                                             <h:outputText value="#{sms.smsTime}">
-                                                <f:convertDateTime type="localDateTime" pattern="#{msg.formated_date_time_words}"/>
+                                                <f:convertDateTime type="localDateTime" pattern="#{msg.formated_date_time_words_short}"/>
                                             </h:outputText>
                                         </p:column>
 

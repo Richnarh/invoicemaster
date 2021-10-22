@@ -83,6 +83,7 @@
 	<field name="installationFee" class="java.lang.Double"/>
 	<field name="totalDiscount" class="java.lang.Double"/>
 	<field name="totalPayable" class="java.lang.Double"/>
+	<field name="subTotalAmount" class="java.lang.Double"/>
 	<variable name="grandTotalAmount" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{totalAmount}]]></variableExpression>
 	</variable>
@@ -868,7 +869,7 @@
 				</graphicElement>
 			</line>
 			<frame>
-				<reportElement positionType="Float" x="351" y="150" width="204" height="99" uuid="8045cbcf-0217-4a8c-b121-0c98115f99c6"/>
+				<reportElement positionType="Float" x="351" y="150" width="204" height="123" uuid="8045cbcf-0217-4a8c-b121-0c98115f99c6"/>
 				<box>
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineStyle="Solid" lineColor="#000000"/>
@@ -876,7 +877,7 @@
 					<rightPen lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<componentElement>
-					<reportElement style="field-value" positionType="Float" x="0" y="28" width="204" height="15" uuid="f311f1c2-7b9d-4b31-8ded-adb93e1ae29b">
+					<reportElement style="field-value" positionType="Float" x="0" y="62" width="204" height="15" uuid="f311f1c2-7b9d-4b31-8ded-adb93e1ae29b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
@@ -916,7 +917,7 @@
 					</jr:list>
 				</componentElement>
 				<textField pattern="#,##0.00">
-					<reportElement style="field-label" positionType="Float" x="104" y="62" width="100" height="15" uuid="18ca18ea-91ec-4d51-bc86-68fef99d7486">
+					<reportElement style="field-label" positionType="Float" x="104" y="23" width="100" height="15" uuid="18ca18ea-91ec-4d51-bc86-68fef99d7486">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -930,7 +931,7 @@
 					<textFieldExpression><![CDATA[$F{totalDiscount}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement style="detail-data" positionType="Float" x="0" y="80" width="104" height="15" uuid="5c10ef4c-c750-4c26-8673-9ba6b24fc893">
+					<reportElement style="detail-data" positionType="Float" x="0" y="104" width="104" height="15" uuid="5c10ef4c-c750-4c26-8673-9ba6b24fc893">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -943,7 +944,7 @@
 					<text><![CDATA[Total Payable]]></text>
 				</staticText>
 				<textField pattern="GH¢ #,##0.00">
-					<reportElement style="field-label" positionType="Float" x="104" y="80" width="100" height="15" uuid="d5a24f5a-f824-468e-a383-daa3f8231cfe">
+					<reportElement style="field-label" positionType="Float" x="104" y="104" width="100" height="15" uuid="d5a24f5a-f824-468e-a383-daa3f8231cfe">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -957,7 +958,7 @@
 					<textFieldExpression><![CDATA[$F{totalPayable}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement style="detail-data" positionType="Float" x="0" y="44" width="104" height="15" uuid="e4df1dd4-7b2c-4433-93f5-13ef1ab376cd">
+					<reportElement style="detail-data" positionType="Float" x="0" y="81" width="104" height="15" uuid="e4df1dd4-7b2c-4433-93f5-13ef1ab376cd">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -970,7 +971,7 @@
 					<text><![CDATA[Installation Fee]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="detail-data" positionType="Float" x="0" y="62" width="104" height="15" uuid="47c78d27-8aee-451c-a9f3-24c72ae3cb62">
+					<reportElement style="detail-data" positionType="Float" x="0" y="23" width="104" height="15" uuid="47c78d27-8aee-451c-a9f3-24c72ae3cb62">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -980,10 +981,10 @@
 						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#E0E0E0"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<text><![CDATA[Discount Amount (%)]]></text>
+					<text><![CDATA[Discount (%)]]></text>
 				</staticText>
 				<textField pattern="#,##0.00">
-					<reportElement style="field-label" positionType="Float" x="104" y="44" width="100" height="15" uuid="8e76704e-ac97-4147-a170-871186e0cb0b">
+					<reportElement style="field-label" positionType="Float" x="104" y="81" width="100" height="15" uuid="8e76704e-ac97-4147-a170-871186e0cb0b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -1008,10 +1009,37 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{subTotalAmount}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement style="detail-data" positionType="Float" x="0" y="4" width="104" height="15" uuid="a1bbda28-e7bf-4b42-b8fe-ddee594e0bfa">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.75" lineStyle="Solid"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#E0E0E0"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Sub Total]]></text>
+				</staticText>
+				<textField pattern="GH¢ #,##0.00">
+					<reportElement style="field-label" positionType="Float" x="104" y="42" width="100" height="15" uuid="6888e553-6ee1-4367-82f4-a197dd2c43f5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.75" lineStyle="Solid"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#E0E0E0"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="detail-data" positionType="Float" x="0" y="42" width="104" height="15" uuid="42a4bc80-ed9b-45bb-a827-46e6a0c1b34b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>

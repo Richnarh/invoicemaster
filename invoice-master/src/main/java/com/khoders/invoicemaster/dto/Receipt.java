@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.entites.model;
+package com.khoders.invoicemaster.dto;
 
 import java.time.LocalDateTime;
 

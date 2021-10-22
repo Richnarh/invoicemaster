@@ -41,6 +41,9 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
 
     @Column(name = "total_amount")
     private double totalAmount;
+    
+    @Column(name = "sub_total_amount")
+    private double subTotalAmount;
 
     @Column(name = "mode_of_payment")
     @Enumerated(EnumType.STRING)
@@ -144,6 +147,16 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     public void setInstallationFee(double installationFee)
     {
         this.installationFee = installationFee;
+    }
+
+    public double getSubTotalAmount()
+    {
+        return subTotalAmount;
+    }
+
+    public void setSubTotalAmount(double subTotalAmount)
+    {
+        this.subTotalAmount = subTotalAmount;
     }
     
     public void genCode()

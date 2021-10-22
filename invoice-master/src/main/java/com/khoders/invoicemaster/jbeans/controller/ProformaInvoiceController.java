@@ -10,9 +10,9 @@ import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
-import com.khoders.invoicemaster.entites.model.ProformaInvoiceDto;
+import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
-import com.khoders.invoicemaster.entites.model.Receipt;
+import com.khoders.invoicemaster.dto.Receipt;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
@@ -82,9 +82,10 @@ public class ProformaInvoiceController implements Serializable
     
     private int selectedTabIndex;
     private String optionText,paymentInvoiceNo,paymentClient;
-    private double totalSaleAmount,calculatedDiscount,installationFee,taxAmount,totalPayable,invoiceAmount,productDiscountRate;
+    private double subTotal,totalSaleAmount,calculatedDiscount,installationFee,taxAmount,totalPayable,invoiceAmount,productDiscountRate;
     
     Sms sms = new Sms();
+    SenderId senderId=null;
     String phoneNumber=null;
         
     private boolean panelFlag=false;
@@ -212,7 +213,7 @@ public class ProformaInvoiceController implements Serializable
     
     public void processPaymentSms(PaymentData paymentData)
     {
-        SenderId senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+        senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
         System.out.println("Sender ID => "+senderId.getSenderIdentity());
         try 
         {
@@ -276,12 +277,14 @@ public class ProformaInvoiceController implements Serializable
     {
         try
         {
+            sms.genCode();
             sms.setSmsTime(LocalDateTime.now());
             sms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!.");
             sms.setClient(paymentData.getProformaInvoice().getClient());
             sms.setsMSType(SMSType.SYSTEM_SMS);
             sms.setCompanyBranch(appSession.getCompanyBranch());
             sms.setUserAccount(appSession.getCurrentUser());
+            sms.setSenderId(senderId);
            if(crudApi.save(sms) != null)
            {
                FacesContext.getCurrentInstance().addMessage(null,
@@ -319,6 +322,7 @@ public class ProformaInvoiceController implements Serializable
         salesTaxList = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
         totalSaleAmount = proformaInvoice.getTotalAmount();
+        subTotal = proformaInvoice.getSubTotalAmount();
 
         calculateVat();
     }
@@ -441,7 +445,6 @@ public class ProformaInvoiceController implements Serializable
     {
       totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
-        
         try 
         {
                 for (ProformaInvoiceItem pInvoiceItem : proformaInvoiceItemList) 
@@ -458,16 +461,20 @@ public class ProformaInvoiceController implements Serializable
                 
                 if (productDiscountRate > 0.0)
                 {
-                    calculatedDiscount = totalSaleAmount * (productDiscountRate/100);
+                    calculatedDiscount = totalSaleAmount * (productDiscountRate/100); // Calculating Discount on total Amount
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
+                    
                     proformaInvoice.setTotalAmount(newTotalAmount);
                     
+                   proformaInvoice.setSubTotalAmount(totalSaleAmount);
                     setTotalSaleAmount(newTotalAmount); // updating the sales amount with the new totalAmount
-                    
+                    setSubTotal(totalSaleAmount);
                 }
                 else
                 {
+                   setSubTotal(totalSaleAmount);
                    proformaInvoice.setTotalAmount(totalSaleAmount);
+                   proformaInvoice.setSubTotalAmount(totalSaleAmount);
                 }
                 
                 proformaInvoice.setInstallationFee(installationFee);
@@ -610,6 +617,7 @@ public class ProformaInvoiceController implements Serializable
             proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
             proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
             proformaInvoiceDto.setTotalAmount(proformaInvoice.getTotalAmount());
+            proformaInvoiceDto.setSubTotalAmount(proformaInvoice.getSubTotalAmount());
             
             double sTaxAmount = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
             
@@ -987,6 +995,16 @@ public class ProformaInvoiceController implements Serializable
     public void setProductDiscountRate(double productDiscountRate)
     {
         this.productDiscountRate = productDiscountRate;
+    }
+
+    public double getSubTotal()
+    {
+        return subTotal;
+    }
+
+    public void setSubTotal(double subTotal)
+    {
+        this.subTotal = subTotal;
     }
     
 }
