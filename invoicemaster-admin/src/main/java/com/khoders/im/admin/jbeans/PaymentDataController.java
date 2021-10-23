@@ -69,7 +69,9 @@ public class PaymentDataController implements Serializable{
     
     Sms sms = new Sms();
     String phoneNumber=null;
-    
+    Client client=null;
+    SenderId senderId = null;
+    double totalAmount=0.0;
     
     @PostConstruct
     private void init()
@@ -82,6 +84,12 @@ public class PaymentDataController implements Serializable{
     {
         if(paymentStatus == null) return;
         paymentDataStatusList = paymentService.getInvoiceByPaymentStatus(paymentStatus);
+        
+        totalAmount = 0.0;
+        for (PaymentData data : paymentDataStatusList)
+        {
+            totalAmount += data.getProformaInvoice().getTotalAmount();
+        }
     }
     public void fetchByDeliveryStatus()
     {
@@ -101,10 +109,7 @@ public class PaymentDataController implements Serializable{
     }
     
    public void savePaymentData()
-    {
-        System.out.println("payment status => "+this.paymentData.getPaymentStatus());
-        System.out.println("delivery status => "+this.paymentData.getDeliveryStatus());
-        
+   {
         try 
         {
           if(crudApi.save(paymentData) != null)
@@ -180,12 +185,10 @@ public class PaymentDataController implements Serializable{
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-    Client client=null;
+
     public void processPaymentMsg(PaymentData paymentData)
     {
-        
-       SenderId senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
-       System.out.println("Sender ID => "+senderId.getSenderIdentity());
+       senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
         try 
         {
           ZenophSMS zsms = PaymentService.extractParams();
@@ -201,7 +204,6 @@ public class PaymentDataController implements Serializable{
               {
                  client = paymentData.getProformaInvoice().getClient();
                  phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
-                  System.out.println("phoneNumber => "+phoneNumber);
               }
             }
           
@@ -230,6 +232,8 @@ public class PaymentDataController implements Serializable{
                         {
                             case SUCCESS:
                                 saveMessage();
+                                
+                                paymentMessageSent(paymentData);
                                 break;
                             case ERR_INSUFF_CREDIT:
                                 FacesContext.getCurrentInstance().addMessage(null,
@@ -247,14 +251,27 @@ public class PaymentDataController implements Serializable{
      e.printStackTrace();
     }
    }
+    
+    public void paymentMessageSent(PaymentData data) {
+        paymentData = crudApi.find(PaymentData.class, data.getId());
+        paymentData.setPaymentMessage(true);
+        
+        crudApi.save(paymentData);
+        
+        fetchByPaymentStatus();
+    }
+    
     public void saveMessage()
     {
         try
         {
+            sms.genCode();
             sms.setSmsTime(LocalDateTime.now());
             sms.setMessage("Thanks for shopping with Dolphin Doors, we'll be expecting you next time.");
             sms.setClient(client);
             sms.setsMSType(SMSType.SYSTEM_SMS);
+            sms.setSenderId(senderId);
+            sms.setUserAccount(appSession.getCurrentUser());
            if(crudApi.save(sms) != null)
            {
                FacesContext.getCurrentInstance().addMessage(null,
@@ -264,7 +281,7 @@ public class PaymentDataController implements Serializable{
            }
         } catch (Exception e)
         {
-            e.printStackTrace();
+          e.printStackTrace();
         }
     }
     
@@ -352,7 +369,6 @@ public class PaymentDataController implements Serializable{
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
             InputStream stream = getClass().getResourceAsStream(ReportFiles.WAYBILL_FILE);
             
-            
             reportParams.put("logo", ReportFiles.LOGO);
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportParams, dataSource);
@@ -415,5 +431,12 @@ public class PaymentDataController implements Serializable{
     {
         return paymentDataDeliveryList;
     }
+
+    public double getTotalAmount()
+    {
+        return totalAmount;
+    }
+
+
     
 }

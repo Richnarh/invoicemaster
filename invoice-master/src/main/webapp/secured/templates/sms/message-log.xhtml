@@ -15,11 +15,19 @@
                 <div class="card">
                     <div class="card-header">Message History</div>
                     <div class="card-body">
-                        <div class="row">
+                        <h:form class="spaced-form">
+                            <p:selectOneMenu value="#{smsController.smsType}">
+                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                <f:selectItems value="#{commonClass.smsTypeList}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:commandButton class="mx-2" value="Load" action="#{smsController.loadSmslog()}" update=":smsLogTable"/> 
+                        </h:form>
+                        <div class="row pt-2">
                             <div class="col-md-12">
                                 <h:form id="smsLogTable">
                                     <p:dataTable value="#{smsController.smsList}" var="sms" scrollHeight="400" scrollable="true">
-                                        <p:column class="row-toggler">
+                                        <p:column style="width: 37px;">
                                             <p:rowToggler/>
                                         </p:column>
 
@@ -28,14 +36,11 @@
                                                 <span>SMS ID</span>
                                                 <h:outputText value="#{sms.smsId}"/>
                                                 
-                                                <span>Sender</span>
-                                                <h:outputText value=" #{sms.senderName}"/>
                                             </h:panelGrid>
-                                            
                                         </p:rowExpansion>
                                         <p:column headerText="#{msg.date}">
                                             <h:outputText value="#{sms.smsTime}">
-                                                <f:convertDateTime type="localDateTime" pattern="#{msg.formated_date_time_words}"/>
+                                                <f:convertDateTime type="localDateTime" pattern="#{msg.formated_date_time_words_short}"/>
                                             </h:outputText>
                                         </p:column>
 

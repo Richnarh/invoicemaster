@@ -131,8 +131,8 @@ public class ProformaInvoiceService
         {
             String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1 AND e.userAccount=?2";
             TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoiceItem.class)
+                    .setParameter(1, proformaInvoice)
                     .setParameter(2, appSession.getCurrentUser());
-            typedQuery.setParameter(1, proformaInvoice);
             return typedQuery.getResultList();
             
         } catch (Exception e)

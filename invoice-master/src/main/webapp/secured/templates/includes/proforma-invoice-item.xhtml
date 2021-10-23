@@ -95,6 +95,14 @@
                 <div class="col-md-6 pull-right shadow-sm mb-2 bg-white">
                     <table class="table">
                         <tr>
+                            <td><span class="field-label">Sub Total</span></td>
+                            <td  class="text-right"> 
+                                <h:inputText value="#{proformaInvoiceController.subTotal}" readonly="true" class="form-control">
+                                    <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
+                                </h:inputText>
+                            </td>
+                        </tr>
+                        <tr>
                             <td><span class="field-label">#{msg.total_amount}</span></td>
                             <td  class="text-right"> 
                                 <h:outputText value="#{proformaInvoiceController.totalSaleAmount}" class="field-shade">

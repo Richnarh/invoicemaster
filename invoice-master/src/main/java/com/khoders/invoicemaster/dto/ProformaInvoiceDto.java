@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.entites.model;
+package com.khoders.invoicemaster.dto;
 
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -27,12 +27,14 @@ public class ProformaInvoiceDto
     private String telephoneNo;
     private String gpsAddress;
     private String quotationNumber;
-    private double totalAmount;
     private String description;
     private String logo;
     private String branchName;
     private String website;
     private String tinNo;
+    
+    private double subTotalAmount;
+    private double totalAmount;
     private double installationFee;
     private double totalDiscount;
     private double totalPayable;
@@ -246,9 +248,18 @@ public class ProformaInvoiceDto
         this.totalPayable = totalPayable;
     }
 
+    public double getSubTotalAmount()
+    {
+        return subTotalAmount;
+    }
+
+    public void setSubTotalAmount(double subTotalAmount)
+    {
+        this.subTotalAmount = subTotalAmount;
+    }
+    
     public static class SalesTax
     {
-
         private String taxName;
         private double taxRate;
         private double taxAmount;
@@ -282,13 +293,10 @@ public class ProformaInvoiceDto
         {
             this.taxAmount = taxAmount;
         }
-
     }
-
 
     public static class ProformaInvoiceItem
     {
-
         private String productCode;
         private String productName;
         private InputStream productImage;

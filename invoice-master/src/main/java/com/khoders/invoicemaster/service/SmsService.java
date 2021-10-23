@@ -8,6 +8,7 @@ package com.khoders.invoicemaster.service;
 import Zenoph.SMSLib.Enums.MSGTYPE;
 import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.SmsAccess;
 import com.khoders.invoicemaster.sms.GroupContact;
 import com.khoders.invoicemaster.sms.MessageTemplate;
@@ -97,13 +98,15 @@ public class SmsService
         return Collections.emptyList();
     }
   
-    public List<Sms> loadSmslogList()
+    public List<Sms> loadSmslogList(SMSType smsType)
     {
         try
         {
-            String qryString = "SELECT e FROM Sms e WHERE e.userAccount=?1 ORDER BY e.smsTime DESC";
+            String qryString = "SELECT e FROM Sms e WHERE e.sMSType=?1 ORDER BY e.smsTime DESC";
+//            String qryString = "SELECT e FROM Sms e WHERE e.userAccount=?1 AND e.sMSType=?2 ORDER BY e.smsTime DESC";
             TypedQuery<Sms> typedQuery = crudApi.getEm().createQuery(qryString, Sms.class);
-                            typedQuery.setParameter(1, appSession.getCurrentUser());
+//                            typedQuery.setParameter(1, appSession.getCurrentUser());
+                            typedQuery.setParameter(1, smsType);
                             return typedQuery.getResultList();
         } catch (Exception e)
         {
