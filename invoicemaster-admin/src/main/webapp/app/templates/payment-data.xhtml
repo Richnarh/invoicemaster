@@ -34,7 +34,7 @@
                                             <f:selectItems value="#{adminCommons.paymentStatusList}"/>
                                         </h:selectOneMenu>
 
-                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
+                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByPaymentStatus()}" ajax="false"/>
 
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataStatusList.size()}</span>
                                         <h:panelGroup class="shadow-sm faded-shade p-1">
@@ -112,7 +112,7 @@
                                             <f:selectItems value="#{adminCommons.deliveryStatusList}"/>
                                         </h:selectOneMenu>
 
-                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
+                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" ajax="false"/>
 
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataDeliveryList.size()}</span>
                                     </h:panelGrid>

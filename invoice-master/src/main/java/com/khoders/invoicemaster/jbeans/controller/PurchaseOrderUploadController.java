@@ -11,7 +11,7 @@ import com.khoders.invoicemaster.entities.PurchaseOrderItem;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.Msg;
-import com.khoders.resource.utilities.NumberUtil;
+import com.khoders.resource.utilities.BeansUtil;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,22 +89,22 @@ public class PurchaseOrderUploadController implements Serializable
                   Row currentRow = iterator.next();
                   
                       System.out.println("going through cells....");
-                      purchaseOrderItem.setOrderItemCode(NumberUtil.objToString(currentRow.getCell(0)));
-                      purchaseOrderItem.setWings(NumberUtil.objToString(currentRow.getCell(1)));
-                      purchaseOrderItem.setHeight(NumberUtil.objToInteger(currentRow.getCell(2)));
-                      purchaseOrderItem.setWidth(NumberUtil.objToInteger(currentRow.getCell(3)));
-                      purchaseOrderItem.setModel(NumberUtil.objToString(currentRow.getCell(4)));
-                      purchaseOrderItem.setAccessories(NumberUtil.objToString(currentRow.getCell(5)));
-                      purchaseOrderItem.setRightQty(NumberUtil.objToInteger(currentRow.getCell(6)));
-                      purchaseOrderItem.setLeftQty(NumberUtil.objToInteger(currentRow.getCell(7)));
-                      purchaseOrderItem.setTotaltQty(NumberUtil.objToInteger(currentRow.getCell(8)));
-                      purchaseOrderItem.setUnitPrice(NumberUtil.objToInteger(currentRow.getCell(9)));
-                      purchaseOrderItem.setTotalPrice(NumberUtil.objToDouble(currentRow.getCell(10)));
-//                      purchaseOrderItem.setFrameSize(NumberUtil.objToInteger(currentRow.getCell(7)));
+                      purchaseOrderItem.setOrderItemCode(BeansUtil.objToString(currentRow.getCell(0)));
+                      purchaseOrderItem.setWings(BeansUtil.objToString(currentRow.getCell(1)));
+                      purchaseOrderItem.setHeight(BeansUtil.objToInteger(currentRow.getCell(2)));
+                      purchaseOrderItem.setWidth(BeansUtil.objToInteger(currentRow.getCell(3)));
+                      purchaseOrderItem.setModel(BeansUtil.objToString(currentRow.getCell(4)));
+                      purchaseOrderItem.setAccessories(BeansUtil.objToString(currentRow.getCell(5)));
+                      purchaseOrderItem.setRightQty(BeansUtil.objToInteger(currentRow.getCell(6)));
+                      purchaseOrderItem.setLeftQty(BeansUtil.objToInteger(currentRow.getCell(7)));
+                      purchaseOrderItem.setTotaltQty(BeansUtil.objToInteger(currentRow.getCell(8)));
+                      purchaseOrderItem.setUnitPrice(BeansUtil.objToInteger(currentRow.getCell(9)));
+                      purchaseOrderItem.setTotalPrice(BeansUtil.objToDouble(currentRow.getCell(10)));
+//                      purchaseOrderItem.setFrameSize(BeansUtil.objToInteger(currentRow.getCell(7)));
                      
-                      purchaseOrderItem.setSellingPrice(NumberUtil.objToDouble(currentRow.getCell(11)));
+                      purchaseOrderItem.setSellingPrice(BeansUtil.objToDouble(currentRow.getCell(11)));
                       
-                      String prdtType = NumberUtil.objToString(currentRow.getCell(12));
+                      String prdtType = BeansUtil.objToString(currentRow.getCell(12));
                       
                       ProductType productType = crudApi.getEm().createQuery("SELECT e FROM ProductType e WHERE e.productTypeName=?1", ProductType.class)
                                             .setParameter(1, prdtType)
