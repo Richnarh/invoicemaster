@@ -88,7 +88,14 @@ public class PaymentDataController implements Serializable{
         totalAmount = 0.0;
         for (PaymentData data : paymentDataStatusList)
         {
-            totalAmount += data.getProformaInvoice().getTotalAmount();
+            if(data.getProformaInvoice() != null)
+            {
+               totalAmount += data.getProformaInvoice().getTotalAmount();
+            }
+            else
+            {
+                System.out.println("Data => "+data.getProformaInvoice());
+            }
         }
     }
     public void fetchByDeliveryStatus()
