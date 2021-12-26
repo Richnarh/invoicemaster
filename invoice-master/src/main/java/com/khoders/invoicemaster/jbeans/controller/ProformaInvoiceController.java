@@ -19,6 +19,7 @@ import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.invoicemaster.service.SmsService;
+import com.khoders.invoicemaster.service.XtractService;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.jpa.CrudApi;
@@ -62,6 +63,7 @@ public class ProformaInvoiceController implements Serializable
     @Inject private ProformaInvoiceService proformaInvoiceService;
     @Inject private ReportHandler reportHandler;
     @Inject private ReportHandler coverHandler;
+    @Inject private XtractService xtractService;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -504,34 +506,7 @@ public class ProformaInvoiceController implements Serializable
         List<Receipt> receiptList = new LinkedList<>();
         try
         {
-            List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
-            Receipt receipt = new Receipt();
-        
-            double totalTax = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
-        
-            double invoiceValue = totalTax + proformaInvoice.getTotalAmount() + proformaInvoice.getInstallationFee();
-            
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                receipt.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-            }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                receipt.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-            }
-            
-            receipt.setReceiptNumber(proformaInvoice.getQuotationNumber());
-            receipt.setTotalTax(totalTax);
-            receipt.setInstallationFee(proformaInvoice.getInstallationFee());
-            receipt.setTotalAmount(proformaInvoice.getTotalAmount());
-            receipt.setDate(LocalDateTime.now());
-            receipt.setTotalPayable(invoiceValue);
-            try
-            {
-                receipt.setModeOfPayment(proformaInvoice.getModeOfPayment().getLabel());
-            } catch (Exception e)
-            {
-            }
+            Receipt receipt = xtractService.extractToReceipt(proformaInvoice);
             
             receiptList.add(receipt);
             
@@ -546,47 +521,6 @@ public class ProformaInvoiceController implements Serializable
             JasperExportManager.exportReportToPdfStream(receiptPrint, servletStream);
             FacesContext.getCurrentInstance().responseComplete();
             
-//            File newFile = new File(this.getClass().getResource("/com/khoders/invoicemaster/resources/receipt").getFile());
-//
-//                        
-//            String pdfFile = newFile+File.separator+SystemUtils.generateCode()+"_receipt.pdf";
-//            System.out.println("PDF File => "+pdfFile);
-//            JasperExportManager.exportReportToPdfFile(receiptPrint, pdfFile);
-//            FacesContext.getCurrentInstance().responseComplete();
-//            
-//            DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
-//            PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
-////            patts.add(Sides.DUPLEX);
-//            PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
-//            if (ps.length == 0)
-//            {
-//                throw new IllegalStateException("No Printer found");
-//            }
-//            System.out.println("Available printers: " + Arrays.asList(ps));
-//
-//            PrintService myService = null;
-//            for (PrintService printService : ps)
-//            {
-//                System.out.println("Printers => "+printService.getName());
-//                if (printService.getName().equalsIgnoreCase("EPSON TM-T20III Receipt"))
-//                {
-//                    myService = printService;
-//                    break;
-//                }
-//            }
-//
-//            if (myService == null)
-//            {
-//                throw new IllegalStateException("Printer not found");
-//            }
-//
-//            PDDocument document = PDDocument.load(new File(pdfFile));
-//            
-//            PrinterJob job = PrinterJob.getPrinterJob();
-//            job.setPageable(new PDFPageable(document));
-//            job.setPrintService(myService);
-//            job.print();
-//            
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -598,121 +532,14 @@ public class ProformaInvoiceController implements Serializable
     {
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
-        List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.SalesTax> salesTaxs = new LinkedList<>();
-        
-        List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
-        List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
-        
-            ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
+        ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoice(proformaInvoice);
             
-            if(proformaInvoice.getClient() != null)
-            {
-              proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName().toUpperCase());
-              proformaInvoiceDto.setEmailAddress(proformaInvoice.getClient().getEmailAddress());
-              proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress().toUpperCase());  
-            }
-            proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
-            proformaInvoiceDto.setExpiryDate(proformaInvoice.getExpiryDate());
-            proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
-            proformaInvoiceDto.setDescription(proformaInvoice.getDescription());
-            proformaInvoiceDto.setTotalAmount(proformaInvoice.getTotalAmount());
-            proformaInvoiceDto.setSubTotalAmount(proformaInvoice.getSubTotalAmount());
-            
-            double sTaxAmount = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
-            
-            double invoiceValue = sTaxAmount + proformaInvoice.getTotalAmount() + proformaInvoice.getInstallationFee();
-            
-            proformaInvoiceDto.setInstallationFee(proformaInvoice.getInstallationFee());
-            proformaInvoiceDto.setTotalDiscount(proformaInvoice.getDiscountRate());
-            proformaInvoiceDto.setTotalPayable(invoiceValue);
-        
-            
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
-        }
-                
-        for (SalesTax salesTax : salesTaxesList)
-        {
-            ProformaInvoiceDto.SalesTax taxItem = new ProformaInvoiceDto.SalesTax();
-            taxItem.setTaxName(salesTax.getTaxName());
-            taxItem.setTaxRate(salesTax.getTaxRate());
-            taxItem.setTaxAmount(salesTax.getTaxAmount());
-
-            salesTaxs.add(taxItem);
-        }
-        
-        for (ProformaInvoiceItem invoiceItem : invoiceItemList)
-        {
-            ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
-            
-            if(invoiceItem.getInventory() != null)
-            {
-                if (invoiceItem.getInventory().getProduct() != null)
-                {
-                    try
-                    {
-                        byte[] image = invoiceItem.getInventory().getProduct().getProductImage();
-                        if (image != null)
-                        {
-                            InputStream imageStream = new ByteArrayInputStream(image);
-                            invoiceItemDto.setProductImage(imageStream);
-                        }
-                    } catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                    invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
-                    invoiceItemDto.setDescription(invoiceItem.getInventory().getProduct().getDescription());
-                }
-                invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
-                invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
-                invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
-            }
-            invoiceItemDto.setQuantity(invoiceItem.getQuantity());
-            invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
-            invoiceItemDto.setTotalAmount(invoiceItem.getSubTotal());
-            
-            if(appSession.getCurrentUser().getFrame() != null)
-            {
-                invoiceItemDto.setFrameUnit(appSession.getCurrentUser().getFrame().getLabel());
-            }
-            
-            if(appSession.getCurrentUser().getWidth() != null)
-            {
-                invoiceItemDto.setWidthHeightUnits(appSession.getCurrentUser().getWidth().getLabel());
-            }
-            
-            invoiceItemDtoList.add(invoiceItemDto);
-        }
-            proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
-            proformaInvoiceDto.setTaxList(salesTaxs);
-            
-            proformaInvoiceDtoList.add(proformaInvoiceDto);
+        proformaInvoiceDtoList.add(proformaInvoiceDto);
             
         try
         {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
             InputStream stream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_FILE);
-            
             
             reportHandler.reportParams.put("logo", ReportFiles.LOGO);
             
@@ -733,43 +560,14 @@ public class ProformaInvoiceController implements Serializable
     {
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
-            ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();
-            proformaInvoiceDto.setClientName(proformaInvoice.getClient().getClientName());
-            proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress());
-            proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
-            proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
-            
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
-        }
+        ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoiceCover(proformaInvoice);
         
         proformaInvoiceDtoList.add(proformaInvoiceDto);
        
         try
         {
-             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
-        
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
+
             InputStream coverStream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_COVER);
             coverHandler.reportParams.put("logo", ReportFiles.LOGO);
 
@@ -779,6 +577,7 @@ public class ProformaInvoiceController implements Serializable
             ServletOutputStream outputStream = servletResponse.getOutputStream();
             JasperExportManager.exportReportToPdfStream(coverPrint, outputStream);
             FacesContext.getCurrentInstance().responseComplete();
+            
         } catch (Exception e)
         {
             e.printStackTrace();
