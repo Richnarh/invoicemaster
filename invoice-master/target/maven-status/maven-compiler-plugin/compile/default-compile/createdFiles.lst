@@ -1,3 +1,4 @@
+com\khoders\invoicemaster\jbeans\controller\PaymentDataController$1.class
 com\khoders\invoicemaster\jbeans\controller\PurchaseOrderController.class
 com\khoders\invoicemaster\jbeans\controller\LoginController.class
 com\khoders\invoicemaster\jbeans\controller\TaxController.class
@@ -22,11 +23,13 @@ com\khoders\invoicemaster\jbeans\controller\ReportHandler.class
 com\khoders\invoicemaster\commons\CommonClass.class
 com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.class
+com\khoders\invoicemaster\jbeans\controller\PaymentDataController.class
 com\khoders\invoicemaster\jbeans\converter\PurchaseConverter.class
 com\khoders\invoicemaster\jbeans\controller\sms\SmsController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
+com\khoders\invoicemaster\service\PaymentService.class
 com\khoders\invoicemaster\service\InventoryService.class
 com\khoders\invoicemaster\dto\Receipt.class
 com\khoders\invoicemaster\jbeans\converter\InventoryConverter.class

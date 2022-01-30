@@ -9,11 +9,11 @@
             <h:form>
                 <p:growl/>
                 <div class="form-group row">
-                    <label class="col-form-label">Delivery Status <span class="text-danger">*</span></label>
+                    <label class="col-form-label">#{msg.payment_staus}<span class="text-danger">*</span></label>
                     <div class="col-md-8">
-                        <h:selectOneMenu id="delivery" label="Delivery Status" class="form-control" value="#{paymentDataController.paymentData.deliveryStatus}" required="true">
+                        <h:selectOneMenu id="delivery" label="#{msg.payment_staus}" class="form-control" value="#{paymentDataController.paymentData.paymentStatus}" required="true">
                             <f:selectItem itemLabel="#{msg.choose}"/>
-                            <f:selectItems value="#{commonClass.deliveryStatusList}"/>
+                            <f:selectItems value="#{commonClass.paymentStatusList}"/>
                         </h:selectOneMenu>
                         <h:message for="delivery" class="text-danger text-sm"/>
                     </div>
