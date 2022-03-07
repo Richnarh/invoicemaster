@@ -29,8 +29,8 @@ public class UserAccountController implements Serializable{
     
     private UserAccount userAccount = new UserAccount();
     private List<UserAccount> userAccountList = new LinkedList<>();
-     private List<UserAccount> userPermissionsList = new LinkedList<>();
-     private UserAccount selectedAccount=null;
+    private List<UserAccount> userPermissionsList = new LinkedList<>();
+    private UserAccount selectedAccount=null;
     
     private String optionText;
     
