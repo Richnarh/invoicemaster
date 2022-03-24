@@ -32,9 +32,9 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">#{msg.expiry_date}</label>
+                                        <label class="col-sm-4 col-form-label">#{msg.expiry_date} <span class="text-danger">*</span></label>
                                         <div class="col-md-8">
-                                            <p:datePicker value="#{proformaInvoiceController.proformaInvoice.expiryDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                                            <p:datePicker value="#{proformaInvoiceController.proformaInvoice.expiryDate}" required="true" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
                                         </div>
                                     </div>
 

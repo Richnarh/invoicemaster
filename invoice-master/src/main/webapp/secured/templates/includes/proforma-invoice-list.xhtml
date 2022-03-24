@@ -9,7 +9,7 @@
     <h:body>
         <div class="row wow fadeInDown">
             <div class="col-md-12 col-sm-6 col-lg-12">
-                <h:form style="margin-bottom: 5px;">
+                <h:form id="searchForm" style="margin-bottom: 5px;">
 
                     <span class="mr-2">From Date: </span>
                     <p:datePicker value="#{proformaInvoiceController.dateRange.fromDate}"
@@ -20,8 +20,16 @@
                     <p:datePicker value="#{proformaInvoiceController.dateRange.toDate}"
                                   pattern="#{msg.formatted_date}" 
                                   monthNavigator="true" yearNavigator="true"/>
+                    <span class="ml-2"></span>
+                    <p:selectOneMenu id="invoiceStatus" value="#{proformaInvoiceController.invoiceStatus}">
+                        <f:selectItem itemLabel="#{msg.choose} Status"/>
+                        <f:selectItems value="#{commonClass.invoiceStatusList}"/>
+                        <p:ajax listener="#{proformaInvoiceController.fetchByInvoiceStatus()}" update=":proformaInvoiceTable, @form"/>
+                    </p:selectOneMenu>
 
-                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search Invoice" action="#{proformaInvoiceController.filterProformaInvoice()}"/>
+                    <h:commandButton id="invoiceSearch" class="mx-2 btn btn-info btn-sm" value="Search Invoice" action="#{proformaInvoiceController.filterProformaInvoice()}">
+                        <p:ajax update=":proformaInvoiceTable, @form"/>
+                    </h:commandButton>
 
                     <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{proformaInvoiceController.reset()}">
                         <p:ajax update=":proformaInvoiceTable, @form"/>
@@ -100,7 +108,7 @@
                     </p:menuButton>
                         <p:tooltip for="invoiceItem" value="Add items to this invoice" position="left"/>
                         <p:tooltip for="paymentInfo" value="Add payment info on invoice" position="left"/>
-                        <p:blockUI block="@form" trigger="invoiceItem,paymentInfo">
+                        <p:blockUI block="@form" trigger="invoiceItem,paymentInfo,:searchForm:invoiceStatus,:searchForm:invoiceSearch">
                         <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
                         <p><small>Please wait...</small></p>
                     </p:blockUI>

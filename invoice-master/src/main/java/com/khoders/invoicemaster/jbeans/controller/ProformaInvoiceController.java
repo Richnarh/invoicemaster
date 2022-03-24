@@ -14,6 +14,7 @@ import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.dto.Receipt;
 import com.khoders.invoicemaster.entities.PaymentData;
+import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
@@ -28,7 +29,6 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -86,6 +86,8 @@ public class ProformaInvoiceController implements Serializable
     private String optionText,paymentInvoiceNo,paymentClient;
     private double subTotal,totalSaleAmount,calculatedDiscount,installationFee,taxAmount,totalPayable,invoiceAmount,productDiscountRate;
     
+    private InvoiceStatus invoiceStatus = null;
+    
     Sms sms = new Sms();
     SenderId senderId=null;
     String phoneNumber=null;
@@ -113,15 +115,25 @@ public class ProformaInvoiceController implements Serializable
         clearProformaInvoice();
         pageView.restToCreateView();
     }
+    
+    public void fetchByInvoiceStatus()
+    {
+      if(invoiceStatus != null)
+      {
+        proformaInvoiceList = proformaInvoiceService.getProformaInvoice(invoiceStatus); 
+      }
+    }
       
     public void filterProformaInvoice()
     {
-      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange, proformaInvoice);   
+      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange, proformaInvoice);  
     }
     
     public void reset()
     {
       proformaInvoiceList = new LinkedList<>();
+      dateRange = new DateRangeUtil();
+      invoiceStatus = null;
     }
     
     public void editProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)
@@ -156,15 +168,13 @@ public class ProformaInvoiceController implements Serializable
             if (crudApi.save(proformaInvoice) != null)
             {
                 proformaInvoiceList = CollectionList.washList(proformaInvoiceList, proformaInvoice);
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-
+                
+                Msg.info(Msg.SUCCESS_MESSAGE);
                 closePage();
             } else
 
             {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+                Msg.error(Msg.FAILED_MESSAGE);
             }
         } catch (Exception e)
         {
@@ -197,9 +207,7 @@ public class ProformaInvoiceController implements Serializable
               
               processPaymentSms(paymentData);
               
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
-              
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           else
           {
@@ -463,6 +471,11 @@ public class ProformaInvoiceController implements Serializable
                 
                 if (productDiscountRate > 0.0)
                 {
+                    if(productDiscountRate > 5.0)
+                    {
+                        Msg.error("Please dicount above 5% is not allowed!");
+                        return;
+                    }
                     calculatedDiscount = totalSaleAmount * (productDiscountRate/100); // Calculating Discount on total Amount
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     
@@ -486,9 +499,10 @@ public class ProformaInvoiceController implements Serializable
                 {
                    taxCalculation();
                    
-                   FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
-
+//                   FacesContext.getCurrentInstance().addMessage(null, 
+//                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
+                   
+                   Msg.info("Proforma Invoice item list saved!");
                 }
                 else
                 {
@@ -804,6 +818,16 @@ public class ProformaInvoiceController implements Serializable
     public void setSubTotal(double subTotal)
     {
         this.subTotal = subTotal;
+    }
+
+    public InvoiceStatus getInvoiceStatus()
+    {
+        return invoiceStatus;
+    }
+
+    public void setInvoiceStatus(InvoiceStatus invoiceStatus)
+    {
+        this.invoiceStatus = invoiceStatus;
     }
     
 }

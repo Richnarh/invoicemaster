@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entities;
 
 import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     private LocalDate issuedDate = LocalDate.now();
    
     @Column(name = "expiry_date")
-    private LocalDate expiryDate;
+    private LocalDate expiryDate = DateUtil._7DaysFromToday();
    
     @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
