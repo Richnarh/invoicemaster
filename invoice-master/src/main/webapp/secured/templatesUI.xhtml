@@ -47,6 +47,9 @@
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/client.xhtml" class="nav-link">#{msg.client}</a>
                     </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/payment-data.xhtml" class="nav-link">Transactions</a>
+                    </li>
                 </ul>
                 <ui:remove>
                     <form class="form-inline ml-3">
@@ -70,7 +73,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <!--<i class="fa fa-user"></i>-->
-                            <span>#{appSession.currentUser.accessLevel} &nbsp;<i class="fa fa-angle-down"></i></span>
+                            <span>#{appSession.currentUser.accessLevel} - #{appSession.currentUser.fullname} &nbsp;<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Activity</span>
@@ -141,7 +144,7 @@
             <footer class="main-footer">
                 <small>
                     Copyright &copy; 2021 <a href="#{application.contextPath}/secured/index.xhtml">#{msg.title}</a>
-                    All rights reserved. - <b>#{appSession.currentUser.companyBranch.branchName}</b>
+                    All rights reserved. - <b>#{appSession.currentUser.companyBranch.branchName} - #{appSession.currentUser.fullname}</b>
                 </small>
                 <div class="float-right d-none d-sm-inline-block">
                     <small>

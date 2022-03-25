@@ -11,15 +11,15 @@ import com.khoders.resource.utilities.MsgResolver;
  *
  * @author pascal
  */
-public enum InvoiceType implements MsgResolver
+public enum InvoiceStatus implements MsgResolver
 {
-    STANDARD_INVOICE("STANDARD_INVOICE", "Standard Invoice"),
-    PROFORMA_INVOICE("PROFORMA_INVOICE", "Proforma Invoice");
+    VALID_INVOICE("VALID_INVOICE", "Valid Invoice"),
+    OVERDUE_INVOICE("OVERDUE_INVOICE", "Overdue Invoice");
     
     private final String code;
     private final String label;
     
-    private InvoiceType(String code, String label)
+    private InvoiceStatus(String code, String label)
     {
         this.code = code;
         this.label = label;

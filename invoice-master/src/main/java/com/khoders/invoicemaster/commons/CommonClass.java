@@ -8,7 +8,7 @@ package com.khoders.invoicemaster.commons;
 import com.khoders.invoicemaster.enums.ClientType;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.DoorType;
-import com.khoders.invoicemaster.enums.InvoiceType;
+import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.enums.MessagingType;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.resource.enums.Currency;
@@ -30,9 +30,9 @@ import javax.inject.Named;
 @SessionScoped
 public class CommonClass implements Serializable
 {
-    public List<InvoiceType> getInvoiceTypeList()
+    public List<InvoiceStatus> getInvoiceStatusList()
     {
-        return Arrays.asList(InvoiceType.values());
+        return Arrays.asList(InvoiceStatus.values());
     }
     
     public List<PaymentStatus> getPaymentStatusList()

@@ -36,9 +36,10 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM Product e WHERE  e.companyBranch=?1";
+//            String qryString = "SELECT e FROM Product e WHERE  e.companyBranch=?1";
+            String qryString = "SELECT e FROM Product e";
             TypedQuery<Product> typedQuery = crudApi.getEm().createQuery(qryString, Product.class);
-                                typedQuery.setParameter(1, appSession.getCompanyBranch());
+//                                typedQuery.setParameter(1, appSession.getCompanyBranch());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -105,9 +106,10 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM Inventory e WHERE e.companyBranch=?1";
+//            String qryString = "SELECT e FROM Inventory e WHERE e.companyBranch=?1";
+            String qryString = "SELECT e FROM Inventory e";
             TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class);
-                            typedQuery.setParameter(1, appSession.getCompanyBranch());
+//                            typedQuery.setParameter(1, appSession.getCompanyBranch());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
