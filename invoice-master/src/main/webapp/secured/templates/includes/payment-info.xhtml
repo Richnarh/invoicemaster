@@ -6,8 +6,8 @@
       xmlns:p="http://primefaces.org/ui">  
     <h:body>
         <div class="col-md-12">
-            <p>Payment info for client: <span class="font-weight-bold">#{proformaInvoiceController.paymentClient}</span>
-                with invoice #: <span class="font-weight-bold">#{proformaInvoiceController.paymentInvoiceNo} - 
+            <p>Payment for: <span class="font-weight-bold">#{proformaInvoiceController.paymentClient}</span>, 
+                Invoice #: <span class="font-weight-bold">#{proformaInvoiceController.paymentInvoiceNo} - 
                     (<h:outputText value="#{proformaInvoiceController.invoiceAmount}">
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>)

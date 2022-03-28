@@ -364,7 +364,7 @@ public class ProformaInvoiceController implements Serializable
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
                 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("One item added to cart"), null));
+                Msg.setMsg("One item added to cart");
               }
               else
                 {

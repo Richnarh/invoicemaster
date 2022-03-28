@@ -6,6 +6,7 @@ com\khoders\invoicemaster\service\XtractService.class
 com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
 com\khoders\invoicemaster\jbeans\controller\ProductTypeController.class
 com\khoders\invoicemaster\jbeans\controller\sms\ContactGroupController.class
+com\khoders\invoicemaster\jbeans\controller\QuickInvoiceController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto$SalesTax.class
 com\khoders\invoicemaster\jbeans\controller\backdoorController.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
@@ -50,4 +51,5 @@ com\khoders\invoicemaster\jbeans\controller\sms\SMSGrupController.class
 com\khoders\invoicemaster\service\SmsService.class
 com\khoders\invoicemaster\listener\SessionListener.class
 com\khoders\invoicemaster\jbeans\converter\ProformaInvoiceConverter.class
+com\khoders\invoicemaster\dto\SalesTaxDto.class
 com\khoders\invoicemaster\jbeans\converter\ProductConverter.class
