@@ -14,6 +14,7 @@ import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -49,9 +50,9 @@ public class PaymentService
     {
         try
         {
-            String qryString = "SELECT e FROM PaymentData e WHERE e.paymentStatus=?2";
+            String qryString = "SELECT e FROM PaymentData e WHERE e.paymentStatus=?1 ORDER BY e.createdDate DESC";
             TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
-                                    .setParameter(2, paymentStatus);
+                                    .setParameter(1, paymentStatus);
                                     return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -59,6 +60,34 @@ public class PaymentService
             e.printStackTrace();
         }
 
+        return Collections.emptyList();
+    }
+    
+    public List<PaymentData> getInvoiceTransaction(PaymentStatus paymentStatus, DateRangeUtil dateRange)
+    {
+        try
+        {
+            if(dateRange.getFromDate() == null || dateRange.getToDate() == null || paymentStatus == null)
+            {
+                  String  queryString = "SELECT e FROM PaymentData e ORDER BY e.createdDate DESC";
+                  TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(queryString, PaymentData.class);
+                                    return typedQuery.getResultList();
+            }
+            
+            String qryString = "SELECT e FROM PaymentData e WHERE e.createdDate BETWEEN ?1 AND ?2 AND e.paymentStatus=?3 ORDER BY e.createdDate DESC";
+            TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
+                    .setParameter(1, dateRange.getFromDate())
+                    .setParameter(2, dateRange.getFromDate())
+                    .setParameter(3, paymentStatus);
+           return typedQuery.getResultList();
+           
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        
+           
         return Collections.emptyList();
     }
     public List<PaymentData> getInvoiceByDeliveryStatus(DeliveryStatus deliveryStatus)

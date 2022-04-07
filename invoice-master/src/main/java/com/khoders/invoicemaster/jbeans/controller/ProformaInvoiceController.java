@@ -622,7 +622,7 @@ public class ProformaInvoiceController implements Serializable
         proformaInvoice = new ProformaInvoice();
         proformaInvoice.setUserAccount(appSession.getCurrentUser());
         proformaInvoice.setCompanyBranch(appSession.getCompanyBranch());
-        proformaInvoice.setLastModifiedDate(LocalDate.now());
+        proformaInvoice.setLastModifiedDate(LocalDateTime.now());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

@@ -23,6 +23,7 @@ import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class PaymentDataController implements Serializable{
     @Inject AppSession appSession;
     @Inject PaymentService paymentService;
     
+    private DateRangeUtil dateRange = new DateRangeUtil();
     private String optionText;
     
     private PaymentData paymentData = new PaymentData();
@@ -98,6 +100,25 @@ public class PaymentDataController implements Serializable{
             }
         }
     }
+    
+    public void filterTransaction()
+    {
+        paymentDataStatusList = paymentService.getInvoiceTransaction(paymentStatus, dateRange);
+        
+        totalAmount = 0.0;
+        for (PaymentData data : paymentDataStatusList)
+        {
+            if(data.getProformaInvoice() != null)
+            {
+               totalAmount += data.getProformaInvoice().getTotalAmount();
+            }
+            else
+            {
+                System.out.println("Data => "+data.getProformaInvoice());
+            }
+        }
+    }
+    
     public void fetchByDeliveryStatus()
     {
         if(paymentStatus == null) return;
@@ -444,6 +465,14 @@ public class PaymentDataController implements Serializable{
         return totalAmount;
     }
 
+    public DateRangeUtil getDateRange()
+    {
+        return dateRange;
+    }
 
+    public void setDateRange(DateRangeUtil dateRange)
+    {
+        this.dateRange = dateRange;
+    }
     
 }

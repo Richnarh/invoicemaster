@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/animate.css" />  
         <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
         <style>
-            
+
             .ui-growl {
                 top: auto;
                 bottom: 5em;
@@ -41,9 +41,11 @@
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/product.xhtml" class="nav-link">#{msg.product}</a>
                     </li>
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/quick-invoice.xhtml" class="nav-link">Quick #{msg.invoice}</a>
-                    </li>
+                    <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                        <li class="nav-item d-none d-sm-inline-block">
+                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/quick-invoice.xhtml" class="nav-link">Quick #{msg.invoice}</a>
+                        </li>
+                    </h:panelGroup>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml" class="nav-link">#{msg.invoice}</a>
                     </li>
@@ -81,7 +83,7 @@
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Activity</span>
                             <div class="dropdown-divider"></div>
-                            
+
                             <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/profile-update.xhtml" class="dropdown-item">
                                 <i class="fa fa-user mr-2"></i> Update Profile
                                 <span class="float-right text-muted text-sm"></span>

@@ -75,7 +75,14 @@ public class LoginController implements Serializable
             appSession.login(userAccount);
             appSession.initBranch(userAccount.getCompanyBranch());
             
-            Faces.redirect(Pages.index);
+            if(userAccount.isQuickInvoice() == true && userAccount.isPermPrint() == true)
+            {
+                Faces.redirect(Pages.index);
+            }
+             else
+            {
+               Faces.redirect(Pages.quickInvoice);
+            }
 
         } catch (Exception e)
         {

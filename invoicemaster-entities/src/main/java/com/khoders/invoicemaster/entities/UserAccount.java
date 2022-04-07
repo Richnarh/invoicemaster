@@ -83,6 +83,9 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "perm_send_sms")
     private boolean permSendSMS = false;
     
+    @Column(name = "quick_invoice")
+    private boolean quickInvoice = false;
+    
     @Column(name = "password")
     private String password;
     
@@ -267,6 +270,16 @@ public class UserAccount extends BaseModel implements Serializable
     public void setPermSendSMS(boolean permSendSMS)
     {
         this.permSendSMS = permSendSMS;
+    }
+
+    public boolean isQuickInvoice()
+    {
+        return quickInvoice;
+    }
+
+    public void setQuickInvoice(boolean quickInvoice)
+    {
+        this.quickInvoice = quickInvoice;
     }
 
     @Override
