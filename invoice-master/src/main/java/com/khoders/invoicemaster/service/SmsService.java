@@ -82,6 +82,21 @@ public class SmsService
         return Collections.emptyList();
     }
     
+    public List<GroupContact> getContactGroupList()
+    {
+        try
+        {
+            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1";
+            TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
+                                typedQuery.setParameter(1, appSession.getCurrentUser());
+                             return typedQuery.getResultList();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
     public List<GroupContact> getContactGroupList(SMSGrup smsGrup)
     {
         try

@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller.sms;
 
+import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.sms.GroupContact;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.SmsService;
@@ -49,18 +50,37 @@ public class ContactGroupController implements Serializable{
     {
         try 
         {
+           if(contactGroup.getSmsGrup().getGroupName().equals("All"))
+           {
+              List<Client> clientList = smsService.getContactList();
+               System.out.println("customerList => "+clientList.size());
+            
+               clientList.forEach(client -> {
+                   GroupContact contact = new GroupContact();
+                    
+                    contact.genCode();
+                    contact.setSmsGrup(contactGroup.getSmsGrup());
+                    contact.setClient(client);
+                    contact.setUserAccount(appSession.getCurrentUser());
+                  
+                    if(crudApi.save(contact) != null)
+                    {
+                        contactGroupList = CollectionList.washList(contactGroupList, contact);
+                    }
+               });
+             
+             return;
+           }
+             
           contactGroup.genCode();
           if(crudApi.save(contactGroup) != null)
           {
               contactGroupList = CollectionList.washList(contactGroupList, contactGroup);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create contactGroup"), null));
+             Msg.error("Oops! failed to create contactGroup");
           }
            clearContactGroup();
         } catch (Exception e) 

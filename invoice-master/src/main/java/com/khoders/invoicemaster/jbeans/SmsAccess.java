@@ -11,8 +11,8 @@ package com.khoders.invoicemaster.jbeans;
  */
 public class SmsAccess
 {
-  public static  String USERNAME = "";
-  public static  String PASSWORD = "";
+  public static  String USERNAME = "joseph";
+  public static  String PASSWORD = "joseph001";
 //  public static  String USERNAME = "pascal";
 //  public static  String PASSWORD = "pascal001";
 }
