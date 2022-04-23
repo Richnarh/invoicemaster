@@ -106,7 +106,7 @@ public class PaymentDataController implements Serializable{
     public void fetchByDeliveryStatus()
     {
         selectedTabIndex = 2;
-        if(paymentStatus == null) return;
+        if(deliveryStatus == null) return;
         paymentDataDeliveryList = paymentService.getInvoiceByDeliveryStatus(deliveryStatus);
     }
     
