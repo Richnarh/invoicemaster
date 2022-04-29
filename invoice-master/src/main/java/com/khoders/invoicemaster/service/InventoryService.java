@@ -7,7 +7,6 @@ package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
 import com.khoders.invoicemaster.entities.ProformaInvoice;

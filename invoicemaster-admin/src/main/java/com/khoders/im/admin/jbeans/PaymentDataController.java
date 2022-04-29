@@ -142,13 +142,11 @@ public class PaymentDataController implements Serializable{
         {
           if(crudApi.save(paymentData) != null)
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+            Msg.info(Msg.SUCCESS_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            Msg.error(Msg.FAILED_MESSAGE);
           }
            clearPaymentData();
         } catch (Exception e) 
@@ -169,15 +167,12 @@ public class PaymentDataController implements Serializable{
         {
           if(crudApi.delete(paymentData))
           {
-              paymentDataStatusList.remove(paymentData);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
+            paymentDataStatusList.remove(paymentData);
+            Msg.info(Msg.DELETE_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            Msg.error(Msg.FAILED_MESSAGE);
           }
         } catch (Exception e) 
         {
@@ -191,15 +186,12 @@ public class PaymentDataController implements Serializable{
         {
           if(crudApi.delete(paymentData))
           {
-              paymentDataDeliveryList.remove(paymentData);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
+            paymentDataDeliveryList.remove(paymentData);
+            Msg.info(Msg.DELETE_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            Msg.error(Msg.FAILED_MESSAGE);
           }
         } catch (Exception e) 
         {

@@ -50,7 +50,7 @@ public class PaymentService
     {
         try
         {
-            String qryString = "SELECT e FROM PaymentData e WHERE e.paymentStatus=?1 ORDER BY e.createdDate DESC";
+            String qryString = "SELECT e FROM PaymentData e WHERE e.paymentStatus=?1 ORDER BY e.valueDate DESC";
             TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
                                     .setParameter(1, paymentStatus);
                                     return typedQuery.getResultList();
@@ -68,13 +68,15 @@ public class PaymentService
         try
         {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null || paymentStatus == null)
-            {
-                  String  queryString = "SELECT e FROM PaymentData e ORDER BY e.createdDate DESC";
+            { 
+                System.out.println("dateRange => "+dateRange);
+                System.out.println("dateRange => "+dateRange.getFromDate());
+                  String  queryString = "SELECT e FROM PaymentData e ORDER BY e.valueDate DESC";
                   TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(queryString, PaymentData.class);
                                     return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM PaymentData e WHERE e.createdDate BETWEEN ?1 AND ?2 AND e.paymentStatus=?3 ORDER BY e.createdDate DESC";
+            String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.paymentStatus=?3 ORDER BY e.valueDate DESC";
             TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
                     .setParameter(1, dateRange.getFromDate())
                     .setParameter(2, dateRange.getFromDate())
@@ -85,9 +87,6 @@ public class PaymentService
         {
             e.printStackTrace();
         }
-
-        
-           
         return Collections.emptyList();
     }
     public List<PaymentData> getInvoiceByDeliveryStatus(DeliveryStatus deliveryStatus)
