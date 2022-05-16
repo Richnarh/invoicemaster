@@ -27,6 +27,7 @@ C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductConverter.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\sms\MessageTemplateController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\SmsAccess.java
+C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\DashboardController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\SmsService.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InventoryController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\PurchaseOrderController.java

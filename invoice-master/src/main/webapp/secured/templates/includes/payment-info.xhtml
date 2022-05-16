@@ -13,7 +13,7 @@
                     </h:outputText>)
                 </span>
             </p>
-            <h:form>
+            <h:form id="paymentDataForm">
                 <div class="card-block">
                     <p:growl id="updateMessage"/>
                     <div class="form-group row">
@@ -57,8 +57,8 @@
                     </div>
                 </div>
                 <div class="text-center pt-3">
-                    <p:commandButton class="kbtn-success" value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" action="#{proformaInvoiceController.savePaymentData()}" update="updateMessage"/>
-                    <!--<p:commandButton class="kbtn-default" value="{msg.clear}" icon="{msg.clear_icon}" action="{proformaInvoiceController.clearPaymentData()}" immediate="true" update="@form"/>-->
+                    <p:commandButton class="kbtn-success mr-3" value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" action="#{proformaInvoiceController.savePaymentData()}" update="updateMessage, :mainPanel"/>
+                    <p:commandButton class="kbtn-default" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{proformaInvoiceController.clearPaymentData()}" immediate="true" update="@form"/>
                 </div>
 
             </h:form>

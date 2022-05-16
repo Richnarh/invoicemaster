@@ -184,6 +184,8 @@ public class ProformaInvoiceController implements Serializable
     
     public void recordPayment(ProformaInvoice proformaInvoice)
     {
+        clearPaymentData();
+        
         paymentDataList = proformaInvoiceService.getPaymentInfoList(proformaInvoice);
         
         paymentClient = proformaInvoice.getClient().getClientName();
@@ -194,6 +196,12 @@ public class ProformaInvoiceController implements Serializable
         paymentData.setUserAccount(appSession.getCurrentUser());
         paymentData.setProformaInvoice(proformaInvoice);
         
+       PaymentData data = proformaInvoiceService.invoiceRecord(paymentData.getProformaInvoice());
+       if(data != null)
+       {
+          paymentData = data; 
+       }
+        
     }
     
     public void savePaymentData()
@@ -201,8 +209,25 @@ public class ProformaInvoiceController implements Serializable
         try 
         {
           paymentData.genCode();
+          if(paymentData.getProformaInvoice() == null)
+          {
+              Msg.error("Please select the invoice again!");
+              return;
+          }
+            System.out.println("paymentData.getProformaInvoice() == "+paymentData.getProformaInvoice());
+          PaymentData data = proformaInvoiceService.invoiceRecord(paymentData.getProformaInvoice());
+            System.out.println("data -- "+data);
+            if (data != null)
+            {
+                Msg.error("Payment data already captured!");
+                return;
+            }
           if(crudApi.save(paymentData) != null)
           {
+              ProformaInvoice invoice = crudApi.find(ProformaInvoice.class, paymentData.getProformaInvoice().getId());
+              invoice.setConverted(true);
+              crudApi.save(invoice);
+              
               paymentDataList = CollectionList.washList(paymentDataList, paymentData);
               
               processPaymentSms(paymentData);

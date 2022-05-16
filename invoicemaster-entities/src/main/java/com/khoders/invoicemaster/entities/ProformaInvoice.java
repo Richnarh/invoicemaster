@@ -60,6 +60,9 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     @Lob
     private String description;
 
+    @Column(name = "converted")
+    private boolean converted;
+
     public LocalDate getIssuedDate()
     {
         return issuedDate;
@@ -158,6 +161,16 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     public void setSubTotalAmount(double subTotalAmount)
     {
         this.subTotalAmount = subTotalAmount;
+    }
+
+    public boolean isConverted()
+    {
+        return converted;
+    }
+
+    public void setConverted(boolean converted)
+    {
+        this.converted = converted;
     }
     
     public void genCode()

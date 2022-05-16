@@ -30,6 +30,7 @@ com\khoders\invoicemaster\jbeans\controller\sms\SmsController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
+com\khoders\invoicemaster\jbeans\controller\DashboardController.class
 com\khoders\invoicemaster\service\PaymentService.class
 com\khoders\invoicemaster\service\InventoryService.class
 com\khoders\invoicemaster\dto\Receipt.class
