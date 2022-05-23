@@ -23,6 +23,7 @@ import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
@@ -140,9 +141,15 @@ public class PaymentDataController implements Serializable{
    {
         try 
         {
+            PaymentData data = crudApi.find(PaymentData.class, paymentData.getId());
+            if(data.getPaymentStatus() == PaymentStatus.FULLY_PAID){
+                Msg.error("Status of this transaction is marked as "+data.getPaymentStatus()+", it can't be reverted!");
+                return;
+            }
           if(crudApi.save(paymentData) != null)
           {
-            Msg.info(Msg.SUCCESS_MESSAGE);
+              paymentDataStatusList = CollectionList.washList(paymentDataStatusList, paymentData);
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           else
           {
@@ -204,6 +211,11 @@ public class PaymentDataController implements Serializable{
         paymentData.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
+    }
+    
+    public void clearData(){
+        dateRange = new DateRangeUtil();
+        paymentStatus = null;
     }
 
     public void processPaymentMsg(PaymentData paymentData)

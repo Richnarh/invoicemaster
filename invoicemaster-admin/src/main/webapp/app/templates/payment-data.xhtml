@@ -46,6 +46,7 @@
                                                       monthNavigator="true" yearNavigator="true"/>
 
                                         <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search" action="#{paymentDataController.filterTransaction()}"/>
+                                        <h:commandButton class="btn btn-default btn-sm" value="#{msg.clear}" action="#{paymentDataController.clearData()}"/>
                     
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataStatusList.size()}</span>
                                         <h:panelGroup class="shadow-sm faded-shade p-1">
@@ -72,7 +73,7 @@
                                         </h:panelGrid>
                                     </p:rowExpansion>
                                         <p:column style="width: 120px" headerText="#{msg.date}" filterBy="#{paymentData.createdDate}" filterMatchMode="contains">
-                                            <h:outputText value="#{paymentData.createdDate}">
+                                            <h:outputText value="#{paymentData.valueDate}">
                                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                             </h:outputText>
                                         </p:column>
@@ -131,7 +132,7 @@
 
                                     <p:dataTable id="paymentStatusTable" value="#{paymentDataController.paymentDataDeliveryList}" var="paymentData">
                                         <p:column headerText="#{msg.date}" filterBy="#{paymentData.createdDate}" filterMatchMode="contains">
-                                            <h:outputText value="#{paymentData.createdDate}">
+                                            <h:outputText value="#{paymentData.valueDate}">
                                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                             </h:outputText>
                                         </p:column>
