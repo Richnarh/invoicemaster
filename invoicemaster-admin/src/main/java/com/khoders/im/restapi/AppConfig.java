@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.util;
+package com.khoders.im.restapi;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 /**
  *
  * @author richa
  */
-public class Data<T>
+@ApplicationPath("api")
+public class AppConfig extends Application
 {
-    T data;
-    String message;
-    boolean success;
+    
 }

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.endpoints.auth;
+package com.khoders.im.restapi.endpoints.auth;
 
-import com.khoders.restapi.util.JaxResponse;
+import com.khoders.im.restapi.util.JaxResponse;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;

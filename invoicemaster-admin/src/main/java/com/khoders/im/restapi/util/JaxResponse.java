@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.util;
+package com.khoders.im.restapi.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,6 +21,15 @@ public class JaxResponse
         map.put("message", message);
         map.put("success", true);
         map.put("statusCode", HttpStatus.OK.value());
+        map.put("data", responseObj);
+        
+        return Response.ok(map).build();
+    }
+    public static <T> Response created(String message, Object responseObj){
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("message", message);
+        map.put("success", true);
+        map.put("statusCode", HttpStatus.CREATED.value());
         map.put("data", responseObj);
         
         return Response.ok(map).build();

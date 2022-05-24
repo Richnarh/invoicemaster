@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+package com.khoders.im.restapi;
 
 /**
  *
  * @author richa
  */
-@ApplicationPath("api")
-public class AppConfig extends Application
+public class ApiEndpoint
 {
-    
+    private static final String VERSION = "v1/";
+    public static final String SALES_ENDPOINT = VERSION + "sales-endpoint";
 }
