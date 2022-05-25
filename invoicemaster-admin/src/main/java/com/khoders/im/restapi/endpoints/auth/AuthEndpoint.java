@@ -5,7 +5,7 @@
  */
 package com.khoders.im.restapi.endpoints.auth;
 
-import com.khoders.im.restapi.util.JaxResponse;
+import com.khoders.resource.jaxrs.JaxResponse;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;

@@ -24,6 +24,7 @@ public class SaleItem extends BaseModel
     @ManyToOne
     private Inventory inventory;
     
+    public static final String _register="register";
     @JoinColumn(name = "register", referencedColumnName = "id")
     @ManyToOne
     private Register register;

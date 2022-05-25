@@ -43,8 +43,8 @@ public class Register extends BaseModel
     @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "receipt")
-    private String receipt;
+    @Column(name = "receipt_no")
+    private String receiptNo;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -185,16 +185,16 @@ public class Register extends BaseModel
         this.password = password;
     }
 
-    public String getReceipt()
+    public String getReceiptNo()
     {
-        return receipt;
+        return receiptNo;
     }
 
-    public void setReceipt(String receipt)
+    public void setReceiptNo(String receiptNo)
     {
-        this.receipt = receipt;
+        this.receiptNo = receiptNo;
     }
-
+    
     public List<SaleItem> getSaleItemList()
     {
         return saleItemList;

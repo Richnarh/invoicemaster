@@ -12,5 +12,6 @@ package com.khoders.im.restapi;
 public class ApiEndpoint
 {
     private static final String VERSION = "v1/";
-    public static final String SALES_ENDPOINT = VERSION + "sales-endpoint";
+    public static final String SALES_ENDPOINT = VERSION + "sales";
+    public static final String TRANSACTION_ENDPOINT = VERSION + "transactions";
 }
