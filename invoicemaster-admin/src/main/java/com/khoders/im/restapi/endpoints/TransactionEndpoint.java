@@ -9,6 +9,7 @@ import com.khoders.im.restapi.ApiEndpoint;
 import com.khoders.im.restapi.payload.SaleItemDto;
 import com.khoders.im.restapi.services.TransactionService;
 import com.khoders.resource.jaxrs.JaxResponse;
+import com.khoders.resource.utilities.Msg;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -32,6 +33,6 @@ public class TransactionEndpoint
     public Response userTransactions(@HeaderParam("userAccountId") String userAccountId)
     {
         List<SaleItemDto> dtos = transactionService.getSales(userAccountId);
-        return JaxResponse.ok(dtos);
+        return JaxResponse.ok(Msg.RECORD_FOUND,dtos);
     }
 }
