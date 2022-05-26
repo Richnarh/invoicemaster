@@ -25,9 +25,9 @@
     <class>com.khoders.invoicemaster.sms.Sms</class>
     <class>com.khoders.invoicemaster.entities.PaymentData</class>
     <class>com.khoders.invoicemaster.entities.ReturnGood</class>
-    <class>com.khoders.invoicemaster.entities.Register</class>
     <class>com.khoders.invoicemaster.entities.SaleItem</class>
     <class>com.khoders.invoicemaster.entities.UserTransaction</class>
+    <class>com.khoders.invoicemaster.entities.OnlineClient</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

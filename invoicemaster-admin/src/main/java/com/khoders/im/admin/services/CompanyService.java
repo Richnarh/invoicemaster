@@ -5,6 +5,7 @@
  */
 package com.khoders.im.admin.services;
 
+import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.entities.system.CompanyProfile;
@@ -60,5 +61,6 @@ public class CompanyService
 
         return Collections.emptyList();
     }
+
 
 }

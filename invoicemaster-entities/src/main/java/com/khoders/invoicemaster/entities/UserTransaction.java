@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entities;
 
 import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.BaseModel;
 import javax.persistence.Column;
@@ -24,10 +25,10 @@ import javax.persistence.Table;
 @Table(name = "user_transaction")
 public class UserTransaction extends BaseModel
 {
-    public static final String _register="register";
-    @JoinColumn(name = "register", referencedColumnName = "id")
+    public static final String _onlineClient="onlineClient";
+    @JoinColumn(name = "online_client", referencedColumnName = "id")
     @ManyToOne
-    private Register register;
+    private OnlineClient onlineClient;
     
     @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
@@ -36,17 +37,21 @@ public class UserTransaction extends BaseModel
     @Column(name = "delivert_status")
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
+    
+    @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
-    public Register getRegister()
+    public OnlineClient getOnlineClient()
     {
-        return register;
+        return onlineClient;
     }
 
-    public void setRegister(Register register)
+    public void setOnlineClient(OnlineClient onlineClient)
     {
-        this.register = register;
+        this.onlineClient = onlineClient;
     }
-
+    
     public PaymentStatus getPaymentStatus()
     {
         return paymentStatus;
@@ -65,6 +70,16 @@ public class UserTransaction extends BaseModel
     public void setDeliveryStatus(DeliveryStatus deliveryStatus)
     {
         this.deliveryStatus = deliveryStatus;
+    }
+
+    public PaymentMethod getPaymentMethod()
+    {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod)
+    {
+        this.paymentMethod = paymentMethod;
     }
     
     

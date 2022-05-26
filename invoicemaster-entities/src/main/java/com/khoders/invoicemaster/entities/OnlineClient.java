@@ -5,11 +5,14 @@
  */
 package com.khoders.invoicemaster.entities;
 
+import com.khoders.invoicemaster.enums.ClientStatus;
 import com.khoders.resource.jpa.BaseModel;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,8 +22,8 @@ import javax.persistence.Transient;
  * @author richa
  */
 @Entity
-@Table(name = "register")
-public class Register extends BaseModel
+@Table(name = "online_client")
+public class OnlineClient extends BaseModel
 {
     @Column(name = "firstname")
     private String firstname;
@@ -36,6 +39,10 @@ public class Register extends BaseModel
 
     @Column(name = "city")
     private String city;
+    
+    @Column(name = "client_status")
+    @Enumerated(EnumType.STRING)
+    private ClientStatus clientStatus;
 
     @Column(name = "street_address")
     private String streetAddress;
@@ -204,5 +211,20 @@ public class Register extends BaseModel
     {
         this.saleItemList = saleItemList;
     }
-    
+
+    public ClientStatus getClientStatus()
+    {
+        return clientStatus;
+    }
+
+    public void setClientStatus(ClientStatus clientStatus)
+    {
+        this.clientStatus = clientStatus;
+    }
+
+    @Override
+    public String toString()
+    {
+        return firstname +" "+lastname + " - "+phoneNumber;
+    }
 }

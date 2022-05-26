@@ -6,13 +6,14 @@
 package com.khoders.im.restapi.mapper;
 
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.Register;
+import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
 import com.khoders.im.restapi.payload.SaleDto;
 import com.khoders.im.restapi.payload.SaleItemDto;
+import com.khoders.invoicemaster.enums.ClientStatus;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
@@ -25,28 +26,29 @@ public class SalesMapper
 {
     @Inject private CrudApi crudApi;
 
-    public Register toEntity(SaleDto dto)
+    public OnlineClient toEntity(SaleDto dto)
     {
-        Register register = new Register();
+        OnlineClient client = new OnlineClient();
         if (dto.getId() != null)
         {
-            register.setId(dto.getId());
+            client.setId(dto.getId());
         }
 
-        register.setCity(dto.getCity());
-        register.setCountry(dto.getCountry());
-        register.setEmailAddress(dto.getEmailAddress());
-        register.setFirstname(dto.getFirstname());
-        register.setLastname(dto.getLastname());
-        register.setOrderNote(dto.getOrderNote());
-        register.setPhoneNumber(dto.getPhoneNumber());
-        register.setPostalCode(dto.getPostalCode());
-        register.setRegion(dto.getRegion());
-        register.setUsername(dto.getUsername());
-        register.setPassword(hashText(dto.getPassword()));
-        register.setSaleItemList(toEntity(dto.getSaleItemList()));
+        client.setCity(dto.getCity());
+        client.setCountry(dto.getCountry());
+        client.setEmailAddress(dto.getEmailAddress());
+        client.setFirstname(dto.getFirstname());
+        client.setLastname(dto.getLastname());
+        client.setOrderNote(dto.getOrderNote());
+        client.setPhoneNumber(dto.getPhoneNumber());
+        client.setPostalCode(dto.getPostalCode());
+        client.setRegion(dto.getRegion());
+        client.setUsername(dto.getUsername());
+        client.setPassword(hashText(dto.getPassword()));
+        client.setClientStatus(ClientStatus.NEW);
+        client.setSaleItemList(toEntity(dto.getSaleItemList()));
         
-        return register;
+        return client;
     }
 
     public List<SaleItem> toEntity(List<SaleItemDto> itemDtoList)
@@ -79,23 +81,23 @@ public class SalesMapper
         return saleItemList;
     }
 
-    public SaleDto toDto(Register register)
+    public SaleDto toDto(OnlineClient client)
     {
         SaleDto dto = new SaleDto();
-        if (register.getId() == null) return null;
+        if (client.getId() == null) return null;
 
-        dto.setId(register.getId());
-        dto.setCity(register.getCity());
-        dto.setCountry(register.getCountry());
-        dto.setEmailAddress(register.getEmailAddress());
-        dto.setFirstname(register.getFirstname());
-        dto.setLastname(register.getLastname());
-        dto.setOrderNote(register.getOrderNote());
-        dto.setPhoneNumber(register.getPhoneNumber());
-        dto.setPostalCode(register.getPostalCode());
-        dto.setRegion(register.getRegion());
-        dto.setUsername(register.getUsername());
-        dto.setSaleItemList(toDto(register.getSaleItemList()));
+        dto.setId(client.getId());
+        dto.setCity(client.getCity());
+        dto.setCountry(client.getCountry());
+        dto.setEmailAddress(client.getEmailAddress());
+        dto.setFirstname(client.getFirstname());
+        dto.setLastname(client.getLastname());
+        dto.setOrderNote(client.getOrderNote());
+        dto.setPhoneNumber(client.getPhoneNumber());
+        dto.setPostalCode(client.getPostalCode());
+        dto.setRegion(client.getRegion());
+        dto.setUsername(client.getUsername());
+        dto.setSaleItemList(toDto(client.getSaleItemList()));
         
         return dto;
     }

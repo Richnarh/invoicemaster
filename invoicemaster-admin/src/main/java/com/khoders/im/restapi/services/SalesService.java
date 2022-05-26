@@ -7,7 +7,7 @@ package com.khoders.im.restapi.services;
 
 import com.khoders.im.restapi.mapper.SalesMapper;
 import com.khoders.im.restapi.payload.SaleDto;
-import com.khoders.invoicemaster.entities.Register;
+import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.jpa.CrudApi;
 import javax.inject.Inject;
@@ -23,15 +23,15 @@ public class SalesService
     
     public SaleDto save(SaleDto dto)
     {
-        Register register = salesMapper.toEntity(dto);
-        if(crudApi.save(register) != null)
+        OnlineClient client = salesMapper.toEntity(dto);
+        if(crudApi.save(client) != null)
         {
-            for (SaleItem saleItem : register.getSaleItemList())
+            for (SaleItem saleItem : client.getSaleItemList())
             {
-                saleItem.setRegister(register);
+                saleItem.setOnlineClient(client);
                 crudApi.save(saleItem);
             }
-           return salesMapper.toDto(register);
+           return salesMapper.toDto(client);
         }
         return null;
     }

@@ -7,15 +7,16 @@ package com.khoders.invoicemaster.commons;
 
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.service.ClientService;
 import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.resource.utilities.Msg;
-import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +36,7 @@ import javax.inject.Named;
 public class UserCommonClass implements Serializable{
     @Inject private SmsService smsService;
     @Inject InventoryService inventoryService;
+    @Inject ClientService clientService;
     
     private List<Client> clientList = new LinkedList<>();
     private List<Inventory> inventoryList = new LinkedList<>();
@@ -43,6 +45,7 @@ public class UserCommonClass implements Serializable{
     private List<Product> productList = new LinkedList<>();
     private List<SMSGrup> smsGroupList = new LinkedList<>();
     private List<ProductType> productTypeList = new LinkedList<>();
+    private List<OnlineClient> onlineClientList = new LinkedList<>();
     
     @PostConstruct
     public void init()
@@ -54,6 +57,7 @@ public class UserCommonClass implements Serializable{
         messageTemplateList = smsService.getMessageTemplateList();
         senderIdList = smsService.getSenderIdList();
         smsGroupList = smsService.getGroupList();
+        onlineClientList = clientService.getOnlineClientList();
     }
     
     public void loadClient()
@@ -99,6 +103,11 @@ public class UserCommonClass implements Serializable{
     public List<ProductType> getProductTypeList()
     {
         return productTypeList;
+    }
+
+    public List<OnlineClient> getOnlineClientList()
+    {
+        return onlineClientList;
     }
     
 }

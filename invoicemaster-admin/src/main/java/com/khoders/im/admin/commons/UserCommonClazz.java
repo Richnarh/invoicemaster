@@ -6,6 +6,7 @@
 package com.khoders.im.admin.commons;
 
 import com.khoders.im.admin.services.CompanyService;
+import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.entities.system.CompanyProfile;
@@ -55,5 +56,5 @@ public class UserCommonClazz implements Serializable
     {
         return userAccountList;
     }
-    
+
 }

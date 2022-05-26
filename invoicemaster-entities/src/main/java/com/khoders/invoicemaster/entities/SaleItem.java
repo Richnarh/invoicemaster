@@ -24,10 +24,10 @@ public class SaleItem extends BaseModel
     @ManyToOne
     private Inventory inventory;
     
-    public static final String _register="register";
-    @JoinColumn(name = "register", referencedColumnName = "id")
+    public static final String _onlineClient="onlineClient";
+    @JoinColumn(name = "online_client", referencedColumnName = "id")
     @ManyToOne
-    private Register register;
+    private OnlineClient onlineClient;
     
     @Column(name = "price")
     private double price;
@@ -78,14 +78,14 @@ public class SaleItem extends BaseModel
         this.subTotal = subTotal;
     }
 
-    public Register getRegister()
+    public OnlineClient getOnlineClient()
     {
-        return register;
+        return onlineClient;
     }
 
-    public void setRegister(Register register)
+    public void setOnlineClient(OnlineClient onlineClient)
     {
-        this.register = register;
+        this.onlineClient = onlineClient;
     }
     
 }

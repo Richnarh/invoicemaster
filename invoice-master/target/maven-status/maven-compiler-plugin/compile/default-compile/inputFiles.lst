@@ -3,6 +3,7 @@ C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\ConvertToWords.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listener\AppSession.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\PaymentReceiptDto.java
+C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\OnlineClientConverter.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ClientController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\Pages.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ClientConverter.java
@@ -22,6 +23,7 @@ C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\PaymentService.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\XtractService.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProductController.java
+C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\ClientService.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\MessageTemplateConverter.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\UserAccountController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductConverter.java
@@ -36,6 +38,7 @@ C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\commons\CommonClass.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\ProformaInvoiceDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\PaymentDataController.java
+C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\UserTransactionController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\LoginController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.java

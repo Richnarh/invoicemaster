@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                User Transaction
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5 wow zoomIn">
+                        <div class="container-fluid">
+                            <div class="card-header">User Online Transactions</div>
+                            <h:panelGroup rendered="#{userTransactionController.pageView.listView}">
+                                <h:form id="clientTable" class="mb-3 wow">
+                                    <p:dataTable value="#{userTransactionController.onlineClientList}" reflow="true" var="onlineClient"
+                                                 paginator="true" paginatorPosition="bottom" rows="10">
+                                        <p:column exportable="false" style="width: 40px;">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <h:panelGrid columns="2">
+                                                <span>#{msg.created_date}</span>
+                                                <h:outputText value="#{onlineClient.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date_time_ampm}" type="localDateTime"/>
+                                                </h:outputText>
+
+                                                <span>Order Note</span>
+                                                <h:outputText value="#{onlineClient.orderNote}"/>
+
+                                                <span>#{msg.email_ddress}</span>
+                                                <h:outputText value="#{onlineClient.emailAddress}"/>
+
+                                                <span>Postal Code</span>
+                                                <h:outputText value="#{onlineClient.postalCode}"/>
+                                            </h:panelGrid>
+                                        </p:rowExpansion>
+
+                                        <p:column headerText="#{msg.date}" style="width: 100px;">
+                                            <h:outputText value="#{onlineClient.valueDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msg.client} Name" filterBy="#{client.clientName}" filterMatchMode="contains">
+                                            #{onlineClient.firstname} #{onlineClient.lastname}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.phone}" style="width: 130px;">
+                                            #{onlineClient.phoneNumber}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.address}">
+                                            #{onlineClient.streetAddress}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.status}" style="width: 60px;">
+                                            <span class="badge badge-warning">#{onlineClient.clientStatus}</span>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" style="width: 80px;">
+                                            <h:commandButton class="btn btn-outline-info btn-sm" value="#{msg.manage}" immediate="true" action="#{userTransactionController.manageTransaction(onlineClient)}">
+                                                <p:ajax  update=":mainPanel"/>
+                                            </h:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{userTransactionController.pageView.createView}">
+                                <div class="mb-5 pt-3 mx-auto">
+                                    <h:form id="transactionForm">
+                                        <h:panelGrid columns="4" class="spaced-form">
+                                            <span>Clients</span>
+                                            <h:outputText class="field-shade" value="
+                                                          #{userTransactionController.selectedOnlineClient.firstname}
+                                                          #{userTransactionController.selectedOnlineClient.lastname}
+                                                          #{userTransactionController.selectedOnlineClient.phoneNumber}
+                                                          "/>
+
+                                            <span>#{msg.payment_staus}</span>
+                                            <p:selectOneMenu value="#{userTransactionController.userTransaction.paymentStatus}" required="true">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.paymentStatusList}"/>
+                                            </p:selectOneMenu>
+
+                                            <span>#{msg.payment_method}</span>
+                                            <p:selectOneMenu value="#{userTransactionController.userTransaction.paymentMethod}">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.paymentMethodList}"/>
+                                            </p:selectOneMenu>
+
+                                            <span>#{msg.delivery_status}</span>
+                                            <p:selectOneMenu value="#{userTransactionController.userTransaction.deliveryStatus}">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.deliveryStatusList}"/>
+                                            </p:selectOneMenu>
+
+                                        </h:panelGrid>
+                                        <br/>
+                                        <p:commandButton class="kbtn-success" value="#{userTransactionController.optionText}" action="#{userTransactionController.saveUserTransaction()}" immediate="true" update=":transactionTable"/>
+                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" update="@form" action="#{userTransactionController.clear()}"/>
+                                        <p:commandButton class="kbtn-danger float-right" value="#{msg.close}" action="#{userTransactionController.closePage()}" immediate="true" ajax="false"/>
+                                    </h:form>     
+                                    <br/>
+
+                                    <div class="pt-3">
+                                        <h:form id="transactionTable">
+                                            <p:dataTable value="#{userTransactionController.userTransactionList}" var="userTransaction">
+                                                <p:column style="width: 37px;">
+                                                    <p:rowToggler/>
+                                                </p:column>
+                                                <p:rowExpansion>
+                                                    <h:panelGrid columns="2">
+                                                        <span>#{msg.created_date}</span>
+                                                        <h:outputText value="#{userTransaction.createdDate}">
+                                                            <f:convertDateTime type="localDateTime" pattern="#{msg.formatted_date_time_ampm}"/>
+                                                        </h:outputText>
+                                                    </h:panelGrid>
+                                                </p:rowExpansion>
+
+                                                <p:column headerText="#{msg.date}" style="width: 100px;">
+                                                    <h:outputText value="#{userTransaction.valueDate}">
+                                                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="#{msg.payment_staus}">
+                                                    #{userTransaction.paymentStatus.label}
+                                                </p:column>
+                                                <p:column headerText="#{msg.payment_method}">
+                                                    #{userTransaction.paymentMethod.label}
+                                                </p:column>
+                                                <p:column headerText="#{msg.delivery_status}">
+                                                    #{userTransaction.deliveryStatus.label}
+                                                </p:column>
+
+                                                <p:column headerText="#{msg.action}" style="width: 120px;">
+                                                    <p:menuButton value="#{msg.choose}">
+                                                        <p:menuitem icon="#{msg.edit_icon}" value="#{msg.edit}" action="#{userTransactionController.editUserTransaction(userTransaction)}" update=":transactionForm"/>
+                                                        <p:menuitem icon="#{msg.delete_icon}" value="#{msg.delete}" action="#{userTransactionController.deleteUserTransaction(userTransaction)}" update="@form"/>
+                                                    </p:menuButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

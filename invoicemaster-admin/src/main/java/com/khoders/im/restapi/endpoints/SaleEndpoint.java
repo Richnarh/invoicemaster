@@ -5,7 +5,6 @@
  */
 package com.khoders.im.restapi.endpoints;
 
-import com.khoders.invoicemaster.entities.Register;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.im.restapi.ApiEndpoint;
 import com.khoders.im.restapi.payload.SaleDto;
