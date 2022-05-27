@@ -3,9 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+      xmlns:p="http://primefaces.org/ui">  
 
+    <style>
+        .converted{
+            background: #e0a800;
+        }
+    </style>
     <h:body>
         <div class="row wow fadeInDown">
             <div class="col-md-12 col-sm-6 col-lg-12">
@@ -20,16 +24,8 @@
                     <p:datePicker value="#{proformaInvoiceController.dateRange.toDate}"
                                   pattern="#{msg.formatted_date}" 
                                   monthNavigator="true" yearNavigator="true"/>
-                    <span class="ml-2"></span>
-                    <p:selectOneMenu id="invoiceStatus" value="#{proformaInvoiceController.invoiceStatus}">
-                        <f:selectItem itemLabel="#{msg.choose} Status"/>
-                        <f:selectItems value="#{commonClass.invoiceStatusList}"/>
-                        <p:ajax listener="#{proformaInvoiceController.fetchByInvoiceStatus()}" update=":proformaInvoiceTable, @form"/>
-                    </p:selectOneMenu>
 
-                    <h:commandButton id="invoiceSearch" class="mx-2 btn btn-info btn-sm" value="Search Invoice" action="#{proformaInvoiceController.filterProformaInvoice()}">
-                        <p:ajax update=":proformaInvoiceTable, @form"/>
-                    </h:commandButton>
+                    <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search Invoice" action="#{proformaInvoiceController.filterProformaInvoice()}"/>
 
                     <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{proformaInvoiceController.reset()}">
                         <p:ajax update=":proformaInvoiceTable, @form"/>
@@ -49,7 +45,7 @@
         </div>
 
         <h:form id="proformaInvoiceTable" class="wow fadeInUp pb-3">
-            <p:dataTable value="#{proformaInvoiceController.proformaInvoiceList}" var="proformaInvoice"  scrollable="true" scrollHeight="560">
+            <p:dataTable rowStyleClass="#{proformaInvoice.converted == true ? 'converted':null}" value="#{proformaInvoiceController.proformaInvoiceList}" var="proformaInvoice"  scrollable="true" scrollHeight="560">
 
                 <p:column style="width: 37px;">
                     <p:rowToggler/>
@@ -70,7 +66,7 @@
                     </h:panelGrid>
                 </p:rowExpansion>
 
-                <p:column  style="width: 130px;" headerText="Quotation" filterBy="#{proformaInvoice.quotationNumber}" filterMatchMode="contains">
+                <p:column style="width: 130px;" headerText="Quotation" filterBy="#{proformaInvoice.quotationNumber}" filterMatchMode="contains">
                     #{proformaInvoice.quotationNumber}
                 </p:column>
                 <p:column headerText="#{msg.issued_date}" style="width: 100px;">
@@ -103,12 +99,12 @@
                     <p:menuButton value="#{msg.choose}">
                         <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainPanel"/>
                         <p:menuitem id="invoiceItem" icon="fa fa-plus" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainPanel"/>
-                        <p:menuitem id="paymentInfo" icon="fa fa-plus" class="text-info" value="Payment Info" immediate="true" action="#{proformaInvoiceController.recordPayment(proformaInvoice)}" oncomplete="PF('paymentForm').show()" resetValues="true" update=":mainPanel, :paymentModal"/>
+                        <p:menuitem id="paymentInfo" icon="fa fa-plus" class="text-info" value="Payment Info" immediate="true" action="#{proformaInvoiceController.recordPayment(proformaInvoice)}" oncomplete="PF('paymentForm').show()" resetValues="true" update=":mainPanel, :paymentModal,:paymentDataForm"/>
                         <p:menuitem icon="#{msg.delete_icon}" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainPanel"/>
                     </p:menuButton>
                         <p:tooltip for="invoiceItem" value="Add items to this invoice" position="left"/>
                         <p:tooltip for="paymentInfo" value="Add payment info on invoice" position="left"/>
-                        <p:blockUI block="@form" trigger="invoiceItem,paymentInfo,:searchForm:invoiceStatus,:searchForm:invoiceSearch">
+                        <p:blockUI block="@form" trigger="invoiceItem,paymentInfo">
                         <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
                         <p><small>Please wait...</small></p>
                     </p:blockUI>

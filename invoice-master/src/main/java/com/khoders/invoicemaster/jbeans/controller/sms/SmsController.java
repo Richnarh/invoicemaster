@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.jbeans.controller.sms;
 
-import Zenoph.SMSLib.Enums.MSGTYPE;
 import Zenoph.SMSLib.Enums.REQSTATUS;
 import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import Zenoph.SMSLib.ZenophSMS;
@@ -17,7 +16,6 @@ import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
-import com.khoders.invoicemaster.jbeans.SmsAccess;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.resource.jpa.CrudApi;
@@ -118,10 +116,7 @@ public class SmsController implements Serializable
             {
                 clearSMS();
                 
-                ZenophSMS zsms = new ZenophSMS();
-                zsms.setUser(SmsAccess.USERNAME);
-                zsms.setPassword(SmsAccess.PASSWORD);
-                zsms.authenticate();
+                ZenophSMS zsms = smsService.extractParams();
 
                 // set message parameters.
                 if (selectedMessagingType == MessagingType.TEMPLATE_MESSAGING)
@@ -131,8 +126,16 @@ public class SmsController implements Serializable
                     System.out.println("TEMPLATE_MESSAGING -- " + selectedMessageTemplate.getTemplateText());
                 } else
                 {
+                    if(textMessage.isEmpty())
+                    {
+                         FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please type a message"), null));
+                        
+                        return;
+                    }
                     zsms.setMessage(textMessage);
                 }
+                
                 String phoneNumber = selectedClient.getPhone();
                 List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
 
@@ -142,7 +145,7 @@ public class SmsController implements Serializable
                 }
                 
                 zsms.setSenderId(sms.getSenderId().getSenderIdentity());
-                zsms.setMessageType(MSGTYPE.TEXT);
+                
 
                 List<String[]> response = zsms.submit();
                 for (String[] destination : response)
@@ -150,22 +153,21 @@ public class SmsController implements Serializable
                     REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
                     if (reqstatus == null)
                     {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+                      Msg.error("failed to send message");
                         break;
                     } else
                     {
                         switch (reqstatus)
                         {
                             case SUCCESS:
-                                saveMessage();
+                                saveMessage(zsms.getMessage());
+                                System.out.println(" <<--- SMS delivered -->>>");
+                                Msg.info("SMS sent to "+selectedClient.getClientName());
                                 break;
                             case ERR_INSUFF_CREDIT:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+                                Msg.error("Insufficeint Credit");
                             default:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+                                Msg.error("Failed to send message");
                                 return;
                         }
                     }
@@ -173,7 +175,7 @@ public class SmsController implements Serializable
 
             } else
             {
-                System.out.println("---------Connection not Available ----");
+                System.out.println("--------- INTERNET CONNECTION NOT AVAILABLE ----");
             }
         } catch (Exception e)
         {
@@ -203,37 +205,42 @@ public class SmsController implements Serializable
             {
                 clearSMS();
                 
-                ZenophSMS zsms = new ZenophSMS();
-                zsms.setUser(SmsAccess.USERNAME);
-                zsms.setPassword(SmsAccess.PASSWORD);
+                ZenophSMS zsms = SmsService.extractParams();
                 zsms.authenticate();
 
-                // set message parameters.
+               // set message parameters.
                 if (selectedMessagingType == MessagingType.TEMPLATE_MESSAGING)
                 {
                     zsms.setMessage(selectedMessageTemplate.getTemplateText());
-
+                    
                     System.out.println("TEMPLATE_MESSAGING -- " + selectedMessageTemplate.getTemplateText());
                 } else
                 {
+                    if(textMessage.isEmpty())
+                    {
+                      Msg.error("Please type a message");
+                      return;
+                    }
                     zsms.setMessage(textMessage);
                 }
+                
                 String phoneNumber = null;
+                GroupContact gc=null;
                 
-                for (GroupContact contact : groupContactList)
+                for (GroupContact groupContact : groupContactList)
                 {
-                    phoneNumber = contact.getClient().getPhone();
-                }
-                
-                List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+                    gc = groupContact;
+                    phoneNumber = groupContact.getClient().getPhone();
+                    
+                    List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
 
-                for (String number : numbers)
-                {
-                    zsms.addRecipient(number);
+                    for (String number : numbers)
+                    {
+                        zsms.addRecipient(number);
+                    }
                 }
                 
                 zsms.setSenderId(sms.getSenderId().getSenderIdentity());
-                zsms.setMessageType(MSGTYPE.TEXT);
 
                 List<String[]> response = zsms.submit();
                 for (String[] destination : response)
@@ -241,22 +248,22 @@ public class SmsController implements Serializable
                     REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
                     if (reqstatus == null)
                     {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+                        Msg.error("failed to send message");
                         break;
-                    } else
+                    }
+                    else
                     {
                         switch (reqstatus)
                         {
                             case SUCCESS:
-                                saveMessage();
+                                saveBulkMessage(zsms.getMessage(), gc);
+                                System.out.println(" <<--- Bulk SMS delivered -->>>");
+                                Msg.info("Sending Bulk Message successful!");
                                 break;
                             case ERR_INSUFF_CREDIT:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+                                Msg.error("Insufficeint Credit");
                             default:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+                                Msg.error("Failed to send message");
                                 return;
                         }
                     }
@@ -271,60 +278,65 @@ public class SmsController implements Serializable
             e.printStackTrace();
         } 
     }
-      
-   public void saveBulkMessage()
+
+    public void saveMessage(String smsMessage)
+    {
+        try
+        {
+            sms = new Sms();
+            sms.setSmsTime(LocalDateTime.now());
+            sms.setMessage(smsMessage);
+            sms.setClient(selectedClient);
+            sms.setsMSType(SMSType.SINGLE_SMS);
+            sms.setUserAccount(appSession.getCurrentUser());
+           if(crudApi.save(sms) != null)
+           {
+             Msg.info("SMS sent to "+selectedClient.getClientName());
+               
+               System.out.println("SMS sent and saved -- ");
+           }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+   
+   public void saveBulkMessage(String smsMessage, GroupContact groupContact)
    {
       try
         {
-            for (GroupContact groupContact : groupContactList)
+            sms = new Sms();
+            sms.genCode();
+            sms.setSmsTime(LocalDateTime.now());
+            sms.setMessage(smsMessage);
+            sms.setClient(groupContact.getClient());
+            sms.setsMSType(SMSType.BULK_SMS);
+            sms.setUserAccount(appSession.getCurrentUser());
+
+            if (crudApi.save(sms) != null)
             {
-                sms.setSmsTime(LocalDateTime.now());
-                sms.setMessage(textMessage);
-                sms.setClient(groupContact.getClient());
-                sms.setsMSType(SMSType.BULK_SMS);
-                sms.setUserAccount(appSession.getCurrentUser());
-                if (crudApi.save(sms) != null)
-                {
-                    System.out.println("SMS sent and saved -- ");
-                }  
-            }
-            clearSMS();
+                System.out.println("SMS sent and saved -- ");
+            }  
+           
         } catch (Exception e)
         {
             e.printStackTrace();
         }  
    }
 
-    public void saveMessage()
+    public void loadContactGroup()
     {
-        try
+        if(smsGrup.getGroupName().equals("All"))
         {
-            sms.setSmsTime(LocalDateTime.now());
-            sms.setMessage(textMessage);
-            sms.setClient(selectedClient);
-            sms.setsMSType(SMSType.SINGLE_SMS);
-           if(crudApi.save(sms) != null)
-           {
-               FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("SMS sent to "+selectedClient.getClientName()), null));
-               
-               System.out.println("SMS sent and saved -- ");
-           }
-           clearSMS();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+          groupContactList = smsService.getContactGroupList();
+          return;
         }
+        groupContactList = smsService.getContactGroupList(smsGrup);
     }
-      
+    
     public void loadSmslog()
     {
         smsList =smsService.loadSmslogList(smsType);
-    }
-    
-    public void loadContactGroup()
-    {
-        groupContactList = smsService.getContactGroupList(smsGrup);
     }
     
     public void deleteSms(Sms sms)
@@ -334,13 +346,11 @@ public class SmsController implements Serializable
             if(crudApi.delete(sms))
             {
                 smsList.remove(sms);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+                Msg.info(Msg.SUCCESS_MESSAGE);
             }
             else
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null)); 
+              Msg.info(Msg.FAILED_MESSAGE);
             }
         } catch (Exception e)
         {
@@ -355,6 +365,7 @@ public class SmsController implements Serializable
         sms.setUserAccount(appSession.getCurrentUser());
         sms.setCompanyBranch(appSession.getCompanyBranch());
         SystemUtils.resetJsfUI();
+        
     }
 
     public void manage(Client client)

@@ -44,7 +44,7 @@
                                         <span>#{msg.delete}</span>
                                         <p:selectBooleanCheckbox value="#{userAccountController.selectedAccount.permDelete}"/>
 
-                                        <span>#{msg.print}</span>
+                                        <span>#{msg.print}/Create #{msg.invoice} &emsp;</span>
                                         <p:selectBooleanCheckbox value="#{userAccountController.selectedAccount.permPrint}"/>
                                         
                                         <span>#{msg.convert}/Post</span>
@@ -52,6 +52,9 @@
                                         
                                         <span>Send SMS</span>
                                         <p:selectBooleanCheckbox value="#{userAccountController.selectedAccount.permSendSMS}"/>
+                                        
+                                        <span>Quick Invoice</span>
+                                        <p:selectBooleanCheckbox value="#{userAccountController.selectedAccount.quickInvoice}"/>
 
                                     </h:panelGrid>
                                     <div class="pt-3">
@@ -63,7 +66,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-md-12 py-3">
                     <h:form id="permissionTable" class="shadow-sm">
@@ -92,7 +94,7 @@
                             <p:column style="text-align: left" headerText="#{msg.delete}">
                                 #{permissions.permDelete}
                             </p:column>
-                            <p:column style="text-align: left" headerText="#{msg.print}">
+                            <p:column style="text-align: left" headerText="#{msg.print} Create #{msg.invoice}">
                                 #{permissions.permPrint}
                             </p:column>
                             <p:column style="text-align: left" headerText="#{msg.convert}">
@@ -100,6 +102,9 @@
                             </p:column>
                             <p:column style="text-align: left" headerText="Send SMS">
                                 #{permissions.permSendSMS}
+                            </p:column>
+                            <p:column style="text-align: left" headerText="Quick Invoice">
+                                #{permissions.quickInvoice}
                             </p:column>
                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
                                 <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update=":permissionsForm"

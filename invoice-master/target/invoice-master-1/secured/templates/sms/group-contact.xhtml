@@ -31,8 +31,8 @@
                                         </span>
                                     </div>
                                     <div class="form-group">
-                                        <p class="col-form-label text-muted">#{msg.contact} <span class="text-danger">*</span></p>
-                                        <p:selectOneMenu value="#{contactGroupController.contactGroup.client}" required="true" filter="true" filterMatchMode="contains">
+                                        <p class="col-form-label text-muted">#{msg.contact} </p>
+                                        <p:selectOneMenu value="#{contactGroupController.contactGroup.client}" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{userCommonClass.clientList}"/>
                                         </p:selectOneMenu>

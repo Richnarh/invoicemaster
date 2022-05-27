@@ -28,6 +28,9 @@ public class Product extends UserAccountRecord implements Serializable
     @Column(name = "product_code")
     private String productCode;
         
+    @Column(name = "reorder_level")
+    private int reorderLevel;
+        
     @JoinColumn(name = "product_type")
     @ManyToOne
     private ProductType productType;
@@ -101,6 +104,16 @@ public class Product extends UserAccountRecord implements Serializable
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public int getReorderLevel()
+    {
+        return reorderLevel;
+    }
+
+    public void setReorderLevel(int reorderLevel)
+    {
+        this.reorderLevel = reorderLevel;
     }
 
     public void genCode()

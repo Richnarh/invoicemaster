@@ -11,6 +11,7 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
@@ -196,6 +197,37 @@ public class ProformaInvoiceService
         {
             e.printStackTrace();
         }
+        return Collections.emptyList();
+    }
+    
+    public PaymentData invoiceRecord(ProformaInvoice proformaInvoice)
+    {
+        try
+        {
+          String qryString = "SELECT e FROM PaymentData e WHERE e.proformaInvoice=?1";
+            return crudApi.getEm().createQuery(qryString, PaymentData.class)
+                    .setParameter(1, proformaInvoice).getResultStream().findFirst().orElse(null);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+        
+    public List<Inventory> getStockShortageList()
+    {
+        try
+        {
+          String qryString = "SELECT e FROM Inventory e WHERE e.quantity <= 5 ORDER BY e.product ASC";
+          return crudApi.getEm().createQuery(qryString, Inventory.class)
+//                  .setParameter(1, companyBranch)
+                  .getResultList();
+           
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
         return Collections.emptyList();
     }
 }

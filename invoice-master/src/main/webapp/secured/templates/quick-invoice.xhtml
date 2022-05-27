@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <h:head>
+        <title>#{msg.title}</title>
+
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" />
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/OverlayScrollbars.min.css" />   
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/main.css" />  
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/animate.css" />  
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>  
+    </h:head>
+
+    <h:body class="pt-5">
+        <div class="py-3 col-md-10 mx-auto p-5 border-info shadow">
+            <div class="alert alert-info">
+                Select Product, process sale and know the amount payable on the go.
+            </div> 
+            <div class="row">
+                <div class="col-lg-4">
+                    <h:form id="orderItemForm">
+                        <h:panelGrid columns="2" class="spaced-form"> 
+                            <span>#{msg.product} <span class="text-danger">*</span> </span>
+                            <p:selectOneMenu class="col" value="#{quickInvoiceController.proformaInvoiceItem.inventory}" 
+                                             filter="true" filterMatchMode="contains" required="true">
+                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                <f:selectItems value="#{userCommonClass.inventoryList}"/>
+
+                                <p:ajax listener="#{quickInvoiceController.inventoryProperties()}" update="sellingPrice"/>
+                            </p:selectOneMenu>
+
+                            <span>#{msg.quantity} <span class="text-danger">*</span> </span>
+                            <p:inputText value="#{quickInvoiceController.proformaInvoiceItem.quantity}" required="true"/>
+
+                            <span>#{msg.unit_price} <span class="text-danger">*</span> </span>
+                            <p:inputText id="sellingPrice" value="#{quickInvoiceController.proformaInvoiceItem.unitPrice}" required="true"/>
+
+                        </h:panelGrid>
+
+                        <div class="py-3">
+                            <p:commandButton value="Add to table" icon="#{msg.add_icon}" class="kbtn-info" action="#{quickInvoiceController.addProformaInvoiceItem()}" update=":proformaInvoiceItemTable, orderItemForm"/>
+                        </div>
+                    </h:form>
+                </div>
+                <div class="col-lg-8">
+                    <h:form id="proformaInvoiceItemTable">
+                        <p:dataTable value="#{quickInvoiceController.proformaInvoiceItemList}" var="proformaInvoiceItem">
+
+                            <p:column headerText="System">
+                                #{proformaInvoiceItem.inventory.product.productName}
+                            </p:column>
+
+                            <p:column headerText="#{msg.qty}" class="text-right" style="width: 40px;">
+                                #{proformaInvoiceItem.quantity}
+                            </p:column>
+
+                            <p:column headerText="Price" class="text-right" style="width: 100px;">
+                                <h:outputText value="#{proformaInvoiceItem.unitPrice}">
+                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Total" class="text-right" style="width: 100px;">
+                                <h:outputText value="#{proformaInvoiceItem.subTotal}">
+                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="#{msg.action}" style="width: 120px;">
+                                <p:menuButton value="#{msg.choose}">
+                                    <p:menuitem id="remove" icon="fa fa-times" class="text-secondary" value="#{msg.remove}" action="#{quickInvoiceController.deleteProformaInvoiceItem(proformaInvoiceItem)}" immediate="true" update="@form"/>
+                                </p:menuButton>
+                                <p:tooltip for="remove" value="Remove from table" position="right"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <br/>
+                    </h:form>
+
+                    <h:form>
+                        <div class="col-md-6 pull-right shadow-sm mb-2 bg-white">
+                            <table class="table">
+                                <tr>
+                                    <td><span class="field-label">Sub Total</span></td>
+                                    <td  class="text-right"> 
+                                        <h:inputText value="#{quickInvoiceController.subTotal}" readonly="true" class="form-control">
+                                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
+                                        </h:inputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-label">#{msg.total_amount}</span></td>
+                                    <td  class="text-right"> 
+                                        <h:outputText value="#{quickInvoiceController.totalSaleAmount}" class="field-shade">
+                                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-label">#{msg.discount} (%)</span></td>
+                                    <td  class="text-right"> 
+                                        <h:inputText class="form-control" maxlength="5" value="#{quickInvoiceController.productDiscountRate}"/>
+                                    </td>
+                                </tr>
+
+                                <ui:repeat value="#{quickInvoiceController.salesTaxDtoList}" var="salesTax">
+                                    <tr>
+                                        <td>#{salesTax.taxName} (#{salesTax.taxRate} %)</td>
+                                        <td class="text-right">
+                                            <h:outputText value="#{salesTax.taxAmount}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}" />
+                                            </h:outputText>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+
+                                <tr>
+                                    <td><span class="field-label">Installation Fee</span></td>
+                                    <td  class="text-right"> 
+                                        <h:inputText class="form-control" value="#{quickInvoiceController.installationFee}"/>
+                                    </td>
+                                </tr>
+
+                                <tr class="bg-gradient-gray">
+                                    <td><span class="field-label text-uppercase font-weight-bold">Total Payable</span></td>
+                                    <td class="text-right"> 
+                                        <h:outputText value="#{quickInvoiceController.totalPayable}" styleClass="field-shade">
+                                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}" />
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                        <center class="mb-5">
+                            <p:commandButton value="Process Sale" icon="fa fa-cog" action="#{quickInvoiceController.saveAll()}" class="kbtn-info mr-5" ajax="false"/>
+                            <p:commandButton value="#{msg.clear}" class="kbtn-default ml-3" icon="#{msg.clear_icon}" action="#{quickInvoiceController.clearProformaInvoiceItem()}" ajax="false"/>
+                        </center>
+                    </h:form>
+                </div>
+
+                <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Main System</a>
+                    </li>
+                </h:panelGroup>
+                <h:form>
+                    <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

@@ -1,14 +1,17 @@
 com\khoders\invoicemaster\jbeans\controller\PaymentDataController$1.class
 com\khoders\invoicemaster\jbeans\controller\PurchaseOrderController.class
+com\khoders\invoicemaster\jbeans\controller\UserTransactionController.class
 com\khoders\invoicemaster\jbeans\controller\LoginController.class
 com\khoders\invoicemaster\jbeans\controller\TaxController.class
 com\khoders\invoicemaster\service\XtractService.class
 com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
 com\khoders\invoicemaster\jbeans\controller\ProductTypeController.class
 com\khoders\invoicemaster\jbeans\controller\sms\ContactGroupController.class
+com\khoders\invoicemaster\jbeans\controller\QuickInvoiceController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto$SalesTax.class
 com\khoders\invoicemaster\jbeans\controller\backdoorController.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
+com\khoders\invoicemaster\jbeans\converter\OnlineClientConverter.class
 com\khoders\invoicemaster\jbeans\controller\InventoryController.class
 com\khoders\invoicemaster\jbeans\controller\ProductController$1.class
 com\khoders\invoicemaster\dto\ConvertToWords.class
@@ -29,6 +32,8 @@ com\khoders\invoicemaster\jbeans\controller\sms\SmsController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\invoicemaster\jbeans\controller\sms\SenderIdController.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
+com\khoders\invoicemaster\jbeans\controller\DashboardController.class
+com\khoders\invoicemaster\service\ClientService.class
 com\khoders\invoicemaster\service\PaymentService.class
 com\khoders\invoicemaster\service\InventoryService.class
 com\khoders\invoicemaster\dto\Receipt.class
@@ -50,4 +55,5 @@ com\khoders\invoicemaster\jbeans\controller\sms\SMSGrupController.class
 com\khoders\invoicemaster\service\SmsService.class
 com\khoders\invoicemaster\listener\SessionListener.class
 com\khoders\invoicemaster\jbeans\converter\ProformaInvoiceConverter.class
+com\khoders\invoicemaster\dto\SalesTaxDto.class
 com\khoders\invoicemaster\jbeans\converter\ProductConverter.class

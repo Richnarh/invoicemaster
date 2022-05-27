@@ -63,6 +63,10 @@
                                                 #{product.productName}
                                             </p:column>
 
+                                            <p:column headerText="Re-order Level">
+                                                #{product.reorderLevel}
+                                            </p:column>
+
                                             <p:column headerText="Produt Type" filterBy="#{product.productType.productTypeName}" filterMatchMode="contains">
                                                 #{product.productType.productTypeName}
                                             </p:column>
@@ -95,6 +99,9 @@
                                                     <f:selectItem itemLabel="#{msg.choose}"/>
                                                     <f:selectItems value="#{userCommonClass.productTypeList}"/>
                                                 </p:selectOneMenu>
+                                                
+                                                <span>Re-order Level</span>
+                                                <p:inputText value="#{productController.product.reorderLevel}"/>
 
                                                 <span>Product Image</span>
                                                 <p:fileUpload value="#{productController.file}"  mode="simple" skinSimple="true"/>

@@ -11,6 +11,7 @@ import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
@@ -19,6 +20,7 @@ import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.PaymentService;
+import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
@@ -59,6 +61,7 @@ public class PaymentDataController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     @Inject PaymentService paymentService;
+    @Inject ProformaInvoiceService proformaInvoiceService;
     
     private String optionText;
     
@@ -106,14 +109,13 @@ public class PaymentDataController implements Serializable{
     public void fetchByDeliveryStatus()
     {
         selectedTabIndex = 2;
-        if(paymentStatus == null) return;
+        if(deliveryStatus == null) return;
         paymentDataDeliveryList = paymentService.getInvoiceByDeliveryStatus(deliveryStatus);
     }
     
     public void updatePaymentData(PaymentData paymentData)
     {
-        this.paymentData = crudApi.find(PaymentData.class, paymentData.getId());
-        this.paymentData.setPaymentStatus(paymentData.getPaymentStatus());  
+        this.paymentData = paymentData;
     }
     public void updateDeliveryData(PaymentData paymentData)
     {
@@ -138,15 +140,48 @@ public class PaymentDataController implements Serializable{
    {
         try 
         {
+            PaymentData data = crudApi.find(PaymentData.class, paymentData.getId());
+            if(data.getPaymentStatus() == PaymentStatus.FULLY_PAID){
+                Msg.error("Status of this transaction is marked as "+data.getPaymentStatus()+", it can't be reverted!");
+                return;
+            }
           if(crudApi.save(paymentData) != null)
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              if(paymentData.getPaymentStatus() == PaymentStatus.FULLY_PAID)
+              {
+                  System.out.println("Here 1--- ");
+                 List<Inventory> inventoryList = proformaInvoiceService.getInventoryList();
+                 List<ProformaInvoiceItem> purchasedList = proformaInvoiceService.getProformaInvoiceItemList(paymentData.getProformaInvoice());
+                  for (ProformaInvoiceItem item : purchasedList)
+                  {
+                      for (Inventory inventory : inventoryList)
+                      {
+                          System.out.println("here 2");
+                          if(item.getInventory().getId().equals(inventory.getId()))
+                          {
+                              System.out.println("here 3");
+                            int qtyPurchased = item.getQuantity();
+                            int qtyInStock = inventory.getQuantity();
+
+                            int qtyAtHand = qtyInStock - qtyPurchased;
+                            
+                              System.out.println("qtyPurchased -- "+qtyPurchased);
+                              System.out.println("qtyInStock -- "+qtyInStock);
+                              System.out.println("qtyAtHand -- "+qtyAtHand);
+                            
+                            Inventory stock = crudApi.find(Inventory.class, inventory.getId());
+                            stock.setQuantity(qtyAtHand);
+                            crudApi.save(stock);
+                          }
+                      }
+                  }
+              }
+              
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+             Msg.error(Msg.FAILED_MESSAGE);
           }
            clearPaymentData();
         } catch (Exception e) 
@@ -169,13 +204,11 @@ public class PaymentDataController implements Serializable{
           {
               paymentDataStatusList.remove(paymentData);
               
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
+              Msg.error(Msg.DELETE_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+              Msg.error(Msg.FAILED_MESSAGE);
           }
         } catch (Exception e) 
         {
@@ -190,14 +223,11 @@ public class PaymentDataController implements Serializable{
           if(crudApi.delete(paymentData))
           {
               paymentDataDeliveryList.remove(paymentData);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
+              Msg.error(Msg.DELETE_MESSAGE); 
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+              Msg.error(Msg.FAILED_MESSAGE);
           }
         } catch (Exception e) 
         {
@@ -208,10 +238,10 @@ public class PaymentDataController implements Serializable{
     public void clearPaymentData() {
         paymentData = new PaymentData();
         paymentData.setUserAccount(appSession.getCurrentUser());
+        paymentData.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-
     public void processPaymentMsg(PaymentData paymentData)
     {
        senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);

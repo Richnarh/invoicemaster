@@ -13,6 +13,7 @@ import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.dto.Receipt;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.enums.SMSType;
@@ -23,6 +24,7 @@ import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.XtractService;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
+import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -184,6 +186,8 @@ public class ProformaInvoiceController implements Serializable
     
     public void recordPayment(ProformaInvoice proformaInvoice)
     {
+        clearPaymentData();
+        
         paymentDataList = proformaInvoiceService.getPaymentInfoList(proformaInvoice);
         
         paymentClient = proformaInvoice.getClient().getClientName();
@@ -194,6 +198,12 @@ public class ProformaInvoiceController implements Serializable
         paymentData.setUserAccount(appSession.getCurrentUser());
         paymentData.setProformaInvoice(proformaInvoice);
         
+       PaymentData data = proformaInvoiceService.invoiceRecord(paymentData.getProformaInvoice());
+       if(data != null)
+       {
+          paymentData = data; 
+       }
+        
     }
     
     public void savePaymentData()
@@ -201,8 +211,53 @@ public class ProformaInvoiceController implements Serializable
         try 
         {
           paymentData.genCode();
-          if(crudApi.save(paymentData) != null)
+          if(paymentData.getProformaInvoice() == null)
           {
+              Msg.error("Please select the invoice again!");
+              return;
+          }
+            PaymentData data = proformaInvoiceService.invoiceRecord(paymentData.getProformaInvoice());
+            System.out.println("data -- "+data);
+            if (data != null)
+            {
+                Msg.error("Payment data already captured!");
+                return;
+            }
+             
+            if(crudApi.save(paymentData) != null)
+            {
+              ProformaInvoice invoice = crudApi.find(ProformaInvoice.class, paymentData.getProformaInvoice().getId());
+              invoice.setConverted(true);
+              crudApi.save(invoice);
+             
+              if(paymentData.getPaymentStatus() == PaymentStatus.FULLY_PAID)
+              {
+                 List<Inventory> inventoryList = proformaInvoiceService.getInventoryList();
+                 List<ProformaInvoiceItem> purchasedList = proformaInvoiceService.getProformaInvoiceItemList(paymentData.getProformaInvoice());
+                  for (ProformaInvoiceItem item : purchasedList)
+                  {
+                      for (Inventory inventory : inventoryList)
+                      {
+                          if(item.getInventory().getId().equals(inventory.getId()))
+                          {
+                            int qtyPurchased = item.getQuantity();
+                            int qtyInStock = inventory.getQuantity();
+
+                            int qtyAtHand = qtyInStock - qtyPurchased;
+                            
+                              System.out.println("qtyPurchased -- "+qtyPurchased);
+                              System.out.println("qtyInStock -- "+qtyInStock);
+                              System.out.println("qtyAtHand -- "+qtyAtHand);
+                            
+                            Inventory stock = crudApi.find(Inventory.class, inventory.getId());
+                            stock.setQuantity(qtyAtHand);
+                            crudApi.save(stock);
+                          }
+                      }
+                  }
+              }
+              System.out.println("Not fully paid");
+              
               paymentDataList = CollectionList.washList(paymentDataList, paymentData);
               
               processPaymentSms(paymentData);
@@ -364,7 +419,7 @@ public class ProformaInvoiceController implements Serializable
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
                 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("One item added to cart"), null));
+                Msg.setMsg("One item added to cart");
               }
               else
                 {
@@ -622,7 +677,7 @@ public class ProformaInvoiceController implements Serializable
         proformaInvoice = new ProformaInvoice();
         proformaInvoice.setUserAccount(appSession.getCurrentUser());
         proformaInvoice.setCompanyBranch(appSession.getCompanyBranch());
-        proformaInvoice.setLastModifiedDate(LocalDate.now());
+        proformaInvoice.setLastModifiedDate(LocalDateTime.now());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

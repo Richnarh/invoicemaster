@@ -11,5 +11,6 @@ import org.omnifaces.util.Faces;
 public class Pages extends Application
 {
     public static String index = Faces.getRequestBaseURL() + "secured/index.xhtml?faces-redirect=true";
+    public static String quickInvoice = Faces.getRequestBaseURL() + "secured/templates/quick-invoice.xhtml";
     public static String login = Faces.getRequestBaseURL();
 }

@@ -27,18 +27,30 @@
                         <div class="tab-content" id="custom-tabs-four-tabContent">
                             <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
                                 <h:form>
-                                    <h:panelGrid columns="6" class="spaced-form">
+                                    <h:panelGrid columns="12" class="spaced-form">
                                         <span>#{msg.payment_staus}</span>
                                         <h:selectOneMenu class="form-control" value="#{paymentDataController.paymentStatus}">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{adminCommons.paymentStatusList}"/>
+                                            <p:ajax listener="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
                                         </h:selectOneMenu>
 
-                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
+                                        <span class="mr-2">From: </span>
+                                        <p:datePicker value="#{paymentDataController.dateRange.fromDate}"
+                                                      pattern="#{msg.formatted_date}" 
+                                                      monthNavigator="true" yearNavigator="true"/>
 
+                                        <span class="mr-2">To: </span>
+                                        <p:datePicker value="#{paymentDataController.dateRange.toDate}"
+                                                      pattern="#{msg.formatted_date}" 
+                                                      monthNavigator="true" yearNavigator="true"/>
+
+                                        <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search" action="#{paymentDataController.filterTransaction()}"/>
+                                        <h:commandButton class="btn btn-default btn-sm" value="#{msg.clear}" action="#{paymentDataController.clearData()}"/>
+                    
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataStatusList.size()}</span>
                                         <h:panelGroup class="shadow-sm faded-shade p-1">
-                                            <span>Total Amount (GHS) : </span>
+                                            <span>Total Amt: </span>
                                             <h:outputText value="#{paymentDataController.totalAmount}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
                                             </h:outputText>
@@ -61,7 +73,7 @@
                                         </h:panelGrid>
                                     </p:rowExpansion>
                                         <p:column style="width: 120px" headerText="#{msg.date}" filterBy="#{paymentData.createdDate}" filterMatchMode="contains">
-                                            <h:outputText value="#{paymentData.createdDate}">
+                                            <h:outputText value="#{paymentData.valueDate}">
                                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                             </h:outputText>
                                         </p:column>
@@ -120,7 +132,7 @@
 
                                     <p:dataTable id="paymentStatusTable" value="#{paymentDataController.paymentDataDeliveryList}" var="paymentData">
                                         <p:column headerText="#{msg.date}" filterBy="#{paymentData.createdDate}" filterMatchMode="contains">
-                                            <h:outputText value="#{paymentData.createdDate}">
+                                            <h:outputText value="#{paymentData.valueDate}">
                                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                                             </h:outputText>
                                         </p:column>
