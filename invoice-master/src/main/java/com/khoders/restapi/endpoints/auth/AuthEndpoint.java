@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.im.restapi.endpoints.auth;
+package com.khoders.restapi.endpoints.auth;
 
 import com.khoders.resource.jaxrs.JaxResponse;
 import java.util.ArrayList;
