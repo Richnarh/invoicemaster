@@ -11,9 +11,9 @@ import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
-import com.khoders.restapi.payload.SaleDto;
 import com.khoders.restapi.payload.SaleItemDto;
 import com.khoders.invoicemaster.enums.ClientStatus;
+import com.khoders.restapi.payload.ClientSalesDto;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,11 +22,11 @@ import javax.inject.Inject;
  *
  * @author richa
  */
-public class SalesMapper
+public class ClientSalesMapper
 {
     @Inject private CrudApi crudApi;
 
-    public OnlineClient toEntity(SaleDto dto)
+    public OnlineClient toEntity(ClientSalesDto dto)
     {
         OnlineClient client = new OnlineClient();
         if (dto.getId() != null)
@@ -81,9 +81,9 @@ public class SalesMapper
         return saleItemList;
     }
 
-    public SaleDto toDto(OnlineClient client)
+    public ClientSalesDto toDto(OnlineClient client)
     {
-        SaleDto dto = new SaleDto();
+        ClientSalesDto dto = new ClientSalesDto();
         if (client.getId() == null) return null;
 
         dto.setId(client.getId());

@@ -5,11 +5,12 @@
  */
 package com.khoders.restapi.services;
 
-import com.khoders.restapi.mapper.SalesMapper;
-import com.khoders.restapi.payload.SaleDto;
 import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.restapi.mapper.ClientSalesMapper;
+import com.khoders.restapi.payload.ClientSalesDto;
+import com.khoders.restapi.payload.TransactionDto;
 import javax.inject.Inject;
 
 /**
@@ -19,9 +20,10 @@ import javax.inject.Inject;
 public class SalesService
 {
     @Inject private CrudApi crudApi;
-    @Inject private SalesMapper salesMapper;
+    @Inject private ClientSalesMapper salesMapper;
+    @Inject private TransactionService transactionService;
     
-    public SaleDto save(SaleDto dto)
+    public TransactionDto save(ClientSalesDto dto)
     {
         OnlineClient client = salesMapper.toEntity(dto);
         if(crudApi.save(client) != null)
@@ -31,7 +33,7 @@ public class SalesService
                 saleItem.setOnlineClient(client);
                 crudApi.save(saleItem);
             }
-           return salesMapper.toDto(client);
+           return transactionService.processTransaction(client);
         }
         return null;
     }

@@ -5,20 +5,17 @@
  */
 package com.khoders.restapi.services;
 
-import com.khoders.restapi.mapper.SalesMapper;
 import com.khoders.restapi.payload.SaleItemDto;
 import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.jpa.QueryBuilder;
+import com.khoders.restapi.mapper.ClientSalesMapper;
+import com.khoders.restapi.payload.TransactionDto;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 
 /**
@@ -29,7 +26,7 @@ public class TransactionService
 {
     @Inject private CrudApi crudApi;
     @Inject private QueryBuilder builder;
-    @Inject private SalesMapper salesMapper;
+    @Inject private ClientSalesMapper salesMapper;
     
     public List<SaleItemDto> getSales(String userAccountId)
     {
@@ -68,4 +65,10 @@ public class TransactionService
     }
     
 
+    public TransactionDto processTransaction(OnlineClient client)
+    {
+        TransactionDto dto = new TransactionDto();
+        
+        return dto;
+    }
 }
