@@ -10,6 +10,7 @@ import Zenoph.SMSLib.Enums.REQSTATUS;
 import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
+import com.khoders.invoicemaster.dto.ProformaInvoiceItemDto;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
@@ -346,7 +347,7 @@ public class PaymentDataController implements Serializable{
         
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
-        List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
+        List<ProformaInvoiceItemDto> invoiceItemDtoList = new LinkedList<>();
         
         List<ProformaInvoiceItem> invoiceItemList  = paymentService.getProformaInvoiceItem(proformaInvoice);
         
@@ -385,16 +386,13 @@ public class PaymentDataController implements Serializable{
      
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
-            ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
+            ProformaInvoiceItemDto invoiceItemDto = new ProformaInvoiceItemDto();
                         
-            if(invoiceItem.getInventory() != null)
+            if(invoiceItem.getInventory() != null && invoiceItem.getInventory().getProduct() != null)
             {
-                if(invoiceItem.getInventory().getProduct() != null)
-                {
-                    invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
-                    invoiceItemDto.setProductName(invoiceItem.getInventory().getProduct().getProductName());
-                    invoiceItemDto.setDescription(invoiceItem.getInventory().getProduct().getDescription());
-                }
+               invoiceItemDto.setProductCode(invoiceItem.getInventory().getProduct().getProductCode());
+               invoiceItemDto.setProductName(invoiceItem.getInventory().getProduct().getProductName());
+               invoiceItemDto.setDescription(invoiceItem.getInventory().getProduct().getDescription());
             }
             invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
             invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());

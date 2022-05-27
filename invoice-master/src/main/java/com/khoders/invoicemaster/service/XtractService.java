@@ -6,7 +6,9 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
+import com.khoders.invoicemaster.dto.ProformaInvoiceItemDto;
 import com.khoders.invoicemaster.dto.Receipt;
+import com.khoders.invoicemaster.dto.SalesTaxDto;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
@@ -81,8 +83,8 @@ public class XtractService
         List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-        List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.SalesTax> salesTaxs = new LinkedList<>();
+        List<ProformaInvoiceItemDto> invoiceItemDtoList = new LinkedList<>();
+        List<SalesTaxDto> salesTaxs = new LinkedList<>();
         
         if(proformaInvoice.getClient() != null)
         {
@@ -129,7 +131,7 @@ public class XtractService
                 
         for (SalesTax salesTax : salesTaxesList)
         {
-            ProformaInvoiceDto.SalesTax taxItem = new ProformaInvoiceDto.SalesTax();
+            SalesTaxDto taxItem = new SalesTaxDto();
             taxItem.setTaxName(salesTax.getTaxName());
             taxItem.setTaxRate(salesTax.getTaxRate());
             taxItem.setTaxAmount(salesTax.getTaxAmount());
@@ -139,7 +141,7 @@ public class XtractService
         
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
-            ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
+            ProformaInvoiceItemDto invoiceItemDto = new ProformaInvoiceItemDto();
             
             if(invoiceItem.getInventory() != null)
             {

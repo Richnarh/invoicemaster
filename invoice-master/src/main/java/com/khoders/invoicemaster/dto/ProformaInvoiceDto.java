@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import java.io.InputStream;
+import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class ProformaInvoiceDto
     private double totalDiscount;
     private double totalPayable;
 
-    public List<ProformaInvoiceItem> invoiceItemList = new LinkedList<>();
-    public List<SalesTax> taxList = new LinkedList<>();
+    public List<ProformaInvoiceItemDto> invoiceItemList = new LinkedList<>();
+    public List<SalesTaxDto> taxList = new LinkedList<>();
 
     public LocalDate getIssuedDate()
     {
@@ -112,22 +112,22 @@ public class ProformaInvoiceDto
         this.description = description;
     }
 
-    public List<ProformaInvoiceItem> getInvoiceItemList()
+    public List<ProformaInvoiceItemDto> getInvoiceItemList()
     {
         return invoiceItemList;
     }
 
-    public void setInvoiceItemList(List<ProformaInvoiceItem> invoiceItemList)
+    public void setInvoiceItemList(List<ProformaInvoiceItemDto> invoiceItemList)
     {
         this.invoiceItemList = invoiceItemList;
     }
 
-    public List<SalesTax> getTaxList()
+    public List<SalesTaxDto> getTaxList()
     {
         return taxList;
     }
 
-    public void setTaxList(List<SalesTax> taxList)
+    public void setTaxList(List<SalesTaxDto> taxList)
     {
         this.taxList = taxList;
     }
@@ -256,179 +256,5 @@ public class ProformaInvoiceDto
     public void setSubTotalAmount(double subTotalAmount)
     {
         this.subTotalAmount = subTotalAmount;
-    }
-    
-    public static class SalesTax
-    {
-        private String taxName;
-        private double taxRate;
-        private double taxAmount;
-
-        public String getTaxName()
-        {
-            return taxName;
-        }
-
-        public void setTaxName(String taxName)
-        {
-            this.taxName = taxName;
-        }
-
-        public double getTaxRate()
-        {
-            return taxRate;
-        }
-
-        public void setTaxRate(double taxRate)
-        {
-            this.taxRate = taxRate;
-        }
-
-        public double getTaxAmount()
-        {
-            return taxAmount;
-        }
-
-        public void setTaxAmount(double taxAmount)
-        {
-            this.taxAmount = taxAmount;
-        }
-    }
-
-    public static class ProformaInvoiceItem
-    {
-        private String productCode;
-        private String productName;
-        private InputStream productImage;
-        private String frameUnit;
-        private String widthHeightUnits;
-        private int frameSize;
-        private int width;
-        private int height;
-        private int quantity;
-        private double unitPrice;
-        private double totalAmount;
-        private String description;
-
-        public String getProductName()
-        {
-            return productName;
-        }
-
-        public void setProductName(String productName)
-        {
-            this.productName = productName;
-        }
-
-        public int getQuantity()
-        {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity)
-        {
-            this.quantity = quantity;
-        }
-
-        public double getUnitPrice()
-        {
-            return unitPrice;
-        }
-
-        public void setUnitPrice(double unitPrice)
-        {
-            this.unitPrice = unitPrice;
-        }
-
-        public String getDescription()
-        {
-            return description;
-        }
-
-        public void setDescription(String description)
-        {
-            this.description = description;
-        }
-
-        public double getTotalAmount()
-        {
-            return totalAmount;
-        }
-
-        public void setTotalAmount(double totalAmount)
-        {
-            this.totalAmount = totalAmount;
-        }
-
-        public String getProductCode()
-        {
-            return productCode;
-        }
-
-        public void setProductCode(String productCode)
-        {
-            this.productCode = productCode;
-        }
-
-        public int getFrameSize()
-        {
-            return frameSize;
-        }
-
-        public void setFrameSize(int frameSize)
-        {
-            this.frameSize = frameSize;
-        }
-
-        public int getWidth()
-        {
-            return width;
-        }
-
-        public void setWidth(int width)
-        {
-            this.width = width;
-        }
-
-        public int getHeight()
-        {
-            return height;
-        }
-
-        public void setHeight(int height)
-        {
-            this.height = height;
-        }
-
-        public String getFrameUnit()
-        {
-            return frameUnit;
-        }
-
-        public void setFrameUnit(String frameUnit)
-        {
-            this.frameUnit = frameUnit;
-        }
-
-        public String getWidthHeightUnits()
-        {
-            return widthHeightUnits;
-        }
-
-        public void setWidthHeightUnits(String widthHeightUnits)
-        {
-            this.widthHeightUnits = widthHeightUnits;
-        }
-
-        public InputStream getProductImage()
-        {
-            return productImage;
-        }
-
-        public void setProductImage(InputStream productImage)
-        {
-            this.productImage = productImage;
-        }
-
     }
 }
