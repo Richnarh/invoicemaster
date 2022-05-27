@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.im.restapi.mapper;
+package com.khoders.restapi.mapper;
 
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.OnlineClient;
@@ -11,8 +11,8 @@ import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
-import com.khoders.im.restapi.payload.SaleDto;
-import com.khoders.im.restapi.payload.SaleItemDto;
+import com.khoders.restapi.payload.SaleDto;
+import com.khoders.restapi.payload.SaleItemDto;
 import com.khoders.invoicemaster.enums.ClientStatus;
 import java.util.LinkedList;
 import java.util.List;

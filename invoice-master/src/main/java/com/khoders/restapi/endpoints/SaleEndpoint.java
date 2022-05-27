@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.im.restapi.endpoints;
+package com.khoders.restapi.endpoints;
 
 import com.khoders.resource.utilities.Msg;
-import com.khoders.im.restapi.ApiEndpoint;
-import com.khoders.im.restapi.payload.SaleDto;
-import com.khoders.im.restapi.services.SalesService;
+import com.khoders.restapi.ApiEndpoint;
+import com.khoders.restapi.payload.SaleDto;
+import com.khoders.restapi.services.SalesService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.SystemUtils;
 import javax.inject.Inject;

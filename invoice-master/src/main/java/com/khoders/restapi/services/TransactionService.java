@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.im.restapi.services;
+package com.khoders.restapi.services;
 
-import com.khoders.im.restapi.mapper.SalesMapper;
-import com.khoders.im.restapi.payload.SaleItemDto;
+import com.khoders.restapi.mapper.SalesMapper;
+import com.khoders.restapi.payload.SaleItemDto;
 import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.exception.DataNotFoundException;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.im.restapi.payload;
+package com.khoders.restapi.payload;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +28,7 @@ public class SaleDto extends BaseDto
     private String password;
 
     private List<SaleItemDto> saleItemList = new LinkedList<>();
+    public List<SalesTaxDto> taxList = new LinkedList<>();
 
     public String getFirstname()
     {
