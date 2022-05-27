@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entities.OnlineClient;
+import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.jpa.QueryBuilder;
@@ -34,12 +35,26 @@ public class ClientService
     
     public List<UserTransaction> userTransactionList(OnlineClient onlineClient)
     {
-        CriteriaBuilder builder = crudApi.getEm().getCriteriaBuilder();
-        CriteriaQuery<UserTransaction> criteriaQuery = builder.createQuery(UserTransaction.class);
+        CriteriaBuilder cb = crudApi.getEm().getCriteriaBuilder();
+        CriteriaQuery<UserTransaction> criteriaQuery = cb.createQuery(UserTransaction.class);
         Root<UserTransaction> root = criteriaQuery.from(UserTransaction.class);
-        criteriaQuery.where(builder.equal(root.get(UserTransaction._onlineClient), onlineClient));
+        criteriaQuery.where(cb.equal(root.get(UserTransaction._onlineClient), onlineClient));
         Query query = crudApi.getEm().createQuery(criteriaQuery);
         List<UserTransaction> itemList = query.getResultList();
+        
+        return itemList;
+        
+//        return builder.queryOne(UserTransaction.class, onlineClient);
+    }
+    
+    public List<SaleItem> salesList(OnlineClient onlineClient)
+    {
+        CriteriaBuilder cb = crudApi.getEm().getCriteriaBuilder();
+        CriteriaQuery<SaleItem> criteriaQuery = cb.createQuery(SaleItem.class);
+        Root<SaleItem> root = criteriaQuery.from(SaleItem.class);
+        criteriaQuery.where(cb.equal(root.get(SaleItem._onlineClient), onlineClient));
+        Query query = crudApi.getEm().createQuery(criteriaQuery);
+        List<SaleItem> itemList = query.getResultList();
         
         return itemList;
         

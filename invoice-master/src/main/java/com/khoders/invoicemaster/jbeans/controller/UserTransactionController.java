@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entities.OnlineClient;
+import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.service.ClientService;
 import com.khoders.resource.jpa.CrudApi;
@@ -36,6 +37,7 @@ public class UserTransactionController implements Serializable
     private OnlineClient selectedOnlineClient = null;
     private List<UserTransaction> userTransactionList = new LinkedList<>();
     private List<OnlineClient> onlineClientList = new LinkedList<>();
+    private List<SaleItem> saleItemList = new LinkedList<>();
     
     private FormView pageView = FormView.listForm();
     
@@ -45,8 +47,6 @@ public class UserTransactionController implements Serializable
     private void init()
     {
        clearOnlineClient();
-       clear();
-       
        onlineClientList = clientService.getOnlineClientList();
     }
     
@@ -63,7 +63,7 @@ public class UserTransactionController implements Serializable
             {
                 Msg.error(Msg.FAILED_MESSAGE);
             }
-            clear();
+            clearUserTransaction();
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -89,22 +89,30 @@ public class UserTransactionController implements Serializable
         }
     }
     
-    public void manageTransaction(OnlineClient onlineClient)
+    public void manageUserTransaction(OnlineClient onlineClient)
     {
         this.selectedOnlineClient = onlineClient;
         pageView.restToCreateView();
-        clear();
+        clearUserTransaction();
         userTransactionList = clientService.userTransactionList(onlineClient);
     }
     
-    public void clear()
+    public void manageSales(OnlineClient onlineClient)
+    {
+       this.selectedOnlineClient = onlineClient;
+        pageView.restToDetailView();
+        
+        saleItemList = clientService.salesList(onlineClient);
+    }
+    
+    public void clearUserTransaction()
     {
        userTransaction = new UserTransaction();
        userTransaction.setOnlineClient(selectedOnlineClient);
        optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-    
+  
     public void clearOnlineClient()
     {
        selectedOnlineClient = new OnlineClient();
@@ -115,10 +123,14 @@ public class UserTransactionController implements Serializable
 
     public void closePage()
     {
-        clear();
+        clearUserTransaction();
         
         userTransactionList = new LinkedList<>(); 
         pageView.restToListView();
+    }
+    public void goBack()
+    {
+      pageView.restToCreateView();
     }
     public UserTransaction getUserTransaction()
     {
@@ -168,6 +180,11 @@ public class UserTransactionController implements Serializable
     public void setSelectedOnlineClient(OnlineClient selectedOnlineClient)
     {
         this.selectedOnlineClient = selectedOnlineClient;
+    }
+
+    public List<SaleItem> getSaleItemList()
+    {
+        return saleItemList;
     }
     
 }
