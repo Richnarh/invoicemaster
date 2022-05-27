@@ -5,6 +5,7 @@
  */
 package com.khoders.restapi.payload;
 
+import com.khoders.invoicemaster.dto.SalesTaxDto;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,8 +27,15 @@ public class SaleDto extends BaseDto
     private String orderNote;
     private String username;
     private String password;
+    
+    private String clientName;
+    private double subTotalAmount;
+    private double totalAmount;
+    private double installationFee;
+    private double totalDiscount;
+    private double totalPayable;
 
-    private List<SaleItemDto> saleItemList = new LinkedList<>();
+    private List<SaleItemDto> invoiceItemList = new LinkedList<>();
     public List<SalesTaxDto> taxList = new LinkedList<>();
 
     public String getFirstname()
@@ -150,14 +158,84 @@ public class SaleDto extends BaseDto
         this.password = password;
     }
 
-    public List<SaleItemDto> getSaleItemList()
+    public double getSubTotalAmount()
     {
-        return saleItemList;
+        return subTotalAmount;
     }
 
-    public void setSaleItemList(List<SaleItemDto> saleItemList)
+    public void setSubTotalAmount(double subTotalAmount)
     {
-        this.saleItemList = saleItemList;
+        this.subTotalAmount = subTotalAmount;
+    }
+
+    public double getTotalAmount()
+    {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount)
+    {
+        this.totalAmount = totalAmount;
+    }
+
+    public double getInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public void setInstallationFee(double installationFee)
+    {
+        this.installationFee = installationFee;
+    }
+
+    public double getTotalDiscount()
+    {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(double totalDiscount)
+    {
+        this.totalDiscount = totalDiscount;
+    }
+
+    public double getTotalPayable()
+    {
+        return totalPayable;
+    }
+
+    public void setTotalPayable(double totalPayable)
+    {
+        this.totalPayable = totalPayable;
+    }
+
+    public List<SaleItemDto> getInvoiceItemList()
+    {
+        return invoiceItemList;
+    }
+
+    public void setInvoiceItemList(List<SaleItemDto> invoiceItemList)
+    {
+        this.invoiceItemList = invoiceItemList;
+    }
+
+    public List<SalesTaxDto> getTaxList()
+    {
+        return taxList;
+    }
+
+    public void setTaxList(List<SalesTaxDto> taxList)
+    {
+        this.taxList = taxList;
+    }
+
+    public String getClientName()
+    {
+        return clientName;
+    }
+
+    public void setClientName(String clientName)
+    {
+        this.clientName = clientName;
     }
     
 }

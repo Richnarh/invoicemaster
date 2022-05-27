@@ -46,7 +46,7 @@ public class SalesMapper
         client.setUsername(dto.getUsername());
         client.setPassword(hashText(dto.getPassword()));
         client.setClientStatus(ClientStatus.NEW);
-        client.setSaleItemList(toEntity(dto.getSaleItemList()));
+        client.setSaleItemList(toEntity(dto.getInvoiceItemList()));
         
         return client;
     }
@@ -97,7 +97,7 @@ public class SalesMapper
         dto.setPostalCode(client.getPostalCode());
         dto.setRegion(client.getRegion());
         dto.setUsername(client.getUsername());
-        dto.setSaleItemList(toDto(client.getSaleItemList()));
+        dto.setInvoiceItemList(toDto(client.getSaleItemList()));
         
         return dto;
     }
