@@ -34,7 +34,6 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -553,9 +552,6 @@ public class ProformaInvoiceController implements Serializable
                 if(crudApi.save(proformaInvoice) != null)
                 {
                    taxCalculation();
-                   
-//                   FacesContext.getCurrentInstance().addMessage(null, 
-//                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
                    
                    Msg.info("Proforma Invoice item list saved!");
                 }

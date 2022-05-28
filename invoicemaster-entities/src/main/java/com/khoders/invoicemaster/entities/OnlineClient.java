@@ -70,7 +70,7 @@ public class OnlineClient extends BaseModel
     private String password;
     
     @Transient
-    private List<SaleItem> saleItemList = new LinkedList<>();
+    private List<SaleItem> invoiceItemList = new LinkedList<>();
 
     public String getFirstname()
     {
@@ -201,17 +201,17 @@ public class OnlineClient extends BaseModel
     {
         this.receiptNo = receiptNo;
     }
+
+    public List<SaleItem> getInvoiceItemList()
+    {
+        return invoiceItemList;
+    }
+
+    public void setInvoiceItemList(List<SaleItem> invoiceItemList)
+    {
+        this.invoiceItemList = invoiceItemList;
+    }
     
-    public List<SaleItem> getSaleItemList()
-    {
-        return saleItemList;
-    }
-
-    public void setSaleItemList(List<SaleItem> saleItemList)
-    {
-        this.saleItemList = saleItemList;
-    }
-
     public ClientStatus getClientStatus()
     {
         return clientStatus;

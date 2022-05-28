@@ -5,11 +5,13 @@
  */
 package com.khoders.invoicemaster.dto;
 
+import com.khoders.restapi.payload.BaseDto;
+
 /**
  *
  * @author richa
  */
-public class SalesTaxDto
+public class SalesTaxDto extends BaseDto
 {
     private String salesTaxId;
     private String taxName;
