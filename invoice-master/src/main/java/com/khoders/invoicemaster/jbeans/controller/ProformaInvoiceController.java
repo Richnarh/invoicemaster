@@ -26,6 +26,7 @@ import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.reports.ReportManager;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
@@ -65,6 +66,7 @@ public class ProformaInvoiceController implements Serializable
     @Inject private ReportHandler reportHandler;
     @Inject private ReportHandler coverHandler;
     @Inject private XtractService xtractService;
+    @Inject private ReportManager reportManager;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -569,27 +571,12 @@ public class ProformaInvoiceController implements Serializable
     public void generateReceipt(ProformaInvoice proformaInvoice)
     {
         List<Receipt> receiptList = new LinkedList<>();
-        try
-        {
-            Receipt receipt = xtractService.extractToReceipt(proformaInvoice);
-            
-            receiptList.add(receipt);
-            
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(receiptList);
-        
-            InputStream coverStream = getClass().getResourceAsStream(ReportFiles.RECEIPT_FILE);
-            reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-            JasperPrint receiptPrint = JasperFillManager.fillReport(coverStream, coverHandler.reportParams, dataSource);
-            HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            servletResponse.setContentType("application/pdf");
-            ServletOutputStream servletStream = servletResponse.getOutputStream();
-            JasperExportManager.exportReportToPdfStream(receiptPrint, servletStream);
-            FacesContext.getCurrentInstance().responseComplete();
-            
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+
+        Receipt receipt = xtractService.extractToReceipt(proformaInvoice);
+
+        receiptList.add(receipt);
+        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(receiptList, ReportFiles.RECEIPT_FILE, reportHandler.reportParams);
     }
     
  
@@ -600,25 +587,8 @@ public class ProformaInvoiceController implements Serializable
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoice(proformaInvoice);
             
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-            
-        try
-        {
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
-            InputStream stream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_FILE);
-            
-            reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-            
-            JasperPrint jasperPrint = JasperFillManager.fillReport(stream, reportHandler.reportParams, dataSource);
-            HttpServletResponse httpServletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            httpServletResponse.setContentType("application/pdf");
-            ServletOutputStream outputStream = httpServletResponse.getOutputStream();
-            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-            FacesContext.getCurrentInstance().responseComplete();
-                        
-        } catch (IOException | JRException e)
-        {
-            e.printStackTrace();
-        }
+        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, reportHandler.reportParams);
     }
     
     public void printCover(ProformaInvoice proformaInvoice)
@@ -628,25 +598,8 @@ public class ProformaInvoiceController implements Serializable
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoiceCover(proformaInvoice);
         
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-       
-        try
-        {
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(proformaInvoiceDtoList);
-
-            InputStream coverStream = getClass().getResourceAsStream(ReportFiles.PRO_INVOICE_COVER);
-            coverHandler.reportParams.put("logo", ReportFiles.LOGO);
-
-            JasperPrint coverPrint = JasperFillManager.fillReport(coverStream, coverHandler.reportParams, dataSource);
-            HttpServletResponse servletResponse = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            servletResponse.setContentType("application/pdf");
-            ServletOutputStream outputStream = servletResponse.getOutputStream();
-            JasperExportManager.exportReportToPdfStream(coverPrint, outputStream);
-            FacesContext.getCurrentInstance().responseComplete();
-            
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        coverHandler.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, coverHandler.reportParams);
     }
     
     public void closePage()
