@@ -11,6 +11,7 @@ import com.khoders.restapi.services.TransactionService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Response;
  *
  * @author richa
  */
+@Stateless
 @Path(ApiEndpoint.TRANSACTION_ENDPOINT)
 public class TransactionEndpoint
 {
@@ -34,5 +36,10 @@ public class TransactionEndpoint
     {
         List<SaleItemDto> dtos = transactionService.getSales(userAccountId);
         return JaxResponse.ok(Msg.RECORD_FOUND,dtos);
+    }
+    
+    public Response invoice(@HeaderParam("userAccountId") String userAccountId)
+    {
+        return JaxResponse.ok("");
     }
 }

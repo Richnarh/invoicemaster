@@ -8,13 +8,20 @@ package com.khoders.restapi.services;
 import com.khoders.restapi.payload.SaleItemDto;
 import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
+import com.khoders.invoicemaster.entities.SalesTax;
+import com.khoders.invoicemaster.entities.UserTransaction;
+import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.invoicemaster.service.TaxService;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.jpa.QueryBuilder;
+import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.restapi.mapper.ClientSalesMapper;
+import com.khoders.restapi.mapper.TransactionMapper;
 import com.khoders.restapi.payload.TransactionDto;
 import java.util.LinkedList;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 
@@ -22,11 +29,17 @@ import javax.inject.Inject;
  *
  * @author richa
  */
+@Stateless
 public class TransactionService
 {
     @Inject private CrudApi crudApi;
     @Inject private QueryBuilder builder;
     @Inject private ClientSalesMapper salesMapper;
+    @Inject private TransactionMapper transactionMapper;
+    @Inject private TaxService taxService;
+    @Inject private ProformaInvoiceService proformaInvoiceService;
+    
+    List<SalesTax> salesTaxList = new LinkedList<>();
     
     public List<SaleItemDto> getSales(String userAccountId)
     {
@@ -67,8 +80,24 @@ public class TransactionService
 
     public TransactionDto processTransaction(OnlineClient client)
     {
-        TransactionDto dto = new TransactionDto();
+        TransactionDto dto = transactionMapper.toDto(client);
+        
+        UserTransaction ut = crudApi.find(UserTransaction.class, client.getId());
+        if(ut != null)
+        {
+          salesTaxList = proformaInvoiceService.getSalesTaxList(ut);  
+        }
+        
+        dto.setSalesTaxList(transactionMapper.toDto(salesTaxList));
         
         return dto;
+    }
+       
+    public void save(UserTransaction ut){
+        if(crudApi.save(ut) != null)
+        {
+            taxService.taxCalculation(ut);
+        }
+        
     }
 }

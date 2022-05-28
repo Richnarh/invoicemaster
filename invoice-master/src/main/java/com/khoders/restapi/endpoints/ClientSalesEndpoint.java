@@ -10,7 +10,7 @@ import com.khoders.restapi.ApiEndpoint;
 import com.khoders.restapi.services.SalesService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.SystemUtils;
-import com.khoders.restapi.payload.ClientSalesDto;
+import com.khoders.restapi.payload.OnlineClientDto;
 import com.khoders.restapi.payload.TransactionDto;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -34,7 +34,7 @@ public class ClientSalesEndpoint
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(ClientSalesDto dto){
+    public Response create(OnlineClientDto dto){
         TransactionDto saleDto = salesService.save(dto);
         System.out.println("Data -- "+SystemUtils.KJson().toJson(saleDto));
         return JaxResponse.created(Msg.CREATED, saleDto);
@@ -42,7 +42,7 @@ public class ClientSalesEndpoint
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(ClientSalesDto dto){
+    public Response update(OnlineClientDto dto){
         TransactionDto saleDto = salesService.save(dto);
         return JaxResponse.created(Msg.UPDATED, saleDto);
     }

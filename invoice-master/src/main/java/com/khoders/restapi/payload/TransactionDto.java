@@ -20,8 +20,9 @@ public class TransactionDto extends BaseDto
     private String streetAddress;
     private double cartTotal;
     private double cartQty;
-    private double paymentStatus;
-    private double deliveryStatus;
+    private String paymentStatus;
+    private String deliveryStatus;
+    private String paymentMethod;
     
     private String clientName;
     private double subTotalAmount;
@@ -31,7 +32,7 @@ public class TransactionDto extends BaseDto
     private double totalPayable;
     
     private List<SaleItemDto> invoiceItemList = new LinkedList<>();
-    public List<SalesTaxDto> taxList = new LinkedList<>();
+    public List<SalesTaxDto> salesTaxList = new LinkedList<>();
 
     public String getOnlineClientId()
     {
@@ -83,26 +84,26 @@ public class TransactionDto extends BaseDto
         this.cartQty = cartQty;
     }
 
-    public double getPaymentStatus()
+    public String getPaymentStatus()
     {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(double paymentStatus)
+    public void setPaymentStatus(String paymentStatus)
     {
         this.paymentStatus = paymentStatus;
     }
 
-    public double getDeliveryStatus()
+    public String getDeliveryStatus()
     {
         return deliveryStatus;
     }
 
-    public void setDeliveryStatus(double deliveryStatus)
+    public void setDeliveryStatus(String deliveryStatus)
     {
         this.deliveryStatus = deliveryStatus;
     }
-
+    
     public String getClientName()
     {
         return clientName;
@@ -173,14 +174,24 @@ public class TransactionDto extends BaseDto
         this.invoiceItemList = invoiceItemList;
     }
 
-    public List<SalesTaxDto> getTaxList()
+    public List<SalesTaxDto> getSalesTaxList()
     {
-        return taxList;
+        return salesTaxList;
     }
 
-    public void setTaxList(List<SalesTaxDto> taxList)
+    public void setSalesTaxList(List<SalesTaxDto> salesTaxList)
     {
-        this.taxList = taxList;
+        this.salesTaxList = salesTaxList;
+    }
+    
+    public String getPaymentMethod()
+    {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod)
+    {
+        this.paymentMethod = paymentMethod;
     }
     
     

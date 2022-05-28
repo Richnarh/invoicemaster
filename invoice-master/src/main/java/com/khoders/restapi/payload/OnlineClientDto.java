@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author richa
  */
-public class ClientSalesDto extends BaseDto
+public class OnlineClientDto extends BaseDto
 {
     private String firstname;
     private String lastname;

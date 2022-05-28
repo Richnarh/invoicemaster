@@ -34,6 +34,10 @@ public class SalesTax extends UserAccountRecord implements Serializable
     @ManyToOne
     private ProformaInvoice proformaInvoice;
     
+    @JoinColumn(name = "user_transaction", referencedColumnName = "id")
+    @ManyToOne
+    private UserTransaction userTransaction;
+    
     @Column(name = "tax_amount")
     private double taxAmount;
     
@@ -99,6 +103,16 @@ public class SalesTax extends UserAccountRecord implements Serializable
     public void setReOrder(int reOrder)
     {
         this.reOrder = reOrder;
+    }
+
+    public UserTransaction getUserTransaction()
+    {
+        return userTransaction;
+    }
+
+    public void setUserTransaction(UserTransaction userTransaction)
+    {
+        this.userTransaction = userTransaction;
     }
 
     public void genCode()
