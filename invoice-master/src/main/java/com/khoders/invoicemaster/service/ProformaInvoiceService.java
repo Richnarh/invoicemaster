@@ -104,7 +104,7 @@ public class ProformaInvoiceService
         return Collections.emptyList();
     }
     
-    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange, ProformaInvoice proformaInvoice)
+    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange)
     {
         try 
         {

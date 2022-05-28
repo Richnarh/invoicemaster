@@ -23,7 +23,7 @@ public class AuthEndpoint
 {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getUser(){
+    public Response login(){
         List<Integer> i = new ArrayList<>();
         i.add(1);
         i.add(2);

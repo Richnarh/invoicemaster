@@ -127,7 +127,7 @@ public class ProformaInvoiceController implements Serializable
       
     public void filterProformaInvoice()
     {
-      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange, proformaInvoice);  
+      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange);  
     }
     
     public void reset()

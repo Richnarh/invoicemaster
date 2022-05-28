@@ -15,7 +15,6 @@ import com.khoders.invoicemaster.service.TaxService;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.jpa.QueryBuilder;
-import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.restapi.mapper.ClientSalesMapper;
 import com.khoders.restapi.mapper.TransactionMapper;
 import com.khoders.restapi.payload.TransactionDto;
