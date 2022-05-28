@@ -4,8 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+      xmlns:p="http://primefaces.org/ui">  
 
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
@@ -19,7 +18,34 @@
                         <div class="container-fluid">
                             <div class="card-header">User Online Transactions</div>
                             <h:panelGroup rendered="#{userTransactionController.pageView.listView}">
-                                <h:form id="clientTable" class="mb-3 wow">
+                            <div class="row py-2 fadeInDown">
+                                <div class="col-md-12 col-sm-6 col-lg-12">
+                                    <h:form id="searchForm" style="margin-bottom: 5px;">
+
+                                        <span class="mr-2">From Date: </span>
+                                        <p:datePicker value="#{userTransactionController.dateRange.fromDate}"
+                                                      pattern="#{msg.formatted_date}" 
+                                                      monthNavigator="true" yearNavigator="true"/>
+
+                                        <span class="mr-2">To Date: </span>
+                                        <p:datePicker value="#{userTransactionController.dateRange.toDate}"
+                                                      pattern="#{msg.formatted_date}" 
+                                                      monthNavigator="true" yearNavigator="true"/>
+
+                                        <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search Transaction" action="#{userTransactionController.filterTransaction()}"/>
+
+                                        <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{userTransactionController.reset()}">
+                                            <p:ajax update=":userTransactionTable, @form"/>
+                                        </h:commandButton>
+
+                                        <span class="shadow-sm float-right col-1 faded-shade p-1">Count: #{userTransactionController.onlineClientList.size()}</span>
+                                    </h:form>      
+                                </div>
+                            </div>
+
+
+                            
+                                <h:form id="userTransactionTable" class="mb-3 wow">
                                     <p:dataTable value="#{userTransactionController.onlineClientList}" reflow="true" var="onlineClient"
                                                  paginator="true" paginatorPosition="bottom" rows="10">
                                         <p:column exportable="false" style="width: 40px;">
@@ -43,7 +69,11 @@
                                                 <h:outputText value="#{onlineClient.postalCode}"/>
                                             </h:panelGrid>
                                         </p:rowExpansion>
-
+                                        <p:column headerText="Date" style="width: 120px">
+                                            <h:outputText value="#{onlineClient.valueDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+                                        </p:column>
                                         <p:column headerText="#{msg.client} Name" filterBy="#{client.clientName}" filterMatchMode="contains">
                                             #{onlineClient.firstname} #{onlineClient.lastname}
                                         </p:column>
@@ -56,7 +86,7 @@
                                             #{onlineClient.streetAddress}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.status}" style="width: 60px;">
+                                        <p:column headerText="#{msg.status}" class="text-center" style="width: 120px;">
                                             <span class="badge badge-warning">#{onlineClient.clientStatus}</span>
                                         </p:column>
 
@@ -151,55 +181,55 @@
 
                             <h:panelGroup rendered="#{userTransactionController.pageView.detailView}">
                                 <div class="mb-2 mx-2">
-                                <h:form id="salesTable" class="mb-3">
-                                    <div class="row py-2">
-                                    <div class="col-12 col-sm-12 col-lg-12">
-                                        <div class="float-right">
-                                            <p:commandButton title="Go to payment" class="kbtn-secondary mx-2" icon="#{msg.back_icon}" action="#{userTransactionController.goBack()}" update=":mainPanel"/>
-                                            <p:commandButton title="Close page" class="kbtn-danger" icon="#{msg.delete_icon}" action="#{userTransactionController.closePage()}" update=":mainPanel"/>
+                                    <h:form id="salesTable" class="mb-3">
+                                        <div class="row py-2">
+                                            <div class="col-12 col-sm-12 col-lg-12">
+                                                <div class="float-right">
+                                                    <p:commandButton title="Go to payment" class="kbtn-secondary mx-2" icon="#{msg.back_icon}" action="#{userTransactionController.goBack()}" update=":mainPanel"/>
+                                                    <p:commandButton title="Close page" class="kbtn-danger" icon="#{msg.delete_icon}" action="#{userTransactionController.closePage()}" update=":mainPanel"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                    <p:dataTable value="#{userTransactionController.saleItemList}" var="saleItem">
-                                        <p:column exportable="false" style="width: 40px;">
-                                            <p:rowToggler/>
-                                        </p:column>
+                                        <p:dataTable value="#{userTransactionController.saleItemList}" var="saleItem">
+                                            <p:column exportable="false" style="width: 40px;">
+                                                <p:rowToggler/>
+                                            </p:column>
 
-                                        <p:rowExpansion>
-                                            <h:panelGrid columns="2">
-                                                <span>#{msg.created_date}</span>
-                                                <h:outputText value="#{saleItem.createdDate}">
-                                                    <f:convertDateTime pattern="#{msg.formatted_date_time_ampm}" type="localDateTime"/>
+                                            <p:rowExpansion>
+                                                <h:panelGrid columns="2">
+                                                    <span>#{msg.created_date}</span>
+                                                    <h:outputText value="#{saleItem.createdDate}">
+                                                        <f:convertDateTime pattern="#{msg.formatted_date_time_ampm}" type="localDateTime"/>
+                                                    </h:outputText>
+                                                </h:panelGrid>
+                                            </p:rowExpansion>
+
+                                            <p:column headerText="#{msg.code}" style="width: 120px;">
+                                                #{saleItem.inventory.product.productCode}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.product}" filterBy="#{saleItem.inventory.product.productName}" filterMatchMode="contains">
+                                                #{saleItem.inventory.product.productName}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.qty}" class="text-right" style="width: 80px;">
+                                                <h:outputText value="#{saleItem.quantity}"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.price}" class="text-right" style="width: 130px;">
+                                                <h:outputText value="#{saleItem.price}">
+                                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
                                                 </h:outputText>
-                                            </h:panelGrid>
-                                        </p:rowExpansion>
+                                            </p:column>
 
-                                        <p:column headerText="#{msg.code}" style="width: 120px;">
-                                            #{saleItem.inventory.product.productCode}
-                                        </p:column>
+                                            <p:column headerText="Sub Total" class="text-right" style="width: 150px;">
+                                                <h:outputText value="#{saleItem.quantity * saleItem.price}">
+                                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                                </h:outputText>
+                                            </p:column>
 
-                                        <p:column headerText="#{msg.product}" filterBy="#{saleItem.inventory.product.productName}" filterMatchMode="contains">
-                                            #{saleItem.inventory.product.productName}
-                                        </p:column>
-
-                                        <p:column headerText="#{msg.qty}" class="text-right" style="width: 80px;">
-                                            <h:outputText value="#{saleItem.quantity}"/>
-                                        </p:column>
-
-                                        <p:column headerText="#{msg.price}" class="text-right" style="width: 130px;">
-                                            <h:outputText value="#{saleItem.price}">
-                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                                            </h:outputText>
-                                        </p:column>
-
-                                        <p:column headerText="Sub Total" class="text-right" style="width: 150px;">
-                                            <h:outputText value="#{saleItem.quantity * saleItem.price}">
-                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                                            </h:outputText>
-                                        </p:column>
-
-                                    </p:dataTable>
-                                </h:form>
+                                        </p:dataTable>
+                                    </h:form>
                                 </div>
                             </h:panelGroup>
                         </div>

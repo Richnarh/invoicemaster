@@ -11,6 +11,7 @@ import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.service.ClientService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
@@ -40,6 +41,7 @@ public class UserTransactionController implements Serializable
     private List<SaleItem> saleItemList = new LinkedList<>();
     
     private FormView pageView = FormView.listForm();
+     private DateRangeUtil dateRange = new DateRangeUtil();
     
     private String optionText;
     
@@ -104,6 +106,17 @@ public class UserTransactionController implements Serializable
         
         saleItemList = clientService.salesList(onlineClient);
     }
+    
+    public void filterTransaction(){
+        onlineClientList = clientService.filterTransaction(dateRange);
+    }
+    
+    public void reset()
+    {
+      onlineClientList = new LinkedList<>();
+      dateRange = new DateRangeUtil();
+    }
+    
     
     public void clearUserTransaction()
     {
@@ -185,6 +198,16 @@ public class UserTransactionController implements Serializable
     public List<SaleItem> getSaleItemList()
     {
         return saleItemList;
+    }
+
+    public DateRangeUtil getDateRange()
+    {
+        return dateRange;
+    }
+
+    public void setDateRange(DateRangeUtil dateRange)
+    {
+        this.dateRange = dateRange;
     }
     
 }

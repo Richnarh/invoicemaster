@@ -11,5 +11,5 @@ package com.khoders.invoicemaster.enums;
  */
 public enum ClientStatus
 {
-    NEW,OLD
+    NEW,PROCESSING,OLD
 }
