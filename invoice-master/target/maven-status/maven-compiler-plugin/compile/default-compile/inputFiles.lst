@@ -15,7 +15,6 @@ C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\SMSGrupConverter.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\SalesTaxDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\sms\ContactGroupController.java
-C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\payload\ClientSalesDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\TaxDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\listener\SessionListener.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\payload\SaleItemDto.java
@@ -38,12 +37,14 @@ C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\UserAccountController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductConverter.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\sms\MessageTemplateController.java
+C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\payload\OnlineClientDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\payload\TransactionDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\ProformaInvoiceItemDto.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\SmsAccess.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\AppConfig.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\DashboardController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\SmsService.java
+C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\config\OpenApiConfig.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\InventoryController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\PurchaseOrderController.java
 C:\khoders\java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\InventoryConverter.java

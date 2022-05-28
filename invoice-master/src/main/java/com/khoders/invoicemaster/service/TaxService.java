@@ -60,8 +60,7 @@ public class TaxService
         
         calculateVat(userTransaction);
     }
-    
-      
+          
     private void calculateVat(UserTransaction userTransaction)
     {
         double installationFee=0,totalPayable=0;

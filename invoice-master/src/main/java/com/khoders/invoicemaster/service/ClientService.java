@@ -10,10 +10,13 @@ import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.jpa.QueryBuilder;
+import com.khoders.resource.utilities.DateRangeUtil;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -64,6 +67,29 @@ public class ClientService
     public List<OnlineClient> getOnlineClientList()
     {
         return builder.findAll(OnlineClient.class); 
+    }
+
+    public List<OnlineClient> filterTransaction(DateRangeUtil dateRange)
+    {
+       try 
+        {
+            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
+            {
+                  String  queryString = "SELECT e FROM OnlineClient e ORDER BY e.valueDate DESC";
+                  TypedQuery<OnlineClient> typedQuery = crudApi.getEm().createQuery(queryString, OnlineClient.class);
+                                    return typedQuery.getResultList();
+            }
+            
+            String qryString = "SELECT e FROM OnlineClient e WHERE e.valueDate BETWEEN ?1 AND ?2 ORDER BY e.valueDate DESC";
+            TypedQuery<OnlineClient> typedQuery = crudApi.getEm().createQuery(qryString, OnlineClient.class)
+                    .setParameter(1, dateRange.getFromDate())
+                    .setParameter(2, dateRange.getToDate());
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
     
 }
