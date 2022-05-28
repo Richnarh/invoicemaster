@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author richa
  */
-public class SaleDto extends BaseDto
+public class OnlineClientDto extends BaseDto
 {
     private String firstname;
     private String lastname;
@@ -26,9 +26,8 @@ public class SaleDto extends BaseDto
     private String orderNote;
     private String username;
     private String password;
-
-    private List<SaleItemDto> saleItemList = new LinkedList<>();
-    public List<SalesTaxDto> taxList = new LinkedList<>();
+    
+    private List<SaleItemDto> invoiceItemList = new LinkedList<>();
 
     public String getFirstname()
     {
@@ -150,14 +149,13 @@ public class SaleDto extends BaseDto
         this.password = password;
     }
 
-    public List<SaleItemDto> getSaleItemList()
+    public List<SaleItemDto> getInvoiceItemList()
     {
-        return saleItemList;
+        return invoiceItemList;
     }
 
-    public void setSaleItemList(List<SaleItemDto> saleItemList)
+    public void setInvoiceItemList(List<SaleItemDto> invoiceItemList)
     {
-        this.saleItemList = saleItemList;
+        this.invoiceItemList = invoiceItemList;
     }
-    
 }

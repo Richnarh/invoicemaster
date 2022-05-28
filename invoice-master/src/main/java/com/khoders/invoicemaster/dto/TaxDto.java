@@ -1,20 +1,30 @@
-package com.khoders.restapi.payload;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.khoders.invoicemaster.dto;
 
 /**
  *
- * @author Richard Narh
+ * @author richa
  */
-public class SalesTaxDto
+public class TaxDto
 {
-    private String taxName;
-    private double taxRate;
-    private double taxAmount;
+  private String taxId;
+  private String taxName;
+  private double taxRate;
+  private int reOrder;  
+
+    public String getTaxId()
+    {
+        return taxId;
+    }
+
+    public void setTaxId(String taxId)
+    {
+        this.taxId = taxId;
+    }
 
     public String getTaxName()
     {
@@ -36,14 +46,14 @@ public class SalesTaxDto
         this.taxRate = taxRate;
     }
 
-    public double getTaxAmount()
+    public int getReOrder()
     {
-        return taxAmount;
+        return reOrder;
     }
 
-    public void setTaxAmount(double taxAmount)
+    public void setReOrder(int reOrder)
     {
-        this.taxAmount = taxAmount;
+        this.reOrder = reOrder;
     }
-
+  
 }

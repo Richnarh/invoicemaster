@@ -11,9 +11,9 @@ import com.khoders.invoicemaster.entities.SaleItem;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
-import com.khoders.restapi.payload.SaleDto;
 import com.khoders.restapi.payload.SaleItemDto;
 import com.khoders.invoicemaster.enums.ClientStatus;
+import com.khoders.restapi.payload.OnlineClientDto;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,11 +22,11 @@ import javax.inject.Inject;
  *
  * @author richa
  */
-public class SalesMapper
+public class ClientSalesMapper
 {
     @Inject private CrudApi crudApi;
 
-    public OnlineClient toEntity(SaleDto dto)
+    public OnlineClient toEntity(OnlineClientDto dto)
     {
         OnlineClient client = new OnlineClient();
         if (dto.getId() != null)
@@ -46,7 +46,7 @@ public class SalesMapper
         client.setUsername(dto.getUsername());
         client.setPassword(hashText(dto.getPassword()));
         client.setClientStatus(ClientStatus.NEW);
-        client.setSaleItemList(toEntity(dto.getSaleItemList()));
+        client.setInvoiceItemList(toEntity(dto.getInvoiceItemList()));
         
         return client;
     }
@@ -81,9 +81,9 @@ public class SalesMapper
         return saleItemList;
     }
 
-    public SaleDto toDto(OnlineClient client)
+    public OnlineClientDto toDto(OnlineClient client)
     {
-        SaleDto dto = new SaleDto();
+        OnlineClientDto dto = new OnlineClientDto();
         if (client.getId() == null) return null;
 
         dto.setId(client.getId());
@@ -97,7 +97,7 @@ public class SalesMapper
         dto.setPostalCode(client.getPostalCode());
         dto.setRegion(client.getRegion());
         dto.setUsername(client.getUsername());
-        dto.setSaleItemList(toDto(client.getSaleItemList()));
+        dto.setInvoiceItemList(toDto(client.getInvoiceItemList()));
         
         return dto;
     }

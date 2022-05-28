@@ -6,11 +6,13 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.listener.AppSession;
@@ -67,7 +69,23 @@ public class ProformaInvoiceService
         }
         return Collections.emptyList();
     }
-
+    
+    public List<SalesTax> getSalesTaxList(UserTransaction userTransaction)
+    {
+        try
+        {
+          String query = "SELECT e FROM SalesTax e WHERE e.userTransaction=?1 ORDER BY e.reOrder ASC";
+        
+        TypedQuery<SalesTax> typedQuery = crudApi.getEm().createQuery(query, SalesTax.class)
+                                .setParameter(1, userTransaction);
+                return typedQuery.getResultList();      
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+   
     public List<ProformaInvoice> getProformaInvoiceList()
     {
         try
