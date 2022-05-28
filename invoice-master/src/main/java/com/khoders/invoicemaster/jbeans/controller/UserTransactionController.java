@@ -7,8 +7,11 @@ package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.SaleItem;
+import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.service.ClientService;
+import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.invoicemaster.service.TaxService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -33,15 +36,19 @@ public class UserTransactionController implements Serializable
 {
     @Inject private CrudApi crudApi;
     @Inject private ClientService clientService;
+    @Inject private ProformaInvoiceService proformaInvoiceService;
+    
     private UserTransaction userTransaction = new UserTransaction();
     private OnlineClient onlineClient = new OnlineClient();
     private OnlineClient selectedOnlineClient = null;
     private List<UserTransaction> userTransactionList = new LinkedList<>();
     private List<OnlineClient> onlineClientList = new LinkedList<>();
     private List<SaleItem> saleItemList = new LinkedList<>();
+    private List<SalesTax> salesTaxList = new LinkedList<>();
     
     private FormView pageView = FormView.listForm();
-     private DateRangeUtil dateRange = new DateRangeUtil();
+    private DateRangeUtil dateRange = new DateRangeUtil();
+    private double totalPayable,installationFee,totalSaleAmount,productDiscountRate,subTotal;
     
     private String optionText;
     
@@ -105,6 +112,37 @@ public class UserTransactionController implements Serializable
         pageView.restToDetailView();
         
         saleItemList = clientService.salesList(onlineClient);
+        UserTransaction ut = crudApi.find(UserTransaction.class, onlineClient.getId());
+        salesTaxList = proformaInvoiceService.getSalesTaxList(ut);
+        
+        totalSaleAmount = ut.getTotalAmount();
+        subTotal = saleItemList.stream().mapToDouble(SaleItem::getSubTotal).sum();
+        
+        calculateVat(ut);
+    }
+    
+    private void calculateVat(UserTransaction userTransaction)
+    {
+        
+        if(!salesTaxList.isEmpty())
+        {
+            SalesTax nhil = salesTaxList.get(0);
+//            SalesTax getFund = salesTaxList.get(1);
+            SalesTax covid19 = salesTaxList.get(1);
+            SalesTax salesVat = salesTaxList.get(2);
+
+            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
+
+            double taxableValue = userTransaction.getTotalAmount() + totalLevies;
+            
+            double vat = taxableValue*(salesVat.getTaxRate()/100);
+            
+            totalPayable = vat + taxableValue + installationFee;
+            
+            salesVat.setTaxAmount(vat);
+
+//            crudApi.save(salesVat);
+        }
     }
     
     public void filterTransaction(){
@@ -116,7 +154,6 @@ public class UserTransactionController implements Serializable
       onlineClientList = new LinkedList<>();
       dateRange = new DateRangeUtil();
     }
-    
     
     public void clearUserTransaction()
     {
@@ -143,7 +180,7 @@ public class UserTransactionController implements Serializable
     }
     public void goBack()
     {
-      pageView.restToCreateView();
+      manageUserTransaction(selectedOnlineClient);
     }
     public UserTransaction getUserTransaction()
     {
@@ -208,6 +245,61 @@ public class UserTransactionController implements Serializable
     public void setDateRange(DateRangeUtil dateRange)
     {
         this.dateRange = dateRange;
+    }
+
+    public double getTotalPayable()
+    {
+        return totalPayable;
+    }
+
+    public void setTotalPayable(double totalPayable)
+    {
+        this.totalPayable = totalPayable;
+    }
+
+    public double getInstallationFee()
+    {
+        return installationFee;
+    }
+
+    public void setInstallationFee(double installationFee)
+    {
+        this.installationFee = installationFee;
+    }
+
+    public double getTotalSaleAmount()
+    {
+        return totalSaleAmount;
+    }
+
+    public void setTotalSaleAmount(double totalSaleAmount)
+    {
+        this.totalSaleAmount = totalSaleAmount;
+    }
+
+    public double getProductDiscountRate()
+    {
+        return productDiscountRate;
+    }
+
+    public void setProductDiscountRate(double productDiscountRate)
+    {
+        this.productDiscountRate = productDiscountRate;
+    }
+
+    public double getSubTotal()
+    {
+        return subTotal;
+    }
+
+    public void setSubTotal(double subTotal)
+    {
+        this.subTotal = subTotal;
+    }
+
+    public List<SalesTax> getSalesTaxList()
+    {
+        return salesTaxList;
     }
     
 }

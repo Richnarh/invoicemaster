@@ -9,42 +9,40 @@
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                User Transaction
+                Online Transactions
             </ui:define>
 
             <ui:define name="pageContent">
                 <h:panelGroup id="mainPanel">
                     <div class="card mb-5 wow zoomIn">
                         <div class="container-fluid">
-                            <div class="card-header">User Online Transactions</div>
+                            <div class="card-header">Online User Transactions</div>
                             <h:panelGroup rendered="#{userTransactionController.pageView.listView}">
-                            <div class="row py-2 fadeInDown">
-                                <div class="col-md-12 col-sm-6 col-lg-12">
-                                    <h:form id="searchForm" style="margin-bottom: 5px;">
+                                <div class="row py-2 fadeInDown">
+                                    <div class="col-md-12 col-sm-6 col-lg-12">
+                                        <h:form id="searchForm" style="margin-bottom: 5px;">
 
-                                        <span class="mr-2">From Date: </span>
-                                        <p:datePicker value="#{userTransactionController.dateRange.fromDate}"
-                                                      pattern="#{msg.formatted_date}" 
-                                                      monthNavigator="true" yearNavigator="true"/>
+                                            <span class="mr-2">From Date: </span>
+                                            <p:datePicker value="#{userTransactionController.dateRange.fromDate}"
+                                                          pattern="#{msg.formatted_date}" 
+                                                          monthNavigator="true" yearNavigator="true"/>
 
-                                        <span class="mr-2">To Date: </span>
-                                        <p:datePicker value="#{userTransactionController.dateRange.toDate}"
-                                                      pattern="#{msg.formatted_date}" 
-                                                      monthNavigator="true" yearNavigator="true"/>
+                                            <span class="mr-2">To Date: </span>
+                                            <p:datePicker value="#{userTransactionController.dateRange.toDate}"
+                                                          pattern="#{msg.formatted_date}" 
+                                                          monthNavigator="true" yearNavigator="true"/>
 
-                                        <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search Transaction" action="#{userTransactionController.filterTransaction()}"/>
+                                            <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search Transaction" action="#{userTransactionController.filterTransaction()}"/>
 
-                                        <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{userTransactionController.reset()}">
-                                            <p:ajax update=":userTransactionTable, @form"/>
-                                        </h:commandButton>
+                                            <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{userTransactionController.reset()}">
+                                                <p:ajax update=":userTransactionTable, @form"/>
+                                            </h:commandButton>
 
-                                        <span class="shadow-sm float-right col-1 faded-shade p-1">Count: #{userTransactionController.onlineClientList.size()}</span>
-                                    </h:form>      
+                                            <span class="shadow-sm float-right col-1 faded-shade p-1">Count: #{userTransactionController.onlineClientList.size()}</span>
+                                        </h:form>      
+                                    </div>
                                 </div>
-                            </div>
 
-
-                            
                                 <h:form id="userTransactionTable" class="mb-3 wow">
                                     <p:dataTable value="#{userTransactionController.onlineClientList}" reflow="true" var="onlineClient"
                                                  paginator="true" paginatorPosition="bottom" rows="10">
@@ -229,6 +227,62 @@
                                             </p:column>
 
                                         </p:dataTable>
+                                    </h:form>
+
+
+                                    <h:form>
+                                        <div class="col-md-5 pull-right shadow mb-2 bg-white">
+                                            <table class="table">
+                                                <tr>
+                                                    <td><span class="field-label">Sub Total</span></td>
+                                                    <td  class="text-right"> 
+                                                        <h:inputText value="#{userTransactionController.subTotal}" readonly="true" class="form-control">
+                                                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
+                                                        </h:inputText>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="field-label">#{msg.total_amount}</span></td>
+                                                    <td  class="text-right"> 
+                                                        <h:outputText value="#{userTransactionController.totalSaleAmount}" class="field-shade">
+                                                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="field-label">#{msg.discount} (%)</span></td>
+                                                    <td  class="text-right"> 
+                                                        <h:inputText class="form-control" readonly="true" value="#{userTransactionController.productDiscountRate}"/>
+                                                    </td>
+                                                </tr>
+
+                                                <ui:repeat value="#{userTransactionController.salesTaxList}" var="salesTax">
+                                                    <tr>
+                                                        <td>#{salesTax.taxName} (#{salesTax.taxRate} %)</td>
+                                                        <td class="text-right">
+                                                            <h:outputText value="#{salesTax.taxAmount}">
+                                                                <f:convertNumber pattern="#{msg.money_pattern}" />
+                                                            </h:outputText>
+                                                        </td>
+                                                    </tr>
+                                                </ui:repeat>
+
+                                                <tr>
+                                                    <td><span class="field-label">Installation Fee</span></td>
+                                                    <td  class="text-right"> 
+                                                        <h:inputText class="form-control" readonly="true" value="#{userTransactionController.installationFee}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr class="bg-gradient-gray">
+                                                    <td><span class="field-label text-uppercase font-weight-bold">Total Payable</span></td>
+                                                    <td class="text-right"> 
+                                                        <h:outputText value="#{userTransactionController.totalPayable}" styleClass="field-shade">
+                                                            <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}" />
+                                                        </h:outputText>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </h:form>
                                 </div>
                             </h:panelGroup>
