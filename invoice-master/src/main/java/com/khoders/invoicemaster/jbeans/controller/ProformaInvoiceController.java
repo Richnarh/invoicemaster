@@ -543,9 +543,6 @@ public class ProformaInvoiceController implements Serializable
                 {
                    taxCalculation();
                    
-//                   FacesContext.getCurrentInstance().addMessage(null, 
-//                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Proforma Invoice item list saved!"), null));
-                   
                    Msg.info("Proforma Invoice item list saved!");
                 }
                 else
