@@ -31,8 +31,6 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,13 +42,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
@@ -352,10 +343,8 @@ public class ProformaInvoiceController implements Serializable
             sms.setSenderId(senderId);
            if(crudApi.save(sms) != null)
            {
-               FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("SMS sent to "+paymentData.getProformaInvoice().getClient()), null));
-               
-               System.out.println("SMS sent and saved -- ");
+            Msg.info("SMS sent to "+paymentData.getProformaInvoice().getClient());
+            System.out.println("SMS sent and saved -- ");
            }
         } catch (Exception e)
         {
@@ -398,15 +387,13 @@ public class ProformaInvoiceController implements Serializable
         {
             if (proformaInvoiceItem.getQuantity() <= 0)
             {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter quantity"), null));
-                return;
+               Msg.error("Please enter quantity");
+               return;
             }
             
             if(proformaInvoiceItem.getUnitPrice() <= 0.0)
             {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
+             Msg.error("Please enter price");
               return;
             }
             
@@ -419,12 +406,11 @@ public class ProformaInvoiceController implements Serializable
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
                 
-                Msg.setMsg("One item added to cart");
+                Msg.info("One item added to cart");
               }
               else
                 {
-                   FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Proforma Invoice item removed!"), null));
+                  Msg.error("Proforma Invoice item removed!");
                 }
             clearProformaInvoiceItem();
         } catch (Exception e)
@@ -508,7 +494,11 @@ public class ProformaInvoiceController implements Serializable
 
     public void saveAll()
     {
-      totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+        if(proformaInvoiceItemList.isEmpty()){
+            Msg.error("Cannot process empty transaction");
+            return;
+        }
+        totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         try 
         {
@@ -561,8 +551,7 @@ public class ProformaInvoiceController implements Serializable
                 }
                 else
                 {
-                   FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The invoice processing wasn't successful!"), null)); 
+                 Msg.error("The invoice processing wasn't successful!");
                 }
         } catch (Exception e) 
         {
