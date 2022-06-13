@@ -54,8 +54,6 @@ public class ProformaInvoiceController implements Serializable
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private ProformaInvoiceService proformaInvoiceService;
-    @Inject private ReportHandler reportHandler;
-    @Inject private ReportHandler coverHandler;
     @Inject private XtractService xtractService;
     @Inject private ReportManager reportManager;
 
@@ -567,8 +565,8 @@ public class ProformaInvoiceController implements Serializable
         Receipt receipt = xtractService.extractToReceipt(proformaInvoice);
 
         receiptList.add(receipt);
-        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(receiptList, ReportFiles.RECEIPT_FILE, reportHandler.reportParams);
+        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(receiptList, ReportFiles.RECEIPT_FILE, ReportManager.reportParams);
     }
     
  
@@ -579,8 +577,8 @@ public class ProformaInvoiceController implements Serializable
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoice(proformaInvoice);
             
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, reportHandler.reportParams);
+        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, ReportManager.reportParams);
     }
     
     public void printCover(ProformaInvoice proformaInvoice)
@@ -590,8 +588,8 @@ public class ProformaInvoiceController implements Serializable
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoiceCover(proformaInvoice);
         
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-        coverHandler.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, coverHandler.reportParams);
+        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, ReportManager.reportParams);
     }
     
     public void closePage()
