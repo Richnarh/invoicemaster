@@ -142,10 +142,8 @@ public class XtractService
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
             ProformaInvoiceItemDto invoiceItemDto = new ProformaInvoiceItemDto();
-            
-            if(invoiceItem.getInventory() != null)
-            {
-                if (invoiceItem.getInventory().getProduct() != null)
+           
+                if (invoiceItem.getInventory() != null && invoiceItem.getInventory().getProduct() != null)
                 {
                     try
                     {
@@ -166,7 +164,7 @@ public class XtractService
                 invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
                 invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
                 invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
-            }
+            
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getSubTotal());

@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
