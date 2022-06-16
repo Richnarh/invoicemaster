@@ -6,7 +6,9 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
+import com.khoders.invoicemaster.dto.ProformaInvoiceItemDto;
 import com.khoders.invoicemaster.dto.Receipt;
+import com.khoders.invoicemaster.dto.SalesTaxDto;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
@@ -81,8 +83,8 @@ public class XtractService
         List<ProformaInvoiceItem> invoiceItemList  = proformaInvoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         List<SalesTax> salesTaxesList  = proformaInvoiceService.getSalesTaxList(proformaInvoice);
         
-        List<ProformaInvoiceDto.ProformaInvoiceItem> invoiceItemDtoList = new LinkedList<>();
-        List<ProformaInvoiceDto.SalesTax> salesTaxs = new LinkedList<>();
+        List<ProformaInvoiceItemDto> invoiceItemDtoList = new LinkedList<>();
+        List<SalesTaxDto> salesTaxs = new LinkedList<>();
         
         if(proformaInvoice.getClient() != null)
         {
@@ -129,7 +131,7 @@ public class XtractService
                 
         for (SalesTax salesTax : salesTaxesList)
         {
-            ProformaInvoiceDto.SalesTax taxItem = new ProformaInvoiceDto.SalesTax();
+            SalesTaxDto taxItem = new SalesTaxDto();
             taxItem.setTaxName(salesTax.getTaxName());
             taxItem.setTaxRate(salesTax.getTaxRate());
             taxItem.setTaxAmount(salesTax.getTaxAmount());
@@ -139,11 +141,9 @@ public class XtractService
         
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
-            ProformaInvoiceDto.ProformaInvoiceItem invoiceItemDto = new ProformaInvoiceDto.ProformaInvoiceItem();
-            
-            if(invoiceItem.getInventory() != null)
-            {
-                if (invoiceItem.getInventory().getProduct() != null)
+            ProformaInvoiceItemDto invoiceItemDto = new ProformaInvoiceItemDto();
+           
+                if (invoiceItem.getInventory() != null && invoiceItem.getInventory().getProduct() != null)
                 {
                     try
                     {
@@ -164,7 +164,7 @@ public class XtractService
                 invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
                 invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
                 invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
-            }
+            
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getSubTotal());
@@ -195,34 +195,32 @@ public class XtractService
         proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress());
         proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
         proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
-        
-        if(appSession.getCurrentUser() != null)
+            
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
         {
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
-            }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-            }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
-            }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-            }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
-            }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
-            {
-                proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
-            }
+            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
         }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+        }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
+        }
+        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        {
+            proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
+        }
+        
         return proformaInvoiceDto;
     }
 }

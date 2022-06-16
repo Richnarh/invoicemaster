@@ -26,13 +26,13 @@ import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.reports.ReportManager;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
-import com.khoders.resource.reports.ReportManager;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +54,8 @@ public class ProformaInvoiceController implements Serializable
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private ProformaInvoiceService proformaInvoiceService;
+    @Inject private ReportHandler reportHandler;
+    @Inject private ReportHandler coverHandler;
     @Inject private XtractService xtractService;
     @Inject private ReportManager reportManager;
 
@@ -118,7 +120,7 @@ public class ProformaInvoiceController implements Serializable
       
     public void filterProformaInvoice()
     {
-      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange, proformaInvoice);  
+      proformaInvoiceList = proformaInvoiceService.getProformaInvoice(dateRange);  
     }
     
     public void reset()
@@ -342,8 +344,10 @@ public class ProformaInvoiceController implements Serializable
             sms.setSenderId(senderId);
            if(crudApi.save(sms) != null)
            {
-            Msg.info("SMS sent to "+paymentData.getProformaInvoice().getClient());
-            System.out.println("SMS sent and saved -- ");
+               FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("SMS sent to "+paymentData.getProformaInvoice().getClient()), null));
+               
+               System.out.println("SMS sent and saved -- ");
            }
         } catch (Exception e)
         {
@@ -386,13 +390,14 @@ public class ProformaInvoiceController implements Serializable
         {
             if (proformaInvoiceItem.getQuantity() <= 0)
             {
-               Msg.error("Please enter quantity");
-               return;
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter quantity"), null));
+                return;
             }
             
             if(proformaInvoiceItem.getUnitPrice() <= 0.0)
             {
-             Msg.error("Please enter price");
+              Msg.error("Please enter price");
               return;
             }
             
@@ -409,7 +414,7 @@ public class ProformaInvoiceController implements Serializable
               }
               else
                 {
-                  Msg.error("Proforma Invoice item removed!");
+                 Msg.info("Proforma Invoice item removed!");
                 }
             clearProformaInvoiceItem();
         } catch (Exception e)
@@ -493,11 +498,7 @@ public class ProformaInvoiceController implements Serializable
 
     public void saveAll()
     {
-        if(proformaInvoiceItemList.isEmpty()){
-            Msg.error("Cannot process empty transaction");
-            return;
-        }
-        totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+      totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         try 
         {
@@ -547,7 +548,8 @@ public class ProformaInvoiceController implements Serializable
                 }
                 else
                 {
-                 Msg.error("The invoice processing wasn't successful!");
+                   FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The invoice processing wasn't successful!"), null)); 
                 }
         } catch (Exception e) 
         {
@@ -562,8 +564,8 @@ public class ProformaInvoiceController implements Serializable
         Receipt receipt = xtractService.extractToReceipt(proformaInvoice);
 
         receiptList.add(receipt);
-        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(receiptList, ReportFiles.RECEIPT_FILE, ReportManager.reportParams);
+        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(receiptList, ReportFiles.RECEIPT_FILE, reportHandler.reportParams);
     }
     
  
@@ -574,8 +576,8 @@ public class ProformaInvoiceController implements Serializable
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoice(proformaInvoice);
             
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, ReportManager.reportParams);
+        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, reportHandler.reportParams);
     }
     
     public void printCover(ProformaInvoice proformaInvoice)
@@ -585,8 +587,8 @@ public class ProformaInvoiceController implements Serializable
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoiceCover(proformaInvoice);
         
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, ReportManager.reportParams);
+        coverHandler.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, coverHandler.reportParams);
     }
     
     public void closePage()
