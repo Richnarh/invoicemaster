@@ -142,10 +142,8 @@ public class XtractService
         for (ProformaInvoiceItem invoiceItem : invoiceItemList)
         {
             ProformaInvoiceItemDto invoiceItemDto = new ProformaInvoiceItemDto();
-            
-            if(invoiceItem.getInventory() != null)
-            {
-                if (invoiceItem.getInventory().getProduct() != null)
+           
+                if (invoiceItem.getInventory() != null && invoiceItem.getInventory().getProduct() != null)
                 {
                     try
                     {
@@ -166,7 +164,7 @@ public class XtractService
                 invoiceItemDto.setFrameSize(invoiceItem.getInventory().getFrameSize());
                 invoiceItemDto.setWidth(invoiceItem.getInventory().getWidth());
                 invoiceItemDto.setHeight(invoiceItem.getInventory().getHeight());
-            }
+            
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getSubTotal());
@@ -197,32 +195,34 @@ public class XtractService
         proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress());
         proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
         proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
-            
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
-        }
         
+        if(appSession.getCurrentUser() != null)
+        {
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
+            }
+        }
         return proformaInvoiceDto;
     }
 }

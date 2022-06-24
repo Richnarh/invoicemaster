@@ -32,8 +32,6 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -44,13 +42,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
@@ -406,8 +397,7 @@ public class ProformaInvoiceController implements Serializable
             
             if(proformaInvoiceItem.getUnitPrice() <= 0.0)
             {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
+              Msg.error("Please enter price");
               return;
             }
             
@@ -420,12 +410,11 @@ public class ProformaInvoiceController implements Serializable
                 proformaInvoiceItemList.add(proformaInvoiceItem);
                 proformaInvoiceItemList = CollectionList.washList(proformaInvoiceItemList, proformaInvoiceItem);
                 
-                Msg.setMsg("One item added to cart");
+                Msg.info("One item added to cart");
               }
               else
                 {
-                   FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Proforma Invoice item removed!"), null));
+                 Msg.info("Proforma Invoice item removed!");
                 }
             clearProformaInvoiceItem();
         } catch (Exception e)
