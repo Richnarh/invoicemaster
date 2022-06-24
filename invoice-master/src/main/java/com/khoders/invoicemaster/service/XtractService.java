@@ -195,32 +195,34 @@ public class XtractService
         proformaInvoiceDto.setAddress(proformaInvoice.getClient().getAddress());
         proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
         proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
-            
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
-        }
         
+        if(appSession.getCurrentUser() != null)
+        {
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
+            }
+            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
+            }
+        }
         return proformaInvoiceDto;
     }
 }
