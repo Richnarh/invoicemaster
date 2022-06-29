@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.jbeans.controller.sms;
+package com.khoders.im.admin.jbeans.sms;
 
-import com.khoders.invoicemaster.sms.SMSGrup;
-import com.khoders.invoicemaster.listener.AppSession;
-import com.khoders.invoicemaster.service.SmsService;
+import com.khoders.im.admin.listener.AppSession;
+import com.khoders.im.admin.services.SmsService;
+import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -26,34 +26,34 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "smsGrupController")
+@Named(value = "messageTemplateController")
 @SessionScoped
-public class SMSGrupController implements Serializable{
-    @Inject private CrudApi crudApi;
-    @Inject private AppSession appSession;
-    @Inject private SmsService smsService;
+public class MessageTemplateController implements Serializable{
+    @Inject CrudApi crudApi;
+    @Inject AppSession appSession;
+    @Inject SmsService smsService;
     
     private String optionText;
     
-    private SMSGrup smsGrup = new SMSGrup();
-    private List<SMSGrup> smsGroupList = new LinkedList<>();
+    private MessageTemplate messageTemplate = new MessageTemplate();
+    private List<MessageTemplate> messageTemplateList = new LinkedList<>();
     
     @PostConstruct
     private void init()
     {
-        clearSMSGrup();
+        clearMessageTemplate();
         
-        smsGroupList = smsService.getGroupList();
+        messageTemplateList = smsService.getMessageTemplateList();
     }
     
-   public void saveSMSGrup()
+   public void saveMessageTemplate()
     {
         try 
         {
-          smsGrup.genCode();
-          if(crudApi.save(smsGrup) != null)
+          messageTemplate.genCode();
+          if(crudApi.save(messageTemplate) != null)
           {
-              smsGroupList = CollectionList.washList(smsGroupList, smsGrup);
+              messageTemplateList = CollectionList.washList(messageTemplateList, messageTemplate);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -61,31 +61,31 @@ public class SMSGrupController implements Serializable{
           else
           {
               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create smsGrup"), null));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create messageTemplate"), null));
           }
-           clearSMSGrup();
+           clearMessageTemplate();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
    
-    public void editSMSGrup(SMSGrup smsGrup)
+    public void editMessageTemplate(MessageTemplate messageTemplate)
     {
        optionText = "Update";
-       this.smsGrup=smsGrup;
+       this.messageTemplate=messageTemplate;
     }
     
-    public void deleteSMSGrup(SMSGrup smsGrup)
+    public void deleteMessageTemplate(MessageTemplate messageTemplate)
     {
         try
         {
-          if(crudApi.delete(smsGrup))
+          if(crudApi.delete(messageTemplate))
           {
-              smsGroupList.remove(smsGrup);
+              messageTemplateList.remove(messageTemplate);
               
               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Contact Group deleted successfully!"), null)); 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Message template successfully!"), null)); 
           }
           else
           {
@@ -98,26 +98,25 @@ public class SMSGrupController implements Serializable{
         }
     }
     
-    public void clearSMSGrup() {
-        smsGrup = new SMSGrup();
-        smsGrup.setUserAccount(appSession.getCurrentUser());
-        smsGrup.setCompanyBranch(appSession.getCompanyBranch());
+    public void clearMessageTemplate() {
+        messageTemplate = new MessageTemplate();
+        messageTemplate.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
 
-    public SMSGrup getSmsGrup()
+    public MessageTemplate getMessageTemplate()
     {
-        return smsGrup;
+        return messageTemplate;
     }
 
-    public void setSmsGrup(SMSGrup smsGrup)
+    public void setMessageTemplate(MessageTemplate messageTemplate)
     {
-        this.smsGrup = smsGrup;
+        this.messageTemplate = messageTemplate;
     }
-    
-    public List<SMSGrup> getSMSGrupList() {
-        return smsGroupList;
+
+    public List<MessageTemplate> getMessageTemplateList() {
+        return messageTemplateList;
     }
 
     public String getOptionText() {

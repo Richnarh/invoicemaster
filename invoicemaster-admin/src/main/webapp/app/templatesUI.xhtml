@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msg.title}-Admin</title>
 
@@ -37,6 +36,12 @@
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/users.xhtml" class="nav-link">Registrations</a>
+                    </li>
+                      <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.app_menu_uri}/inventory.xhtml" class="nav-link">#{msg.inventory}</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.app_menu_uri}/product.xhtml" class="nav-link">#{msg.product}</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.app_menu_uri}/employees.xhtml" class="nav-link">Employees</a>

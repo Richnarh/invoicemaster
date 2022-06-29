@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.jbeans.controller.sms;
+package com.khoders.im.admin.jbeans.sms;
 
+import com.khoders.im.admin.listener.AppSession;
+import com.khoders.im.admin.services.SmsService;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.sms.GroupContact;
-import com.khoders.invoicemaster.listener.AppSession;
-import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -120,7 +120,6 @@ public class ContactGroupController implements Serializable{
     public void clearContactGroup() {
         contactGroup = new GroupContact();
         contactGroup.setUserAccount(appSession.getCurrentUser());
-        contactGroup.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.jbeans.controller;
+package com.khoders.im.admin.jbeans;
 
-import com.khoders.invoicemaster.entities.ProductType;
-import com.khoders.invoicemaster.listener.AppSession;
-import com.khoders.invoicemaster.service.InventoryService;
+import com.khoders.im.admin.listener.AppSession;
+import com.khoders.im.admin.services.InventoryService;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -26,33 +27,41 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "productTypeController")
+@Named(value = "inventoryController")
 @SessionScoped
-public class ProductTypeController implements Serializable{
+public class InventoryController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     @Inject InventoryService inventoryService;
     
-    private String optionText;
+    private Inventory inventory = new Inventory();
+    private List<Inventory> inventoryList =  new LinkedList<>();
     
-    private ProductType productType = new ProductType();
-    private List<ProductType> productTypeList = new LinkedList<>();
+    private FormView pageView = FormView.listForm();
+    private String optionText;
     
     @PostConstruct
     private void init()
     {
-        clearProductType();
+        inventoryList = inventoryService.getInventoryList();
         
-        productTypeList = inventoryService.getProductTypeList();
+        clearInventory();
     }
     
-   public void saveProductType()
+    public void initInventory()
+    {
+        clearInventory();
+        pageView.restToCreateView();
+    }
+    
+    public void saveInventory()
     {
         try 
         {
-          if(crudApi.save(productType) != null)
+           inventory.genCode();
+          if(crudApi.save(inventory) != null)
           {
-              productTypeList = CollectionList.washList(productTypeList, productType);
+              inventoryList = CollectionList.washList(inventoryList, inventory);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -62,30 +71,23 @@ public class ProductTypeController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-           clearProductType();
+          closePage();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
-   
-    public void editProductType(ProductType productType)
-    {
-       optionText = "Update";
-       this.productType=productType;
-    }
     
-    public void deleteProductType(ProductType productType)
+    public void deleteInventory(Inventory inventory)
     {
-       
-        try
+        try 
         {
-          if(crudApi.delete(productType))
+          if(crudApi.delete(inventory))
           {
-              productTypeList.remove(productType);
+              inventoryList.remove(inventory);
               
               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
           }
           else
           {
@@ -98,12 +100,37 @@ public class ProductTypeController implements Serializable{
         }
     }
     
-    public void clearProductType() {
-        productType = new ProductType();
-        productType.setUserAccount(appSession.getCurrentUser());
-        productType.setCompanyBranch(appSession.getCompanyBranch());
+    public void editInventory(Inventory inventory)
+    {
+       pageView.restToCreateView();
+       this.inventory=inventory;
+       optionText = "Update";
+    }
+    
+    public void clearInventory() 
+    {
+        inventory = new Inventory();
+        inventory.setUserAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
+    }
+    
+    public void closePage()
+    {
+       inventory = new Inventory();
+       optionText = "Save Changes";
+       pageView.restToListView();
+    }
+    public List<Inventory> getInventoryList() {
+        return inventoryList;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory bird) {
+        this.inventory = bird;
     }
 
     public String getOptionText() {
@@ -114,19 +141,14 @@ public class ProductTypeController implements Serializable{
         this.optionText = optionText;
     }
 
-    public ProductType getProductType()
+    public FormView getPageView()
     {
-        return productType;
+        return pageView;
     }
 
-    public void setProductType(ProductType productType)
+    public void setPageView(FormView pageView)
     {
-        this.productType = productType;
+        this.pageView = pageView;
     }
 
-    public List<ProductType> getProductTypeList()
-    {
-        return productTypeList;
-    }
-    
 }

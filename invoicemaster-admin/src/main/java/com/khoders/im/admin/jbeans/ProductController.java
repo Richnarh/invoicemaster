@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.jbeans.controller;
+package com.khoders.im.admin.jbeans;
 
+import com.khoders.im.admin.listener.AppSession;
+import com.khoders.im.admin.services.InventoryService;
 import com.khoders.invoicemaster.entities.Product;
-import com.khoders.invoicemaster.listener.AppSession;
-import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -233,7 +233,6 @@ public class ProductController implements Serializable{
         product = new Product();
         file = null;
         product.setUserAccount(appSession.getCurrentUser());
-        product.setCompanyBranch(appSession.getCompanyBranch());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }

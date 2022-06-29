@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.jbeans.controller.sms;
+package com.khoders.im.admin.jbeans.sms;
 
 import Zenoph.SMSLib.Enums.REQSTATUS;
 import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import Zenoph.SMSLib.ZenophSMS;
+import com.khoders.im.admin.listener.AppSession;
+import com.khoders.im.admin.services.SmsService;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.enums.MessagingType;
 import com.khoders.invoicemaster.enums.SMSType;
@@ -16,8 +18,6 @@ import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
-import com.khoders.invoicemaster.listener.AppSession;
-import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
@@ -363,7 +363,6 @@ public class SmsController implements Serializable
         sms = new Sms();
         sms.setSenderId(senderId);
         sms.setUserAccount(appSession.getCurrentUser());
-        sms.setCompanyBranch(appSession.getCompanyBranch());
         SystemUtils.resetJsfUI();
         
     }
