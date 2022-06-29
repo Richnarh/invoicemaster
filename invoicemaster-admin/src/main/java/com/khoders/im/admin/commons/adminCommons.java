@@ -6,6 +6,7 @@
 package com.khoders.im.admin.commons;
 
 import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.invoicemaster.enums.MessagingType;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
@@ -27,7 +28,10 @@ public class adminCommons implements Serializable
     {
         return Arrays.asList(AccessLevel.values());
     }
-   
+   public List<MessagingType> getMessagingTypeList()
+    {
+        return Arrays.asList(MessagingType.values());
+    }
     public List<PaymentStatus> getPaymentStatusList()
     {
         return Arrays.asList(PaymentStatus.values());

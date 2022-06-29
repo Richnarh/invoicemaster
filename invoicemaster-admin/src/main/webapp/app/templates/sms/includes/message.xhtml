@@ -10,7 +10,7 @@
             <h:panelGrid columns="2">
                 <p:selectOneMenu value="#{smsController.selectedMessagingType}">
                     <f:selectItem itemLabel="#{msg.choose}"/>
-                    <f:selectItems value="#{commonClass.messagingTypeList}"/>
+                    <f:selectItems value="#{adminCommons.messagingTypeList}"/>
                     <p:ajax listener="#{smsController.selectMessagingType()}" update="messaging"/>
                 </p:selectOneMenu>
 
@@ -20,7 +20,7 @@
             <div class="pt-3" title="Select a template and send message">
                 <p:selectOneMenu rendered="#{smsController.flag}" id="messaging" value="#{smsController.selectedMessageTemplate}" filter="true" filterMatchMode="contains" style="width: 40%;">
                     <f:selectItem itemLabel="#{msg.choose} Template"/>
-                    <f:selectItems value="#{usercommonBeans.messageTemplateList}"/>
+                    <f:selectItems value="#{userCommonClazz.messageTemplateList}"/>
                 </p:selectOneMenu>
             </div> 
 

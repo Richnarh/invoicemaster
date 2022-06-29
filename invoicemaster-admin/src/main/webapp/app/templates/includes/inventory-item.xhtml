@@ -13,7 +13,7 @@
                     <p:selectOneMenu class="col" value="#{purchaseOrderController.purchaseOrderItem.product}" 
                                      filter="true" filterMatchMode="contains" required="true">
                         <f:selectItem itemLabel="#{msg.choose}"/>
-                        <f:selectItems value="#{userCommonClass.productList}"/>
+                        <f:selectItems value="#{userCommonClazz.productList}"/>
                     </p:selectOneMenu>
 
                     <span>#{msg.quantity} <span class="text-danger">*</span> </span>
