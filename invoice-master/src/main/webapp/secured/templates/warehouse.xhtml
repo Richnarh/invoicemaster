@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <h:head>
+        <title>#{msg.title}</title>
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" />
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/OverlayScrollbars.min.css" />   
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/main.css" />  
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>  
+        <style>
+            .ui-growl {
+                top: auto;
+                bottom: 5em;
+            }
+            .ptext-link{
+                color: #17a2b8 !important;
+            }
+            .ptext-link:hover{
+                text-decoration: underline;
+            }
+        </style>
+    </h:head>
+
+    <h:body class="pt-3">
+        <div class="card m-5 shadow">
+            <div class="card-header">Warehouse/Dispatch Unit - All Pending Delivery Items</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h:form class="spaced-form">
+                            <h:commandButton class="mb-2 btn btn-primary" value="Refresh List" action="#{paymentDataController.init()}"/>
+                            <p:dataTable value="#{paymentDataController.pendingDeliveryList}" var="paymentData" scrollable="true" scrollHeight="550">
+                                <p:column headerText="#{msg.date}" style="width:120px">
+                                    <h:outputText value="#{paymentData.createdDate}">
+                                        <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column class="text-center" headerText="#{msg.client}" filterBy="#{paymentData.proformaInvoice.client.clientName}" filterMatchMode="contains">
+                                    <h:commandLink class="ptext-link" value="#{paymentData.proformaInvoice.client.clientName}" action="#{paymentDataController.selectTransaction(paymentData)}">
+                                        <p:ajax update=":paymentDataForm"/>
+                                    </h:commandLink>
+                                </p:column>
+
+                                <p:column headerText="#{msg.action}" style="width:160px">
+                                    <h:commandLink class="btn btn-light" target="_blank" value="Generate Waybill" action="#{paymentDataController.generateWaybill(paymentData)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        
+                        <br/>
+                        <div class="row">
+                            <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                                <li class="nav-item d-none d-sm-inline-block">
+                                    <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Main System</a>
+                                </li>
+                            </h:panelGroup>
+                            <h:form>
+                                <h:commandLink class="btn kbtn-danger text-white" value="Logout" action="#{loginController.doLogout()}"/>
+                            </h:form>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h:form id="paymentDataForm">
+                            <p:growl/>
+                            <table class="table">
+                                <tr>
+                                    <td><span class="field-label">Invoice No.</span></td>
+                                    <td  class="text-right"> 
+                                        <h:inputText readonly="true" value="#{paymentDataController.paymentData.proformaInvoice.quotationNumber}" class="form-control"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-label">Delivery Address</span></td>
+                                    <td  class="text-right"> 
+                                        <h:inputText readonly="true" value="#{paymentDataController.paymentData.proformaInvoice.client.address}" class="form-control"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-label">Delivery Address</span></td>
+                                    <td  class="text-right"> 
+                                        <h:selectOneMenu id="delivery" label="Delivery Status" class="form-control" value="#{paymentDataController.paymentData.deliveryStatus}" required="true">
+                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                            <f:selectItems value="#{commonClass.deliveryStatusList}"/>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="text-center">
+                                <p:commandButton class="kbtn-success" value="Save Changes" icon="#{msg.check_icon}" action="#{paymentDataController.saveDeliveryStatus()}" update="@form"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

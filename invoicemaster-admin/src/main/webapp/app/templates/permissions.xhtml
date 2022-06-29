@@ -55,6 +55,9 @@
                                         
                                         <span>Quick Invoice</span>
                                         <p:selectBooleanCheckbox value="#{userAccountController.selectedAccount.quickInvoice}"/>
+                                        
+                                        <span>Warehouse</span>
+                                        <p:selectBooleanCheckbox value="#{userAccountController.selectedAccount.warehouse}"/>
 
                                     </h:panelGrid>
                                     <div class="pt-3">
@@ -106,6 +109,9 @@
                             <p:column style="text-align: left" headerText="Quick Invoice">
                                 #{permissions.quickInvoice}
                             </p:column>
+                            <p:column style="text-align: left" headerText="#{msg.warehouse}">
+                                #{permissions.warehouse}
+                            </p:column>
                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
                                 <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update=":permissionsForm"
                                                  action="#{userAccountController.editPermissions(permissions)}"/>
@@ -115,7 +121,6 @@
                                                  onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                             </p:column>
                         </p:dataTable>
-
                     </h:form>
                 </div>
             </ui:define>

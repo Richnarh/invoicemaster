@@ -47,9 +47,8 @@ public class LoginController implements Serializable
             
             if (account == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
-                return null;
+               Msg.info("Wrong username or Password");
+               return null;
             }
 
             initLogin(account);
@@ -75,15 +74,23 @@ public class LoginController implements Serializable
             appSession.login(userAccount);
             appSession.initBranch(userAccount.getCompanyBranch());
             
-            if(userAccount.isQuickInvoice() == true && userAccount.isPermPrint() == true)
+//            if(userAccount.isQuickInvoice() == true && userAccount.isPermPrint() == true && userAccount.isWarehouse() == true)
+//            {
+//                Faces.redirect(Pages.index);
+//            }
+            if(userAccount.isQuickInvoice() == true)
             {
-                Faces.redirect(Pages.index);
+                Faces.redirect(Pages.quickInvoice);
             }
-             else
+            else if(userAccount.isWarehouse() == true)
             {
-               Faces.redirect(Pages.quickInvoice);
+                System.out.println("Printn");
+               Faces.redirect(Pages.warehouse);
             }
-
+            else
+            {
+               Faces.redirect(Pages.index);
+            }
         } catch (Exception e)
         {
             e.printStackTrace();

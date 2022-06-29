@@ -65,7 +65,7 @@ public class PaymentService
     {
         try
         {
-            String qryString = "SELECT e FROM PaymentData e WHERE e.deliveryStatus=?2";
+            String qryString = "SELECT e FROM PaymentData e WHERE e.deliveryStatus=?2 ORDER BY e.createdDate DESC";
             TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
                                     .setParameter(2, deliveryStatus);
                                     return typedQuery.getResultList();

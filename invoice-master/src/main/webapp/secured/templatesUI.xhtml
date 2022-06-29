@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msg.title}</title>
 
@@ -41,6 +40,11 @@
                             <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/quick-invoice.xhtml" class="nav-link">Quick #{msg.invoice}</a>
                         </li>
                     </h:panelGroup>
+                    <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                        <li class="nav-item d-none d-sm-inline-block">
+                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/warehouse.xhtml" class="nav-link">#{msg.warehouse}</a>
+                        </li>
+                    </h:panelGroup>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml" class="nav-link">#{msg.invoice}</a>
                     </li>
@@ -48,7 +52,7 @@
                         <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/client.xhtml" class="nav-link">#{msg.client}</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/payment-data.xhtml" class="nav-link">Transactions</a>
+                        <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/transaction.xhtml" class="nav-link">Transactions</a>
                     </li>
                 </ul>
                 <ui:remove>

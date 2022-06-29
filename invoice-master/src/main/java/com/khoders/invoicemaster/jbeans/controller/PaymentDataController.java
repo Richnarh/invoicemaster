@@ -69,6 +69,7 @@ public class PaymentDataController implements Serializable{
     private PaymentData paymentData = new PaymentData();
     private List<PaymentData> paymentDataStatusList = new LinkedList<>();
     private List<PaymentData> paymentDataDeliveryList = new LinkedList<>();
+    private List<PaymentData> pendingDeliveryList = new LinkedList<>();
     
     private PaymentStatus paymentStatus;
     private DeliveryStatus deliveryStatus;
@@ -82,12 +83,16 @@ public class PaymentDataController implements Serializable{
     double totalAmount=0.0;
     
     @PostConstruct
-    private void init()
+    public void init()
     {
         clearPaymentData();
-        
+        pendingDeliveryList = paymentService.getInvoiceByDeliveryStatus(DeliveryStatus.PENDING_DELIVERY);
     }
     
+    public void selectTransaction(PaymentData paymentData)
+    {
+      this.paymentData = paymentData; 
+    }
     public void fetchByPaymentStatus()
     {
         selectedTabIndex = 1;
@@ -122,6 +127,13 @@ public class PaymentDataController implements Serializable{
     {
         this.paymentData = crudApi.find(PaymentData.class, paymentData.getId());
         this.paymentData.setDeliveryStatus(paymentData.getDeliveryStatus());  
+    }
+    
+    public void saveDeliveryStatus(){
+        if(crudApi.save(paymentData) != null)
+        {
+            Msg.info(Msg.SUCCESS_MESSAGE);
+        }
     }
     
     public void onTabChange(TabChangeEvent event)
@@ -342,9 +354,15 @@ public class PaymentDataController implements Serializable{
         }
     }
     
-    public void generateWaybill(ProformaInvoice proformaInvoice)
+    public void generateWaybill(PaymentData paymentData)
     {
+        if(paymentData == null){
+            Msg.error("Something went wrong processing this data");
+            System.out.println("Something went wrong processing this data @generateWaybill");
+            return;
+        }
         
+        ProformaInvoice proformaInvoice = paymentData.getProformaInvoice();
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         
         List<ProformaInvoiceItemDto> invoiceItemDtoList = new LinkedList<>();
@@ -498,6 +516,11 @@ public class PaymentDataController implements Serializable{
     public void setSelectedTabIndex(int selectedTabIndex)
     {
         this.selectedTabIndex = selectedTabIndex;
+    }
+
+    public List<PaymentData> getPendingDeliveryList()
+    {
+        return pendingDeliveryList;
     }
 
     
