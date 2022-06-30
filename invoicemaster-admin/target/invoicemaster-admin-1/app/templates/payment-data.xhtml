@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Transactions
+            </ui:define>
+            <ui:define name="pageContent">
+                <div class="card card-primary card-outline card-outline-tabs wow zoomIn">
+                    <div class="card-header p-0 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Payment Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Delivery Info</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-four-tabContent">
+                            <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                                <h:form>
+                                    <h:panelGrid columns="12" class="spaced-form">
+                                        <span>#{msg.payment_staus}</span>
+                                        <h:selectOneMenu class="form-control" value="#{paymentDataController.paymentStatus}">
+                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                            <f:selectItems value="#{adminCommons.paymentStatusList}"/>
+                                            <p:ajax listener="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
+                                        </h:selectOneMenu>
+
+                                        <span class="mr-2">From: </span>
+                                        <p:datePicker value="#{paymentDataController.dateRange.fromDate}"
+                                                      pattern="#{msg.formatted_date}" 
+                                                      monthNavigator="true" yearNavigator="true"/>
+
+                                        <span class="mr-2">To: </span>
+                                        <p:datePicker value="#{paymentDataController.dateRange.toDate}"
+                                                      pattern="#{msg.formatted_date}" 
+                                                      monthNavigator="true" yearNavigator="true"/>
+
+                                        <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search" action="#{paymentDataController.filterTransaction()}"/>
+                                        <h:commandButton class="btn btn-default btn-sm" value="#{msg.clear}" action="#{paymentDataController.clearData()}"/>
+                    
+                                        <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataStatusList.size()}</span>
+                                        <h:panelGroup class="shadow-sm faded-shade p-1">
+                                            <span>Total Amt: </span>
+                                            <h:outputText value="#{paymentDataController.totalAmount}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+
+
+                                    <p:dataTable id="paymentStatusTable" value="#{paymentDataController.paymentDataStatusList}" var="paymentData">
+                                        <p:column style="width: 37px;">
+                                        <p:rowToggler/>
+                                    </p:column>
+
+                                    <p:rowExpansion>
+                                        <h:panelGrid columns="2">
+                                            <span>Ref No.</span>
+                                            <h:outputText value="#{paymentData.paymentCode}"/>
+                                            
+                                            <span>#{msg.payment_method}</span>
+                                            <h:outputText value="#{paymentData.paymentMethod.label}"/>
+                                        </h:panelGrid>
+                                    </p:rowExpansion>
+                                        <p:column style="width: 120px" headerText="#{msg.date}" filterBy="#{paymentData.createdDate}" filterMatchMode="contains">
+                                            <h:outputText value="#{paymentData.valueDate}">
+                                                <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msg.client} / Invoice No." filterBy="#{paymentData.proformaInvoice.client.clientName}" filterMatchMode="contains">
+                                            <h:outputText title="Client and invoice number" value="#{paymentData.proformaInvoice.client.clientName} - #{paymentData.proformaInvoice.quotationNumber}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.total_amount}" style="width: 120px" class="text-right">
+                                            <h:outputText value="#{paymentData.proformaInvoice.totalAmount}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Partial Amount" style="width: 120px" class="text-right">
+                                            <h:outputText value="#{paymentData.partialAmountPaid}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        
+                                        <p:column headerText="Amount Left" style="width: 120px" class="text-right">
+                                            <h:outputText value="#{paymentData.proformaInvoice.totalAmount - paymentData.partialAmountPaid}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Print" class="text-center" style="width: 90px">
+                                            <h:commandLink class="ptext-link" value="Waybill" target="_blank" action="#{paymentDataController.generateWaybill(paymentData.proformaInvoice)}"/>
+                                        </p:column>
+                                            
+                                        <p:column headerText="#{msg.action}" style="width: 120px;">
+                                        <p:menuButton value="#{msg.choose}">
+                                            <p:menuitem rendered="#{paymentData.paymentMessage == false}" icon="fa fa-envelope" class="text-info" value="Send SMS" action="#{paymentDataController.processPaymentMsg(paymentData)}" ajax="false"/>
+                                            <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{paymentDataController.updatePaymentData(paymentData)}" oncomplete="PF('updateForm').show()" resetValues="true" update=":updateModal"/>
+                                            <p:menuitem icon="fa fa-times" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" action="#{paymentDataController.deletePaymentData(paymentData)}" update="@form"/>
+                                        </p:menuButton>
+                                    </p:column>
+
+                                    </p:dataTable>
+                                </h:form>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                                <h:form>
+                                    <h:panelGrid columns="4" class="spaced-form">
+                                        <span>Delivery Status</span>
+                                        <h:selectOneMenu class="form-control" value="#{paymentDataController.deliveryStatus}">
+                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                            <f:selectItems value="#{adminCommons.deliveryStatusList}"/>
+                                        </h:selectOneMenu>
+
+                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
+
+                                        <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataDeliveryList.size()}</span>
+                                    </h:panelGrid>
+
+
+                                    <p:dataTable id="paymentStatusTable" value="#{paymentDataController.paymentDataDeliveryList}" var="paymentData">
+                                        <p:column headerText="#{msg.date}" filterBy="#{paymentData.createdDate}" filterMatchMode="contains">
+                                            <h:outputText value="#{paymentData.valueDate}">
+                                                <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{msg.client}" filterBy="#{paymentData.proformaInvoice.client.clientName}" filterMatchMode="contains">
+                                            <h:outputText value="#{paymentData.proformaInvoice.client.clientName}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Delivery Address">
+                                            <h:outputText value="#{paymentData.proformaInvoice.client.address}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}">
+                                            <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{paymentDataController.updateDeliveryData(paymentData)}"  oncomplete="PF('deliveryForm').show()" resetValues="true" update=":deliveryModal"/>
+                                            <!--<p:commandButton class="kbtn-danger" value="{msg.delete}" action="{paymentDataController.deleteDeliveryData(paymentData)}" onclick="return confirm('{msg.delete_message}')" update="@form"/>-->
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog resizable="false" widgetVar="updateForm" closeOnEscape="true" modal="true" id="deliveryModal" height="100"  width="450">
+                    <ui:include src="includes/payment-status-update.xhtml"/>
+                </p:dialog>
+                <p:dialog resizable="false" widgetVar="deliveryForm" closeOnEscape="true" modal="true" id="updateModal" height="100"  width="450">
+                    <ui:include src="includes/delivery-status-update.xhtml"/>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
