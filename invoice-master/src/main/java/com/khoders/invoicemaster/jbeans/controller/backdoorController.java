@@ -65,14 +65,24 @@ public class backdoorController implements Serializable
         {
             if (userAccount == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
-                return null;
+               Msg.error("Wrong username or Password");
+               return null;
             }
             appSession.login(userAccount);
             appSession.initBranch(userAccount.getCompanyBranch());
-            Faces.redirect(Pages.index);
-
+            
+            if(userAccount.isQuickInvoice() == true)
+            {
+                Faces.redirect(Pages.quickInvoice);
+            }
+            else if(userAccount.isWarehouse() == true)
+            {
+               Faces.redirect(Pages.warehouse);
+            }
+            else
+            {
+               Faces.redirect(Pages.index);
+            }
         } catch (Exception e)
         {
             e.printStackTrace();

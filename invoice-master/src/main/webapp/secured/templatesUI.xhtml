@@ -34,17 +34,18 @@
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Home</a>
                     </li>
-                 
-                    <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
-                        <li class="nav-item d-none d-sm-inline-block">
-                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/quick-invoice.xhtml" class="nav-link">Quick #{msg.invoice}</a>
-                        </li>
-                    </h:panelGroup>
-                    <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
-                        <li class="nav-item d-none d-sm-inline-block">
-                            <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/warehouse.xhtml" class="nav-link">#{msg.warehouse}</a>
-                        </li>
-                    </h:panelGroup>
+                    <ui:remove>
+                        <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                            <li class="nav-item d-none d-sm-inline-block">
+                                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/quick-invoice.xhtml" class="nav-link">Quick #{msg.invoice}</a>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                            <li class="nav-item d-none d-sm-inline-block">
+                                <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/warehouse.xhtml" class="nav-link">#{msg.warehouse}</a>
+                            </li>
+                        </h:panelGroup>
+                    </ui:remove>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.invoice_menu_uri}/proforma-invoice.xhtml" class="nav-link">#{msg.invoice}</a>
                     </li>

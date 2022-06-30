@@ -84,7 +84,6 @@ public class LoginController implements Serializable
             }
             else if(userAccount.isWarehouse() == true)
             {
-                System.out.println("Printn");
                Faces.redirect(Pages.warehouse);
             }
             else

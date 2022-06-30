@@ -98,6 +98,7 @@ public class ProformaInvoiceController implements Serializable
 
     public void inventoryProperties()
     {
+        System.out.println("Over here----");
         if(proformaInvoiceItem.getInventory().getSellingPrice() != 0.0)
         {
           proformaInvoiceItem.setUnitPrice(proformaInvoiceItem.getInventory().getSellingPrice());
