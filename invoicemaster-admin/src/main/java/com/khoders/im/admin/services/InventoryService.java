@@ -199,5 +199,20 @@ public class InventoryService
 
         return null;
     }
-
+    public List<Inventory> getStockShortageList()
+    {
+        try
+        {
+          String qryString = "SELECT e FROM Inventory e WHERE e.quantity <= 5 ORDER BY e.product ASC";
+          return crudApi.getEm().createQuery(qryString, Inventory.class)
+//                  .setParameter(1, companyBranch)
+                  .getResultList();
+           
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
 }

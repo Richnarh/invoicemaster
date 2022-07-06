@@ -38,6 +38,7 @@ com\khoders\im\admin\jbeans\TransactionHistoryController.class
 com\khoders\im\admin\jbeans\converter\CompanyBranchConverter.class
 com\khoders\im\admin\jbeans\PaymentDataController.class
 com\khoders\im\admin\Pages.class
+com\khoders\im\admin\jbeans\DashboardController.class
 com\khoders\im\admin\jbeans\CompanyProfileController.class
 com\khoders\im\admin\dto\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\im\admin\reports\ReportFiles.class

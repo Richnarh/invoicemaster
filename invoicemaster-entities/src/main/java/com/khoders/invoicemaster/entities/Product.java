@@ -129,6 +129,6 @@ public class Product extends UserAccountRecord implements Serializable
     @Override
     public String toString()
     {
-        return productCode +" - "+ productName;
+        return productName;
     }
 }

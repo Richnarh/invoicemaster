@@ -11,16 +11,16 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.springframework.web.context.annotation.SessionScope;
 
 /**
  *
  * @author richa
  */
 @Named(value = "dashboardController")
-@SessionScope
+@SessionScoped
 public class DashboardController implements Serializable
 {
     @Inject private ProformaInvoiceService proformaInvoiceService;
