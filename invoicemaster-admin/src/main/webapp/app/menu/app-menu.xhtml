@@ -25,19 +25,17 @@
 
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <ui:remove>
                         <div class="py-3 ml-2">
                             <h:form>
                                 <h:panelGrid columns="6" styleClass="spaced-table">
                                     <h:selectOneMenu class="form-control form-control-sm" value="#{smsController.senderId.senderId}">
                                         <f:selectItem itemLabel="--Sender ID--" />
-                                        <f:selectItems  value="#{userCommonClass.senderIdList}" />
+                                        <f:selectItems  value="#{userCommonClazz.senderIdList}" />
                                     </h:selectOneMenu>
                                     <p:commandButton class="mx-2 kbtn-secondary" ajax="false" value="Set Active" action="#{smsController.activateSenderId()}"/>
                                 </h:panelGrid>
                             </h:form>
                         </div>
-                    </ui:remove>
                     <li class="nav-header">OPERATIONS</li>
                     <h:panelGroup>
                         <ui:include src="invoice-menu.xhtml"/>
