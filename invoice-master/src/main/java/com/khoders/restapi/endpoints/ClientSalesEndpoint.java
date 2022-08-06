@@ -9,7 +9,6 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.restapi.ApiEndpoint;
 import com.khoders.restapi.services.SalesService;
 import com.khoders.resource.jaxrs.JaxResponse;
-import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.restapi.payload.OnlineClientDto;
 import com.khoders.restapi.payload.TransactionDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
