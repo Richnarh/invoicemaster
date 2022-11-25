@@ -59,10 +59,10 @@ import org.primefaces.event.TabChangeEvent;
 @Named(value = "paymentDataController")
 @SessionScoped
 public class PaymentDataController implements Serializable{
-    @Inject CrudApi crudApi;
-    @Inject AppSession appSession;
-    @Inject PaymentService paymentService;
-    @Inject ProformaInvoiceService proformaInvoiceService;
+    @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private PaymentService paymentService;
+    @Inject private ProformaInvoiceService proformaInvoiceService;
     
     private String optionText;
     

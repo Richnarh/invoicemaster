@@ -6,14 +6,12 @@
 package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entities.UserTransaction;
-import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
@@ -31,11 +29,9 @@ import javax.persistence.TypedQuery;
  * @author pascal
  */
 @Stateless
-public class ProformaInvoiceService
-{
-
-    private @Inject AppSession appSession;
-    private @Inject CrudApi crudApi;
+public class ProformaInvoiceService{
+    @Inject private AppSession appSession;
+    @Inject private CrudApi crudApi;
 
     public List<ProformaInvoiceItem> getProformaInvoiceItemList(ProformaInvoice proformaInvoice)
     {

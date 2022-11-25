@@ -35,8 +35,8 @@ import javax.inject.Named;
 @SessionScoped
 public class UserCommonClass implements Serializable{
     @Inject private SmsService smsService;
-    @Inject InventoryService inventoryService;
-    @Inject ClientService clientService;
+    @Inject private InventoryService inventoryService;
+    @Inject private ClientService clientService;
     
     private List<Client> clientList = new LinkedList<>();
     private List<Inventory> inventoryList = new LinkedList<>();

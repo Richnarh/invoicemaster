@@ -517,11 +517,11 @@ public class ProformaInvoiceController implements Serializable
                 
                 if (productDiscountRate > 0.0)
                 {
-                    if(productDiscountRate > 5.0)
-                    {
-                        Msg.error("Please dicount above 5% is not allowed!");
-                        return;
-                    }
+//                    if(productDiscountRate > 5.0)
+//                    {
+//                        Msg.error("Please dicount above 5% is not allowed!");
+//                        return;
+//                    }
                     calculatedDiscount = totalSaleAmount * (productDiscountRate/100); // Calculating Discount on total Amount
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     
