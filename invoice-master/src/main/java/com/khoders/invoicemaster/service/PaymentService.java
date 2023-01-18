@@ -5,8 +5,6 @@
  */
 package com.khoders.invoicemaster.service;
 
-import Zenoph.SMSLib.Enums.MSGTYPE;
-import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
@@ -95,21 +93,21 @@ public class PaymentService
         return Collections.emptyList();
     }
         
-    public static ZenophSMS extractParams()
-    {
-        ZenophSMS zsms = new ZenophSMS();
-        try
-        {
-            zsms.setUser(SmsAccess.USERNAME);
-            zsms.setPassword(SmsAccess.PASSWORD);
-            zsms.authenticate();
-            zsms.setMessageType(MSGTYPE.TEXT);
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return zsms;
-    }
+//    public static ZenophSMS extractParams()
+//    {
+//        ZenophSMS zsms = new ZenophSMS();
+//        try
+//        {
+//            zsms.setUser(SmsAccess.USERNAME);
+//            zsms.setPassword(SmsAccess.PASSWORD);
+//            zsms.authenticate();
+//            zsms.setMessageType(MSGTYPE.TEXT);
+//
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        return zsms;
+//    }
 }

@@ -5,10 +5,6 @@
  */
 package com.khoders.im.admin.jbeans;
 
-import Zenoph.SMSLib.Enums.MSGTYPE;
-import Zenoph.SMSLib.Enums.REQSTATUS;
-import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
-import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.im.admin.dto.ProformaInvoiceDto;
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.im.admin.reports.ReportFiles;
@@ -220,63 +216,63 @@ public class PaymentDataController implements Serializable{
 
     public void processPaymentMsg(PaymentData paymentData)
     {
-       senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+//       senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
         try 
         {
-          ZenophSMS zsms = PaymentService.extractParams();
-          zsms.setMessage(
-                  "Thanks for shopping with Dolphin Doors, we'll be expecting you next time. \n "
-                 + "Contact us: \n "
-                 + "Website: https://dolphindoors.com/ \n"
-                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
-                 + "Email: info@dolphindoors.com");
-          
-          if(paymentData.getProformaInvoice() != null){
-              if(paymentData.getProformaInvoice().getClient() != null)
-              {
-                 client = paymentData.getProformaInvoice().getClient();
-                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
-              }
-            }
-          
-            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
-
-            for (String number : numbers)
-            {
-                zsms.addRecipient(number);
-            }
-            
-            zsms.setSenderId(senderId.getSenderIdentity());
-            zsms.setMessageType(MSGTYPE.TEXT);
-
-            List<String[]> response = zsms.submit();
-            for (String[] destination : response)
-            {
-                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-                    if (reqstatus == null)
-                    {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
-                        break;
-                    } else
-                    {
-                        switch (reqstatus)
-                        {
-                            case SUCCESS:
-                                saveMessage();
-                                
-                                paymentMessageSent(paymentData);
-                                break;
-                            case ERR_INSUFF_CREDIT:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
-                            default:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
-                                return;
-                        }
-                    }
-                }
+//          ZenophSMS zsms = PaymentService.extractParams();
+//          zsms.setMessage(
+//                  "Thanks for shopping with Dolphin Doors, we'll be expecting you next time. \n "
+//                 + "Contact us: \n "
+//                 + "Website: https://dolphindoors.com/ \n"
+//                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
+//                 + "Email: info@dolphindoors.com");
+//          
+//          if(paymentData.getProformaInvoice() != null){
+//              if(paymentData.getProformaInvoice().getClient() != null)
+//              {
+//                 client = paymentData.getProformaInvoice().getClient();
+//                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
+//              }
+//            }
+//          
+//            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+//
+//            for (String number : numbers)
+//            {
+//                zsms.addRecipient(number);
+//            }
+//            
+//            zsms.setSenderId(senderId.getSenderIdentity());
+//            zsms.setMessageType(MSGTYPE.TEXT);
+//
+//            List<String[]> response = zsms.submit();
+//            for (String[] destination : response)
+//            {
+//                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+//                    if (reqstatus == null)
+//                    {
+//                        FacesContext.getCurrentInstance().addMessage(null,
+//                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+//                        break;
+//                    } else
+//                    {
+//                        switch (reqstatus)
+//                        {
+//                            case SUCCESS:
+//                                saveMessage();
+//                                
+//                                paymentMessageSent(paymentData);
+//                                break;
+//                            case ERR_INSUFF_CREDIT:
+//                                FacesContext.getCurrentInstance().addMessage(null,
+//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+//                            default:
+//                                FacesContext.getCurrentInstance().addMessage(null,
+//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+//                                return;
+//                        }
+//                    }
+//                }
 
     }catch(Exception e)
     {

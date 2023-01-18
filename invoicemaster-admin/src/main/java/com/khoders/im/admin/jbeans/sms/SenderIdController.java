@@ -28,8 +28,8 @@ import javax.inject.Named;
 @Named(value = "senderIdController")
 @SessionScoped
 public class SenderIdController implements Serializable{
-    @Inject CrudApi crudApi;
-    @Inject SmsService smsService;
+    @Inject private CrudApi crudApi;
+    @Inject private SmsService smsService;
     
     private String optionText;
     

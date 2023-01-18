@@ -6,12 +6,10 @@ com\khoders\im\admin\services\SmsService.class
 com\khoders\im\admin\jbeans\UserController.class
 com\khoders\im\admin\jbeans\CompanyBranchController.class
 com\khoders\im\admin\jbeans\sms\MessageTemplateController.class
-com\khoders\im\admin\jbeans\PaymentDataController$1.class
 com\khoders\im\admin\listener\AppSession.class
 com\khoders\im\admin\jbeans\converter\ProductConverter.class
 com\khoders\im\admin\commons\adminCommons.class
 com\khoders\im\admin\services\InventoryService.class
-com\khoders\im\admin\jbeans\sms\SmsController$1.class
 com\khoders\im\admin\dto\ProformaInvoiceDto.class
 com\khoders\im\admin\SmsAccess.class
 com\khoders\im\admin\services\PaymentService.class

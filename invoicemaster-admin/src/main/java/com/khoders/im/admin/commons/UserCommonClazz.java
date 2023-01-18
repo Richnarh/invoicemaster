@@ -10,7 +10,6 @@ import com.khoders.im.admin.services.InventoryService;
 import com.khoders.im.admin.services.SmsService;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
 import com.khoders.invoicemaster.entities.UserAccount;

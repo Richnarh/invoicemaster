@@ -29,9 +29,9 @@ import javax.inject.Named;
 @Named(value = "messageTemplateController")
 @SessionScoped
 public class MessageTemplateController implements Serializable{
-    @Inject CrudApi crudApi;
-    @Inject AppSession appSession;
-    @Inject SmsService smsService;
+    @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private SmsService smsService;
     
     private String optionText;
     

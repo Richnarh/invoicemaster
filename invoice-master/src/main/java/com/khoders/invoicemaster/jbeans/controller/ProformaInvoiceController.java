@@ -4,9 +4,7 @@
  * and open the template in the editor.
  */
 package com.khoders.invoicemaster.jbeans.controller;
-import Zenoph.SMSLib.Enums.MSGTYPE;
-import Zenoph.SMSLib.Enums.REQSTATUS;
-import Zenoph.SMSLib.ZenophSMS;
+
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
@@ -253,7 +251,7 @@ public class ProformaInvoiceController implements Serializable
               
               paymentDataList = CollectionList.washList(paymentDataList, paymentData);
               
-              processPaymentSms(paymentData);
+//              processPaymentSms(paymentData);
               
               Msg.info(Msg.SUCCESS_MESSAGE);
           }
@@ -275,56 +273,56 @@ public class ProformaInvoiceController implements Serializable
         System.out.println("Sender ID => "+senderId.getSenderIdentity());
         try 
         {
-          ZenophSMS zsms = SmsService.extractParams();
-          zsms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!. \n"
-                 + "Contact us: \n "
-                 + "Website: https://dolphindoors.com/ \n"
-                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
-                 + "Email: info@dolphindoors.com");
-          
-          if(paymentData.getProformaInvoice() != null){
-              if(paymentData.getProformaInvoice().getClient() != null)
-              {
-                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
-              }
-            }
-          
-            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
-
-            for (String number : numbers)
-            {
-                zsms.addRecipient(number);
-            }
-            
-            zsms.setSenderId(senderId.getSenderIdentity());
-            zsms.setMessageType(MSGTYPE.TEXT);
-
-            List<String[]> response = zsms.submit();
-            for (String[] destination : response)
-            {
-                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-                    if (reqstatus == null)
-                    {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
-                        break;
-                    } else
-                    {
-                        switch (reqstatus)
-                        {
-                            case SUCCESS:
-                                saveMessage();
-                                break;
-                            case ERR_INSUFF_CREDIT:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
-                            default:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
-                                return;
-                        }
-                    }
-                }
+//          ZenophSMS zsms = SmsService.extractParams();
+//          zsms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!. \n"
+//                 + "Contact us: \n "
+//                 + "Website: https://dolphindoors.com/ \n"
+//                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
+//                 + "Email: info@dolphindoors.com");
+//          
+//          if(paymentData.getProformaInvoice() != null){
+//              if(paymentData.getProformaInvoice().getClient() != null)
+//              {
+//                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
+//              }
+//            }
+//          
+//            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+//
+//            for (String number : numbers)
+//            {
+//                zsms.addRecipient(number);
+//            }
+//            
+//            zsms.setSenderId(senderId.getSenderIdentity());
+//            zsms.setMessageType(MSGTYPE.TEXT);
+//
+//            List<String[]> response = zsms.submit();
+//            for (String[] destination : response)
+//            {
+//                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+//                    if (reqstatus == null)
+//                    {
+//                        FacesContext.getCurrentInstance().addMessage(null,
+//                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+//                        break;
+//                    } else
+//                    {
+//                        switch (reqstatus)
+//                        {
+//                            case SUCCESS:
+//                                saveMessage();
+//                                break;
+//                            case ERR_INSUFF_CREDIT:
+//                                FacesContext.getCurrentInstance().addMessage(null,
+//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+//                            default:
+//                                FacesContext.getCurrentInstance().addMessage(null,
+//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+//                                return;
+//                        }
+//                    }
+//                }
 
         } catch (Exception e) {
             e.printStackTrace();
