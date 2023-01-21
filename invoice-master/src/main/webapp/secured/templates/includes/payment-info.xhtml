@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="text-center pt-3">
-                    <p:commandButton class="kbtn-success mr-3" value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" action="#{proformaInvoiceController.savePaymentData()}" update="updateMessage, :mainPanel"/>
+                    <p:commandButton rendered="#{proformaInvoiceController.fullyPaid == false}" class="kbtn-success mr-3" value="#{proformaInvoiceController.optionText}" icon="#{msg.check_icon}" action="#{proformaInvoiceController.savePaymentData()}" update="updateMessage, :mainPanel"/>
                     <p:commandButton class="kbtn-default" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{proformaInvoiceController.clearPaymentData()}" immediate="true" update="@form"/>
                 </div>
 

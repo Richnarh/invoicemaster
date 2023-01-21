@@ -18,7 +18,6 @@ import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
-import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.XtractService;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
@@ -59,6 +58,7 @@ public class ProformaInvoiceController implements Serializable
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
+    private boolean fullyPaid = false;
 
     private ProformaInvoice proformaInvoice = new ProformaInvoice();
     private ProformaInvoice stdProformaInvoice = new ProformaInvoice();
@@ -190,33 +190,30 @@ public class ProformaInvoiceController implements Serializable
         paymentData.setProformaInvoice(proformaInvoice);
         
        PaymentData data = proformaInvoiceService.invoiceRecord(paymentData.getProformaInvoice());
-       if(data != null)
-       {
-          paymentData = data; 
+       if(data != null){
+           fullyPaid = data.getPaymentStatus() == PaymentStatus.FULLY_PAID;
+           paymentData = data; 
+       }else{
+           fullyPaid = false;
        }
-        
     }
     
-    public void savePaymentData()
-    {
-        try 
-        {
+    public void savePaymentData(){
+        try{
           paymentData.genCode();
-          if(paymentData.getProformaInvoice() == null)
-          {
+          if(paymentData.getProformaInvoice() == null){
               Msg.error("Please select the invoice again!");
               return;
           }
             PaymentData data = proformaInvoiceService.invoiceRecord(paymentData.getProformaInvoice());
-            System.out.println("data -- "+data);
+
             if (data != null)
             {
                 Msg.error("Payment data already captured!");
                 return;
             }
              
-            if(crudApi.save(paymentData) != null)
-            {
+            if(crudApi.save(paymentData) != null){
               ProformaInvoice invoice = crudApi.find(ProformaInvoice.class, paymentData.getProformaInvoice().getId());
               invoice.setConverted(true);
               crudApi.save(invoice);
@@ -379,7 +376,7 @@ public class ProformaInvoiceController implements Serializable
         
         totalSaleAmount = proformaInvoice.getTotalAmount();
         subTotal = proformaInvoice.getSubTotalAmount();
-
+       
         calculateVat();
     }
 
@@ -497,7 +494,14 @@ public class ProformaInvoiceController implements Serializable
 
     public void saveAll()
     {
-      totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+        paymentData = proformaInvoiceService.invoiceRecord(proformaInvoice);
+        if(paymentData != null){
+            if(paymentData.getPaymentStatus() == PaymentStatus.FULLY_PAID){
+                Msg.error("This invoice cannot be saved again!");
+                return;
+            }
+        }
+        totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         try 
         {
@@ -820,6 +824,10 @@ public class ProformaInvoiceController implements Serializable
     public void setInvoiceStatus(InvoiceStatus invoiceStatus)
     {
         this.invoiceStatus = invoiceStatus;
+    }
+
+    public boolean isFullyPaid() {
+        return fullyPaid;
     }
     
 }

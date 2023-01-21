@@ -29,7 +29,7 @@
                                 <h:form>
                                     <h:panelGrid columns="12" class="spaced-form">
                                         <span>#{msg.payment_staus}</span>
-                                        <h:selectOneMenu class="form-control" value="#{paymentDataController.paymentStatus}">
+                                        <h:selectOneMenu id="paymentStatus" class="form-control" value="#{paymentDataController.paymentStatus}">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{adminCommons.paymentStatusList}"/>
                                             <p:ajax listener="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
@@ -45,7 +45,9 @@
                                                       pattern="#{msg.formatted_date}" 
                                                       monthNavigator="true" yearNavigator="true"/>
 
-                                        <h:commandButton class="mx-2 btn btn-info btn-sm" value="Search" action="#{paymentDataController.filterTransaction()}"/>
+                                        <h:commandButton id="search" class="mx-2 btn btn-info btn-sm" value="Search" action="#{paymentDataController.filterTransaction()}">
+                                            <p:ajax update="@form"/>
+                                        </h:commandButton>
                                         <h:commandButton class="btn btn-default btn-sm" value="#{msg.clear}" action="#{paymentDataController.clearData()}"/>
                     
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataStatusList.size()}</span>
@@ -111,8 +113,11 @@
                                             <p:menuitem icon="fa fa-times" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" action="#{paymentDataController.deletePaymentData(paymentData)}" update="@form"/>
                                         </p:menuButton>
                                     </p:column>
-
                                     </p:dataTable>
+                                    <p:blockUI block="@form" trigger="search, paymentStatus">
+                                        <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
+                                        <p><small>Please wait...</small></p>
+                                    </p:blockUI>
                                 </h:form>
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
@@ -124,7 +129,7 @@
                                             <f:selectItems value="#{adminCommons.deliveryStatusList}"/>
                                         </h:selectOneMenu>
 
-                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
+                                        <p:commandButton id="deliveryData" value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
 
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataDeliveryList.size()}</span>
                                     </h:panelGrid>
@@ -150,6 +155,10 @@
                                             <!--<p:commandButton class="kbtn-danger" value="{msg.delete}" action="{paymentDataController.deleteDeliveryData(paymentData)}" onclick="return confirm('{msg.delete_message}')" update="@form"/>-->
                                         </p:column>
                                     </p:dataTable>
+                                    <p:blockUI block="@form" trigger="deliveryData">
+                                        <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
+                                        <p><small>Please wait...</small></p>
+                                    </p:blockUI>
                                 </h:form>
                             </div>
                         </div>

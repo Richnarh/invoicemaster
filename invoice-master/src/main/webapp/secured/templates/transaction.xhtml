@@ -5,7 +5,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"> 
-
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
@@ -24,11 +23,10 @@
                                     <f:selectItems value="#{commonClass.paymentStatusList}"/>
                                 </h:selectOneMenu>
 
-                                <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
+                                <p:commandButton id="filter" value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByPaymentStatus()}" update="@form"/>
 
                                 <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataStatusList.size()}</span>
                             </h:panelGrid>
-
 
                             <p:dataTable id="paymentStatusTable" value="#{paymentDataController.paymentDataStatusList}" var="paymentData">
                                 <p:column style="width: 37px;">
@@ -82,9 +80,11 @@
                                         <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{paymentDataController.updatePaymentData(paymentData)}" oncomplete="PF('updateForm').show()" resetValues="true" update=":updateModal, :statusForm"/>
                                     </p:menuButton>
                                 </p:column>
-                                        <!--<p:menuitem icon="fa fa-times" rendered="{appSession.currentUser.permDelete == true}" class="text-danger" value="{msg.delete}" action="{paymentDataController.deletePaymentData(paymentData)}" update="@form"/>-->
-
                             </p:dataTable>
+                            <p:blockUI block="@form" trigger="filter">
+                                <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
+                                <p><small>Please wait...</small></p>
+                            </p:blockUI>        
                         </h:form>
                     </p:tab>
 
@@ -97,7 +97,7 @@
                                     <f:selectItems value="#{commonClass.deliveryStatusList}"/>
                                 </h:selectOneMenu>
 
-                                <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
+                                <p:commandButton id="deliveryInfo" value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
 
                                 <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataDeliveryList.size()}</span>
                             </h:panelGrid>
@@ -123,6 +123,10 @@
                                     <!--<p:commandButton class="kbtn-danger" value="{msg.delete}" action="{paymentDataController.deleteDeliveryData(paymentData)}" onclick="return confirm('{msg.delete_message}')" update="@form"/>-->
                                 </p:column>
                             </p:dataTable>
+                            <p:blockUI block="@form" trigger="deliveryInfo">
+                                <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
+                                <p><small>Please wait...</small></p>
+                            </p:blockUI> 
                         </h:form>
                     </p:tab>
                     
