@@ -73,7 +73,7 @@ public class PaymentService
                 TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(queryString, PaymentData.class);
                 return typedQuery.getResultList();
 
-            } else if (dateRange.getFromDate() != null || dateRange.getToDate() != null)
+            } else if ((dateRange.getFromDate() != null || dateRange.getToDate() != null) && paymentStatus == null)
             {
                 String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN ?1 AND ?2 ORDER BY e.valueDate DESC";
                 TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
