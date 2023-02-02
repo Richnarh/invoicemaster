@@ -7,6 +7,7 @@ package com.khoders.im.admin.services;
 
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
@@ -214,5 +215,19 @@ public class InventoryService
         }
         
         return Collections.emptyList();
+    }
+
+    public DiscountAction getDiscountAction() {
+        try
+        {
+            String qryString = "SELECT e FROM DiscountAction e ";
+            return crudApi.getEm().createQuery(qryString, DiscountAction.class).getResultStream().findFirst().orElse(null);
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

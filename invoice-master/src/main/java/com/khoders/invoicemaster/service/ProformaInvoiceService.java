@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.service;
 
+import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
@@ -33,6 +34,20 @@ public class ProformaInvoiceService{
     @Inject private AppSession appSession;
     @Inject private CrudApi crudApi;
 
+    public DiscountAction getDiscountAction() {
+        try
+        {
+            String qryString = "SELECT e FROM DiscountAction e ";
+            return crudApi.getEm().createQuery(qryString, DiscountAction.class).getResultStream().findFirst().orElse(null);
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+        
     public List<ProformaInvoiceItem> getProformaInvoiceItemList(ProformaInvoice proformaInvoice)
     {
         try

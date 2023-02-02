@@ -11,8 +11,10 @@ import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.dto.Receipt;
+import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
+import com.khoders.invoicemaster.enums.ActionType;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
@@ -73,6 +75,7 @@ public class ProformaInvoiceController implements Serializable
     private List<Tax> taxList = new LinkedList<>();
     private List<SalesTax> salesTaxList = new LinkedList<>();
     private SalesTax taxSales = new SalesTax();
+    private ActionType actionType = null;
     
     private int selectedTabIndex;
     private String optionText,paymentInvoiceNo,paymentClient;
@@ -362,8 +365,9 @@ public class ProformaInvoiceController implements Serializable
 
     public void manageProformaInvoiceItem(ProformaInvoice proformaInvoice)
     {
+        actionType = null;
+        SystemUtils.resetJsfUI();
         totalPayable=0.0;
-        
         this.proformaInvoice = proformaInvoice;
         pageView.restToDetailView();
         
@@ -377,6 +381,17 @@ public class ProformaInvoiceController implements Serializable
         totalSaleAmount = proformaInvoice.getTotalAmount();
         subTotal = proformaInvoice.getSubTotalAmount();
        
+        if(proformaInvoiceItemList.size() > 0){
+            DiscountAction action = proformaInvoiceService.getDiscountAction();
+            if(action.getActionType().equals(ActionType.DISABLE_ON_EDIT))
+                actionType = ActionType.DISABLE_ON_EDIT;
+            else
+                actionType = ActionType.ENABLE_ON_EDIT;
+            
+            System.out.println("actionType: "+actionType);
+        }
+        
+        System.out.println("actionType: "+actionType);
         calculateVat();
     }
 
@@ -828,6 +843,10 @@ public class ProformaInvoiceController implements Serializable
 
     public boolean isFullyPaid() {
         return fullyPaid;
+    }
+
+    public ActionType getActionType() {
+        return actionType;
     }
     
 }

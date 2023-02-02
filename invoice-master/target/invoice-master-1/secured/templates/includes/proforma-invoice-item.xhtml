@@ -113,7 +113,15 @@
                         <tr>
                             <td><span class="field-label">#{msg.discount} (%)</span></td>
                             <td  class="text-right"> 
-                                <h:inputText class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                <h:panelGroup rendered="#{proformaInvoiceController.proformaInvoiceItemList.size() > 0 and proformaInvoiceController.actionType == 'ENABLE_ON_EDIT'}">
+                                    <h:inputText class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{proformaInvoiceController.proformaInvoiceItemList.size() > 0 and proformaInvoiceController.actionType == 'DISABLE_ON_EDIT'}">
+                                    <h:inputText disabled="true" class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{proformaInvoiceController.actionType == null}">
+                                    <h:inputText class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                </h:panelGroup>
                             </td>
                         </tr>
 
