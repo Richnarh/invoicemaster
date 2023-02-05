@@ -42,6 +42,9 @@ public class LoginController implements Serializable
         {
             userModel.setUserEmail(userEmail);
             userModel.setPassword(password);
+            
+            System.out.println("Email Address: "+userEmail);
+            System.out.println("Password: "+password);
 
             UserAccount account = userAccountService.login(userModel);
             
