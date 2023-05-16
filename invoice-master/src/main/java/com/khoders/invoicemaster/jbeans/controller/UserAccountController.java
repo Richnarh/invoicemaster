@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entities.UserAccount;
+import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.invoicemaster.service.UserAccountService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.Msg;
@@ -41,18 +42,13 @@ public class UserAccountController implements Serializable{
         {
             if(!SecurityUtil.checkPassword(userAccount.getPassword(), userAccount.getPassword2()))
             {
-                FacesContext
-                        .getCurrentInstance()
-                        .addMessage(null, 
-                        new FacesMessage(
-                                FacesMessage.SEVERITY_ERROR, Msg.setMsg("Password do not match"), null));
+                Msg.error("Password do not match");
                 return;
             }
             
             if(!accountService.isTaken(userAccount.getEmail()))
             {
               userAccount.setPassword(hashText(userAccount.getPassword()));
-
             if(crudApi.save(userAccount) != null)
             {
                 FacesContext.getCurrentInstance().addMessage(null, 

@@ -15,6 +15,7 @@ import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.enums.ActionType;
+import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
@@ -445,6 +446,10 @@ public class ProformaInvoiceController implements Serializable
       
         for (Tax tax : taxList)
         {
+            // v2 exclude the NHIL tax in sales calculation
+            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
+                if(tax.getTaxName().equals("NHIL")) continue;
+            }
             SalesTax salesTax = new SalesTax();
 
             double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
@@ -481,23 +486,23 @@ public class ProformaInvoiceController implements Serializable
     {
         if(!salesTaxList.isEmpty())
         {
-            SalesTax nhil = salesTaxList.get(0);
+//            SalesTax nhil = salesTaxList.get(0);
 //            SalesTax getFund = salesTaxList.get(1);
-            SalesTax covid19 = salesTaxList.get(1);
-            SalesTax salesVat = salesTaxList.get(2);
+            SalesTax covid19 = salesTaxList.get(0);
+            SalesTax salesVat = salesTaxList.get(1);
 
-            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
+//            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
+            double totalLevies = covid19.getTaxAmount();
 
             double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
-            
-//            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
-//            System.out.println("taxableValue => "+taxableValue);
-//            System.out.println("totalLevies => "+totalLevies);
+            System.out.println("Covide19: "+covid19.getTaxName() +"\t taxAmnt: "+covid19.getTaxAmount());
+            System.out.println("salesVat: "+salesVat.getTaxName() +"\t taxAmnt: "+salesVat.getTaxAmount());
+            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
+            System.out.println("totalLevies => "+totalLevies);
+            System.out.println("taxableValue => "+taxableValue);
 //            
             double vat = taxableValue*(salesVat.getTaxRate()/100);
             
-//            System.out.println("vat => "+vat);
-
             totalPayable = vat + taxableValue + installationFee;
             
             salesVat.setTaxAmount(vat);

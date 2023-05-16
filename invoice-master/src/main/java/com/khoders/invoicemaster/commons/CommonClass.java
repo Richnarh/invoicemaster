@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.commons;
 
+import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.invoicemaster.enums.ClientType;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.DoorType;
@@ -82,6 +83,10 @@ public class CommonClass implements Serializable
     public List<SMSType> getSmsTypeList()
     {
         return Arrays.asList(SMSType.values());
+    }
+    public List<AppVersion> getAppVersionList()
+    {
+        return Arrays.asList(AppVersion.values());
     }
     
 }

@@ -5,6 +5,8 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.Pages;
+import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.Msg;
@@ -15,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.omnifaces.util.Faces;
 
 /**
  *
@@ -51,14 +54,23 @@ public class ProfileUpdateController implements Serializable{
         }
     }
     
-    
+    public void activateVersion(){
+        UserAccount userAccount = appSession.getCurrentUser();
+        System.out.println("Version: "+appSession.getCurrentUser().getAppVersion());
+        userAccount.setAppVersion(appSession.getCurrentUser().getAppVersion());
+        crudApi.save(userAccount);
+        
+        appSession.login(userAccount);
+        appSession.initBranch(userAccount.getCompanyBranch());
+        
+        initLogin(userAccount);
+    }
        
     public void updatePassword()
     {
         if(!password.equals(confirmPassword))
         {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Password do not match"), null));
+            Msg.error("Password do not match");
             return;
         }
         
@@ -66,9 +78,7 @@ public class ProfileUpdateController implements Serializable{
         
         if(hashedPassword.equalsIgnoreCase(appSession.getCurrentUser().getPassword()))
         {
-            String msg = "This password is same as the old one, please use a new password";
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg(msg), null));
+            Msg.error("This password is same as the old one, please use a new password");
             return;
         }
         
@@ -77,11 +87,39 @@ public class ProfileUpdateController implements Serializable{
         
         if(crudApi.save(appSession.getCurrentUser()) != null)
         {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Password Reset successful!"), null));
+           Msg.info("Password Reset successful!");
         }
     }
 
+    public void initLogin(UserAccount userAccount)
+    {
+        try
+        {
+            if(userAccount == null){
+              Msg.error("Wrong username or Password");
+              return;
+            }
+            appSession.login(userAccount);
+            appSession.initBranch(userAccount.getCompanyBranch());
+            
+            if(userAccount.isQuickInvoice() == true)
+            {
+                Faces.redirect(Pages.quickInvoice);
+            }
+            else if(userAccount.isWarehouse() == true)
+            {
+               Faces.redirect(Pages.warehouse);
+            }
+            else
+            {
+               Faces.redirect(Pages.index);
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+        
     public String getPassword() {
         return password;
     }

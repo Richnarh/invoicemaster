@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.entities;
 
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
+import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.Status;
 import com.khoders.resource.enums.UnitOfMeasurement;
@@ -91,6 +92,10 @@ public class UserAccount extends BaseModel implements Serializable
     
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "app_version")
+    @Enumerated(EnumType.STRING)
+    private AppVersion appVersion = AppVersion.V2;
     
     @Transient
     private String password2;
@@ -294,12 +299,18 @@ public class UserAccount extends BaseModel implements Serializable
     {
         this.warehouse = warehouse;
     }
+
+    public AppVersion getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(AppVersion appVersion) {
+        this.appVersion = appVersion;
+    }
     
     @Override
     public String toString()
     {
        return fullname;
     }
-    
-    
 }
