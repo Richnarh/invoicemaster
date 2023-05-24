@@ -259,4 +259,11 @@ public class ProformaInvoiceService{
         
         return Collections.emptyList();
     }
+
+    public ProformaInvoiceItem getInvoiceExist(ProformaInvoice proformaInvoice) {
+        return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice = :proformaInvoice", ProformaInvoiceItem.class)
+                .setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice)
+                .setMaxResults(1)
+                .getResultStream().findFirst().orElse(null);
+    }
 }

@@ -5,7 +5,8 @@
  */
 package com.khoders.im.admin.services;
 
-import com.khoders.im.admin.SmsAccess;
+import Zenoph.SMSLib.Enums.MSGTYPE;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.enums.SMSType;
@@ -14,6 +15,7 @@ import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
+import com.khoders.invoicemaster.sms.SmsAccess;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -181,22 +183,33 @@ public class SmsService
         }
         return Collections.emptyList();
     }
-   
-//    public static ZenophSMS extractParams()
-//    {
-//        ZenophSMS zsms = new ZenophSMS();
-//        try
-//        {
-//            zsms.setUser(SmsAccess.USERNAME);
-//            zsms.setPassword(SmsAccess.PASSWORD);
-//            zsms.authenticate();
-//            zsms.setMessageType(MSGTYPE.TEXT);
-//
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        return zsms;
-//    }
+    
+    public List<SmsAccess> smsAccessList(){
+        return crudApi.getEm().createQuery("SELECT e FROM SmsAccess e", SmsAccess.class).getResultList();
+    }
+    
+    public ZenophSMS extractParams()
+    {
+        ZenophSMS zsms = new ZenophSMS();
+        try
+        {
+           SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e WHERE e.userAccount=:userAccount", SmsAccess.class)
+                    .getSingleResult();
+            if(smsAccess != null){
+                
+            System.out.println("Username --- "+smsAccess.getUsername());
+            System.out.println("Password --- "+smsAccess.getPassword());
+            
+            zsms.setUser(smsAccess.getUsername());
+            zsms.setPassword(smsAccess.getPassword());
+            zsms.authenticate();
+            zsms.setMessageType(MSGTYPE.TEXT);
+          }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return zsms;
+    }
 }

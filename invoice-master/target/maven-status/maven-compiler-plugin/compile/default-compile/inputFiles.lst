@@ -51,6 +51,7 @@ C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\resta
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\LoginController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.java
+C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\SaleLeadConverter.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\backdoorController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\PurchaseOrderUploadController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\restapi\endpoints\ClientSalesEndpoint.java

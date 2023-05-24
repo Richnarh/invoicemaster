@@ -98,14 +98,14 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.8</version>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>Zenoph.SMSLib</groupId>
             <artifactId>Zenoph.SMSLib</artifactId>
             <version>1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/src/lib/Zenoph.SMSLib.jar</systemPath>
             <type>jar</type>
-        </dependency>-->
+            <systemPath>${basedir}/lib/Zenoph.SMSLib.jar</systemPath>
+        </dependency>
     </dependencies>
     
     <build>

@@ -23,7 +23,7 @@
                                         <p class="text-muted">#{msg.group} Name <span class="text-danger">*</span></p>
                                         <p:selectOneMenu value="#{contactGroupController.contactGroup.smsGrup}" required="true" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{userCommonClass.smsGroupList}"/>
+                                            <f:selectItems value="#{userCommonClazz.smsGroupList}"/>
                                         </p:selectOneMenu>
                                         
                                         <span>
@@ -34,7 +34,7 @@
                                         <p class="col-form-label text-muted">#{msg.contact} </p>
                                         <p:selectOneMenu value="#{contactGroupController.contactGroup.client}" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{userCommonClass.clientList}"/>
+                                            <f:selectItems value="#{userCommonClazz.clientList}"/>
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="pt-3">

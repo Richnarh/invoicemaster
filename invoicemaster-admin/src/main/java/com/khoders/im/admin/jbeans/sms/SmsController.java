@@ -5,6 +5,9 @@
  */
 package com.khoders.im.admin.jbeans.sms;
 
+import Zenoph.SMSLib.Enums.REQSTATUS;
+import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.im.admin.services.SmsService;
 import com.khoders.invoicemaster.entities.Client;
@@ -113,62 +116,62 @@ public class SmsController implements Serializable
             {
                 clearSMS();
                 
-//                ZenophSMS zsms = smsService.extractParams();
-//
-//                // set message parameters.
-//                if (selectedMessagingType == MessagingType.TEMPLATE_MESSAGING)
-//                {
-//                    zsms.setMessage(selectedMessageTemplate.getTemplateText());
-//
-//                    System.out.println("TEMPLATE_MESSAGING -- " + selectedMessageTemplate.getTemplateText());
-//                } else
-//                {
-//                    if(textMessage.isEmpty())
-//                    {
-//                         FacesContext.getCurrentInstance().addMessage(null,
-//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please type a message"), null));
-//                        
-//                        return;
-//                    }
-//                    zsms.setMessage(textMessage);
-//                }
-//                
-//                String phoneNumber = selectedClient.getPhone();
-//                List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
-//
-//                for (String number : numbers)
-//                {
-//                    zsms.addRecipient(number);
-//                }
-//                
-//                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
-//                
-//
-//                List<String[]> response = zsms.submit();
-//                for (String[] destination : response)
-//                {
-//                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-//                    if (reqstatus == null)
-//                    {
-//                      Msg.error("failed to send message");
-//                        break;
-//                    } else
-//                    {
-//                        switch (reqstatus)
-//                        {
-//                            case SUCCESS:
-//                                saveMessage(zsms.getMessage());
-//                                System.out.println(" <<--- SMS delivered -->>>");
-//                                Msg.info("SMS sent to "+selectedClient.getClientName());
-//                                break;
-//                            case ERR_INSUFF_CREDIT:
-//                                Msg.error("Insufficeint Credit");
-//                            default:
-//                                Msg.error("Failed to send message");
-//                                return;
-//                        }
-//                    }
-//                }
+                ZenophSMS zsms = smsService.extractParams();
+
+                // set message parameters.
+                if (selectedMessagingType == MessagingType.TEMPLATE_MESSAGING)
+                {
+                    zsms.setMessage(selectedMessageTemplate.getTemplateText());
+
+                    System.out.println("TEMPLATE_MESSAGING -- " + selectedMessageTemplate.getTemplateText());
+                } else
+                {
+                    if(textMessage.isEmpty())
+                    {
+                         FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please type a message"), null));
+                        
+                        return;
+                    }
+                    zsms.setMessage(textMessage);
+                }
+                
+                String phoneNumber = selectedClient.getPhone();
+                List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+
+                for (String number : numbers)
+                {
+                    zsms.addRecipient(number);
+                }
+                
+                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
+                
+
+                List<String[]> response = zsms.submit();
+                for (String[] destination : response)
+                {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null)
+                    {
+                      Msg.error("failed to send message");
+                        break;
+                    } else
+                    {
+                        switch (reqstatus)
+                        {
+                            case SUCCESS:
+                                saveMessage(zsms.getMessage());
+                                System.out.println(" <<--- SMS delivered -->>>");
+                                Msg.info("SMS sent to "+selectedClient.getClientName());
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                                Msg.error("Insufficeint Credit");
+                            default:
+                                Msg.error("Failed to send message");
+                                return;
+                        }
+                    }
+                }
 
             } else
             {

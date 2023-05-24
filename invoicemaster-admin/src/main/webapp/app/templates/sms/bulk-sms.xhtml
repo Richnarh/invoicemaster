@@ -22,7 +22,7 @@
                                         <span class="text-link">Select Group</span>
                                         <p:selectOneMenu value="#{smsController.smsGrup}" filter="true" filterMatchMode="contains"  style="width: 100%;">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{userCommonClass.smsGroupList}"/>
+                                            <f:selectItems value="#{userCommonClazz.smsGroupList}"/>
                                             <p:ajax listener="#{smsController.loadContactGroup()}" update="groupContactList"/>
                                         </p:selectOneMenu>
 

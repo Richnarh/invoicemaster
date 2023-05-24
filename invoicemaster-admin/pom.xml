@@ -80,14 +80,14 @@
             <version>6.17.0</version>
             <type>jar</type>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>Zenoph.SMSLib</groupId>
             <artifactId>Zenoph.SMSLib</artifactId>
             <version>1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/src/lib/Zenoph.SMSLib.jar</systemPath>
             <type>jar</type>
-        </dependency>-->
+            <systemPath>${basedir}/lib/Zenoph.SMSLib.jar</systemPath>
+        </dependency>
     </dependencies>
     
     <build>

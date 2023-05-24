@@ -1,3 +1,4 @@
+com\khoders\invoicemaster\jbeans\controller\PaymentDataController$1.class
 com\khoders\invoicemaster\jbeans\controller\PurchaseOrderController.class
 com\khoders\invoicemaster\jbeans\controller\UserTransactionController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceItemDto.class
@@ -7,6 +8,7 @@ com\khoders\invoicemaster\service\XtractService.class
 com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
 com\khoders\invoicemaster\service\TaxService.class
 com\khoders\restapi\payload\TransactionDto.class
+com\khoders\invoicemaster\jbeans\converter\SaleLeadConverter.class
 com\khoders\invoicemaster\jbeans\controller\QuickInvoiceController.class
 com\khoders\restapi\config\OpenApiConfig.class
 com\khoders\invoicemaster\jbeans\controller\backdoorController.class
@@ -15,6 +17,7 @@ com\khoders\invoicemaster\jbeans\converter\OnlineClientConverter.class
 com\khoders\invoicemaster\dto\ConvertToWords.class
 com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.class
 com\khoders\invoicemaster\dto\PaymentReceiptDto.class
+com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController$1.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto.class
 com\khoders\invoicemaster\jbeans\converter\ClientConverter.class
 com\khoders\invoicemaster\listener\AppSession.class

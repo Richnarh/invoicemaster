@@ -124,7 +124,15 @@
                                 </h:panelGroup>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td><span class="field-label">Extra Discount</span></td>
+                            <td  class="text-right"> 
+                                <p:selectOneMenu value="#{proformaInvoiceController.salesTax.saleLead}">
+                                    <f:selectItem itemLabel="Lead discount"/>
+                                    <f:selectItems value="#{userCommonClass.salesLeadList}"/>
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
                         <ui:repeat value="#{proformaInvoiceController.salesTaxList}" var="salesTax">
                             <tr>
                                 <td>#{salesTax.taxName} (#{salesTax.taxRate} %)</td>

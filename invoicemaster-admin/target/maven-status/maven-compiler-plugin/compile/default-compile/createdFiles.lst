@@ -11,9 +11,11 @@ com\khoders\im\admin\jbeans\DiscountActionController.class
 com\khoders\im\admin\jbeans\converter\ProductConverter.class
 com\khoders\im\admin\commons\adminCommons.class
 com\khoders\im\admin\services\InventoryService.class
+com\khoders\im\admin\jbeans\sms\SmsController$1.class
 com\khoders\im\admin\dto\ProformaInvoiceDto.class
 com\khoders\im\admin\SmsAccess.class
 com\khoders\im\admin\services\PaymentService.class
+com\khoders\im\admin\jbeans\SaleLeadController.class
 com\khoders\im\admin\jbeans\sms\SenderIdController.class
 com\khoders\im\admin\jbeans\sms\SmsController.class
 com\khoders\im\admin\services\InvoiceService.class
@@ -41,6 +43,7 @@ com\khoders\im\admin\jbeans\DashboardController.class
 com\khoders\im\admin\jbeans\CompanyProfileController.class
 com\khoders\im\admin\dto\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\im\admin\reports\ReportFiles.class
+com\khoders\im\admin\jbeans\sms\SmsAccessController.class
 com\khoders\im\admin\jbeans\ManageInvoiceController.class
 com\khoders\im\admin\jbeans\ProductController.class
 com\khoders\im\admin\services\UserAccountService.class

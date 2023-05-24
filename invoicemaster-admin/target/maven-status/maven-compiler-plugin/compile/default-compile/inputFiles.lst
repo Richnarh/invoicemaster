@@ -12,6 +12,7 @@ C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\DiscountActionController.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\Pages.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\ManageInvoiceController.java
+C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\SaleLeadController.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\listener\AppSession.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\LoginController.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\converter\CompanyBranchConverter.java
@@ -34,6 +35,7 @@ C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\InventoryController.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\commons\adminCommons.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\SmsAccess.java
+C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\sms\SmsAccessController.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\converter\ProductConverter.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\jbeans\UserModel.java
 C:\khoders\Java-web\invoicemaster\invoicemaster-admin\src\main\java\com\khoders\im\admin\services\CompanyService.java

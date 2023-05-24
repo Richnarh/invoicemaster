@@ -18,10 +18,12 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class UserAccountRecord extends BaseModel implements Serializable{
+    public static final String _userAccount = "userAccount";
     @JoinColumn(name = "user_account", referencedColumnName = "id")
     @ManyToOne
     private UserAccount userAccount;
     
+    public static final String _companyBranch = "companyBranch";
     @JoinColumn(name = "company_branch", referencedColumnName = "id")
     @ManyToOne
     private CompanyBranch companyBranch;

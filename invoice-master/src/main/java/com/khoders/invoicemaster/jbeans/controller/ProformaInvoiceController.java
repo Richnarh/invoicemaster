@@ -5,6 +5,11 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import Zenoph.SMSLib.Enums.MSGTYPE;
+import Zenoph.SMSLib.Enums.REQSTATUS;
+import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
+import static Zenoph.SMSLib.Enums.REQSTATUS.SUCCESS;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
@@ -21,6 +26,7 @@ import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.XtractService;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
@@ -57,6 +63,7 @@ public class ProformaInvoiceController implements Serializable
     @Inject private ReportHandler reportHandler;
     @Inject private ReportHandler coverHandler;
     @Inject private XtractService xtractService;
+    @Inject private SmsService smsService;
     @Inject private ReportManager reportManager;
 
     private FormView pageView = FormView.listForm();
@@ -69,6 +76,7 @@ public class ProformaInvoiceController implements Serializable
     private List<PaymentData> paymentDataList = new LinkedList<>();
 
     private PaymentData paymentData = new PaymentData();
+    private SalesTax salesTax = new SalesTax();
     private ProformaInvoiceItem proformaInvoiceItem = new ProformaInvoiceItem();
     private List<ProformaInvoiceItem> proformaInvoiceItemList = new LinkedList<>();
     private List<ProformaInvoiceItem> removedProformaInvoiceItemList = new LinkedList<>();
@@ -252,7 +260,7 @@ public class ProformaInvoiceController implements Serializable
               
               paymentDataList = CollectionList.washList(paymentDataList, paymentData);
               
-//              processPaymentSms(paymentData);
+              processPaymentSms(paymentData);
               
               Msg.info(Msg.SUCCESS_MESSAGE);
           }
@@ -274,56 +282,56 @@ public class ProformaInvoiceController implements Serializable
         System.out.println("Sender ID => "+senderId.getSenderIdentity());
         try 
         {
-//          ZenophSMS zsms = SmsService.extractParams();
-//          zsms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!. \n"
-//                 + "Contact us: \n "
-//                 + "Website: https://dolphindoors.com/ \n"
-//                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
-//                 + "Email: info@dolphindoors.com");
-//          
-//          if(paymentData.getProformaInvoice() != null){
-//              if(paymentData.getProformaInvoice().getClient() != null)
-//              {
-//                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
-//              }
-//            }
-//          
-//            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
-//
-//            for (String number : numbers)
-//            {
-//                zsms.addRecipient(number);
-//            }
-//            
-//            zsms.setSenderId(senderId.getSenderIdentity());
-//            zsms.setMessageType(MSGTYPE.TEXT);
-//
-//            List<String[]> response = zsms.submit();
-//            for (String[] destination : response)
-//            {
-//                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-//                    if (reqstatus == null)
-//                    {
-//                        FacesContext.getCurrentInstance().addMessage(null,
-//                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
-//                        break;
-//                    } else
-//                    {
-//                        switch (reqstatus)
-//                        {
-//                            case SUCCESS:
-//                                saveMessage();
-//                                break;
-//                            case ERR_INSUFF_CREDIT:
-//                                FacesContext.getCurrentInstance().addMessage(null,
-//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
-//                            default:
-//                                FacesContext.getCurrentInstance().addMessage(null,
-//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
-//                                return;
-//                        }
-//                    }
-//                }
+          ZenophSMS zsms = smsService.extractParams();
+          zsms.setMessage("Thanks for visiting Dolphin Doors, we're happy to see you. We'll be looking forward to seeing you again!. \n"
+                 + "Contact us: \n "
+                 + "Website: https://dolphindoors.com/ \n"
+                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
+                 + "Email: info@dolphindoors.com");
+          
+          if(paymentData.getProformaInvoice() != null){
+              if(paymentData.getProformaInvoice().getClient() != null)
+              {
+                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
+              }
+            }
+          
+            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+
+            for (String number : numbers)
+            {
+                zsms.addRecipient(number);
+            }
+            
+            zsms.setSenderId(senderId.getSenderIdentity());
+            zsms.setMessageType(MSGTYPE.TEXT);
+
+            List<String[]> response = zsms.submit();
+            for (String[] destination : response)
+            {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null)
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+                        break;
+                    } else
+                    {
+                        switch (reqstatus)
+                        {
+                            case SUCCESS:
+                                saveMessage();
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                                FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+                            default:
+                                FacesContext.getCurrentInstance().addMessage(null,
+                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+                                return;
+                        }
+                    }
+                }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -439,9 +447,9 @@ public class ProformaInvoiceController implements Serializable
     {
       
         // delete all salesTax for the selected proforma invoice
-        salesTaxList.forEach(salesTax ->
+        salesTaxList.forEach(tx ->
         {
-            crudApi.delete(salesTax);
+            crudApi.delete(tx);
         });
       
         for (Tax tax : taxList)
@@ -450,20 +458,21 @@ public class ProformaInvoiceController implements Serializable
             if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
                 if(tax.getTaxName().equals("NHIL")) continue;
             }
-            SalesTax salesTax = new SalesTax();
+            SalesTax st = new SalesTax();
 
             double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
 
-            salesTax.genCode();
-            salesTax.setTaxName(tax.getTaxName());
-            salesTax.setTaxRate(tax.getTaxRate());
-            salesTax.setTaxAmount(calc);
-            salesTax.setReOrder(tax.getReOrder());
-            salesTax.setUserAccount(appSession.getCurrentUser());
-            salesTax.setCompanyBranch(appSession.getCompanyBranch());
-            salesTax.setProformaInvoice(proformaInvoice);
+            st.genCode();
+            st.setTaxName(tax.getTaxName());
+            st.setTaxRate(tax.getTaxRate());
+            st.setTaxAmount(calc);
+            st.setReOrder(tax.getReOrder());
+            st.setUserAccount(appSession.getCurrentUser());
+            st.setCompanyBranch(appSession.getCompanyBranch());
+            st.setProformaInvoice(proformaInvoice);
+            st.setSaleLead(salesTax.getSaleLead());
 
-            crudApi.save(salesTax);
+            crudApi.save(st);
             
 //                else
 //                {
@@ -521,6 +530,11 @@ public class ProformaInvoiceController implements Serializable
                 return;
             }
         }
+        ProformaInvoiceItem pii = proformaInvoiceService.getInvoiceExist(proformaInvoice);
+        if(pii != null){
+            Msg.error("Cannot save transaction twice!");
+            return;
+        }
         totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         try 
@@ -535,16 +549,22 @@ public class ProformaInvoiceController implements Serializable
                     crudApi.delete(invoiceItem);
                     removedProformaInvoiceItemList.remove(invoiceItem);
                 }
+                double totalDiscountRate;
                 
+                if(salesTax.getSaleLead() != null)
+                    totalDiscountRate = productDiscountRate + salesTax.getSaleLead().getRate();
+                else
+                    totalDiscountRate = productDiscountRate;
                 
-                if (productDiscountRate > 0.0)
+                System.out.println("totalDiscountRate: "+totalDiscountRate);
+                if (totalDiscountRate > 0.0)
                 {
 //                    if(productDiscountRate > 5.0)
 //                    {
 //                        Msg.error("Please dicount above 5% is not allowed!");
 //                        return;
 //                    }
-                    calculatedDiscount = totalSaleAmount * (productDiscountRate/100); // Calculating Discount on total Amount
+                    calculatedDiscount = totalSaleAmount * (totalDiscountRate/100); // Calculating Discount on total Amount
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     
                     proformaInvoice.setTotalAmount(newTotalAmount);
@@ -571,8 +591,7 @@ public class ProformaInvoiceController implements Serializable
                 }
                 else
                 {
-                   FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("The invoice processing wasn't successful!"), null)); 
+                   Msg.error("The invoice processing wasn't successful!");
                 }
         } catch (Exception e) 
         {
@@ -852,6 +871,14 @@ public class ProformaInvoiceController implements Serializable
 
     public ActionType getActionType() {
         return actionType;
+    }
+
+    public SalesTax getSalesTax() {
+        return salesTax;
+    }
+
+    public void setSalesTax(SalesTax salesTax) {
+        this.salesTax = salesTax;
     }
     
 }

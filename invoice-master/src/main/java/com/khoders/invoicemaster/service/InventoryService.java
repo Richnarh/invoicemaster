@@ -13,6 +13,7 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.PurchaseOrder;
 import com.khoders.invoicemaster.entities.PurchaseOrderItem;
 import com.khoders.invoicemaster.entities.ReturnGood;
+import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;
@@ -203,6 +204,15 @@ public class InventoryService
         }
 
         return null;
+    }
+
+    public List<SaleLead> getsalesLeadList() {
+        try {
+            return crudApi.getEm().createQuery("SELECT e FROM SaleLead e", SaleLead.class).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
 }
