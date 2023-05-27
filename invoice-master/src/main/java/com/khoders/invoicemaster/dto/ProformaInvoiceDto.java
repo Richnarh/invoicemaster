@@ -35,6 +35,7 @@ public class ProformaInvoiceDto
     private double subTotalAmount;
     private double totalAmount;
     private double installationFee;
+    private double extraDiscount;
     private double totalDiscount;
     private double totalPayable;
 
@@ -256,4 +257,13 @@ public class ProformaInvoiceDto
     {
         this.subTotalAmount = subTotalAmount;
     }
+
+    public double getExtraDiscount() {
+        return extraDiscount;
+    }
+
+    public void setExtraDiscount(double extraDiscount) {
+        this.extraDiscount = extraDiscount;
+    }
+    
 }

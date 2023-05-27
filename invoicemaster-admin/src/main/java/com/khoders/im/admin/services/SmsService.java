@@ -193,7 +193,7 @@ public class SmsService
         ZenophSMS zsms = new ZenophSMS();
         try
         {
-           SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e WHERE e.userAccount=:userAccount", SmsAccess.class)
+           SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e", SmsAccess.class)
                     .getSingleResult();
             if(smsAccess != null){
                 

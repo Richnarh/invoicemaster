@@ -182,96 +182,86 @@ public class SmsController implements Serializable
             e.printStackTrace();
         }
     }
-    
+
     public void processBulkMessage()
     {
         if (groupContactList.isEmpty())
         {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please load contacts"), null));
+           Msg.error("Please load contacts");
             return;
         }
         
         if (sms.getSenderId() == null)
         {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please set sender ID"), null));
-            return;
+          Msg.error("Please set sender ID");
+          return;
         }
 
         try
         {
-            if (smsService.isInternetAccessVailable() == true)
-            {
-                clearSMS();
-                
-//                ZenophSMS zsms = SmsService.extractParams();
-//                zsms.authenticate();
-//
-//               // set message parameters.
-//                if (selectedMessagingType == MessagingType.TEMPLATE_MESSAGING)
-//                {
-//                    zsms.setMessage(selectedMessageTemplate.getTemplateText());
-//                    
-//                    System.out.println("TEMPLATE_MESSAGING -- " + selectedMessageTemplate.getTemplateText());
-//                } else
-//                {
-//                    if(textMessage.isEmpty())
-//                    {
-//                      Msg.error("Please type a message");
-//                      return;
-//                    }
-//                    zsms.setMessage(textMessage);
-//                }
-//                
-//                String phoneNumber = null;
-//                GroupContact gc=null;
-//                
-//                for (GroupContact groupContact : groupContactList)
-//                {
-//                    gc = groupContact;
-//                    phoneNumber = groupContact.getClient().getPhone();
-//                    
-//                    List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
-//
-//                    for (String number : numbers)
-//                    {
-//                        zsms.addRecipient(number);
-//                    }
-//                }
-//                
-//                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
-//
-//                List<String[]> response = zsms.submit();
-//                for (String[] destination : response)
-//                {
-//                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-//                    if (reqstatus == null)
-//                    {
-//                        Msg.error("failed to send message");
-//                        break;
-//                    }
-//                    else
-//                    {
-//                        switch (reqstatus)
-//                        {
-//                            case SUCCESS:
-//                                saveBulkMessage(zsms.getMessage(), gc);
-//                                System.out.println(" <<--- Bulk SMS delivered -->>>");
-//                                Msg.info("Sending Bulk Message successful!");
-//                                break;
-//                            case ERR_INSUFF_CREDIT:
-//                                Msg.error("Insufficeint Credit");
-//                            default:
-//                                Msg.error("Failed to send message");
-//                                return;
-//                        }
-//                    }
-//                }
+            clearSMS();
 
-            } else
-            {
-                System.out.println("---------Connection not Available ----");
+            ZenophSMS zsms = smsService.extractParams();
+            zsms.authenticate();
+
+            // set message parameters.
+            if (selectedMessagingType == MessagingType.TEMPLATE_MESSAGING) {
+                zsms.setMessage(selectedMessageTemplate.getTemplateText());
+
+                System.out.println("TEMPLATE_MESSAGING -- " + selectedMessageTemplate.getTemplateText());
+            } else {
+                if (textMessage.isEmpty()) {
+                    Msg.error("Please type a message");
+                    return;
+                }
+                zsms.setMessage(textMessage);
+            }
+
+            String phoneNumber = null;
+            GroupContact gc = null;
+
+            int chunkSize = 10;
+            int totalChunks = (int) Math.ceil((double) groupContactList.size() / chunkSize);
+            System.out.println("Total Chunk: "+totalChunks);
+            for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+                int startIndex = chunkIndex * chunkSize;
+                int endIndex = Math.min(startIndex + chunkSize, groupContactList.size());
+                List<GroupContact> chunks = groupContactList.subList(startIndex, endIndex);
+                
+                System.out.println("Processing chunk: "+chunkIndex);
+                
+                for (GroupContact groupContact : chunks) {
+                    gc = groupContact;
+                    phoneNumber = groupContact.getClient().getPhone();
+                    List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+                    for (String number : numbers) {
+                        zsms.addRecipient(number);
+                    }
+                }
+
+                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
+
+                List<String[]> response = zsms.submit();
+                for (String[] destination : response) {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null) {
+                        Msg.error("failed to send message");
+                        break;
+                    } else {
+                        switch (reqstatus) {
+                            case SUCCESS:
+                                saveBulkMessage(zsms.getMessage(), gc);
+                                System.out.println(" <<--- Bulk SMS delivered -->>>");
+                                Msg.info("Sending first Batched Message successful!");
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                                Msg.error("Insufficeint Credit");
+                            default:
+                                Msg.error("Failed to send message");
+                                return;
+                        }
+                    }
+                }
             }
         } catch (Exception e)
         {
@@ -291,7 +281,7 @@ public class SmsController implements Serializable
             sms.setUserAccount(appSession.getCurrentUser());
            if(crudApi.save(sms) != null)
            {
-             Msg.info("SMS sent to "+selectedClient.getClientName());
+//             Msg.info("SMS sent to "+selectedClient.getClientName());
                
                System.out.println("SMS sent and saved -- ");
            }

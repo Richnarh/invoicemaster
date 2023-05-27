@@ -21,7 +21,7 @@
                                         
                                     <div class="form-group">
                                         <p class="text-muted">#{msg.group} Name <span class="text-danger">*</span></p>
-                                        <p:selectOneMenu value="#{contactGroupController.contactGroup.smsGrup}" required="true" filter="true" filterMatchMode="contains">
+                                        <p:selectOneMenu value="#{contactGroupController.contactGroup.smsGrup}" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{userCommonClazz.smsGroupList}"/>
                                         </p:selectOneMenu>
@@ -31,14 +31,15 @@
                                         </span>
                                     </div>
                                     <div class="form-group">
-                                        <p class="col-form-label text-muted">#{msg.contact} </p>
+                                        <p class="col-form-label text-muted">#{msg.contact} (<small class="text-muted">#{contactGroupController.clientList.size()}</small>)</p>
                                         <p:selectOneMenu value="#{contactGroupController.contactGroup.client}" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{userCommonClazz.clientList}"/>
                                         </p:selectOneMenu>
                                     </div>
+                                        
                                     <div class="pt-3">
-                                        <p:commandButton rendered="#{appSession.currentUser.permSave == true}" class="kbtn-success mr-3" value="#{contactGroupController.optionText}" update="@form, :contactGroupTable"
+                                        <p:commandButton class="kbtn-success mr-3" value="#{contactGroupController.optionText}" ajax="false"
                                                          action="#{contactGroupController.saveContactGroup()}"/>
 
                                         <p:commandButton icon="#{msg.clear_icon}" class="kbtn-default" value="#{msg.clear}" immediate="true"

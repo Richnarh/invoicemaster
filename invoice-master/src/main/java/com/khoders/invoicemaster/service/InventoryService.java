@@ -158,9 +158,9 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM Client e WHERE e.companyBranch=?1";
+            String qryString = "SELECT e FROM Client e";
             TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
-                                typedQuery.setParameter(1, appSession.getCompanyBranch());
+//                                typedQuery.setParameter(1, appSession.getCompanyBranch());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
