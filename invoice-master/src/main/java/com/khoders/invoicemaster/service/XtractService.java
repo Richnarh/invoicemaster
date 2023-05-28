@@ -106,7 +106,7 @@ public class XtractService
         proformaInvoiceDto.setInstallationFee(proformaInvoice.getInstallationFee());
         proformaInvoiceDto.setTotalDiscount(proformaInvoice.getDiscountRate());
         proformaInvoiceDto.setTotalPayable(invoiceValue);
-        proformaInvoiceDto.setExtraDiscount(salesTaxesList.get(0) != null && salesTaxesList.get(0).getSaleLead() != null ? salesTaxesList.get(0).getSaleLead().getRate() : 0);
+        proformaInvoiceDto.setExtraDiscount(!salesTaxesList.isEmpty() && salesTaxesList.get(0) != null && salesTaxesList.get(0).getSaleLead() != null ? salesTaxesList.get(0).getSaleLead().getRate() : 0);
 
             
         if (appSession.getCurrentUser().getCompanyBranch() != null)

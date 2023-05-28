@@ -80,7 +80,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <!--<i class="fa fa-user"></i>-->
-                            <span>#{appSession.currentUser.accessLevel} - #{appSession.currentUser.fullname} &nbsp;<i class="fa fa-angle-down"></i></span>
+                            <span>#{appSession.currentUser.accessLevel.label} - #{appSession.currentUser.fullname} &nbsp;<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Activity</span>
@@ -166,7 +166,7 @@
                             </h:form>
                         </div>
                         <small class="col-md-5 pt-3">
-                            <b>Version: v1.0</b>
+                            <b>Version: #{appSession.currentUser.appVersion}</b>
                         </small>
                     </div>
 

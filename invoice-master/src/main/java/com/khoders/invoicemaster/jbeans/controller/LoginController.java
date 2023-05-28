@@ -50,7 +50,7 @@ public class LoginController implements Serializable
             
             if (account == null)
             {
-               Msg.info("Wrong username or Password");
+               Msg.error("Wrong username or Password");
                return null;
             }
 

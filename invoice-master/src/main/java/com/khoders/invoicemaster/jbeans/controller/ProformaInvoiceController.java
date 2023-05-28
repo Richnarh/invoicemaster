@@ -530,11 +530,11 @@ public class ProformaInvoiceController implements Serializable
                 return;
             }
         }
-        ProformaInvoiceItem pii = proformaInvoiceService.getInvoiceExist(proformaInvoice);
-        if(pii != null){
-            Msg.error("Cannot save transaction twice!");
-            return;
-        }
+//        ProformaInvoiceItem pii = proformaInvoiceService.getInvoiceExist(proformaInvoice);
+//        if(pii != null){
+//            Msg.error("Cannot save transaction twice!");
+//            return;
+//        }
         totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         try 
