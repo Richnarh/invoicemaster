@@ -5,7 +5,7 @@
  */
 package com.khoders.im.admin.services;
 
-import com.khoders.invoicemaster.entities.OnlineClient;
+import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.entities.system.CompanyProfile;
@@ -54,6 +54,18 @@ public class CompanyService
         try
         {
             return crudApi.getEm().createQuery("SELECT e FROM UserAccount e", UserAccount.class).getResultList();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<SaleLead> getSaleLeadList() {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM SaleLead e", SaleLead.class).getResultList();
         } catch (Exception e)
         {
             e.printStackTrace();

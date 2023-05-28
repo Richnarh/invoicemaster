@@ -16,7 +16,7 @@ public enum DeliveryStatus implements MsgResolver
     DELIVERED("FULLY_DELIVERED", "Fully delivered"),
     PENDING_DELIVERY("PENDING_DELIVERY", "Pending delivery");
     
-     private final String code;
+    private final String code;
     private final String label;
     
     private DeliveryStatus(String code, String label)

@@ -111,7 +111,6 @@
                                             <p:menuitem icon="fa fa-times" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" action="#{paymentDataController.deletePaymentData(paymentData)}" update="@form"/>
                                         </p:menuButton>
                                     </p:column>
-
                                     </p:dataTable>
                                 </h:form>
                             </div>
@@ -124,7 +123,7 @@
                                             <f:selectItems value="#{adminCommons.deliveryStatusList}"/>
                                         </h:selectOneMenu>
 
-                                        <p:commandButton value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
+                                        <p:commandButton id="deliveryData" value="Filter" icon="#{msg.check_icon}" action="#{paymentDataController.fetchByDeliveryStatus()}" update="@form"/>
 
                                         <span class="shadow-sm faded-shade p-1">Count: #{paymentDataController.paymentDataDeliveryList.size()}</span>
                                     </h:panelGrid>
@@ -150,6 +149,10 @@
                                             <!--<p:commandButton class="kbtn-danger" value="{msg.delete}" action="{paymentDataController.deleteDeliveryData(paymentData)}" onclick="return confirm('{msg.delete_message}')" update="@form"/>-->
                                         </p:column>
                                     </p:dataTable>
+                                    <p:blockUI block="@form" trigger="deliveryData">
+                                        <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
+                                        <p><small>Please wait...</small></p>
+                                    </p:blockUI>
                                 </h:form>
                             </div>
                         </div>

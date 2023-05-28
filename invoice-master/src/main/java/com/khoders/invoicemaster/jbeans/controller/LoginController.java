@@ -42,12 +42,15 @@ public class LoginController implements Serializable
         {
             userModel.setUserEmail(userEmail);
             userModel.setPassword(password);
+            
+            System.out.println("Email Address: "+userEmail);
+            System.out.println("Password: "+password);
 
             UserAccount account = userAccountService.login(userModel);
             
             if (account == null)
             {
-               Msg.info("Wrong username or Password");
+               Msg.error("Wrong username or Password");
                return null;
             }
 
@@ -67,17 +70,12 @@ public class LoginController implements Serializable
         {
             if (userAccount == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
-                return;
+              Msg.error("Wrong username or Password");
+              return;
             }
             appSession.login(userAccount);
             appSession.initBranch(userAccount.getCompanyBranch());
             
-//            if(userAccount.isQuickInvoice() == true && userAccount.isPermPrint() == true && userAccount.isWarehouse() == true)
-//            {
-//                Faces.redirect(Pages.index);
-//            }
             if(userAccount.isQuickInvoice() == true)
             {
                 Faces.redirect(Pages.quickInvoice);

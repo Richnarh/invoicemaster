@@ -5,15 +5,14 @@
  */
 package com.khoders.invoicemaster.service;
 
+import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entities.UserTransaction;
-import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
@@ -31,12 +30,24 @@ import javax.persistence.TypedQuery;
  * @author pascal
  */
 @Stateless
-public class ProformaInvoiceService
-{
+public class ProformaInvoiceService{
+    @Inject private AppSession appSession;
+    @Inject private CrudApi crudApi;
 
-    private @Inject AppSession appSession;
-    private @Inject CrudApi crudApi;
+    public DiscountAction getDiscountAction() {
+        try
+        {
+            String qryString = "SELECT e FROM DiscountAction e ";
+            return crudApi.getEm().createQuery(qryString, DiscountAction.class).getResultStream().findFirst().orElse(null);
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
+        return null;
+    }
+        
     public List<ProformaInvoiceItem> getProformaInvoiceItemList(ProformaInvoice proformaInvoice)
     {
         try
@@ -247,5 +258,12 @@ public class ProformaInvoiceService
         }
         
         return Collections.emptyList();
+    }
+
+    public ProformaInvoiceItem getInvoiceExist(ProformaInvoice proformaInvoice) {
+        return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice = :proformaInvoice", ProformaInvoiceItem.class)
+                .setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice)
+                .setMaxResults(1)
+                .getResultStream().findFirst().orElse(null);
     }
 }

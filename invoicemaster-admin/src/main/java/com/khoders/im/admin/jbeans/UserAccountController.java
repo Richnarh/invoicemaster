@@ -110,6 +110,7 @@ public class UserAccountController implements Serializable{
     {
         try
         {
+            userAccount.setPassword(userAccount.getPassword());
             if (crudApi.save(userAccount) != null)
             {
                 userAccountList = CollectionList.washList(userAccountList, userAccount);

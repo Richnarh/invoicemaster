@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>#{msg.title}</title>
 
@@ -69,22 +70,7 @@
                     </form>
                 </ui:remove>      
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                            <i class="fa fa-bell"></i>
-                            <span class="badge badge-warning navbar-badge">#{dashboardController.inventoryList.size()}</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-                            <span class="dropdown-item dropdown-header">Notifications</span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#{application.contextPath}/secured/index.xhtml" class="dropdown-item">
-                                <i class="fa fa-envelope mr-2"></i> #{dashboardController.inventoryList.size()} Inventory Shortage
-                                <span class="float-right text-muted text-sm">#{dashboardController.inventoryList.size()} Rem</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                        </div>
-                    </li>
+
                     <li class="nav-item ml-3">
                         <h:form>
                             <h:commandLink class="btn btn-default shadow-sm btn-sm" action="#{userCommonClass.init()}" value="Refresh"/>
@@ -94,7 +80,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <!--<i class="fa fa-user"></i>-->
-                            <span>#{appSession.currentUser.accessLevel} - #{appSession.currentUser.fullname} &nbsp;<i class="fa fa-angle-down"></i></span>
+                            <span>#{appSession.currentUser.accessLevel.label} - #{appSession.currentUser.fullname} &nbsp;<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <span class="dropdown-item dropdown-header">Activity</span>
@@ -168,9 +154,22 @@
                     All rights reserved. - <b>#{appSession.currentUser.companyBranch.branchName} - #{appSession.currentUser.fullname}</b>
                 </small>
                 <div class="float-right d-none d-sm-inline-block">
-                    <small>
-                        <b>Version</b> 1.1
-                    </small>
+                    <div class="row">
+                        <div class="col-md-6 m-2">
+                            <h:form>
+                                <h:panelGrid columns="6" styleClass="spaced-table">
+                                    <p:selectOneMenu value="#{appSession.currentUser.appVersion}">
+                                        <f:selectItems  value="#{commonClass.appVersionList}" />
+                                    </p:selectOneMenu>
+                                    <p:commandButton class="mx-2 kbtn-default" ajax="false" value="Switch" action="#{profileUpdateController.activateVersion()}"/>
+                                </h:panelGrid>
+                            </h:form>
+                        </div>
+                        <small class="col-md-5 pt-3">
+                            <b>Version: #{appSession.currentUser.appVersion}</b>
+                        </small>
+                    </div>
+
                 </div>
             </footer>
         </div>

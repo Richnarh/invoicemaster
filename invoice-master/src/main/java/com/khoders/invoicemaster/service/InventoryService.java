@@ -13,6 +13,7 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.PurchaseOrder;
 import com.khoders.invoicemaster.entities.PurchaseOrderItem;
 import com.khoders.invoicemaster.entities.ReturnGood;
+import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;
@@ -157,9 +158,9 @@ public class InventoryService
     {
         try
         {
-            String qryString = "SELECT e FROM Client e WHERE e.companyBranch=?1";
+            String qryString = "SELECT e FROM Client e";
             TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
-                                typedQuery.setParameter(1, appSession.getCompanyBranch());
+//                                typedQuery.setParameter(1, appSession.getCompanyBranch());
                             return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -203,6 +204,15 @@ public class InventoryService
         }
 
         return null;
+    }
+
+    public List<SaleLead> getsalesLeadList() {
+        try {
+            return crudApi.getEm().createQuery("SELECT e FROM SaleLead e", SaleLead.class).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
 }

@@ -8,6 +8,7 @@ com\khoders\invoicemaster\service\XtractService.class
 com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
 com\khoders\invoicemaster\service\TaxService.class
 com\khoders\restapi\payload\TransactionDto.class
+com\khoders\invoicemaster\jbeans\converter\SaleLeadConverter.class
 com\khoders\invoicemaster\jbeans\controller\QuickInvoiceController.class
 com\khoders\restapi\config\OpenApiConfig.class
 com\khoders\invoicemaster\jbeans\controller\backdoorController.class

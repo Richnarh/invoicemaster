@@ -45,6 +45,7 @@ public class ProformaInvoiceItem extends UserAccountRecord implements Serializab
     @Lob
     private String description;
 
+    public static final String _proformaInvoice = "proformaInvoice";
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne
     private ProformaInvoice proformaInvoice;

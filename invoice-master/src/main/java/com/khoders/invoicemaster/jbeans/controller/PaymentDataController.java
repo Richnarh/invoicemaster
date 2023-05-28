@@ -59,10 +59,10 @@ import org.primefaces.event.TabChangeEvent;
 @Named(value = "paymentDataController")
 @SessionScoped
 public class PaymentDataController implements Serializable{
-    @Inject CrudApi crudApi;
-    @Inject AppSession appSession;
-    @Inject PaymentService paymentService;
-    @Inject ProformaInvoiceService proformaInvoiceService;
+    @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private PaymentService paymentService;
+    @Inject private ProformaInvoiceService proformaInvoiceService;
     
     private String optionText;
     
@@ -260,7 +260,7 @@ public class PaymentDataController implements Serializable{
        senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
         try 
         {
-          ZenophSMS zsms = PaymentService.extractParams();
+          ZenophSMS zsms = paymentService.extractParams();
           zsms.setMessage(
                   "Thanks for shopping with Dolphin Doors, we'll be expecting you next time. \n "
                  + "Contact us: \n "

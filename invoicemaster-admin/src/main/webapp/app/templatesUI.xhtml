@@ -47,6 +47,9 @@
                         <a href="#{application.contextPath}/#{msg.app_menu_uri}/employees.xhtml" class="nav-link">Employees</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.app_menu_uri}/sales-lead.xhtml" class="nav-link">Sales Lead</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.app_menu_uri}/sales.xhtml" class="nav-link">Sales Log</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
@@ -54,6 +57,23 @@
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.app_menu_uri}/payment-data.xhtml" class="nav-link">Transactions</a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge">#{dashboardController.inventoryList.size()}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+                            <span class="dropdown-item dropdown-header">Notifications</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="#{application.contextPath}/app/index.xhtml" class="dropdown-item">
+                                <i class="fa fa-envelope mr-2"></i> #{dashboardController.inventoryList.size()} Inventory Shortage
+                                <span class="float-right text-muted text-sm">#{dashboardController.inventoryList.size()} Rem</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        </div>
                     </li>
                 </ul>
                 <ui:remove>

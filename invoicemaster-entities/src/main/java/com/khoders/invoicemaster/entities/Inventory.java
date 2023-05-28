@@ -144,7 +144,7 @@ public class Inventory extends UserAccountRecord implements Serializable
     @Override
     public String toString()
     {
-        return product+"";
+        return product+" ("+quantity+")";
     }
     
     public void genCode()

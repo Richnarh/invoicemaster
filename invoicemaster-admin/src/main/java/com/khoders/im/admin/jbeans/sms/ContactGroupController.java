@@ -6,6 +6,7 @@
 package com.khoders.im.admin.jbeans.sms;
 
 import com.khoders.im.admin.listener.AppSession;
+import com.khoders.im.admin.services.InventoryService;
 import com.khoders.im.admin.services.SmsService;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.sms.GroupContact;
@@ -33,17 +34,20 @@ public class ContactGroupController implements Serializable{
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private SmsService smsService;
+    @Inject private InventoryService inventoryService;
     
     private String optionText;
     
     private GroupContact contactGroup = new GroupContact();
     private List<GroupContact> contactGroupList = new LinkedList<>();
+    private List<Client> clientList = new LinkedList<>();
     
     @PostConstruct
     private void init()
     {
         clearContactGroup();
         contactGroupList = smsService.getGroupContactList();
+        clientList = inventoryService.getClientList();
     }
     
    public void saveContactGroup()
@@ -52,9 +56,6 @@ public class ContactGroupController implements Serializable{
         {
            if(contactGroup.getSmsGrup().getGroupName().equals("All"))
            {
-              List<Client> clientList = smsService.getContactList();
-               System.out.println("customerList => "+clientList.size());
-            
                clientList.forEach(client -> {
                    GroupContact contact = new GroupContact();
                     
@@ -142,6 +143,10 @@ public class ContactGroupController implements Serializable{
 
     public void setOptionText(String optionText) {
         this.optionText = optionText;
+    }
+
+    public List<Client> getClientList() {
+        return clientList;
     }
     
 }

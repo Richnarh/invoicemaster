@@ -10,6 +10,7 @@ import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.service.ClientService;
 import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
@@ -35,8 +36,8 @@ import javax.inject.Named;
 @SessionScoped
 public class UserCommonClass implements Serializable{
     @Inject private SmsService smsService;
-    @Inject InventoryService inventoryService;
-    @Inject ClientService clientService;
+    @Inject private InventoryService inventoryService;
+    @Inject private ClientService clientService;
     
     private List<Client> clientList = new LinkedList<>();
     private List<Inventory> inventoryList = new LinkedList<>();
@@ -46,12 +47,14 @@ public class UserCommonClass implements Serializable{
     private List<SMSGrup> smsGroupList = new LinkedList<>();
     private List<ProductType> productTypeList = new LinkedList<>();
     private List<OnlineClient> onlineClientList = new LinkedList<>();
+    private List<SaleLead> salesLeadList = new LinkedList<>();
     
     @PostConstruct
     public void init()
     {
         clientList = inventoryService.getClientList();
         inventoryList = inventoryService.getInventoryList();
+        salesLeadList = inventoryService.getsalesLeadList();
         productList = inventoryService.getProductList();
         productTypeList = inventoryService.getProductTypeList();
         messageTemplateList = smsService.getMessageTemplateList();
@@ -108,6 +111,10 @@ public class UserCommonClass implements Serializable{
     public List<OnlineClient> getOnlineClientList()
     {
         return onlineClientList;
+    }
+
+    public List<SaleLead> getSalesLeadList() {
+        return salesLeadList;
     }
     
 }

@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Sales Lead
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                        <div class="container-fluid">
+                            <div class="card-header">Add #{msg.lead}</div>
+                            <h:panelGroup rendered="#{saleLeadController.pageView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+                                            <div class="float-right">
+                                                <h:commandButton value="#{msg.new} #{msg.lead}" class="btn btn-outline-primary btn-sm"
+                                                                 action="#{saleLeadController.initSaleLead()}">
+                                                    <p:ajax update=":mainPanel"/>
+                                                </h:commandButton>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                                <h:form id="saleLeadTable" class="mb-3 wow fadeInUp">
+                                    <p:dataTable value="#{saleLeadController.saleLeadList}" reflow="true" var="saleLead"
+                                                  scrollable="true" scrollHeight="500">
+                                        <p:column style="width: 37px;" exportable="false">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <h:panelGrid columns="2">
+                                                
+                                                <span>#{msg.house_address}</span>
+                                                <h:outputText value="#{saleLead.houseAddress}"/>
+                                                
+                                                <span>#{msg.emergency} Contact</span>
+                                                <h:outputText value="#{saleLead.emergencyContact}"/>
+                                                
+                                                <span>#{msg.created_date}</span>
+                                                <h:outputText value="#{saleLead.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </h:panelGrid>
+                                        </p:rowExpansion>                                                
+                                        <p:column headerText="#{msg.lead} Code" style="width: 130px;">
+                                            <h:outputText value="#{saleLead.leadCode}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.first_name}">
+                                            <h:outputText value="#{saleLead.firstname}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.surname}">
+                                            <h:outputText value="#{saleLead.surname}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.phone}">
+                                            <h:outputText value="#{saleLead.phoneNumber}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.rate}(%)" class="text-right">
+                                            <h:outputText value="#{saleLead.rate}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msg.action}" style="width: 130px;">
+                                            <p:menuButton value="#{msg.choose}">
+                                                <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{saleLeadController.editSaleLead(saleLead)}" immediate="true" ajax="false"/>
+                                                <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}" action="#{saleLeadController.deleteSaleLead(saleLead)}" immediate="true"  update=":mainPanel"/>
+                                            </p:menuButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup  rendered="#{saleLeadController.pageView.createView}">
+                                <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                    <h:form>
+                                        <div class="card-block spaced-form">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.lead} Code<span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.leadCode}" required="true" class="col" placeholder="Enter lead code"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.first_name}<span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.firstname}" required="true" class="col" placeholder="Enter firstname"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.surname}<span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.surname}" required="true" class="col" placeholder="Enter surname"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.phone}<span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.phoneNumber}" required="true" class="col" placeholder="Enter Phone Number"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.rate}(%)<span class="text-danger">*</span></label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.rate}" required="true" class="col" placeholder="Enter Phone Number"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.email_ddress}</label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.emailAddress}" class="col" placeholder="Enter Email Address"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.house_address}</label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.houseAddress}" class="col" placeholder="Enter House Address"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">#{msg.emergency} Contact</label>
+                                                <div class="col-md-8">
+                                                    <p:inputText value="#{saleLeadController.saleLead.emergencyContact}" class="col" placeholder="Enter contact number"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="text-center pt-3">
+                                            <p:commandButton class="kbtn-success" value="#{saleLeadController.optionText}" icon="#{msg.check_icon}" action="#{saleLeadController.saveSaleLead()}" ajax="false"/>
+                                            <p:commandButton class="kbtn-default ml-2" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{saleLeadController.clearSaleLead()}" immediate="true" update=":mainPanel"/>
+
+                                            <div class="float-right">
+                                                <h:commandButton value="#{msg.close}" class="btn btn-danger btn-sm" immediate="true" action="#{saleLeadController.closePage()}">
+                                                    <p:ajax update="@form,:mainPanel"/>
+                                                </h:commandButton>
+                                            </div>                 
+                                        </div>
+
+                                    </h:form>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

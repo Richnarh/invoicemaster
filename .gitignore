@@ -1,0 +1,12 @@
+/invoice-master/target/
+/invoicemaster-admin-entities/target/
+/invoicemaster-entities/target/
+/invoicemaster-admin/target/
+
+invoice-master/nb-configuration.xml
+invoicemaster-admin/nb-configuration.xml
+
+*/invoice-master/target/*
+*/invoicemaster-admin-entities/target/*
+*/invoicemaster-entities/target/*
+*/invoicemaster-admin/target/*

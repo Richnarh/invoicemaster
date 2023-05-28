@@ -103,8 +103,8 @@
             <artifactId>Zenoph.SMSLib</artifactId>
             <version>1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/Zenoph.SMSLib.jar</systemPath>
             <type>jar</type>
+            <systemPath>${basedir}/lib/Zenoph.SMSLib.jar</systemPath>
         </dependency>
     </dependencies>
     
