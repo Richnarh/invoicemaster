@@ -10,6 +10,7 @@ import Zenoph.SMSLib.Enums.REQSTATUS;
 import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import static Zenoph.SMSLib.Enums.REQSTATUS.SUCCESS;
 import Zenoph.SMSLib.ZenophSMS;
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
@@ -39,15 +40,23 @@ import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  *
@@ -65,6 +74,8 @@ public class ProformaInvoiceController implements Serializable
     @Inject private XtractService xtractService;
     @Inject private SmsService smsService;
     @Inject private ReportManager reportManager;
+    @Inject private DefaultService ds;
+    private static OkHttpClient http;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -471,19 +482,7 @@ public class ProformaInvoiceController implements Serializable
             st.setCompanyBranch(appSession.getCompanyBranch());
             st.setProformaInvoice(proformaInvoice);
             st.setSaleLead(salesTax.getSaleLead());
-
             crudApi.save(st);
-            
-//                else
-//                {
-//                    for (SalesTax tx : salesTaxList)
-//                    {
-//                        if (tx.getProformaInvoice().equals(proformaInvoice))
-//                        {
-//                            crudApi.save(tx);
-//                        }
-//                    }
-//                }
         }
             
         salesTaxList = proformaInvoiceService.getSalesTaxList(proformaInvoice);
@@ -633,6 +632,109 @@ public class ProformaInvoiceController implements Serializable
         reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, coverHandler.reportParams);
     }
     
+    public void reverseApproval(ProformaInvoice proformaInvoice){
+        String adminNumber = ds.getConfigValue("admin.number");
+        String smsBaseUrl = ds.getConfigValue("sms.api.base.url");
+        String apiKey = ds.getConfigValue("sms.api.key");
+        String apiUsername = ds.getConfigValue("sms.api.username");
+        String apiPassword = ds.getConfigValue("sms.api.password");
+        String sendId = ds.getSenderId();
+        
+        System.out.println("apiKey: "+apiKey);
+        System.out.println("adminNumber: "+adminNumber);
+        System.out.println("smsBaseUrl: "+smsBaseUrl);
+        System.out.println("sendId: "+sendId);
+        System.out.println("apiUsername: "+apiUsername);
+        System.out.println("apiPassword: "+apiPassword);
+        
+//        String url = "http://192.168.37.22:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
+        String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Request from ");
+        sb.append(appSession.getCurrentUser().getFullname()).append(" - ");
+        sb.append(appSession.getCompanyBranch().getBranchName());
+        sb.append(" to reverse Invoice No.: ");
+        sb.append(proformaInvoice.getQuotationNumber());
+        sb.append("\n").append("Click the link below to complete the reversal.").append("\n");
+        sb.append(url);
+        System.out.println("Msg: "+sb.toString());
+//        sendMsg(sb.toString());
+         
+        boolean sentMail = proformaInvoiceService.processMail(sb.toString(), appSession.getCurrentUser().getEmail());
+        if(sentMail){
+            Msg.info("Reversal request sent, admin will notify you shortly!");
+        }
+//        try {
+//            String urlStr = smsBaseUrl+"?username="+apiUsername+"&password="+apiPassword+"&from="+sendId+"&to="+adminNumber+"&msg="+sb.toString();
+//            System.out.println("urlStr: "+urlStr);
+//            URL urlVal = new URL(urlStr);
+//            MediaType mediaType = MediaType.parse("text/plain");
+//            Request request = new Request.Builder()
+//                    .url(urlVal)
+//                    .build();
+//            Response response = http().newCall(request).execute();
+//            System.out.println("Response: "+SystemUtils.KJson().toJson(response.body()));
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+        
+    public void sendMsg(String msg){
+        senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+        String adminNumber = ds.getConfigValue("admin.number");
+        System.out.println("adminNumber: "+adminNumber);
+        System.out.println("senderId: "+senderId.getSenderIdentity());
+        try 
+        {
+            ZenophSMS zsms = smsService.extractParams();
+            zsms.setMessage(msg);
+            List<String> numbers = zsms.extractPhoneNumbers(adminNumber);
+
+            for (String number : numbers)
+            {
+                zsms.addRecipient(number);
+            }
+            
+            zsms.setSenderId(senderId.getSenderIdentity());
+            zsms.setMessageType(MSGTYPE.TEXT);
+
+            List<String[]> response = zsms.submit();
+            for (String[] destination : response)
+            {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null)
+                    {
+                      Msg.error("failed to send message");
+                        break;
+                    } else
+                    {
+                        switch (reqstatus)
+                        {
+                            case SUCCESS:
+                                Msg.info("Request sent, you'd be notified shortly!");
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                               Msg.error("Insufficeint Credit");
+                            default:
+                                Msg.error("Failed to send message");
+                                return;
+                        }
+                    }
+                }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static OkHttpClient http() {
+            if (http == null) {
+                    http = new OkHttpClient.Builder().callTimeout(5, TimeUnit.MINUTES).readTimeout(5, TimeUnit.MINUTES).build();
+            }
+            return http;
+    }
+        
     public void closePage()
     {
         init();

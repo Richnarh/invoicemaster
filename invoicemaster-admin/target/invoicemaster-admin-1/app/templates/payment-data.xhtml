@@ -143,10 +143,15 @@
                                         <p:column headerText="Delivery Address">
                                             <h:outputText value="#{paymentData.proformaInvoice.client.address}"/>
                                         </p:column>
+                                        
+                                        <p:column headerText="#{msg.action}" style="width: 200px">
+                                            <h:panelGroup rendered="#{paymentDataController.deliveryStatus != 'FULLY_DELIVERED'}">
+                                                <p:commandButton icon="#{msg.check_icon}" action="#{paymentDataController.updateDeliveryData(paymentData)}" value="Update to delivered" update="@form"/>
+                                            </h:panelGroup>
 
-                                        <p:column headerText="#{msg.action}">
-                                            <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{paymentDataController.updateDeliveryData(paymentData)}"  oncomplete="PF('deliveryForm').show()" resetValues="true" update=":deliveryModal"/>
-                                            <!--<p:commandButton class="kbtn-danger" value="{msg.delete}" action="{paymentDataController.deleteDeliveryData(paymentData)}" onclick="return confirm('{msg.delete_message}')" update="@form"/>-->
+                                            <h:panelGroup rendered="#{paymentDataController.deliveryStatus == 'FULLY_DELIVERED'}">
+                                                <span class="text-success fw-bold">FULLY_DELIVERED</span>
+                                            </h:panelGroup>
                                         </p:column>
                                     </p:dataTable>
                                     <p:blockUI block="@form" trigger="deliveryData">

@@ -19,7 +19,7 @@
                             <h:panelGrid columns="2">
                                 <p:selectOneMenu value="#{smsController.smsType}">
                                     <f:selectItem itemLabel="#{msg.choose}"/>
-                                    <f:selectItems value="#{commonClass.smsTypeList}"/>
+                                    <f:selectItems value="#{adminCommons.smsTypeList}"/>
                                 </p:selectOneMenu>
 
                                 <p:commandButton class="mx-2" value="Load" action="#{smsController.loadSmslog()}" update=":smsLogTable"/> 
@@ -28,7 +28,7 @@
                         <div class="row pt-2">
                             <div class="col-md-12">
                                 <h:form id="smsLogTable">
-                                    <p:dataTable value="#{smsController.smsList}" var="sms" scrollHeight="400" scrollable="true">
+                                    <p:dataTable value="#{smsController.smsList}" var="sms" rows="15" paginator="true" paginatorPosition="bottom">
                                         <p:column style="width: 37px">
                                             <p:rowToggler/>
                                         </p:column>

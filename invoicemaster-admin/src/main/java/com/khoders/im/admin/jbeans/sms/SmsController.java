@@ -202,6 +202,7 @@ public class SmsController implements Serializable
             clearSMS();
 
             ZenophSMS zsms = smsService.extractParams();
+            zsms.setSenderId(sms.getSenderId().getSenderIdentity());
             zsms.authenticate();
 
             // set message parameters.
@@ -220,7 +221,7 @@ public class SmsController implements Serializable
             String phoneNumber = null;
             GroupContact gc = null;
 
-            int chunkSize = 10;
+            int chunkSize = 20;
             int totalChunks = (int) Math.ceil((double) groupContactList.size() / chunkSize);
             System.out.println("Total Chunk: "+totalChunks);
             for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
@@ -231,6 +232,8 @@ public class SmsController implements Serializable
                 System.out.println("Processing chunk: "+chunkIndex);
                 
                 for (GroupContact groupContact : chunks) {
+                    System.out.println("Name: "+groupContact.getClient().getClientName() +", Phone: "+groupContact.getClient().getPhone());
+                    System.out.println("***********************\n");
                     gc = groupContact;
                     phoneNumber = groupContact.getClient().getPhone();
                     List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
@@ -238,8 +241,6 @@ public class SmsController implements Serializable
                         zsms.addRecipient(number);
                     }
                 }
-
-                zsms.setSenderId(sms.getSenderId().getSenderIdentity());
 
                 List<String[]> response = zsms.submit();
                 for (String[] destination : response) {

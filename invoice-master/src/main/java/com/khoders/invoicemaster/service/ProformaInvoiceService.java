@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.service;
 
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
@@ -21,8 +22,15 @@ import com.khoders.resource.utilities.DateUtil;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.TypedQuery;
 
 /**
@@ -33,6 +41,7 @@ import javax.persistence.TypedQuery;
 public class ProformaInvoiceService{
     @Inject private AppSession appSession;
     @Inject private CrudApi crudApi;
+    @Inject private DefaultService ds;
 
     public DiscountAction getDiscountAction() {
         try
@@ -265,5 +274,41 @@ public class ProformaInvoiceService{
                 .setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice)
                 .setMaxResults(1)
                 .getResultStream().findFirst().orElse(null);
+    }
+
+    public boolean processMail(String msg,String fromEmail){
+        Properties prop = new Properties();
+	prop.put("mail.smtp.host", ds.getConfigValue("mail.smtp.host"));
+        prop.put("mail.smtp.port", ds.getConfigValue("mail.smtp.port"));
+        prop.put("mail.smtp.auth", ds.getConfigValue("mail.smtp.auth"));
+        prop.put("mail.smtp.starttls.enable", ds.getConfigValue("mail.smtp.starttls.enable"));
+        
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(ds.getConfigValue("mail.username"), ds.getConfigValue("mail.password"));
+                    }
+                });
+        
+        try {
+            session.setDebug(true);
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(ds.getConfigValue("admin.email"))
+            );
+            message.setSubject("Requesting For Invoice Reversal");
+            message.setText(msg);
+
+            Transport.send(message);
+
+            System.out.println("Email sent");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

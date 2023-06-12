@@ -8,6 +8,7 @@ package com.khoders.im.admin.commons;
 import com.khoders.invoicemaster.enums.ActionType;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.MessagingType;
+import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
@@ -48,6 +49,10 @@ public class adminCommons implements Serializable
     public List<ActionType> getActionTypeList()
     {
         return Arrays.asList(ActionType.values());
+    }
+    public List<SMSType> getSmsTypeList()
+    {
+        return Arrays.asList(SMSType.values());
     }
     
 }

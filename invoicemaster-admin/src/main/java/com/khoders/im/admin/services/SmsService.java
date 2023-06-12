@@ -34,16 +34,14 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class SmsService
 {
-    @Inject private AppSession appSession;
     @Inject private CrudApi crudApi;
     
     public List<Client> getContactList()
     {
         try
         {
-            String qryString = "SELECT e FROM Client e WHERE e.userAccount=?1 ORDER BY e.clientName ASC";
+            String qryString = "SELECT e FROM Client e ORDER BY e.clientName ASC";
             TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
-                               typedQuery.setParameter(1, appSession.getCurrentUser());
                          return typedQuery.getResultList();
         } catch (Exception e)
         {
@@ -56,9 +54,8 @@ public class SmsService
     {
         try
         {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM GroupContact e";
             TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
                              return typedQuery.getResultList();
         } catch (Exception e)
         {
@@ -71,9 +68,8 @@ public class SmsService
     {
         try
         {
-            String qryString = "SELECT e FROM SMSGrup e WHERE e.userAccount=?1 ";
+            String qryString = "SELECT e FROM SMSGrup e ";
             TypedQuery<SMSGrup> typedQuery = crudApi.getEm().createQuery(qryString, SMSGrup.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
                              return typedQuery.getResultList();
         } catch (Exception e)
         {
@@ -86,9 +82,8 @@ public class SmsService
     {
         try
         {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM GroupContact e";
             TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
                              return typedQuery.getResultList();
         } catch (Exception e)
         {
@@ -101,10 +96,9 @@ public class SmsService
     {
         try
         {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1 AND e.smsGrup=?2";
+            String qryString = "SELECT e FROM GroupContact e WHERE e.smsGrup=?1";
             TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
-                                typedQuery.setParameter(2, smsGrup);
+                                typedQuery.setParameter(1, smsGrup);
                              return typedQuery.getResultList();
         } catch (Exception e)
         {
@@ -173,9 +167,8 @@ public class SmsService
     {
         try
         {
-            String qryString = "SELECT e FROM MessageTemplate e WHERE e.userAccount=?1";
+            String qryString = "SELECT e FROM MessageTemplate e ";
             TypedQuery<MessageTemplate> typedQuery = crudApi.getEm().createQuery(qryString, MessageTemplate.class);
-            typedQuery.setParameter(1, appSession.getCurrentUser());
                              return typedQuery.getResultList();
         } catch (Exception e)
         {

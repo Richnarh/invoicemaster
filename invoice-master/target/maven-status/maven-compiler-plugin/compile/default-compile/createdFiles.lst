@@ -8,10 +8,10 @@ com\khoders\invoicemaster\service\XtractService.class
 com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
 com\khoders\invoicemaster\service\TaxService.class
 com\khoders\restapi\payload\TransactionDto.class
+com\khoders\invoicemaster\service\ProformaInvoiceService$1.class
 com\khoders\invoicemaster\jbeans\converter\SaleLeadConverter.class
 com\khoders\invoicemaster\jbeans\controller\QuickInvoiceController.class
 com\khoders\restapi\config\OpenApiConfig.class
-com\khoders\invoicemaster\jbeans\controller\backdoorController.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController.class
 com\khoders\invoicemaster\jbeans\converter\OnlineClientConverter.class
 com\khoders\invoicemaster\dto\ConvertToWords.class
@@ -28,6 +28,7 @@ com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.class
 com\khoders\restapi\services\TransactionService.class
 com\khoders\invoicemaster\jbeans\controller\PaymentDataController.class
+com\khoders\invoicemaster\jbeans\controller\BackdoorController.class
 com\khoders\restapi\mapper\ClientSalesMapper.class
 com\khoders\invoicemaster\jbeans\converter\PurchaseConverter.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class

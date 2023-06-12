@@ -37,6 +37,7 @@ public class ProformaInvoice extends UserAccountRecord implements Serializable
     @ManyToOne
     private Client client;
 
+    public static final String _quotationNumber = "quotationNumber";
     @Column(name = "quotation_number")
     private String quotationNumber = SystemUtils.generateRefNo();
 

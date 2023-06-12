@@ -5,7 +5,9 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.Pages;
+import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
@@ -22,20 +24,34 @@ import org.omnifaces.util.Faces;
  */
 @Named(value="backdoorController")
 @ViewScoped
-public class backdoorController implements Serializable
+public class BackdoorController implements Serializable
 {
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
+    @Inject private DefaultService ds;
     private UserAccount userAccount;
     
     
     private String userId;
+    private String invoiceId;
     
-    public void user(String id)
-    {
+    public void user(String id){
         userId = id;
         System.out.println("UserID => "+userId);
         System.out.println("ID => "+id);
+    }
+    
+    public void reverse(String id){
+        invoiceId = id;
+        System.out.println("invoiceId => "+invoiceId);
+    }
+    
+    public void reverseSale(){
+        System.out.println("Reversing transaction with Id: "+invoiceId);
+        Msg.info("Reversing transaction complete successful.");
+        ProformaInvoice invoice = ds.getInvoice(invoiceId);
+        
+        Faces.redirect(Pages.login);
     }
     
     public String backdoorAccess()
@@ -99,5 +115,11 @@ public class backdoorController implements Serializable
         this.userId = userId;
     }
 
-        
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+    }
 }

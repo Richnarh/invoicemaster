@@ -15,6 +15,7 @@ com\khoders\im\admin\jbeans\sms\SmsController$1.class
 com\khoders\im\admin\dto\ProformaInvoiceDto.class
 com\khoders\im\admin\SmsAccess.class
 com\khoders\im\admin\services\PaymentService.class
+com\khoders\im\admin\jbeans\AppConfigController.class
 com\khoders\im\admin\jbeans\SaleLeadController.class
 com\khoders\im\admin\jbeans\sms\SenderIdController.class
 com\khoders\im\admin\jbeans\sms\SmsController.class
