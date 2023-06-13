@@ -8,6 +8,7 @@ import com.khoders.im.admin.services.InvoiceService;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
+import com.khoders.resource.utilities.Msg;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ManageInvoiceController implements Serializable
     
     private ProformaInvoice proformaInvoice = new ProformaInvoice();
     private DateRangeUtil dateRange = new DateRangeUtil();
+    private String invoiceId;
     
     private List<ProformaInvoice> proformaInvoiceList = new LinkedList<>();
     
@@ -36,14 +38,32 @@ public class ManageInvoiceController implements Serializable
       proformaInvoiceList = invoiceService.getProformaInvoice(dateRange);   
     }
     
-    public void deleteInvoice(ProformaInvoice proformaInvoice){
-        try
-        {
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+    public void reverseInvoice(ProformaInvoice proformaInvoice){
+        boolean paymentData = invoiceService.deletePaymentData(proformaInvoice);
+        boolean taxInfo = invoiceService.deleteSalesTax(proformaInvoice);
+        boolean saleItem = invoiceService.deleteSaleItem(proformaInvoice);
+        
+        if(paymentData){
+            System.out.println("Payment data deleted");
+            Msg.info("Payment data and delivery info cleared!");
         }
+        if(taxInfo){
+            System.out.println("SalesTax data deleted");
+            Msg.info("Tax info cleared");
+        }
+        if(saleItem){
+            System.out.println("Invoice item info cleared and inventory quantity updated!");
+            Msg.info("Invoice item info cleared and inventory quantity updated!");
+        }
+    }
+    
+    public void searchInvoice(){
+        proformaInvoiceList = invoiceService.getInvoice(invoiceId); 
+    }
+    
+    public void clearSearch(){
+        proformaInvoiceList = new LinkedList<>();
+        invoiceId = null;
     }
     
     public void reset()
@@ -64,6 +84,14 @@ public class ManageInvoiceController implements Serializable
     public void setDateRange(DateRangeUtil dateRange)
     {
         this.dateRange = dateRange;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
     }
     
 }

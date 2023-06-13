@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Reverse Invoice
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <div>
+                    <h:form class="spaced-form">
+                        <h:panelGrid columns="3">
+                            <p:inputText value="#{manageInvoiceController.invoiceId}" required="true"/>
+                            <p:commandButton value="Search" icon="#{msg.check_icon}" class="kbtn-success" action="#{manageInvoiceController.searchInvoice()}" update="@form"/>
+                            <p:commandButton value="Clear" icon="#{msg.clear_icon}" class="kbtn-default" action="#{manageInvoiceController.clearSearch()}" update="@form"/>
+                        </h:panelGrid>
+
+                        <p:dataTable value="#{manageInvoiceController.proformaInvoiceList}" var="invoice">
+                            <p:column style="width: 37px;">
+                                <p:rowToggler/>
+                            </p:column>
+
+                            <p:rowExpansion>
+                                <h:panelGrid columns="2">
+                                    <span>Id</span>
+                                    <h:outputText value="#{invoice.id}"/>
+                                </h:panelGrid>
+                            </p:rowExpansion>
+                            <p:column headerText="Invoice No.">
+                                <h:outputText value="#{invoice.quotationNumber}"/>
+                            </p:column>
+                            <p:column headerText="Client">
+                                <h:outputText value="#{invoice.client.clientName}"/>
+                            </p:column>
+                            <p:column headerText="Total Amount">
+                                <h:outputText value="#{invoice.totalAmount}">
+                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                </h:outputText> 
+                            </p:column>
+                            <p:column headerText="#{msg.action}">
+                                <p:commandButton value="Reverse" class="kbtn-danger" ajax="false" action="#{manageInvoiceController.reverseInvoice(invoice)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
