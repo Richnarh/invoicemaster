@@ -5,6 +5,7 @@
 package com.khoders.im.admin.jbeans;
 
 import com.khoders.im.admin.services.InvoiceService;
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -26,6 +27,7 @@ public class ManageInvoiceController implements Serializable
 {
     @Inject private CrudApi crudApi;
     @Inject private InvoiceService invoiceService;
+    @Inject private DefaultService ds;
     
     private ProformaInvoice proformaInvoice = new ProformaInvoice();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -39,9 +41,9 @@ public class ManageInvoiceController implements Serializable
     }
     
     public void reverseInvoice(ProformaInvoice proformaInvoice){
-        boolean paymentData = invoiceService.deletePaymentData(proformaInvoice);
-        boolean taxInfo = invoiceService.deleteSalesTax(proformaInvoice);
-        boolean saleItem = invoiceService.deleteSaleItem(proformaInvoice);
+        boolean paymentData = ds.deletePaymentData(proformaInvoice);
+        boolean taxInfo = ds.deleteSalesTax(proformaInvoice);
+        boolean saleItem = ds.deleteSaleItem(proformaInvoice);
         
         if(paymentData){
             System.out.println("Payment data deleted");
@@ -55,6 +57,8 @@ public class ManageInvoiceController implements Serializable
             System.out.println("Invoice item info cleared and inventory quantity updated!");
             Msg.info("Invoice item info cleared and inventory quantity updated!");
         }
+        proformaInvoice.setConverted(false);
+        crudApi.save(proformaInvoice);
     }
     
     public void searchInvoice(){

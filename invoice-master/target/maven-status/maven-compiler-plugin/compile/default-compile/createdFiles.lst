@@ -18,6 +18,7 @@ com\khoders\invoicemaster\dto\ConvertToWords.class
 com\khoders\invoicemaster\jbeans\converter\ProductTypeConverter.class
 com\khoders\invoicemaster\dto\PaymentReceiptDto.class
 com\khoders\invoicemaster\jbeans\controller\ProformaInvoiceController$1.class
+com\khoders\invoicemaster\jbeans\controller\AppController.class
 com\khoders\invoicemaster\dto\ProformaInvoiceDto.class
 com\khoders\invoicemaster\jbeans\converter\ClientConverter.class
 com\khoders\invoicemaster\listener\AppSession.class
@@ -28,7 +29,6 @@ com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.class
 com\khoders\restapi\services\TransactionService.class
 com\khoders\invoicemaster\jbeans\controller\PaymentDataController.class
-com\khoders\invoicemaster\jbeans\controller\BackdoorController.class
 com\khoders\restapi\mapper\ClientSalesMapper.class
 com\khoders\invoicemaster\jbeans\converter\PurchaseConverter.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class

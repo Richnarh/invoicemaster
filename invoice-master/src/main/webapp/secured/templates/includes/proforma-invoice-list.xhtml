@@ -53,6 +53,9 @@
 
                 <p:rowExpansion>
                     <h:panelGrid columns="2">
+                        <span>Id</span>
+                        <h:outputText value="#{proformaInvoice.id}"/>
+                        
                         <span>#{msg.created_date}</span>
                         <h:outputText value="#{proformaInvoice.createdDate}">
                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>

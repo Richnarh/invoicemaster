@@ -104,7 +104,6 @@ public class ProformaInvoiceController implements Serializable
     private InvoiceStatus invoiceStatus = null;
     
     Sms sms = new Sms();
-    SenderId senderId=null;
     String phoneNumber=null;
         
     private boolean panelFlag=false;
@@ -277,8 +276,7 @@ public class ProformaInvoiceController implements Serializable
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            Msg.error(Msg.FAILED_MESSAGE);
           }
            clearPaymentData();
         } catch (Exception e) 
@@ -289,8 +287,6 @@ public class ProformaInvoiceController implements Serializable
     
     public void processPaymentSms(PaymentData paymentData)
     {
-        senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
-        System.out.println("Sender ID => "+senderId.getSenderIdentity());
         try 
         {
           ZenophSMS zsms = smsService.extractParams();
@@ -314,7 +310,7 @@ public class ProformaInvoiceController implements Serializable
                 zsms.addRecipient(number);
             }
             
-            zsms.setSenderId(senderId.getSenderIdentity());
+            zsms.setSenderId(ds.getSenderId() != null ? ds.getSenderId() : ds.getConfigValue("sms.sender.id"));
             zsms.setMessageType(MSGTYPE.TEXT);
 
             List<String[]> response = zsms.submit();
@@ -323,8 +319,7 @@ public class ProformaInvoiceController implements Serializable
                     REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
                     if (reqstatus == null)
                     {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
+                      Msg.error("failed to send message");
                         break;
                     } else
                     {
@@ -334,11 +329,9 @@ public class ProformaInvoiceController implements Serializable
                                 saveMessage();
                                 break;
                             case ERR_INSUFF_CREDIT:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
+                                Msg.error("Insufficeint Credit");
                             default:
-                                FacesContext.getCurrentInstance().addMessage(null,
-                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
+                                Msg.error("Failed to send message");
                                 return;
                         }
                     }
@@ -360,7 +353,6 @@ public class ProformaInvoiceController implements Serializable
             sms.setsMSType(SMSType.SYSTEM_SMS);
             sms.setCompanyBranch(appSession.getCompanyBranch());
             sms.setUserAccount(appSession.getCurrentUser());
-            sms.setSenderId(senderId);
            if(crudApi.save(sms) != null)
            {
                FacesContext.getCurrentInstance().addMessage(null,
@@ -647,8 +639,8 @@ public class ProformaInvoiceController implements Serializable
         System.out.println("apiUsername: "+apiUsername);
         System.out.println("apiPassword: "+apiPassword);
         
-//        String url = "http://192.168.37.22:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
-        String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
+        String url = "http://192.168.1.112:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
+//        String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
         StringBuilder sb = new StringBuilder();
         sb.append("Request from ");
         sb.append(appSession.getCurrentUser().getFullname()).append(" - ");
@@ -658,11 +650,11 @@ public class ProformaInvoiceController implements Serializable
         sb.append("\n").append("Click the link below to complete the reversal.").append("\n");
         sb.append(url);
         System.out.println("Msg: "+sb.toString());
-//        sendMsg(sb.toString());
+        sendMsg(sb.toString());
          
         boolean sentMail = proformaInvoiceService.processMail(sb.toString(), appSession.getCurrentUser().getEmail());
         if(sentMail){
-            Msg.info("Reversal request sent, admin will notify you shortly!");
+            Msg.info("Reversal email request sent, admin will notify you shortly!");
         }
 //        try {
 //            String urlStr = smsBaseUrl+"?username="+apiUsername+"&password="+apiPassword+"&from="+sendId+"&to="+adminNumber+"&msg="+sb.toString();
@@ -681,30 +673,22 @@ public class ProformaInvoiceController implements Serializable
     }
         
     public void sendMsg(String msg){
-        senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+        String senderId = ds.getConfigValue("sms.sender.id");
         String adminNumber = ds.getConfigValue("admin.number");
         System.out.println("adminNumber: "+adminNumber);
-        System.out.println("senderId: "+senderId.getSenderIdentity());
+        System.out.println("senderId: "+senderId);
         try 
         {
             ZenophSMS zsms = smsService.extractParams();
             zsms.setMessage(msg);
-            List<String> numbers = zsms.extractPhoneNumbers(adminNumber);
-
-            for (String number : numbers)
-            {
-                zsms.addRecipient(number);
-            }
-            
-            zsms.setSenderId(senderId.getSenderIdentity());
+            zsms.addRecipient(adminNumber);
+            zsms.setSenderId(senderId != null && senderId.isEmpty() || senderId == null ? ds.getSenderId() : senderId);
             zsms.setMessageType(MSGTYPE.TEXT);
 
             List<String[]> response = zsms.submit();
-            for (String[] destination : response)
-            {
+            for (String[] destination : response){
                     REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-                    if (reqstatus == null)
-                    {
+                    if (reqstatus == null){
                       Msg.error("failed to send message");
                         break;
                     } else
@@ -712,7 +696,7 @@ public class ProformaInvoiceController implements Serializable
                         switch (reqstatus)
                         {
                             case SUCCESS:
-                                Msg.info("Request sent, you'd be notified shortly!");
+                                Msg.info("Reversal SMS request sent, admin will notify you shortly!");
                                 break;
                             case ERR_INSUFF_CREDIT:
                                Msg.error("Insufficeint Credit");
@@ -722,7 +706,6 @@ public class ProformaInvoiceController implements Serializable
                         }
                     }
                 }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

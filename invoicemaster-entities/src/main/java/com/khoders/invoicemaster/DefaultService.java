@@ -6,9 +6,14 @@
 package com.khoders.invoicemaster;
 
 import com.khoders.invoicemaster.entities.AppConfig;
+import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
+import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
+import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.resource.jpa.CrudApi;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -29,6 +34,7 @@ public class DefaultService {
     
     public String getSenderId(){
         SenderId id = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class)
+                .setMaxResults(1)
                 .getResultStream().findFirst().orElse(null);
         
         return id != null ? id.getSenderIdentity() : null;
@@ -37,6 +43,50 @@ public class DefaultService {
     public ProformaInvoice getInvoice(String invoiceId){
         return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoice e WHERE e.quotationNumber = :quotationNumber", ProformaInvoice.class)
                 .setParameter(ProformaInvoice._quotationNumber, invoiceId)
+                .getResultStream().findFirst().orElse(null);
+    }
+       public boolean deletePaymentData(ProformaInvoice proformaInvoice) {
+        int q = crudApi.getEm().createQuery("DELETE FROM PaymentData d WHERE d.proformaInvoice =:proformaInvoice")
+                .setParameter(PaymentData._proformaInvoice, proformaInvoice)
+                .executeUpdate();
+        return q > 0;
+    }
+    
+    public boolean deleteSalesTax(ProformaInvoice proformaInvoice) {
+        int q = crudApi.getEm().createQuery("DELETE FROM SalesTax s WHERE s.proformaInvoice =:proformaInvoice")
+                .setParameter(SalesTax._proformaInvoice, proformaInvoice)
+                .executeUpdate();
+        return q > 0;
+    }
+    
+    public boolean deleteSaleItem(ProformaInvoice proformaInvoice) {
+        List<ProformaInvoiceItem> salesList = getSaleItemList(proformaInvoice);
+        for (ProformaInvoiceItem invoiceItem : salesList) {
+            if(invoiceItem.getInventory() == null) continue;
+            Inventory inventory = getInventory(invoiceItem.getInventory().getId());
+            System.out.println("Inventory found: "+inventory.getInventoryCode());
+            int currentQty = inventory.getQuantity();
+            int updatedQty = invoiceItem.getQuantity() + currentQty;
+            
+            inventory.setQuantity(updatedQty);
+            crudApi.save(inventory);
+        }        
+        
+        int q = crudApi.getEm().createQuery("DELETE FROM ProformaInvoiceItem p WHERE p.proformaInvoice =:proformaInvoice")
+                .setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice)
+                .executeUpdate();
+        return q > 0;
+    }
+
+    public List<ProformaInvoiceItem> getSaleItemList(ProformaInvoice proformaInvoice){
+        return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice = :proformaInvoice", ProformaInvoiceItem.class)
+                .setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice)
+                .getResultList();
+    }
+
+    private Inventory getInventory(String inventoryId) {
+        return crudApi.getEm().createQuery("SELECT e FROM Inventory e WHERE e.id = :id", Inventory.class)
+                .setParameter(Inventory._id, inventoryId)
                 .getResultStream().findFirst().orElse(null);
     }
 }

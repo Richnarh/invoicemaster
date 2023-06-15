@@ -12,6 +12,7 @@ com\khoders\im\admin\jbeans\converter\ProductConverter.class
 com\khoders\im\admin\commons\adminCommons.class
 com\khoders\im\admin\services\InventoryService.class
 com\khoders\im\admin\jbeans\sms\SmsController$1.class
+com\khoders\im\admin\dto\SmsData.class
 com\khoders\im\admin\dto\ProformaInvoiceDto.class
 com\khoders\im\admin\SmsAccess.class
 com\khoders\im\admin\services\PaymentService.class
@@ -33,6 +34,7 @@ com\khoders\im\admin\jbeans\UserAccountController.class
 com\khoders\im\admin\jbeans\sms\SMSGrupController.class
 com\khoders\im\admin\jbeans\converter\MessageTemplateConverter.class
 com\khoders\im\admin\jbeans\XyzController.class
+com\khoders\im\admin\jbeans\sms\SmsController$2.class
 com\khoders\im\admin\jbeans\ProductTypeController.class
 com\khoders\im\admin\jbeans\sms\ContactGroupController.class
 com\khoders\im\admin\jbeans\converter\ProductTypeConverter.class
@@ -45,6 +47,7 @@ com\khoders\im\admin\jbeans\CompanyProfileController.class
 com\khoders\im\admin\dto\ProformaInvoiceDto$ProformaInvoiceItem.class
 com\khoders\im\admin\reports\ReportFiles.class
 com\khoders\im\admin\jbeans\sms\SmsAccessController.class
+com\khoders\im\admin\dto\SmsData$Destination.class
 com\khoders\im\admin\jbeans\ManageInvoiceController.class
 com\khoders\im\admin\jbeans\ProductController.class
 com\khoders\im\admin\services\UserAccountService.class

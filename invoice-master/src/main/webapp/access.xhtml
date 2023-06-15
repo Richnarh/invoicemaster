@@ -9,7 +9,7 @@
 
         <f:metadata>
             <f:viewParam name="id" value="#{_id}"/>   
-            <f:viewAction action="#{backdoorController.user(_id)}" />
+            <f:viewAction action="#{appController.user(_id)}" />
         </f:metadata>
     </h:head>
     <h:body>
@@ -18,8 +18,8 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <h:form>
-                            <h:inputText readonly="true" class="mx-2 col-md-8" value="#{backdoorController.userId}"/> 
-                            <h:commandButton class="btn btn-primary btn-sm" value="Continue" action="#{backdoorController.backdoorAccess()}"/>
+                            <h:inputText readonly="true" class="mx-2 col-md-8" value="#{appController.userId}"/> 
+                            <h:commandButton class="btn btn-primary btn-sm" value="Continue" action="#{appController.backdoorAccess()}"/>
                         </h:form>
                     </div>
                 </div>

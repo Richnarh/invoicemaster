@@ -18,7 +18,7 @@
                         <h:inputText class="form-control" style="width: 500px" disabled="#{appConfigController.disable}" value="#{appConfigController.appConfig.configName}" required="true"/>
                         
                         <span>Config Value</span>
-                        <h:inputText class="form-control" style="width: 500px" value="#{appConfigController.appConfig.configValue}" required="true"/>
+                        <h:inputText class="form-control" style="width: 500px" value="#{appConfigController.appConfig.configValue}"/>
                         
                         <p:commandButton class="kbtn-success" value="#{msg.save} Changes" icon="#{msg.check_icon}" action="#{appConfigController.saveConfig()}" update="@form, :configTable"/>
                         <p:commandButton class="kbtn-default" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{appConfigController.clearConfig()}" update="@form"/>
