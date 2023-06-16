@@ -39,13 +39,11 @@ public class ProfileUpdateController implements Serializable{
             if(appSession.getCurrentUser() != null)
             {
                 crudApi.save(appSession.getCurrentUser());
-                FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                Msg.info(Msg.SUCCESS_MESSAGE);
             }
             else
             {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.DELETE_MESSAGE, null));  
+              Msg.error(Msg.DELETE_MESSAGE);
             }
         } 
         catch (Exception e) 
@@ -106,9 +104,9 @@ public class ProfileUpdateController implements Serializable{
             {
                 Faces.redirect(Pages.quickInvoice);
             }
-            else if(userAccount.isWarehouse() == true)
+            else if(userAccount.isWaybill() == true)
             {
-               Faces.redirect(Pages.warehouse);
+               Faces.redirect(Pages.waybill);
             }
             else
             {

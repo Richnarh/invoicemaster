@@ -639,8 +639,8 @@ public class ProformaInvoiceController implements Serializable
         System.out.println("apiUsername: "+apiUsername);
         System.out.println("apiPassword: "+apiPassword);
         
-        String url = "http://192.168.1.112:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
-//        String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
+//        String url = "http://192.168.1.112:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
+        String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
         StringBuilder sb = new StringBuilder();
         sb.append("Request from ");
         sb.append(appSession.getCurrentUser().getFullname()).append(" - ");

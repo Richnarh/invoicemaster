@@ -80,9 +80,9 @@ public class LoginController implements Serializable
             {
                 Faces.redirect(Pages.quickInvoice);
             }
-            else if(userAccount.isWarehouse() == true)
+            else if(userAccount.isWaybill() == true)
             {
-               Faces.redirect(Pages.warehouse);
+               Faces.redirect(Pages.waybill);
             }
             else
             {

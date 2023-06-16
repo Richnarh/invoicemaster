@@ -14,6 +14,7 @@ import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entities.UserTransaction;
+import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
@@ -197,10 +198,9 @@ public class ProformaInvoiceService{
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1 AND e.userAccount=?2";
+            String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=:proformaInvoice";
             TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoiceItem.class)
-                    .setParameter(1, proformaInvoice)
-                    .setParameter(2, appSession.getCurrentUser());
+                    .setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice);
             return typedQuery.getResultList();
             
         } catch (Exception e)
@@ -310,5 +310,18 @@ public class ProformaInvoiceService{
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<PaymentData> getPendingDeliveryInvoice(ProformaInvoice proformaInvoice){
+      return crudApi.getEm().createQuery("SELECT e FROM PaymentData e WHERE e.proformaInvoice=:proformaInvoice AND e.deliveryStatus=:deliveryStatus", PaymentData.class)
+                    .setParameter(PaymentData._proformaInvoice, proformaInvoice)
+                    .setParameter(PaymentData._deliveryStatus, DeliveryStatus.PENDING_DELIVERY)
+                    .getResultList();
+    }
+    
+    public List<PaymentData> getPendingDeliveryInvoice(){
+      return crudApi.getEm().createQuery("SELECT e FROM PaymentData e WHERE e.deliveryStatus=:deliveryStatus", PaymentData.class)
+                    .setParameter(PaymentData._deliveryStatus, DeliveryStatus.PENDING_DELIVERY)
+                    .getResultList();
     }
 }
