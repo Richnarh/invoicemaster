@@ -30,6 +30,7 @@ public class SalesTax extends UserAccountRecord implements Serializable
     @Column(name = "tax_rate")
     private double taxRate;
   
+    public static final String _proformaInvoice = "proformaInvoice";
     @JoinColumn(name = "proforma_invoice", referencedColumnName = "id")
     @ManyToOne
     private ProformaInvoice proformaInvoice;

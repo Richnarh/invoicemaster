@@ -53,6 +53,9 @@
 
                 <p:rowExpansion>
                     <h:panelGrid columns="2">
+                        <span>Id</span>
+                        <h:outputText value="#{proformaInvoice.id}"/>
+                        
                         <span>#{msg.created_date}</span>
                         <h:outputText value="#{proformaInvoice.createdDate}">
                                 <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
@@ -97,9 +100,10 @@
                 
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.choose}">
-                        <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainPanel"/>
-                        <p:menuitem id="invoiceItem" icon="fa fa-plus" class="text-info" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainPanel"/>
-                        <p:menuitem id="paymentInfo" icon="fa fa-plus" class="text-info" value="Payment Info" immediate="true" action="#{proformaInvoiceController.recordPayment(proformaInvoice)}" oncomplete="PF('paymentForm').show()" resetValues="true" update=":mainPanel, :paymentModal,:paymentDataForm"/>
+                        <p:menuitem icon="#{msg.edit_icon}" class="text-secondary" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainPanel"/>
+                        <p:menuitem id="invoiceItem" icon="fa fa-plus" class="text-secondary" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainPanel"/>
+                        <p:menuitem id="paymentInfo" icon="fa fa-plus" class="text-secondary" value="Payment Info" immediate="true" action="#{proformaInvoiceController.recordPayment(proformaInvoice)}" oncomplete="PF('paymentForm').show()" resetValues="true" update=":mainPanel, :paymentModal,:paymentDataForm"/>
+                        <p:menuitem icon="fa fa-cog" rendered="#{proformaInvoice.converted == true}" class="text-secondary" value="Request Reversal" immediate="true" action="#{proformaInvoiceController.reverseApproval(proformaInvoice)}"/>
                         <p:menuitem icon="#{msg.delete_icon}" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainPanel"/>
                     </p:menuButton>
                         <p:tooltip for="paymentInfo" value="Add payment info on invoice" position="left"/>

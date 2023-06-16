@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Application Configuration
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:form class="spaced-form" id="configForm">
+                    <h:panelGrid columns="2">
+                        <span>Config Name</span>
+                        <h:inputText class="form-control" style="width: 500px" disabled="#{appConfigController.disable}" value="#{appConfigController.appConfig.configName}" required="true"/>
+                        
+                        <span>Config Value</span>
+                        <h:inputText class="form-control" style="width: 500px" value="#{appConfigController.appConfig.configValue}"/>
+                        
+                        <p:commandButton class="kbtn-success" value="#{msg.save} Changes" icon="#{msg.check_icon}" action="#{appConfigController.saveConfig()}" update="@form, :configTable"/>
+                        <p:commandButton class="kbtn-default" value="#{msg.clear}" icon="#{msg.clear_icon}" action="#{appConfigController.clearConfig()}" update="@form"/>
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="configTable">
+                        <p:dataTable value="#{appConfigController.appConfigList}" var="appConfig">
+                            <p:column headerText="Config Name" class="text-center" filterBy="#{appConfig.configName}" filterMatchMode="contains">
+                                #{appConfig.configName}
+                            </p:column>
+
+                            <p:column headerText="Config Value" class="text-center">
+                                #{appConfig.configValue}
+                            </p:column>
+
+                            <p:column headerText="#{msg.action}" style="width: 100px">
+                                <p:commandButton value="Edit" action="#{appConfigController.editAppConfig(appConfig)}" update=":configForm"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

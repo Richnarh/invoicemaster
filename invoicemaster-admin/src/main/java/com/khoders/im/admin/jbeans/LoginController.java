@@ -49,15 +49,13 @@ public class LoginController implements Serializable
 
             if (account == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
+               Msg.error("Wrong username or Password");
                 return null;
             }
            if(account.getAccessLevel() != AccessLevel.SUPER_USER)
            {
-               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("You are not permitted to access this system!"), null));
-                return null;
+              Msg.error("You are not permitted to access this system!");
+              return null;
            }
                
 
@@ -78,8 +76,7 @@ public class LoginController implements Serializable
 
             if (userAccount == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
+                Msg.error("Wrong username or Password");
                 return null;
             }
 

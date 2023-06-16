@@ -130,7 +130,11 @@ public class PaymentDataController implements Serializable{
     public void updateDeliveryData(PaymentData paymentData)
     {
         this.paymentData = crudApi.find(PaymentData.class, paymentData.getId());
-        this.paymentData.setDeliveryStatus(paymentData.getDeliveryStatus());  
+        this.paymentData.setDeliveryStatus(DeliveryStatus.FULLY_DELIVERED);  
+        
+        if(crudApi.save(this.paymentData) != null){
+            fetchByDeliveryStatus();
+        }
     }
     
    public void savePaymentData()

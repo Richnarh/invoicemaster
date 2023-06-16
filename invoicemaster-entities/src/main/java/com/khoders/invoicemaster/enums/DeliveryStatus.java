@@ -13,7 +13,7 @@ import com.khoders.resource.utilities.MsgResolver;
  */
 public enum DeliveryStatus implements MsgResolver
 {
-    DELIVERED("FULLY_DELIVERED", "Fully delivered"),
+    FULLY_DELIVERED("FULLY_DELIVERED", "Fully delivered"),
     PENDING_DELIVERY("PENDING_DELIVERY", "Pending delivery");
     
     private final String code;

@@ -7,8 +7,10 @@ package com.khoders.im.admin.services;
 
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
+import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.resource.jpa.CrudApi;
@@ -17,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -104,6 +107,13 @@ public class InvoiceService
         }
         return Collections.emptyList();
     }
+    
+    public List<ProformaInvoice> getInvoice(String invoiceId)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoice e WHERE e.quotationNumber = :quotationNumber", ProformaInvoice.class)
+                    .setParameter(ProformaInvoice._quotationNumber, invoiceId)
+                    .getResultList();
+    }
 
     
     public List<ProformaInvoiceItem> getInvoiceDetailList(ProformaInvoice proformaInvoice)
@@ -179,5 +189,4 @@ public class InvoiceService
         }
         return Collections.emptyList();
     }
-
 }

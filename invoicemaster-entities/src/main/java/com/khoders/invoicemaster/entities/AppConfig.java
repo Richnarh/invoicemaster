@@ -20,12 +20,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "app_config")
 public class AppConfig extends UserAccountRecord implements Serializable{
+    public static final String _configName = "configName";
     @Column(name = "config_name")
     private String configName;
     
+    public static final String _configValue = "configValue";
     @Column(name = "config_value")
     private String configValue;
     
+    public static final String _configStatus = "configStatus";
     @Column(name = "config_status")
     @Enumerated(EnumType.STRING)
     private Status configStatus;
