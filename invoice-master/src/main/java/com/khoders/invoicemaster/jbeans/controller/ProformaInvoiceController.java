@@ -29,7 +29,6 @@ import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.XtractService;
-import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
@@ -40,23 +39,15 @@ import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  *
@@ -75,7 +66,6 @@ public class ProformaInvoiceController implements Serializable
     @Inject private SmsService smsService;
     @Inject private ReportManager reportManager;
     @Inject private DefaultService ds;
-    private static OkHttpClient http;
 
     private FormView pageView = FormView.listForm();
     private DateRangeUtil dateRange = new DateRangeUtil();
@@ -521,11 +511,6 @@ public class ProformaInvoiceController implements Serializable
                 return;
             }
         }
-//        ProformaInvoiceItem pii = proformaInvoiceService.getInvoiceExist(proformaInvoice);
-//        if(pii != null){
-//            Msg.error("Cannot save transaction twice!");
-//            return;
-//        }
         totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
         proformaInvoice = crudApi.find(ProformaInvoice.class, proformaInvoice.getId());
         try 
@@ -550,11 +535,6 @@ public class ProformaInvoiceController implements Serializable
                 System.out.println("totalDiscountRate: "+totalDiscountRate);
                 if (totalDiscountRate > 0.0)
                 {
-//                    if(productDiscountRate > 5.0)
-//                    {
-//                        Msg.error("Please dicount above 5% is not allowed!");
-//                        return;
-//                    }
                     calculatedDiscount = totalSaleAmount * (totalDiscountRate/100); // Calculating Discount on total Amount
                     double newTotalAmount = totalSaleAmount - calculatedDiscount;
                     
@@ -625,20 +605,6 @@ public class ProformaInvoiceController implements Serializable
     }
     
     public void reverseApproval(ProformaInvoice proformaInvoice){
-        String adminNumber = ds.getConfigValue("admin.number");
-        String smsBaseUrl = ds.getConfigValue("sms.api.base.url");
-        String apiKey = ds.getConfigValue("sms.api.key");
-        String apiUsername = ds.getConfigValue("sms.api.username");
-        String apiPassword = ds.getConfigValue("sms.api.password");
-        String sendId = ds.getSenderId();
-        
-        System.out.println("apiKey: "+apiKey);
-        System.out.println("adminNumber: "+adminNumber);
-        System.out.println("smsBaseUrl: "+smsBaseUrl);
-        System.out.println("sendId: "+sendId);
-        System.out.println("apiUsername: "+apiUsername);
-        System.out.println("apiPassword: "+apiPassword);
-        
 //        String url = "http://192.168.1.112:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
         String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
         StringBuilder sb = new StringBuilder();
@@ -656,27 +622,11 @@ public class ProformaInvoiceController implements Serializable
         if(sentMail){
             Msg.info("Reversal email request sent, admin will notify you shortly!");
         }
-//        try {
-//            String urlStr = smsBaseUrl+"?username="+apiUsername+"&password="+apiPassword+"&from="+sendId+"&to="+adminNumber+"&msg="+sb.toString();
-//            System.out.println("urlStr: "+urlStr);
-//            URL urlVal = new URL(urlStr);
-//            MediaType mediaType = MediaType.parse("text/plain");
-//            Request request = new Request.Builder()
-//                    .url(urlVal)
-//                    .build();
-//            Response response = http().newCall(request).execute();
-//            System.out.println("Response: "+SystemUtils.KJson().toJson(response.body()));
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
         
     public void sendMsg(String msg){
         String senderId = ds.getConfigValue("sms.sender.id");
         String adminNumber = ds.getConfigValue("admin.number");
-        System.out.println("adminNumber: "+adminNumber);
-        System.out.println("senderId: "+senderId);
         try 
         {
             ZenophSMS zsms = smsService.extractParams();
@@ -686,38 +636,29 @@ public class ProformaInvoiceController implements Serializable
             zsms.setMessageType(MSGTYPE.TEXT);
 
             List<String[]> response = zsms.submit();
-            for (String[] destination : response){
-                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-                    if (reqstatus == null){
-                      Msg.error("failed to send message");
-                        break;
-                    } else
-                    {
-                        switch (reqstatus)
-                        {
-                            case SUCCESS:
-                                Msg.info("Reversal SMS request sent, admin will notify you shortly!");
-                                break;
-                            case ERR_INSUFF_CREDIT:
-                               Msg.error("Insufficeint Credit");
-                            default:
-                                Msg.error("Failed to send message");
-                                return;
-                        }
+            for (String[] destination : response) {
+                REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                if (reqstatus == null) {
+                    Msg.error("failed to send message");
+                    break;
+                } else {
+                    switch (reqstatus) {
+                        case SUCCESS:
+                            Msg.info("Reversal SMS request sent, admin will notify you shortly!");
+                            break;
+                        case ERR_INSUFF_CREDIT:
+                            Msg.error("Insufficeint Credit");
+                        default:
+                            Msg.error("Failed to send message");
+                            return;
                     }
                 }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    private static OkHttpClient http() {
-            if (http == null) {
-                    http = new OkHttpClient.Builder().callTimeout(5, TimeUnit.MINUTES).readTimeout(5, TimeUnit.MINUTES).build();
-            }
-            return http;
-    }
-        
+            
     public void closePage()
     {
         init();
