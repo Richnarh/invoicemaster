@@ -30,7 +30,7 @@
                 <p:commandButton value="Send Message" action="#{smsController.processBulkMessage()}" ajax="false" class="kbtn-success mr-3"/>
                 <p:commandButton value="#{msg.clear}" action="#{smsController.clearSMS()}" ajax="false" class="kbtn-cancel"/>
             </div>
-                <small class="text-muted">Sending message to large contact may take a while to complete!</small>
+                <small class="text-white p-1" style="background: #07a">Sending message to large contact may take a while to complete!</small>
         </h:form>
     </h:body>
 </html>

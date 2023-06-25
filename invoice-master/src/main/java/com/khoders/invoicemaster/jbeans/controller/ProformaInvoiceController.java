@@ -48,6 +48,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import net.sf.jasperreports.engine.JasperPrint;
 
 /**
  *
@@ -61,7 +62,6 @@ public class ProformaInvoiceController implements Serializable
     @Inject private AppSession appSession;
     @Inject private ProformaInvoiceService proformaInvoiceService;
     @Inject private ReportHandler reportHandler;
-    @Inject private ReportHandler coverHandler;
     @Inject private XtractService xtractService;
     @Inject private SmsService smsService;
     @Inject private ReportManager reportManager;
@@ -582,28 +582,28 @@ public class ProformaInvoiceController implements Serializable
     }
     
  
-    public void generateProformaInvoice(ProformaInvoice proformaInvoice)
-    {
+    public void generateProformaInvoice(ProformaInvoice proformaInvoice){
+        List<JasperPrint> jasperPrintList = new LinkedList<>();
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
+        List<ProformaInvoiceDto> coverDataList = new LinkedList<>();
+        
+        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
+        
+        ProformaInvoiceDto coverData = xtractService.extractToProformaInvoiceCover(proformaInvoice);
+        coverDataList.add(coverData);
+        JasperPrint coverPrint = reportManager.createJasperPrint(coverDataList, ReportFiles.PRO_INVOICE_COVER, reportHandler.reportParams);
+        jasperPrintList.add(coverPrint);
         
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoice(proformaInvoice);
-            
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-        reportHandler.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, reportHandler.reportParams);
-    }
-    
-    public void printCover(ProformaInvoice proformaInvoice)
-    {
-        List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
+        JasperPrint invoicePrint = reportManager.createJasperPrint(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, reportHandler.reportParams);
+        jasperPrintList.add(invoicePrint);
         
-        ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoiceCover(proformaInvoice);
+        reportManager.generateReport(jasperPrintList, proformaInvoice.getQuotationNumber());
         
-        proformaInvoiceDtoList.add(proformaInvoiceDto);
-        coverHandler.reportParams.put("logo", ReportFiles.LOGO);
-        reportManager.createReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_COVER, coverHandler.reportParams);
+        System.out.println("Done!");
     }
-    
+        
     public void reverseApproval(ProformaInvoice proformaInvoice){
 //        String url = "http://192.168.1.112:8080/invoice-master/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
         String url = "http://185.218.125.78:8080/invoicemaster/secured/templates/reverse-sale.xhtml?id="+proformaInvoice.getQuotationNumber();
