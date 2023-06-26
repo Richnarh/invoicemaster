@@ -32,6 +32,12 @@ public class DefaultService {
         return config != null ? config.getConfigValue() : null;
     }
     
+    public AppConfig getAppConfig(String configName) {
+        return crudApi.getEm().createQuery("SELECT e FROM AppConfig e WHERE e.configName = :configName", AppConfig.class)
+                .setParameter(AppConfig._configName, configName)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
     public String getSenderId(){
         SenderId id = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class)
                 .setMaxResults(1)

@@ -125,16 +125,17 @@ public class ProformaInvoiceService{
         return Collections.emptyList();
     }
     
-    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange)
-    {
+    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange){
         try 
         {
+            String limit = ds.getConfigValue("invoice.page.limit");
+            Integer limitSize = Integer.parseInt(limit);
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1 ORDER BY e.issuedDate DESC";
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=:userAccount ORDER BY e.issuedDate DESC";
                   TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
-                                              .setParameter(1, appSession.getCurrentUser());
-                                    return typedQuery.getResultList();
+                                              .setParameter(ProformaInvoice._userAccount, appSession.getCurrentUser());
+                                    return typedQuery.setMaxResults(limitSize).getResultList();
             }
             
             String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.userAccount=?3 ORDER BY e.issuedDate DESC";

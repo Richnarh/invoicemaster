@@ -17,6 +17,7 @@ import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.dto.Receipt;
+import com.khoders.invoicemaster.entities.AppConfig;
 import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
@@ -88,7 +89,7 @@ public class ProformaInvoiceController implements Serializable
     private ActionType actionType = null;
     
     private int selectedTabIndex;
-    private String optionText,paymentInvoiceNo,paymentClient;
+    private String optionText,paymentInvoiceNo,paymentClient,pageLimit;
     private double subTotal,totalSaleAmount,calculatedDiscount,installationFee,taxAmount,totalPayable,invoiceAmount,productDiscountRate;
     
     private InvoiceStatus invoiceStatus = null;
@@ -103,11 +104,18 @@ public class ProformaInvoiceController implements Serializable
     {
         proformaInvoiceList = proformaInvoiceService.getProformaInvoiceList();
         taxList = proformaInvoiceService.getTaxList();
+        pageLimit = ds.getConfigValue("invoice.page.limit");
         clearProformaInvoice();
     }
+    
+    public void savePageLimit(){
+        AppConfig config = ds.getAppConfig("invoice.page.limit");
+        config.setConfigValue(pageLimit);
+        crudApi.save(config);
+        Msg.info("Page limit updated!");
+    }
 
-    public void inventoryProperties()
-    {
+    public void inventoryProperties(){
         System.out.println("Over here----");
         if(proformaInvoiceItem.getInventory().getSellingPrice() != 0.0)
         {
@@ -905,6 +913,14 @@ public class ProformaInvoiceController implements Serializable
 
     public void setSalesTax(SalesTax salesTax) {
         this.salesTax = salesTax;
+    }
+
+    public String getPageLimit() {
+        return pageLimit;
+    }
+
+    public void setPageLimit(String pageLimit) {
+        this.pageLimit = pageLimit;
     }
     
 }
