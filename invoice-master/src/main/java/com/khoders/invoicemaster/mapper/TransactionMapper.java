@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.mapper;
+package com.khoders.invoicemaster.mapper;
 
 import com.khoders.invoicemaster.dto.SalesTaxDto;
 import com.khoders.invoicemaster.entities.OnlineClient;
@@ -14,8 +14,8 @@ import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
-import com.khoders.restapi.payload.TransactionDto;
-import com.khoders.restapi.services.TransactionService;
+import com.khoders.invoicemaster.payload.TransactionDto;
+import com.khoders.invoicemaster.service.TransactionService;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;

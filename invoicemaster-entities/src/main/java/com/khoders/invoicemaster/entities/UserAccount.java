@@ -43,6 +43,7 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "phone_number")
     private String phoneNumber;
     
+    public static final String _email="email";
     @Column(name = "email")
     private String email;
     
@@ -90,6 +91,7 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "waybill")
     private boolean waybill = false;
     
+    public static final String _password="password";
     @Column(name = "password")
     private String password;
     

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.util;
+package com.khoders.invoicemaster.lookups;
+
+import javax.ejb.Stateless;
 
 /**
  *
- * @author richa
+ * @author Pascal
  */
-public class Data<T>
-{
-    T data;
-    String message;
-    boolean success;
+@Stateless
+public class LookupService {
+    
 }

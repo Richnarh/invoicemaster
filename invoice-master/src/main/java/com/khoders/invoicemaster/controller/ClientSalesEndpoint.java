@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.endpoints;
+package com.khoders.invoicemaster.controller;
 
 import com.khoders.resource.utilities.Msg;
-import com.khoders.restapi.ApiEndpoint;
-import com.khoders.restapi.services.SalesService;
+import com.khoders.invoicemaster.ApiEndpoint;
+import com.khoders.invoicemaster.service.SalesService;
 import com.khoders.resource.jaxrs.JaxResponse;
-import com.khoders.restapi.payload.OnlineClientDto;
-import com.khoders.restapi.payload.TransactionDto;
+import com.khoders.invoicemaster.payload.OnlineClientDto;
+import com.khoders.invoicemaster.payload.TransactionDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;

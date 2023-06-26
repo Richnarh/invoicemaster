@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi;
+package com.khoders.invoicemaster.lookups;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import com.khoders.invoicemaster.ApiEndpoint;
+import javax.ws.rs.Path;
 
 /**
  *
- * @author richa
+ * @author Pascal
  */
-@ApplicationPath("api")
-public class AppConfig extends Application
-{
+@Path(ApiEndpoint.LOOKUP_ENDPOINT)
+public class LookupController {
     
 }

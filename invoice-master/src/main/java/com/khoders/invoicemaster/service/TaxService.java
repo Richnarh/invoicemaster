@@ -11,7 +11,7 @@ import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.jbeans.controller.ProformaInvoiceController;
 import com.khoders.resource.jpa.CrudApi;
-import com.khoders.restapi.mapper.TransactionMapper;
+import com.khoders.invoicemaster.mapper.TransactionMapper;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;

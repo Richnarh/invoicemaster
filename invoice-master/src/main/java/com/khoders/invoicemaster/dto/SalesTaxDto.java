@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import com.khoders.restapi.payload.BaseDto;
+import com.khoders.invoicemaster.payload.BaseDto;
 
 /**
  *

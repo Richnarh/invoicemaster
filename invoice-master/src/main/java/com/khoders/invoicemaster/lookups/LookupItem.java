@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.restapi.payload;
+package com.khoders.invoicemaster.lookups;
 
 /**
  *
  * @author richa
  */
-public class BaseDto
+public class LookupItem
 {
     private String id;
-    private String valueDate;
+    private String itemName;
 
     public String getId() {
         return id;
@@ -22,11 +22,11 @@ public class BaseDto
         this.id = id;
     }
 
-    public String getValueDate() {
-        return valueDate;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setValueDate(String valueDate) {
-        this.valueDate = valueDate;
-    }
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }   
 }
