@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.dto.SalesTaxDto;
+import com.khoders.invoicemaster.reportData.SalesTaxDto;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.enums.AppVersion;

@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.invoicemaster.dto.TaxDto;
+import com.khoders.invoicemaster.reportData.TaxDto;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
 import com.khoders.invoicemaster.entities.UserTransaction;

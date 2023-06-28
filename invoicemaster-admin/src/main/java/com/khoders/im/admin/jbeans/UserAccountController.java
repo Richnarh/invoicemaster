@@ -149,12 +149,6 @@ public class UserAccountController implements Serializable{
     
     public void updatePassword()
     {
-        if(userAccount.getEmail() == null)
-        {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select a user"), null));
-            return;
-        }
         try
         {
             UserAccount account = crudApi.find(UserAccount.class, userAccount.getId());

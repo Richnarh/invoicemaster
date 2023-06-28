@@ -6,8 +6,8 @@
 package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.DefaultService;
-import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
-import com.khoders.invoicemaster.dto.ProformaInvoiceItemDto;
+import com.khoders.invoicemaster.reportData.ProformaInvoiceDto;
+import com.khoders.invoicemaster.reportData.ProformaInvoiceItemDto;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;

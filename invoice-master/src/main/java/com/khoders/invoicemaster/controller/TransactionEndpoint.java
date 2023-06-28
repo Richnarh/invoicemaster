@@ -6,12 +6,10 @@
 package com.khoders.invoicemaster.controller;
 
 import com.khoders.invoicemaster.ApiEndpoint;
-import com.khoders.invoicemaster.payload.SaleItemDto;
+import com.khoders.invoicemaster.dto.SaleItemDto;
 import com.khoders.invoicemaster.service.TransactionService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,14 +25,12 @@ import javax.ws.rs.core.Response;
  * @author richa
  */
 @Stateless
-@Tag(name = "User Transaction")
 @Path(ApiEndpoint.TRANSACTION_ENDPOINT)
 public class TransactionEndpoint
 {
     @Inject private TransactionService transactionService;
     
     @GET
-    @Operation(summary = "Get user transaction record")
     @Produces(MediaType.APPLICATION_JSON)
     public Response userTransactions(@HeaderParam("userAccountId") String userAccountId)
     {

@@ -6,8 +6,9 @@
 package com.khoders.invoicemaster.controller.auth;
 
 import com.khoders.invoicemaster.ApiEndpoint;
-import com.khoders.invoicemaster.payload.AuthRequest;
-import com.khoders.invoicemaster.payload.AuthResponse;
+import com.khoders.invoicemaster.dto.AuthRequest;
+import com.khoders.invoicemaster.dto.AuthResponse;
+import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.service.AuthService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
@@ -34,7 +35,7 @@ public class AuthController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response doLogin(AuthRequest authRequest){
         log.info("Signing in...");
-        AuthResponse authResponse = authService.doLogin(authRequest);
-        return JaxResponse.ok(Msg.RECORD_FOUND, authResponse);
+        UserDto userDto = authService.doLogin(authRequest);
+        return JaxResponse.ok(Msg.RECORD_FOUND, userDto);
     }
 }

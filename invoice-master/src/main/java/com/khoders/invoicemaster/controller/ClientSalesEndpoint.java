@@ -9,9 +9,8 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.service.SalesService;
 import com.khoders.resource.jaxrs.JaxResponse;
-import com.khoders.invoicemaster.payload.OnlineClientDto;
-import com.khoders.invoicemaster.payload.TransactionDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.khoders.invoicemaster.dto.OnlineClientDto;
+import com.khoders.invoicemaster.dto.TransactionDto;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -28,7 +27,6 @@ import javax.ws.rs.core.Response;
  * @author richa
  */
 @Path(ApiEndpoint.SALES_ENDPOINT)
-@Tag(name = "Online Client")
 public class ClientSalesEndpoint
 {
     @Inject private SalesService salesService;
@@ -44,7 +42,7 @@ public class ClientSalesEndpoint
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(OnlineClientDto dto){
         TransactionDto saleDto = salesService.save(dto);
-        return JaxResponse.created(Msg.UPDATED, saleDto);
+        return JaxResponse.ok(Msg.UPDATED, saleDto);
     }
     
     @GET

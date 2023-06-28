@@ -12,7 +12,6 @@ C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ClientController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\Pages.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\payload\AuthResponse.java
-C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\AppConfig.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\ClientConverter.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\converter\SMSGrupConverter.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\SalesTaxDto.java
@@ -64,13 +63,13 @@ C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoi
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\dto\Receipt.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\WaybillController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\lookups\LookupSetup.java
+C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\InvoiceMasterConfig.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\ReportFiles.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\TaxController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\UserModel.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\CorsFilter.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\SalesService.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\commons\UserCommonClass.java
-C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\config\OpenApiConfig.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\service\InventoryService.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.java
 C:\khoders\Java-web\invoicemaster\invoice-master\src\main\java\com\khoders\invoicemaster\payload\OnlineClientDto.java
