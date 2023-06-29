@@ -6,17 +6,23 @@
 package com.khoders.admin.mapper;
 
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.QueryParam;
 
 /**
  *
  * @author Pascal
  */
-public class MasterParam {
+public class AppParam {
     @HeaderParam("userAccountId")
     private String userAccountId;
-    
     @HeaderParam("companyBranchId")
     private String companyBranchId;
+    @QueryParam("paymentStatus")
+    private String paymentStatus;
+    @QueryParam("fromDate")
+    private String fromDate;
+    @QueryParam("toDate")
+    private String toDate;
 
     public String getUserAccountId() {
         return userAccountId;
@@ -32,6 +38,30 @@ public class MasterParam {
 
     public void setCompanyBranchId(String companyBranchId) {
         this.companyBranchId = companyBranchId;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
     }
     
 }

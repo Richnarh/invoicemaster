@@ -6,6 +6,9 @@
 package com.khoders.invoicemaster.lookups;
 
 import com.khoders.invoicemaster.ApiEndpoint;
+import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
@@ -29,6 +32,24 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response units(){
         return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(UnitOfMeasurement.values()));
+    }
+    @GET
+    @Path("/payment-status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response paymentStatus(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(PaymentStatus.values()));
+    }
+    @GET
+    @Path("/delivery-status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deliveryStatus(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(DeliveryStatus.values()));
+    }
+    @GET
+    @Path("/payment-method")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response paymentMethod(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(PaymentMethod.values()));
     }
     
     // Entities

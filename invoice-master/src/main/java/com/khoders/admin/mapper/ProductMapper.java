@@ -6,7 +6,10 @@
 package com.khoders.admin.mapper;
 
 import com.khoders.invoicemaster.dto.InventoryDto;
+import com.khoders.invoicemaster.dto.ProductDto;
 import com.khoders.invoicemaster.entities.Inventory;
+import com.khoders.invoicemaster.entities.Product;
+import com.khoders.invoicemaster.entities.ProductType;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.service.AppService;
@@ -50,7 +53,7 @@ public class ProductMapper {
         return inventory;
     }
     
-    public Inventory toParam(MasterParam param){
+    public Inventory toParam(AppParam param){
         Inventory inventory = new Inventory();
         UserAccount userAccount = as.getUser(param.getUserAccountId());
         CompanyBranch companyBranch = as.getBranch(param.getCompanyBranchId());
@@ -79,6 +82,39 @@ public class ProductMapper {
         dto.setProduct(inventory.getProduct().getProductName());
         dto.setSellingPrice(dto.getSellingPrice());
         dto.setUnitPrice(dto.getUnitPrice());
+        return dto;
+    }
+    
+    // Products
+    public Product toEntity(ProductDto dto, AppParam param){
+        Product product = new Product();
+        if(dto.getId() != null){
+            product.setId(dto.getId());
+        }
+        product.setProductCode(dto.getProductCode());
+        product.setProductName(dto.getProductName());
+        product.setDescription(dto.getDescription());
+        if(dto.getProductTypeId() == null){
+            throw new DataNotFoundException("ProductType Id is required");
+        }
+        ProductType productType = crudApi.find(ProductType.class, dto.getProductTypeId());
+        product.setProductType(productType);
+        product.setReorderLevel(dto.getReorderLevel());
+        product.setUserAccount(as.getUser(param.getUserAccountId()));
+        product.setCompanyBranch(as.getBranch(param.getCompanyBranchId()));
+        return product;
+    }
+    
+    public ProductDto toDto(Product product){
+        ProductDto dto = new ProductDto();
+        if(product.getId() == null)return null;
+        dto.setId(product.getId());
+        dto.setProductCode(product.getProductCode());
+        dto.setProductName(product.getProductName());
+        dto.setDescription(product.getDescription());
+        dto.setProductType(product.getProductType() != null ? product.getProductType().getProductTypeName() : null);
+        dto.setProductTypeId(product.getProductType() != null ? product.getProductType().getId() : null);
+        dto.setReorderLevel(product.getReorderLevel());
         return dto;
     }
 }

@@ -9,7 +9,7 @@ package com.khoders.invoicemaster.dto;
  *
  * @author Pascal
  */
-public class CompUserProp extends BaseDto{
+public class UserProp extends BaseDto{
     private String userAccountId;
     private String userAccountName;
     

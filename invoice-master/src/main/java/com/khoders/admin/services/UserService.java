@@ -6,7 +6,7 @@
 package com.khoders.admin.services;
 
 import com.khoders.invoicemaster.dto.SaleLeadDto;
-import com.khoders.admin.mapper.MasterParam;
+import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.mapper.UserMapper;
 import com.khoders.invoicemaster.dto.AuthRequest;
@@ -76,7 +76,7 @@ public class UserService {
         return null;
     }
     
-    public SaleLeadDto saveLead(SaleLeadDto leadDto, MasterParam param){
+    public SaleLeadDto saveLead(SaleLeadDto leadDto, AppParam param){
         SaleLead lead = mapper.toEntity(leadDto, param);
         SaleLead saleLead  = crudApi.save(lead);
         return mapper.toDto(saleLead);

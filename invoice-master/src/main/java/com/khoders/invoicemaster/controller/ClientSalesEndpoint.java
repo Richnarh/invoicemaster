@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
  *
  * @author richa
  */
-@Path(ApiEndpoint.SALES_ENDPOINT)
+@Path("client-sales")
 public class ClientSalesEndpoint
 {
     @Inject private SalesService salesService;

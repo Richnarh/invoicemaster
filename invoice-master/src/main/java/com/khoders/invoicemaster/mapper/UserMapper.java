@@ -6,7 +6,7 @@
 package com.khoders.invoicemaster.mapper;
 
 import com.khoders.invoicemaster.dto.SaleLeadDto;
-import com.khoders.admin.mapper.MasterParam;
+import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.SaleLead;
@@ -75,7 +75,7 @@ public class UserMapper {
         return dto;
     }
     
-    public SaleLead toParam(MasterParam param){
+    public SaleLead toParam(AppParam param){
         SaleLead saleLead = new SaleLead();
         UserAccount userAccount = as.getUser(param.getUserAccountId());
         CompanyBranch companyBranch = as.getBranch(param.getCompanyBranchId());
@@ -84,7 +84,7 @@ public class UserMapper {
         return saleLead;
     }
     
-    public SaleLead toEntity(SaleLeadDto leadDto, MasterParam param){
+    public SaleLead toEntity(SaleLeadDto leadDto, AppParam param){
         SaleLead lead = toParam(param);
         if(leadDto.getId() != null){
             lead.setId(leadDto.getId());

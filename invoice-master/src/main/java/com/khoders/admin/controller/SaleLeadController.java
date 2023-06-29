@@ -6,7 +6,7 @@
 package com.khoders.admin.controller;
 
 import com.khoders.invoicemaster.dto.SaleLeadDto;
-import com.khoders.admin.mapper.MasterParam;
+import com.khoders.admin.mapper.AppParam;
 import com.khoders.admin.services.UserService;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.resource.jaxrs.JaxResponse;
@@ -35,14 +35,14 @@ public class SaleLeadController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(@BeanParam MasterParam param, SaleLeadDto leadDto){
+    public Response create(@BeanParam AppParam param, SaleLeadDto leadDto){
         SaleLeadDto dto = userService.saveLead(leadDto, param);
         return JaxResponse.created(Msg.CREATED, dto);
     }
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(@BeanParam MasterParam param, SaleLeadDto leadDto){
+    public Response update(@BeanParam AppParam param, SaleLeadDto leadDto){
         SaleLeadDto dto = userService.saveLead(leadDto, param);
         return JaxResponse.ok(Msg.UPDATED, dto);
     }

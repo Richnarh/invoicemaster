@@ -5,13 +5,13 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import com.khoders.invoicemaster.dto.CompUserProp;
+import com.khoders.invoicemaster.dto.UserProp;
 
 /**
  *
  * @author Pascal
  */
-public class SaleLeadDto extends CompUserProp{
+public class SaleLeadDto extends UserProp{
     private String firstname;
     private String surname;
     private String phoneNumber;

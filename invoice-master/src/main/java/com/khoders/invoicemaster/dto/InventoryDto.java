@@ -5,13 +5,13 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import com.khoders.invoicemaster.dto.CompUserProp;
+import com.khoders.invoicemaster.dto.UserProp;
 
 /**
  *
  * @author Pascal
  */
-public class InventoryDto extends CompUserProp{
+public class InventoryDto extends UserProp{
     private String inventoryCode;
     private String product;
     private String productId;

@@ -6,7 +6,7 @@
 package com.khoders.admin.controller;
 
 import com.khoders.invoicemaster.dto.InventoryDto;
-import com.khoders.admin.mapper.MasterParam;
+import com.khoders.admin.mapper.AppParam;
 import com.khoders.admin.services.ProductService;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.resource.jaxrs.JaxResponse;
@@ -36,14 +36,14 @@ public class InventoryController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(@BeanParam MasterParam param, InventoryDto inventoryDto){
+    public Response create(@BeanParam AppParam param, InventoryDto inventoryDto){
         InventoryDto dto = productService.save(inventoryDto, param);
         return JaxResponse.created(Msg.CREATED, dto);
     }
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(@BeanParam MasterParam param, InventoryDto inventoryDto){
+    public Response update(@BeanParam AppParam param, InventoryDto inventoryDto){
         InventoryDto dto = productService.save(inventoryDto, param);
         return JaxResponse.ok(Msg.UPDATED, dto);
     }

@@ -9,9 +9,11 @@ package com.khoders.invoicemaster.dto;
  *
  * @author Pascal
  */
-public class ProductDto {
+public class ProductDto extends UserProp{
     private String productName;
     private String productCode;
+    private String productType;
+    private String productTypeId;
     private int reorderLevel;
     private byte[] productImage;
     private String imageFormat;
@@ -63,6 +65,22 @@ public class ProductDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public String getProductTypeId() {
+        return productTypeId;
+    }
+
+    public void setProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId;
     }
     
 }
