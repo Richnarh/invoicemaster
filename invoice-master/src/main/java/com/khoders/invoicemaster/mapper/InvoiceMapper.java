@@ -6,7 +6,9 @@
 package com.khoders.invoicemaster.mapper;
 
 import com.khoders.invoicemaster.dto.InvoiceDto;
+import com.khoders.invoicemaster.dto.InvoiceItemDto;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
+import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.resource.jpa.CrudApi;
 import javax.inject.Inject;
 
@@ -25,6 +27,30 @@ public class InvoiceMapper {
         InvoiceDto dto = new InvoiceDto();
         if(invoice.getId() == null) return null;
         dto.setId(invoice.getId());
+        return dto;
+    }
+    
+    public ProformaInvoiceItem toEntity(InvoiceItemDto dto){
+        ProformaInvoiceItem invoiceItem = new ProformaInvoiceItem();
+        if(dto.getId() != null){
+            invoiceItem.setId(dto.getId());
+        }
+        invoiceItem.setDescription(dto.getDescription());
+        invoiceItem.setItemCode(dto.getItemCode());
+        return invoiceItem;
+    }
+    public InvoiceItemDto toDto(ProformaInvoiceItem invoiceItem){
+        InvoiceItemDto dto = new InvoiceItemDto();
+        if(invoiceItem.getId() == null) return null;
+        dto.setId(invoiceItem.getId());
+        dto.setDescription(invoiceItem.getDescription());
+        dto.setItemCode(invoiceItem.getItemCode());
+        dto.setQuantity(invoiceItem.getQuantity());
+        dto.setUnitPrice(invoiceItem.getUnitPrice());
+        dto.setInventory(invoiceItem.getInventory() != null ? invoiceItem.getInventory() +"" : null);
+        dto.setInventory(invoiceItem.getInventory() != null ? invoiceItem.getInventory().getId() : null);
+        dto.setProformaInvoice(invoiceItem.getProformaInvoice()  != null ? invoiceItem.getProformaInvoice().getQuotationNumber() : null);
+        dto.setProformaInvoiceId(invoiceItem.getProformaInvoice() != null ? invoiceItem.getProformaInvoice().getId() : null);
         return dto;
     }
 }
