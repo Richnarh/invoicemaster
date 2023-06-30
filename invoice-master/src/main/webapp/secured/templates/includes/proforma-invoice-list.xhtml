@@ -14,7 +14,13 @@
         <div class="row wow fadeInDown">
             <div class="col-md-12 col-sm-6 col-lg-12">
                 <h:form id="searchForm" style="margin-bottom: 5px;">
-
+                    <p:commandButton id="searchBtn" class="kbtn-default" icon="#{msg.cog_icon}" />
+                    <p:overlayPanel for="searchBtn" hideEffect="fade" dynamic="true" style="width:430px; height: 80px; padding-top:1rem" dismissable="true" showCloseIcon="true">
+                        <span class="mr-2">Page limit</span>
+                        <p:inputText value="#{proformaInvoiceController.pageLimit}"/>
+                        <p:commandButton icon="#{msg.check_icon_circle}" class="kbtn-success mx-2" value="Save Changes" action="#{proformaInvoiceController.savePageLimit()}"/>
+                    </p:overlayPanel>
+                    
                     <span class="mr-2">From Date: </span>
                     <p:datePicker value="#{proformaInvoiceController.dateRange.fromDate}"
                                   pattern="#{msg.formatted_date}" 
@@ -30,7 +36,7 @@
                     <h:commandButton class="btn btn-default btn-sm" value="#{msg.reset}" action="#{proformaInvoiceController.reset()}">
                         <p:ajax update=":proformaInvoiceTable, @form"/>
                     </h:commandButton>
-                    
+
 
                     <div class="float-right">
                         <h:commandButton value="#{msg.new} #{msg.invoice}" class="btn btn-outline-primary btn-sm"
@@ -38,7 +44,7 @@
                             <p:ajax update=":mainPanel"/>
                         </h:commandButton>
                     </div>
-                    
+
                     <span class="shadow-sm float-right col-1 faded-shade p-1">Count: #{proformaInvoiceController.proformaInvoiceList.size()}</span>
                 </h:form>      
             </div>
@@ -55,15 +61,15 @@
                     <h:panelGrid columns="2">
                         <span>Id</span>
                         <h:outputText value="#{proformaInvoice.id}"/>
-                        
+
                         <span>#{msg.created_date}</span>
                         <h:outputText value="#{proformaInvoice.createdDate}">
-                                <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                            <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
                         </h:outputText>
-                        
+
                         <span>Mode of payment</span>
                         <h:outputText value="#{proformaInvoice.modeOfPayment.label}"/>
-                        
+
                         <span>#{msg.description}</span>
                         <h:outputText value="#{proformaInvoice.description}"/>
                     </h:panelGrid>
@@ -90,34 +96,28 @@
                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Print" style="width: 200px;">
-                    <h:commandLink class="ptext-link" value="Cover" target="_blank" action="#{proformaInvoiceController.printCover(proformaInvoice)}"/>
-                    <span class="mx-2">|</span>
-                    <h:commandLink class="ptext-link" value="Invoice" target="_blank" action="#{proformaInvoiceController.generateProformaInvoice(proformaInvoice)}"/>
-                    <span class="mx-2">|</span>
-                    <h:commandLink class="ptext-link" value="Receipt" target="_blank" action="#{proformaInvoiceController.generateReceipt(proformaInvoice)}"/>
-                </p:column>
-                
+
                 <p:column headerText="#{msg.action}" style="width: 120px;">
                     <p:menuButton value="#{msg.choose}">
-                        <p:menuitem icon="#{msg.edit_icon}" class="text-secondary" value="#{msg.edit}" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainPanel"/>
-                        <p:menuitem id="invoiceItem" icon="fa fa-plus" class="text-secondary" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainPanel"/>
-                        <p:menuitem id="paymentInfo" icon="fa fa-plus" class="text-secondary" value="Payment Info" immediate="true" action="#{proformaInvoiceController.recordPayment(proformaInvoice)}" oncomplete="PF('paymentForm').show()" resetValues="true" update=":mainPanel, :paymentModal,:paymentDataForm"/>
-                        <p:menuitem icon="fa fa-cog" rendered="#{proformaInvoice.converted == true}" class="text-secondary" value="Request Reversal" immediate="true" action="#{proformaInvoiceController.reverseApproval(proformaInvoice)}"/>
-                        <p:menuitem icon="#{msg.delete_icon}" rendered="#{appSession.currentUser.permDelete == true}" class="text-danger" value="#{msg.delete}" immediate="true" update=":mainPanel"/>
+                        <p:menuitem icon="#{msg.pdf_icon}" class="text-secondary" target="_blank" value="#{msg.print} Invoice" action="#{proformaInvoiceController.generateProformaInvoice(proformaInvoice)}" ajax="false"/>
+                        <p:menuitem icon="#{msg.pdf_icon}" class="text-secondary" target="_blank" value="#{msg.print} Receipt" action="#{proformaInvoiceController.generateReceipt(proformaInvoice)}" ajax="false"/>
+                        <p:menuitem id="invoiceItem" icon="#{msg.add_icon_circle}" class="text-secondary" value="Invoice Item" action="#{proformaInvoiceController.manageProformaInvoiceItem(proformaInvoice)}" immediate="true" update=":mainPanel"/>
+                        <p:menuitem id="paymentInfo" icon="#{msg.money_icon}" class="text-secondary" value="Payment Info" immediate="true" action="#{proformaInvoiceController.recordPayment(proformaInvoice)}" oncomplete="PF('paymentForm').show()" resetValues="true" update=":mainPanel, :paymentModal,:paymentDataForm"/>
+                        <p:menuitem icon="#{msg.cog_icon}" rendered="#{proformaInvoice.converted == true}" class="text-secondary" value="Request Reversal" immediate="true" action="#{proformaInvoiceController.reverseApproval(proformaInvoice)}"/>
+                        <p:menuitem icon="#{msg.edit_icon}" class="text-secondary" value="#{msg.edit} Invoice" action="#{proformaInvoiceController.editProformaInvoice(proformaInvoice)}" immediate="true" update=":mainPanel"/>
                     </p:menuButton>
-                        <p:tooltip for="paymentInfo" value="Add payment info on invoice" position="left"/>
-                        <p:blockUI block="@form" trigger="invoiceItem,paymentInfo">
-                            <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
-                            <p><small>Please wait...</small></p>
-                        </p:blockUI>
+                    <p:tooltip for="paymentInfo" value="Add payment info on invoice" position="left"/>
+                    <p:blockUI block="@form" trigger="invoiceItem,paymentInfo">
+                        <img src="#{application.contextPath}/vendors/img/loading.gif" height="75px"/>
+                        <p><small>Please wait...</small></p>
+                    </p:blockUI>
                 </p:column>
             </p:dataTable>
-            
+
             <div class="col-md-10 mx-auto">
                 <h:outputLabel class="py-3 bg-gradient-info p-3" rendered="#{empty proformaInvoiceController.proformaInvoiceList}" value="There are no invoices created today, click 'Search Invoice' to view previous invoices or Search between dates."/>
             </div>
         </h:form>
-        
+
     </h:body>
 </html>

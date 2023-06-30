@@ -5,10 +5,10 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.invoicemaster.dto.ProformaInvoiceDto;
-import com.khoders.invoicemaster.dto.ProformaInvoiceItemDto;
-import com.khoders.invoicemaster.dto.Receipt;
-import com.khoders.invoicemaster.dto.SalesTaxDto;
+import com.khoders.invoicemaster.reportData.ProformaInvoiceDto;
+import com.khoders.invoicemaster.reportData.ProformaInvoiceItemDto;
+import com.khoders.invoicemaster.reportData.Receipt;
+import com.khoders.invoicemaster.reportData.SalesTaxDto;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;

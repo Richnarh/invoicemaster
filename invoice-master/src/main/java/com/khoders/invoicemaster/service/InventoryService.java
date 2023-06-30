@@ -50,6 +50,17 @@ public class InventoryService
         return Collections.emptyList();
     }
     
+    public Inventory getInventory(String inventoryId){
+        return crudApi.getEm().createQuery("SELECT e FROM Inventory e", Inventory.class)
+                .setParameter(Inventory._id, inventoryId)
+                .getResultStream().findFirst().orElse(null);
+    }
+    public Product getProduct(String productId){
+        return crudApi.getEm().createQuery("SELECT e FROM Product e", Product.class)
+                .setParameter(Product._id, productId)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
     public List<ReturnGood> getReturnGoodList()
     {
         try

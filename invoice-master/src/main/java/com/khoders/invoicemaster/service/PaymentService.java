@@ -7,13 +7,14 @@ package com.khoders.invoicemaster.service;
 
 import Zenoph.SMSLib.Enums.MSGTYPE;
 import Zenoph.SMSLib.ZenophSMS;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
-import com.khoders.invoicemaster.sms.SmsAccess;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -95,12 +96,39 @@ public class PaymentService
         return Collections.emptyList();
     }
         
+    public List<PaymentData> getInvoiceTransaction(PaymentStatus paymentStatus, DateRangeUtil dateRange) {
+        try {
+            if (dateRange.getFromDate() == null && dateRange.getToDate() == null && paymentStatus == null) {
+                String queryString = "SELECT e FROM PaymentData e ORDER BY e.valueDate DESC";
+                TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(queryString, PaymentData.class);
+                return typedQuery.getResultList();
+
+            } else if ((dateRange.getFromDate() != null || dateRange.getToDate() != null) && paymentStatus == null) {
+                String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN ?1 AND ?2 ORDER BY e.valueDate DESC";
+                TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
+                        .setParameter(1, dateRange.getFromDate())
+                        .setParameter(2, dateRange.getToDate());
+                return typedQuery.getResultList();
+            } else {
+                String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.paymentStatus=?3 ORDER BY e.valueDate DESC";
+                TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
+                        .setParameter(1, dateRange.getFromDate())
+                        .setParameter(2, dateRange.getToDate())
+                        .setParameter(3, paymentStatus);
+                return typedQuery.getResultList();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
     public ZenophSMS extractParams()
     {
         ZenophSMS zsms = new ZenophSMS();
         try
         {
-           SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e WHERE e.userAccount=:userAccount", SmsAccess.class)
+           com.khoders.invoicemaster.sms.SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e", com.khoders.invoicemaster.sms.SmsAccess.class)
                     .getSingleResult();
             if(smsAccess != null){
                 
@@ -118,5 +146,11 @@ public class PaymentService
         }
 
         return zsms;
+    }
+
+    public PaymentData getPaymentData(String paymentDataId) {
+        return crudApi.getEm().createQuery("SELECT e FROM PaymentData e", PaymentData.class)
+                .setParameter(Inventory._id, paymentDataId)
+                .getResultStream().findFirst().orElse(null);
     }
 }

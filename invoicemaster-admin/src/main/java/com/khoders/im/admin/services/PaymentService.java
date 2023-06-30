@@ -5,6 +5,8 @@
  */
 package com.khoders.im.admin.services;
 
+import Zenoph.SMSLib.Enums.MSGTYPE;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.im.admin.SmsAccess;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
@@ -117,9 +119,9 @@ public class PaymentService
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=?1";
+            String qryString = "SELECT e FROM ProformaInvoiceItem e WHERE e.proformaInvoice=:proformaInvoice";
             TypedQuery<ProformaInvoiceItem> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoiceItem.class);
-            typedQuery.setParameter(1, proformaInvoice);
+            typedQuery.setParameter(ProformaInvoiceItem._proformaInvoice, proformaInvoice);
             return typedQuery.getResultList();
 
         } catch (Exception e)
@@ -130,21 +132,28 @@ public class PaymentService
         return Collections.emptyList();
     }
 
-//    public static ZenophSMS extractParams()
-//    {
-//        ZenophSMS zsms = new ZenophSMS();
-//        try
-//        {
-//            zsms.setUser(SmsAccess.USERNAME);
-//            zsms.setPassword(SmsAccess.PASSWORD);
-//            zsms.authenticate();
-//            zsms.setMessageType(MSGTYPE.TEXT);
-//
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        return zsms;
-//    }
+    public ZenophSMS extractParams()
+    {
+        ZenophSMS zsms = new ZenophSMS();
+        try
+        {
+           com.khoders.invoicemaster.sms.SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e", com.khoders.invoicemaster.sms.SmsAccess.class)
+                    .getSingleResult();
+            if(smsAccess != null){
+                
+            System.out.println("Username --- "+smsAccess.getUsername());
+            System.out.println("Password --- "+smsAccess.getPassword());
+            
+            zsms.setUser(smsAccess.getUsername());
+            zsms.setPassword(smsAccess.getPassword());
+            zsms.authenticate();
+            zsms.setMessageType(MSGTYPE.TEXT);
+          }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return zsms;
+    }
 }

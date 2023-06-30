@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <h:head>
+        <title>#{msg.title}</title>
+
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" />
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/OverlayScrollbars.min.css" />   
+        <link rel="stylesheet" href="#{application.contextPath}/vendors/css/main.css" />  
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>  
+    </h:head>
+
+    <h:body class="pt-3 pb-3">
+        <div class="py-3 col-md-10 mx-auto p-5 border-info shadow">
+            <div class="alert alert-info">
+                Invoicemaster - Search and print items that are awaiting delivery.
+            </div> 
+            <div class="col-md-12 pb-2">
+                <h:form class="spaced-form">
+                    <h:panelGrid columns="4">
+                        <p:inputText value="#{waybillController.invoiceId}" required="true"/>
+                        <p:commandButton value="Search" icon="#{msg.check_icon}" class="kbtn-success" action="#{waybillController.searchInvoice()}" update=":deliveryTable"/>
+                        <p:commandButton value="Load All" icon="#{msg.check_icon_circle}" immediate="true" class="kbtn-default" action="#{waybillController.loadPending()}" update=":deliveryTable"/>
+                        <p:commandButton value="Clear" immediate="true" icon="#{msg.clear_icon}" class="kbtn-default" action="#{waybillController.clearSearch()}" update="@form, :deliveryTable"/>
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="deliveryTable">
+                    <p:dataTable value="#{waybillController.deliveryList}" var="delivery">
+                        <p:column style="width: 37px;">
+                            <p:rowToggler/>
+                        </p:column>
+
+                        <p:rowExpansion>
+                            <h:panelGrid columns="2">
+                                <span>Id</span>
+                                <h:outputText value="#{delivery.id}"/>
+                            </h:panelGrid>
+                        </p:rowExpansion>
+                        <p:column headerText="Invoice No.">
+                            <h:outputText value="#{delivery.proformaInvoice.quotationNumber}"/>
+                        </p:column>
+                        <p:column headerText="Client">
+                            <h:outputText value="#{delivery.proformaInvoice.client.clientName}"/>
+                        </p:column>
+                        <p:column headerText="Phone">
+                            <h:outputText value="#{delivery.proformaInvoice.client.phone}"/>
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{delivery.deliveryStatus.label}"/>
+                        </p:column>
+                        <p:column headerText="Total Amount">
+                            <h:outputText value="#{delivery.proformaInvoice.totalAmount}">
+                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                            </h:outputText> 
+                        </p:column>
+                        <p:column headerText="Print" class="text-center" style="width: 130px">
+                            <h:commandLink class="ptext-link" value="Print Waybill" target="_blank" action="#{waybillController.generateWaybill()}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <h:panelGroup rendered="#{appSession.currentUser.permPrint == true}">
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Main System</a>
+                    </li>
+                </h:panelGroup>
+                <div class="col-md-2 float-right py-2">
+                    <h:form>
+                        <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

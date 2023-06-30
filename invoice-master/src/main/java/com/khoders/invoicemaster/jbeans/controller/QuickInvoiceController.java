@@ -5,13 +5,12 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
-import com.khoders.invoicemaster.dto.SalesTaxDto;
-import com.khoders.invoicemaster.entities.ProformaInvoice;
+import com.khoders.invoicemaster.reportData.SalesTaxDto;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
-import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
@@ -35,6 +34,8 @@ public class QuickInvoiceController implements Serializable
 {
     @Inject
     private ProformaInvoiceService proformaInvoiceService;
+    @Inject
+    private AppSession appSession;
 
     private ProformaInvoiceItem proformaInvoiceItem = new ProformaInvoiceItem();
 
@@ -64,15 +65,13 @@ public class QuickInvoiceController implements Serializable
         {
             if (proformaInvoiceItem.getQuantity() <= 0)
             {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter quantity"), null));
+                Msg.error("Please enter quantity");
                 return;
             }
             
             if(proformaInvoiceItem.getUnitPrice() <= 0.0)
             {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
+              Msg.error("Please enter price");
               return;
             }
             
@@ -106,11 +105,11 @@ public class QuickInvoiceController implements Serializable
 
             if (productDiscountRate > 0.0)
             {
-                if (productDiscountRate > 5.0)
-                {
-                    Msg.error("Please dicount above 5% is not allowed!");
-                    return;
-                }
+//                if (productDiscountRate > 5.0)
+//                {
+//                    Msg.error("Please dicount above 5% is not allowed!");
+//                    return;
+//                }
                 calculatedDiscount = totalSaleAmount * (productDiscountRate / 100); // Calculating Discount on total Amount
                 double newTotalAmount = totalSaleAmount - calculatedDiscount;
 
@@ -136,6 +135,10 @@ public class QuickInvoiceController implements Serializable
                 
         for (Tax tax : taxList)
         {
+            // v2 exclude the NHIL tax in sales calculation
+            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
+                if(tax.getTaxName().equals("NHIL")) continue;
+            }
             SalesTaxDto dto = new SalesTaxDto();
 
             double calc = getTotalSaleAmount() * (tax.getTaxRate() / 100);
@@ -153,25 +156,13 @@ public class QuickInvoiceController implements Serializable
 
     private void calculateVat()
     {
-        SalesTaxDto nhil = salesTaxDtoList.get(0);
-        SalesTaxDto covid19 = salesTaxDtoList.get(1);
-        SalesTaxDto salesVat = salesTaxDtoList.get(2);
-
-        double totalLevies = nhil.getTaxAmount() + covid19.getTaxAmount();
-
+        SalesTaxDto covid19 = salesTaxDtoList.get(0);
+        SalesTaxDto salesVat = salesTaxDtoList.get(1);
+        double totalLevies = covid19.getTaxAmount();
         double taxableValue = getTotalSaleAmount() + totalLevies;
-
-//            System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
-//            System.out.println("taxableValue => "+taxableValue);
-//            System.out.println("totalLevies => "+totalLevies);
-//            
         double vat = taxableValue * (salesVat.getTaxRate() / 100);
-
-//            System.out.println("vat => "+vat);
         totalPayable = vat + taxableValue + installationFee;
-
         salesVat.setTaxAmount(vat);
-
     }
     
     public void deleteProformaInvoiceItem(ProformaInvoiceItem proformaInvoiceItem)

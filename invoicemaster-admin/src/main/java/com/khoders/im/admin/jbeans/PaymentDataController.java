@@ -5,17 +5,22 @@
  */
 package com.khoders.im.admin.jbeans;
 
+import Zenoph.SMSLib.Enums.MSGTYPE;
+import Zenoph.SMSLib.Enums.REQSTATUS;
+import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
+import static Zenoph.SMSLib.Enums.REQSTATUS.SUCCESS;
+import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.im.admin.dto.ProformaInvoiceDto;
 import com.khoders.im.admin.listener.AppSession;
 import com.khoders.im.admin.reports.ReportFiles;
 import com.khoders.im.admin.services.PaymentService;
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.SMSType;
-import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.jpa.CrudApi;
@@ -55,6 +60,7 @@ public class PaymentDataController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     @Inject PaymentService paymentService;
+    @Inject DefaultService ds;
     
     private DateRangeUtil dateRange = new DateRangeUtil();
     private String optionText;
@@ -69,7 +75,6 @@ public class PaymentDataController implements Serializable{
     Sms sms = new Sms();
     String phoneNumber=null;
     Client client=null;
-    SenderId senderId = null;
     double totalAmount=0.0;
     
     @PostConstruct
@@ -220,63 +225,59 @@ public class PaymentDataController implements Serializable{
 
     public void processPaymentMsg(PaymentData paymentData)
     {
-//       senderId = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class).getResultStream().findFirst().orElse(null);
+        String senderId = ds.getConfigValue("sms.sender.id");
         try 
         {
-//          ZenophSMS zsms = PaymentService.extractParams();
-//          zsms.setMessage(
-//                  "Thanks for shopping with Dolphin Doors, we'll be expecting you next time. \n "
-//                 + "Contact us: \n "
-//                 + "Website: https://dolphindoors.com/ \n"
-//                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
-//                 + "Email: info@dolphindoors.com");
-//          
-//          if(paymentData.getProformaInvoice() != null){
-//              if(paymentData.getProformaInvoice().getClient() != null)
-//              {
-//                 client = paymentData.getProformaInvoice().getClient();
-//                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
-//              }
-//            }
-//          
-//            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
-//
-//            for (String number : numbers)
-//            {
-//                zsms.addRecipient(number);
-//            }
-//            
-//            zsms.setSenderId(senderId.getSenderIdentity());
-//            zsms.setMessageType(MSGTYPE.TEXT);
-//
-//            List<String[]> response = zsms.submit();
-//            for (String[] destination : response)
-//            {
-//                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
-//                    if (reqstatus == null)
-//                    {
-//                        FacesContext.getCurrentInstance().addMessage(null,
-//                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("failed to send message"), null));
-//                        break;
-//                    } else
-//                    {
-//                        switch (reqstatus)
-//                        {
-//                            case SUCCESS:
-//                                saveMessage();
-//                                
-//                                paymentMessageSent(paymentData);
-//                                break;
-//                            case ERR_INSUFF_CREDIT:
-//                                FacesContext.getCurrentInstance().addMessage(null,
-//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Insufficeint Credit"), null));
-//                            default:
-//                                FacesContext.getCurrentInstance().addMessage(null,
-//                                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Failed to send message"), null));
-//                                return;
-//                        }
-//                    }
-//                }
+          ZenophSMS zsms = paymentService.extractParams();
+          zsms.setMessage(
+                  "Thanks for shopping with Dolphin Doors, we'll be expecting you next time. \n "
+                 + "Contact us: \n "
+                 + "Website: https://dolphindoors.com/ \n"
+                 + "Tel: +233 302 986 345/+233 302 252 027 \n"
+                 + "Email: info@dolphindoors.com");
+          
+          if(paymentData.getProformaInvoice() != null){
+              if(paymentData.getProformaInvoice().getClient() != null)
+              {
+                 client = paymentData.getProformaInvoice().getClient();
+                 phoneNumber = paymentData.getProformaInvoice().getClient().getPhone();
+              }
+            }
+          
+            List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
+
+            for (String number : numbers)
+            {
+                zsms.addRecipient(number);
+            }
+            
+            zsms.setSenderId(senderId != null && senderId.isEmpty() || senderId == null ? ds.getSenderId() : senderId);
+            zsms.setMessageType(MSGTYPE.TEXT);
+
+            List<String[]> response = zsms.submit();
+            for (String[] destination : response)
+            {
+                    REQSTATUS reqstatus = REQSTATUS.fromInt(Integer.parseInt(destination[0]));
+                    if (reqstatus == null)
+                    {
+                       Msg.error("failed to send message");
+                       break;
+                    } else
+                    {
+                        switch (reqstatus)
+                        {
+                            case SUCCESS:
+                                saveMessage();
+                                paymentMessageSent(paymentData);
+                                break;
+                            case ERR_INSUFF_CREDIT:
+                                Msg.error("Insufficeint Credit");
+                            default:
+                                Msg.error("Failed to send message");
+                                return;
+                        }
+                    }
+                }
 
     }catch(Exception e)
     {
@@ -302,7 +303,6 @@ public class PaymentDataController implements Serializable{
             sms.setMessage("Thanks for shopping with Dolphin Doors, we'll be expecting you next time.");
             sms.setClient(client);
             sms.setsMSType(SMSType.SYSTEM_SMS);
-            sms.setSenderId(senderId);
             sms.setUserAccount(appSession.getCurrentUser());
            if(crudApi.save(sms) != null)
            {

@@ -43,6 +43,7 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "phone_number")
     private String phoneNumber;
     
+    public static final String _email="email";
     @Column(name = "email")
     private String email;
     
@@ -87,9 +88,10 @@ public class UserAccount extends BaseModel implements Serializable
     @Column(name = "quick_invoice")
     private boolean quickInvoice = false;
     
-    @Column(name = "warehouse")
-    private boolean warehouse = false;
+    @Column(name = "waybill")
+    private boolean waybill = false;
     
+    public static final String _password="password";
     @Column(name = "password")
     private String password;
     
@@ -290,16 +292,14 @@ public class UserAccount extends BaseModel implements Serializable
         this.quickInvoice = quickInvoice;
     }
 
-    public boolean isWarehouse()
-    {
-        return warehouse;
+    public boolean isWaybill() {
+        return waybill;
     }
 
-    public void setWarehouse(boolean warehouse)
-    {
-        this.warehouse = warehouse;
+    public void setWaybill(boolean waybill) {
+        this.waybill = waybill;
     }
-
+    
     public AppVersion getAppVersion() {
         return appVersion;
     }
