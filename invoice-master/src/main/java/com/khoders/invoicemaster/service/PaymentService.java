@@ -98,23 +98,23 @@ public class PaymentService
         
     public List<PaymentData> getInvoiceTransaction(PaymentStatus paymentStatus, DateRangeUtil dateRange) {
         try {
-            if (dateRange.getFromDate() == null && dateRange.getToDate() == null && paymentStatus == null) {
-                String queryString = "SELECT e FROM PaymentData e ORDER BY e.valueDate DESC";
-                TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(queryString, PaymentData.class);
-                return typedQuery.getResultList();
-
+            if (dateRange.getFromDate() == null && dateRange.getToDate() == null && paymentStatus == null){
+                return crudApi.getEm().createQuery("SELECT e FROM PaymentData e ORDER BY e.valueDate DESC", PaymentData.class).getResultList();
             } else if ((dateRange.getFromDate() != null || dateRange.getToDate() != null) && paymentStatus == null) {
-                String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN ?1 AND ?2 ORDER BY e.valueDate DESC";
-                TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
-                        .setParameter(1, dateRange.getFromDate())
-                        .setParameter(2, dateRange.getToDate());
-                return typedQuery.getResultList();
+                String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN :valueDate AND :valueDate ORDER BY e.valueDate DESC";
+                return crudApi.getEm().createQuery(qryString, PaymentData.class)
+                        .setParameter(PaymentData._valueDate, dateRange.getFromDate())
+                        .setParameter(PaymentData._valueDate, dateRange.getToDate()).getResultList();
+            }else if (dateRange.getFromDate() == null && dateRange.getToDate() == null && paymentStatus != null) {
+                return crudApi.getEm().createQuery("SELECT e FROM PaymentData e WHERE e.paymentStatus=:paymentStatus ORDER BY e.valueDate DESC", PaymentData.class)
+                        .setParameter(PaymentData._paymentStatus, paymentStatus)
+                        .getResultList();
             } else {
-                String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.paymentStatus=?3 ORDER BY e.valueDate DESC";
+                String qryString = "SELECT e FROM PaymentData e WHERE e.valueDate BETWEEN :valueDate AND :valueDate AND e.paymentStatus=:paymentStatus ORDER BY e.valueDate DESC";
                 TypedQuery<PaymentData> typedQuery = crudApi.getEm().createQuery(qryString, PaymentData.class)
-                        .setParameter(1, dateRange.getFromDate())
-                        .setParameter(2, dateRange.getToDate())
-                        .setParameter(3, paymentStatus);
+                        .setParameter(PaymentData._valueDate, dateRange.getFromDate())
+                        .setParameter(PaymentData._valueDate, dateRange.getToDate())
+                        .setParameter(PaymentData._paymentStatus, paymentStatus);
                 return typedQuery.getResultList();
             }
         } catch (Exception e) {
@@ -149,8 +149,6 @@ public class PaymentService
     }
 
     public PaymentData getPaymentData(String paymentDataId) {
-        return crudApi.getEm().createQuery("SELECT e FROM PaymentData e", PaymentData.class)
-                .setParameter(Inventory._id, paymentDataId)
-                .getResultStream().findFirst().orElse(null);
+        return crudApi.find(PaymentData.class, paymentDataId);
     }
 }

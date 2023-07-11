@@ -11,9 +11,12 @@ import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.dto.PaymentDataDto;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -22,6 +25,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -29,8 +34,8 @@ import javax.ws.rs.core.Response;
  */
 @Path(ApiEndpoint.PAYMENT_ENDPOINT)
 public class TransactionController {
+    private static final Logger log = LoggerFactory.getLogger(TransactionController.class);
     @Inject private TransactionService transactionService;
-
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +46,7 @@ public class TransactionController {
     
     @PUT
     @Path("/{paymentStatus}/{paymentDataId}")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updateStatus(@PathParam("paymentStatus") String paymentStatus, @PathParam("paymentDataId") String paymentDataId){
         String dto = transactionService.updateStatus(paymentStatus,paymentDataId);
         return JaxResponse.ok(Msg.UPDATED,dto);
@@ -53,13 +59,23 @@ public class TransactionController {
         return JaxResponse.ok(dtoList);
     }
     @GET
-    @Path("/paymentDataId")
+    @Path("/{paymentDataId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("paymentDataId") String paymentDataId){
         return JaxResponse.ok(transactionService.findById(paymentDataId));
     }
     
+    @GET
+    @Path("/{paymentDataId}/report")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response report(@PathParam("paymentDataId") String paymentDataId){
+        log.debug("reporting...");
+        byte[] reportByte = transactionService.printReport(paymentDataId);
+        return JaxResponse.ok(Msg.RECORD_FOUND, Base64.getEncoder().encodeToString(reportByte));
+    }
+    
     @DELETE
-    @Path("{paymentDataId}")
+    @Path("/{paymentDataId}")
     public Response delete(@PathParam("paymentDataId") String paymentDataId){
         boolean delete = transactionService.delete(paymentDataId);
         if(delete)

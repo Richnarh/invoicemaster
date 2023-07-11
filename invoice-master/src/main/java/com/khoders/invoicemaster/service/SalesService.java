@@ -23,7 +23,7 @@ public class SalesService
 {
     @Inject private CrudApi crudApi;
     @Inject private ClientSalesMapper salesMapper;
-    @Inject private TransactionService transactionService;
+    @Inject private TranService tranService;
     
     public TransactionDto save(OnlineClientDto dto)
     {
@@ -35,7 +35,7 @@ public class SalesService
                 saleItem.setOnlineClient(client);
                 crudApi.save(saleItem);
             }
-           return transactionService.processTransaction(client);
+           return tranService.processTransaction(client);
         }
         return null;
     }

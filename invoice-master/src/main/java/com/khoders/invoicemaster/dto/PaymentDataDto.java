@@ -11,6 +11,8 @@ package com.khoders.invoicemaster.dto;
  */
 public class PaymentDataDto extends UserProp{
    private String paymentCode;
+   private String clientName;
+   private String clientId;
    private String proformaInvoice;
    private String proformaInvoiceId;
    private String paymentMethod;
@@ -90,6 +92,22 @@ public class PaymentDataDto extends UserProp{
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
    
 }

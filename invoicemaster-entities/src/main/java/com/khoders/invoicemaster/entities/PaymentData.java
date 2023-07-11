@@ -43,6 +43,7 @@ public class PaymentData extends UserAccountRecord implements Serializable
    @Enumerated(EnumType.STRING)
    private DeliveryStatus deliveryStatus;
    
+   public static final String _paymentStatus = "paymentStatus";
    @Column(name = "payment_status")
    @Enumerated(EnumType.STRING)
    private PaymentStatus paymentStatus;

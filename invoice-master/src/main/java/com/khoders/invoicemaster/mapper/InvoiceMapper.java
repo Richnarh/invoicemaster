@@ -10,12 +10,14 @@ import com.khoders.invoicemaster.dto.InvoiceItemDto;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.resource.jpa.CrudApi;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
  *
  * @author Pascal
  */
+@Stateless
 public class InvoiceMapper {
     @Inject private CrudApi crudApi;
     

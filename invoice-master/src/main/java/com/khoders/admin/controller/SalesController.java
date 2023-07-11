@@ -50,7 +50,7 @@ public class SalesController {
         return JaxResponse.ok(invoices);
     }
     @GET
-    @Path("search/{userAccountId}")
+    @Path("search/{userAccountId}/user")
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchByUser(@PathParam("userAccountId") String userAccountId){
         List<InvoiceDto> invoices = invoiceService.searchByUser(userAccountId);

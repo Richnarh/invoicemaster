@@ -15,7 +15,7 @@ import com.khoders.resource.enums.PaymentStatus;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.invoicemaster.dto.TransactionDto;
-import com.khoders.invoicemaster.service.TransactionService;
+import com.khoders.invoicemaster.service.TranService;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class TransactionMapper
 {
     @Inject private CrudApi crudApi;
     @Inject private ClientSalesMapper salesMapper;
-    @Inject private TransactionService transactionService;
+    @Inject private TranService transactionService;
     
 
     public TransactionDto toDto(OnlineClient client)
