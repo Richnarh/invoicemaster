@@ -20,8 +20,6 @@ import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.Pattern;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,11 +27,8 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -41,6 +36,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  */
 @Stateless
 public class TransactionService {
+    private static final Logger log = LoggerFactory.getLogger(TransactionService.class);
+    
     @Inject private CrudApi crudApi;
     @Inject private PaymentMapper mapper;
     @Inject private PaymentService paymentService;
@@ -50,15 +47,14 @@ public class TransactionService {
         double totalAmount = 0.0;
         LocalDate fromDate=null,toDate=null;
         List<PaymentDataDto> dtoList = new LinkedList<>();
+        PaymentStatus paymentStatus = null;
         
-        PaymentStatus paymentStatus = PaymentStatus.resolve(param.getPaymentStatus());
-        System.out.println("getPaymentStatus: "+param.getPaymentStatus());
-        System.out.println("getFromDate: "+param.getFromDate());
-        System.out.println("getToDate: "+param.getToDate());
         if(!"null".equals(param.getFromDate()))
             fromDate = DateUtil.parseLocalDate(param.getFromDate(), Pattern._yyyyMMdd);
         if(!"null".equals(param.getToDate()))
             toDate = DateUtil.parseLocalDate(param.getToDate(), Pattern._yyyyMMdd);
+        if(!"null".equals(param.getPaymentStatus()))
+            paymentStatus = PaymentStatus.valueOf(param.getPaymentStatus());
         
         DateRangeUtil dateRange = new DateRangeUtil(fromDate, toDate);
         
@@ -110,4 +106,14 @@ public class TransactionService {
         reportParams.put("logo", ReportFiles.LOGO);
         return reportManager.createByteReport(dtoList, ReportFiles.WAYBILL_FILE, reportParams);
     }       
+
+    public PaymentDataDto updateDeliveryStatus(String paymentDataId) {
+        PaymentDataDto dto = new PaymentDataDto();
+        PaymentData data = crudApi.find(PaymentData.class, paymentDataId);
+        data.setDeliveryStatus(DeliveryStatus.FULLY_DELIVERED);
+        if(crudApi.save(data) != null){
+            dto.setId(data.getId());
+        }
+        return dto;
+    }
 }

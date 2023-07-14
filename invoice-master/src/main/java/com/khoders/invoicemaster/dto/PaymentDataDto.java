@@ -18,6 +18,7 @@ public class PaymentDataDto extends UserProp{
    private String paymentMethod;
    private String deliveryStatus;
    private String paymentStatus;
+   private String deliveryAdress;
    private double partialAmountPaid;
    private double totalAmount;
    private boolean paymentMessage=false;
@@ -108,6 +109,14 @@ public class PaymentDataDto extends UserProp{
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
+    }
+
+    public String getDeliveryAdress() {
+        return deliveryAdress;
+    }
+
+    public void setDeliveryAdress(String deliveryAdress) {
+        this.deliveryAdress = deliveryAdress;
     }
    
 }

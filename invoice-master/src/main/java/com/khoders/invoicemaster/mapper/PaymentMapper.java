@@ -11,7 +11,6 @@ import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.UserAccount;
-import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.reportData.ProformaInvoiceDto;
 import com.khoders.invoicemaster.reportData.ProformaInvoiceItemDto;
 import com.khoders.invoicemaster.service.AppService;
@@ -20,22 +19,10 @@ import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Pattern;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
@@ -53,14 +40,15 @@ public class PaymentMapper {
         PaymentDataDto dto = new PaymentDataDto();
         if(data.getId() == null) return null;
         dto.setId(data.getId());
-        dto.setDeliveryStatus(data.getDeliveryStatus().getLabel());
-        dto.setPaymentMethod(data.getPaymentMethod().getLabel());
-        dto.setPaymentStatus(data.getPaymentStatus().getLabel());
+        dto.setDeliveryStatus(data.getDeliveryStatus() != null ? data.getDeliveryStatus().getLabel() : null);
+        dto.setPaymentMethod(data.getPaymentMethod() != null ? data.getPaymentMethod().getLabel() : null);
+        dto.setPaymentStatus(data.getPaymentStatus() != null ? data.getPaymentStatus().getLabel() : null);
         dto.setPaymentMessage(data.isPaymentMessage());
         dto.setPartialAmountPaid(data.getPartialAmountPaid());
         dto.setPaymentCode(data.getPaymentCode());
         if(data.getProformaInvoice() != null){
             dto.setClientName(data.getProformaInvoice().getClient().getClientName());
+            dto.setDeliveryAdress(data.getProformaInvoice().getClient().getAddress());
             dto.setClientId(data.getProformaInvoice().getClient().getId());
             dto.setProformaInvoice(data.getProformaInvoice().getQuotationNumber());
             dto.setProformaInvoiceId(data.getProformaInvoice().getId());

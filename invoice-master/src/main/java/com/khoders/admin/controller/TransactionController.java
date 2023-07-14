@@ -11,7 +11,6 @@ import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.dto.PaymentDataDto;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import javax.inject.Inject;
@@ -49,6 +48,14 @@ public class TransactionController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateStatus(@PathParam("paymentStatus") String paymentStatus, @PathParam("paymentDataId") String paymentDataId){
         String dto = transactionService.updateStatus(paymentStatus,paymentDataId);
+        return JaxResponse.ok(Msg.UPDATED,dto);
+    }
+    
+    @PUT
+    @Path("/{paymentDataId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateDeliveryStatus(@PathParam("paymentDataId") String paymentDataId){
+        PaymentDataDto dto = transactionService.updateDeliveryStatus(paymentDataId);
         return JaxResponse.ok(Msg.UPDATED,dto);
     }
     
