@@ -27,7 +27,7 @@ public class LookupService {
         builder.findAll(CompanyProfile.class).forEach(data -> {
             LookupItem item = new LookupItem();
             item.setId(data.getId());
-            item.setItemName(data.getCompanyEmail());
+            item.setItemName(data.getCompanyEmail()+"-"+data.getTinNo());
             itemList.add(item);
         });
         return itemList;

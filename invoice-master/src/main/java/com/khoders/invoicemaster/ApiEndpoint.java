@@ -22,7 +22,7 @@ public class ApiEndpoint
     // Admin
     public static final String COMPANY_BRANCH_ENDPOINT = VERSION + "company-branch";
     public static final String COMPANY_PROFILE_ENDPOINT = VERSION + "company-profile";
-    public static final String USER_ENDPOINT = VERSION + "user-account";
+    public static final String USER_ENDPOINT = VERSION + "users";
     public static final String APP_CONFIG_ENDPOINT = VERSION + "app-config";
     public static final String INVENTORY_ENDPOINT = VERSION + "inventory";
     public static final String SALES_LEAD_ENDPOINT = VERSION + "sales-lead";

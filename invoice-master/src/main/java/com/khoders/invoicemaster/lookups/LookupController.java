@@ -7,8 +7,11 @@ package com.khoders.invoicemaster.lookups;
 
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.resource.enums.AccessLevel;
+import com.khoders.resource.enums.Currency;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
@@ -50,6 +53,24 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response paymentMethod(){
         return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(PaymentMethod.values()));
+    }
+    @GET
+    @Path("/currency")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response currency(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(Currency.values()));
+    }
+    @GET
+    @Path("/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response status(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(Status.values()));
+    }
+    @GET
+    @Path("/access-level")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response accessLevel(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(AccessLevel.values()));
     }
     
     // Entities

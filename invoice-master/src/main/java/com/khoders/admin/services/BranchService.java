@@ -61,7 +61,7 @@ public class BranchService {
     public CompanyProfileDto saveProfile(CompanyProfileDto dto) {
         CompanyProfileDto profileDto = null;
         CompanyProfile profile = mapper.toEntity(dto);
-        if(crudApi.save(profile)){
+        if(crudApi.save(profile) != null){
             profileDto = mapper.toDto(profile);
         }
         return profileDto;

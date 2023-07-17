@@ -11,7 +11,6 @@ import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.mapper.UserMapper;
 import com.khoders.invoicemaster.dto.AuthRequest;
 import com.khoders.invoicemaster.entities.SaleLead;
-import com.khoders.invoicemaster.entities.SalesLog;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.service.AppService;
 import com.khoders.resource.jpa.CrudApi;
