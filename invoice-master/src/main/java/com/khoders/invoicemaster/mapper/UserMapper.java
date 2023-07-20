@@ -59,14 +59,14 @@ public class UserMapper {
         if(userAccount.getId() == null) return null;
         dto.setId(userAccount.getId());
         dto.setAccessLevel(userAccount.getAccessLevel().getLabel());
-        dto.setEmail(dto.getEmail());
-        dto.setFullname(dto.getFullname());
+        dto.setEmail(userAccount.getEmail());
+        dto.setFullname(userAccount.getFullname());
         dto.setValueDate(DateUtil.parseLocalDateString(userAccount.getValueDate(), Pattern._ddMMyyyy));
-        dto.setAppVersion(userAccount.getAppVersion().getLabel());
+        dto.setAppVersion(userAccount.getAppVersion() != null ? userAccount.getAppVersion().getLabel() : null);
         dto.setFrame(userAccount.getFrame().getLabel());
         dto.setHeight(userAccount.getHeight().getLabel());
         dto.setWidth(userAccount.getWidth().getLabel());
-        dto.setPhoneNumber(dto.getPhoneNumber());
+        dto.setPhoneNumber(userAccount.getPhoneNumber());
         dto.setStatus(userAccount.getStatus().getLabel());
         if(userAccount.getCompanyBranch() != null){
             dto.setCompanyBranch(userAccount.getCompanyBranch().getBranchName());
