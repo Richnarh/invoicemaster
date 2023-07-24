@@ -15,7 +15,7 @@ public class ProductDto extends UserProp{
     private String productType;
     private String productTypeId;
     private int reorderLevel;
-    private byte[] productImage;
+    private String productImage;
     private String imageFormat;
     private String description;
 
@@ -43,11 +43,11 @@ public class ProductDto extends UserProp{
         this.reorderLevel = reorderLevel;
     }
 
-    public byte[] getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(byte[] productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 

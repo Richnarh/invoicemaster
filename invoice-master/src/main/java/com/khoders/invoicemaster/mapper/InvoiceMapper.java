@@ -7,9 +7,15 @@ package com.khoders.invoicemaster.mapper;
 
 import com.khoders.invoicemaster.dto.InvoiceDto;
 import com.khoders.invoicemaster.dto.InvoiceItemDto;
+import com.khoders.invoicemaster.entities.Client;
+import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
+import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.utilities.DateUtil;
+import com.khoders.resource.utilities.Pattern;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -23,12 +29,44 @@ public class InvoiceMapper {
     
     public ProformaInvoice toEntity(InvoiceDto dto){
         ProformaInvoice invoice = new ProformaInvoice();
+        if(dto.getClientId() == null){
+            throw new DataNotFoundException("Client Id is required");
+        }
+        Client client = crudApi.find(Client.class, dto.getClientId());
+        if(client != null){
+            invoice.setClient(client);
+        }
+        invoice.setDescription(dto.getDescription());
+        invoice.setDiscountRate(invoice.getDiscountRate());
+        invoice.setExpiryDate(DateUtil.parseLocalDate(dto.getExpiryDate(), Pattern._yyyyMMdd));
+        invoice.setIssuedDate(DateUtil.parseLocalDate(dto.getIssuedDate(), Pattern._yyyyMMdd));
+        invoice.setInstallationFee(dto.getInstallationFee());
+        invoice.setModeOfPayment(PaymentMethod.valueOf(dto.getModeOfPayment()));
+        invoice.setQuotationNumber(dto.getQuotationNumber());
+        invoice.setSubTotalAmount(dto.getSubTotalAmount());
+        invoice.setTotalAmount(dto.getTotalAmount());
         return invoice;
     }
+    
     public InvoiceDto toDto(ProformaInvoice invoice){
         InvoiceDto dto = new InvoiceDto();
         if(invoice.getId() == null) return null;
         dto.setId(invoice.getId());
+        dto.setQuotationNumber(invoice.getQuotationNumber());
+        dto.setDescription(invoice.getDescription());
+        dto.setConverted(invoice.isConverted());
+        dto.setDiscountRate(invoice.getDiscountRate());
+        dto.setExpiryDate(DateUtil.parseLocalDateString(invoice.getExpiryDate(), Pattern.ddMMyyyy));
+        dto.setIssuedDate(DateUtil.parseLocalDateString(invoice.getIssuedDate(), Pattern.ddMMyyyy));
+        dto.setInstallationFee(invoice.getInstallationFee());
+        dto.setModeOfPayment(invoice.getModeOfPayment() != null ? invoice.getModeOfPayment().getLabel() : null);
+        dto.setSubTotalAmount(invoice.getSubTotalAmount());
+        dto.setTotalAmount(invoice.getTotalAmount());
+        if(invoice.getClient() != null){
+            dto.setClient(invoice.getClient().getClientName());
+            dto.setClientId(invoice.getClient().getId());
+        }
+        dto.setValueDate(DateUtil.parseLocalDateString(invoice.getValueDate(), Pattern.ddMMyyyy));
         return dto;
     }
     
@@ -39,8 +77,26 @@ public class InvoiceMapper {
         }
         invoiceItem.setDescription(dto.getDescription());
         invoiceItem.setItemCode(dto.getItemCode());
+        if(dto.getInventoryId() == null){
+            throw new DataNotFoundException("Inventory Id is required");
+        }
+        if(dto.getProformaInvoiceId() == null){
+            throw new DataNotFoundException("Invoice Id is required");
+        }
+        Inventory inventory = crudApi.find(Inventory.class, dto.getInventoryId());
+        if(inventory != null){
+            invoiceItem.setInventory(inventory);
+        }
+        ProformaInvoice invoice = crudApi.find(ProformaInvoice.class, dto.getProformaInvoiceId());
+        if(invoice != null){
+            invoiceItem.setProformaInvoice(invoice);
+        }
+        invoiceItem.setQuantity(dto.getQuantity());
+        invoiceItem.setSubTotal(dto.getSubTotal());
+        invoiceItem.setUnitPrice(dto.getUnitPrice());
         return invoiceItem;
     }
+    
     public InvoiceItemDto toDto(ProformaInvoiceItem invoiceItem){
         InvoiceItemDto dto = new InvoiceItemDto();
         if(invoiceItem.getId() == null) return null;

@@ -81,6 +81,12 @@ public class LookupController {
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.inventory());
     }
     @GET
+    @Path("/products")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response products(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.products());
+    }
+    @GET
     @Path("/company-profile")
     @Produces(MediaType.APPLICATION_JSON)
     public Response companyProfile(){
@@ -91,5 +97,11 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response companyBranch(){
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.companyBranch());
+    }
+    @GET
+    @Path("/product-type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response productType(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.productTypes());
     }
 }

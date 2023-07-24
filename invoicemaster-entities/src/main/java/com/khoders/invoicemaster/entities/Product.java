@@ -40,7 +40,7 @@ public class Product extends UserAccountRecord implements Serializable
     
     @Column(name = "image_format")
     private String imageFormat;
-   
+      
     @Lob
     @Column(name = "description")
     private String description;

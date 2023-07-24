@@ -27,5 +27,6 @@ public class ApiEndpoint
     public static final String INVENTORY_ENDPOINT = VERSION + "inventory";
     public static final String SALES_LEAD_ENDPOINT = VERSION + "sales-lead";
     public static final String PRODUCT_ENDPOINT = VERSION + "product";
+    public static final String PRODUCT_TYPE_ENDPOINT = VERSION + "product-type";
     public static final String PAYMENT_ENDPOINT = VERSION + "payment";
 }

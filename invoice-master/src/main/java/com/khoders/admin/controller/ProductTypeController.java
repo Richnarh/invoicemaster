@@ -8,20 +8,13 @@ package com.khoders.admin.controller;
 import com.khoders.admin.mapper.AppParam;
 import com.khoders.admin.services.ProductService;
 import com.khoders.invoicemaster.ApiEndpoint;
-import com.khoders.invoicemaster.dto.ProductDto;
+import com.khoders.invoicemaster.dto.ProductTypeDto;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -35,52 +28,41 @@ import javax.ws.rs.core.Response;
  *
  * @author Pascal
  */
-@Path(ApiEndpoint.PRODUCT_ENDPOINT)
-public class ProductController {
+@Path(ApiEndpoint.PRODUCT_TYPE_ENDPOINT)
+public class ProductTypeController {
     @Inject private ProductService productService;
-    
+ 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(ProductDto productDto, @BeanParam AppParam param){
-        ProductDto dto = productService.save(productDto, param);
+    public Response create(ProductTypeDto typeDto, @BeanParam AppParam param){
+        ProductTypeDto dto = productService.save(typeDto, param);
         return JaxResponse.created(Msg.CREATED, dto);
     }
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(ProductDto productDto, @BeanParam AppParam param){
-        ProductDto dto = productService.save(productDto, param);
+    public Response update(ProductTypeDto typeDto, @BeanParam AppParam param){
+        ProductTypeDto dto = productService.save(typeDto, param);
         return JaxResponse.ok(Msg.UPDATED, dto);
     }
     @GET
-    @Path("/{productId}")
+    @Path("/{productTypeId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findById(@PathParam("productId") String productId){
-        return JaxResponse.ok(Msg.RECORD_FOUND, productService.findProductById(productId));
+    public Response findById(@PathParam("productTypeId") String productTypeId){
+        return JaxResponse.ok(Msg.RECORD_FOUND, productService.findByTypeId(productTypeId));
     }
     
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll(){
-        return JaxResponse.ok(Msg.RECORD_FOUND, productService.findAllProducts());
+        return JaxResponse.ok(Msg.RECORD_FOUND, productService.findAllProductTypes());
     }
     @DELETE
-    @Path("/{productId}")
-    public Response delete(@PathParam("productId") String productId){
-        boolean delete = productService.delete(productId);
+    @Path("/{productTypeId}")
+    public Response delete(@PathParam("productTypeId") String productTypeId){
+        boolean delete = productService.deleteType(productTypeId);
         if(delete)
             return JaxResponse.ok(Msg.DELETE_MESSAGE,delete);
-        return JaxResponse.ok("Could not delete products",delete);
+        return JaxResponse.ok("Could not delete product type",delete);
     }
-    
-    private File temp;
-
-    public File getTemp() {
-        return temp;
-    }
-
-    public void setTemp(File temp) {
-        this.temp = temp;
-    }
-    
 }

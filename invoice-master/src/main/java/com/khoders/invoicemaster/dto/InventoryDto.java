@@ -5,8 +5,6 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import com.khoders.invoicemaster.dto.UserProp;
-
 /**
  *
  * @author Pascal
@@ -14,6 +12,8 @@ import com.khoders.invoicemaster.dto.UserProp;
 public class InventoryDto extends UserProp{
     private String inventoryCode;
     private String product;
+    private String productCode;
+    private String productType;
     private String productId;
     private int frameSize;
     private int width;
@@ -45,6 +45,14 @@ public class InventoryDto extends UserProp{
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public int getFrameSize() {
@@ -101,6 +109,14 @@ public class InventoryDto extends UserProp{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
     
 }

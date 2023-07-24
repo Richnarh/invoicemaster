@@ -40,34 +40,43 @@ public class InvoiceService {
     @Inject private ProformaInvoiceService invoiceService;
     @Inject private DefaultService ds;
     
-    public InvoiceDto findById(String invoiceId){
-        ProformaInvoice invoice = ds.getInvoice(invoiceId);
+    public InvoiceDto findByInvoiceNo(String invoiceNo){
+        ProformaInvoice invoice = ds.getInvoice(invoiceNo);
+        if(invoice == null) return null;
         return mapper.toDto(invoice);
     }
 
-    public ReverseData reverseInvoice(String invoiceId) {
-        ProformaInvoice proformaInvoice = ds.getInvoice(invoiceId);
+    public String reverseInvoice(String invoiceId) {
+        ProformaInvoice proformaInvoice = crudApi.find(ProformaInvoice.class, invoiceId);
         boolean paymentData = ds.deletePaymentData(proformaInvoice);
         boolean taxInfo = ds.deleteSalesTax(proformaInvoice);
         boolean saleItem = ds.deleteSaleItem(proformaInvoice);
         
         ReverseData reverseData = new ReverseData();
-        
+        boolean reversed = false;
         if(paymentData){
             reverseData.setPaymentData("Payment data and delivery info cleared!");
+            reversed = true;
             log.info("Payment data and delivery info cleared!");
         }
         if(taxInfo){
             reverseData.setTaxInfo("Tax info cleared");
+            reversed = true;
             log.info("Tax info cleared");
         }
         if(saleItem){
             reverseData.setSaleItem("Invoice item info cleared and inventory quantity updated!");
+            reversed = true;
             log.info("Invoice item info cleared and inventory quantity updated!");
         }
         proformaInvoice.setConverted(false);
         crudApi.save(proformaInvoice);
-        return reverseData;
+        
+        if(reversed){
+            return "Invoice reverse successful!";
+        }else{
+            return "No item to reverse";
+        }
     }
 
     public List<InvoiceDto> searchByDate(AppParam param) {

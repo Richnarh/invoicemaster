@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,11 +22,13 @@ import javax.inject.Inject;
  */
 @Stateless
 public class AppConfigService {
+    private static final Logger log = LoggerFactory.getLogger(AppConfigService.class);
     @Inject private CrudApi crudApi;
     @Inject private CompanyService companyService;
     @Inject private CompanyMapper mapper;
     
     public AppConfigDto save(AppConfigDto dto){
+        log.debug("creating config");
         AppConfigDto configDto = null;
         AppConfig appConfig = mapper.toEntity(dto);
         if(appConfig != null && crudApi.save(appConfig) != null){
@@ -39,6 +43,7 @@ public class AppConfigService {
     }
 
     public List<AppConfigDto> fetchAllConfigs() {
+        log.debug("fetching all configs");
         List<AppConfig> appConfigs = companyService.getConfigList();
         List<AppConfigDto> dtoList = new LinkedList<>();
         appConfigs.forEach(config -> {

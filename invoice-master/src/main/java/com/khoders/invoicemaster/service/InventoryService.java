@@ -51,13 +51,20 @@ public class InventoryService
     }
     
     public Inventory getInventory(String inventoryId){
-        return crudApi.getEm().createQuery("SELECT e FROM Inventory e", Inventory.class)
+        return crudApi.getEm().createQuery("SELECT e FROM Inventory e WHERE e.id = :id", Inventory.class)
                 .setParameter(Inventory._id, inventoryId)
                 .getResultStream().findFirst().orElse(null);
     }
+    
     public Product getProduct(String productId){
-        return crudApi.getEm().createQuery("SELECT e FROM Product e", Product.class)
+        return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.id = :id", Product.class)
                 .setParameter(Product._id, productId)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
+    public ProductType getProductType(String productTypeId){
+        return crudApi.getEm().createQuery("SELECT e FROM ProductType e WHERE e.id = :id", ProductType.class)
+                .setParameter(ProductType._id, productTypeId)
                 .getResultStream().findFirst().orElse(null);
     }
     

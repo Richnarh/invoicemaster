@@ -52,14 +52,14 @@ public class UserAccountController {
     }
     
     @POST
-    @Path("/user/{userAccountId}")
+    @Path("/login/{userAccountId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response loginUser(@PathParam("userAccountId") String userAccountId){
         UserDto dto = userService.loginUser(userAccountId);
         return JaxResponse.ok(dto);
     }
     
-    @POST
+    @PUT
     @Path("/{userAccountId}/{password}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateUserPassword(@PathParam("userAccountId") String userAccountId, @PathParam("password") String password){

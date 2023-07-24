@@ -51,6 +51,11 @@ public class DefaultService {
                 .setParameter(ProformaInvoice._quotationNumber, quotationNumber)
                 .getResultStream().findFirst().orElse(null);
     }
+    public ProformaInvoice getInvoiceById(String invoiceId){
+        return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoice e WHERE e.id = :id", ProformaInvoice.class)
+                .setParameter(ProformaInvoice._id, invoiceId)
+                .getResultStream().findFirst().orElse(null);
+    }
        public boolean deletePaymentData(ProformaInvoice proformaInvoice) {
         int q = crudApi.getEm().createQuery("DELETE FROM PaymentData d WHERE d.proformaInvoice =:proformaInvoice")
                 .setParameter(PaymentData._proformaInvoice, proformaInvoice)
