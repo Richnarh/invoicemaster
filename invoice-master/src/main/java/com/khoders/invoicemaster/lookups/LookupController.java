@@ -104,4 +104,10 @@ public class LookupController {
     public Response productType(){
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.productTypes());
     }
+    @GET
+    @Path("/employees")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response employees(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.employees());
+    }
 }

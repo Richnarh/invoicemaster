@@ -105,8 +105,14 @@ public class InvoiceMapper {
         dto.setItemCode(invoiceItem.getItemCode());
         dto.setQuantity(invoiceItem.getQuantity());
         dto.setUnitPrice(invoiceItem.getUnitPrice());
-        dto.setInventory(invoiceItem.getInventory() != null ? invoiceItem.getInventory() +"" : null);
-        dto.setInventory(invoiceItem.getInventory() != null ? invoiceItem.getInventory().getId() : null);
+        if(invoiceItem.getInventory() != null){
+            dto.setInventory(invoiceItem.getInventory() +"");
+            dto.setInventory(invoiceItem.getInventory().getId());
+            if(invoiceItem.getInventory().getProduct() != null){
+                dto.setProductName(invoiceItem.getInventory().getProduct().getProductName());
+                dto.setProductId(invoiceItem.getInventory().getProduct().getId());
+            }
+        }
         dto.setProformaInvoice(invoiceItem.getProformaInvoice()  != null ? invoiceItem.getProformaInvoice().getQuotationNumber() : null);
         dto.setProformaInvoiceId(invoiceItem.getProformaInvoice() != null ? invoiceItem.getProformaInvoice().getId() : null);
         return dto;

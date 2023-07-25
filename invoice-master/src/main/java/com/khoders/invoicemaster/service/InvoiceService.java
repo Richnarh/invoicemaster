@@ -110,7 +110,7 @@ public class InvoiceService {
         return dtoList;
     }
     public List<InvoiceItemDto> salesDetails(String invoiceId) {
-        ProformaInvoice proformaInvoice = ds.getInvoice(invoiceId);
+        ProformaInvoice proformaInvoice = ds.getInvoiceById(invoiceId);
         List<InvoiceItemDto> dtoList = new LinkedList<>();
         List<ProformaInvoiceItem> invoiceItemList = invoiceService.getProformaInvoiceItemReceipt(proformaInvoice);
         invoiceItemList.forEach(item ->{

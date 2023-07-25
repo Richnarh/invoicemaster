@@ -81,6 +81,15 @@ public class UserService {
         return mapper.toDto(saleLead);
     }
 
+    public List<SaleLeadDto> fetchAllSalesLead() {
+        List<SaleLead> leads = companyService.getSaleLeadList();
+        List<SaleLeadDto> dtoList = new LinkedList<>();
+        leads.forEach(saleLead -> {
+            dtoList.add(mapper.toDto(saleLead));
+        });
+        return dtoList;
+    }
+    
     public SaleLeadDto findbyId(String saleLeadId) {
         SaleLead lead = crudApi.find(SaleLead.class, saleLeadId);
         return mapper.toDto(lead);

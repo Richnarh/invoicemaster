@@ -10,8 +10,8 @@ import com.khoders.admin.mapper.AppParam;
 import com.khoders.admin.services.UserService;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.resource.jaxrs.JaxResponse;
-import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.Msg;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
@@ -30,7 +30,6 @@ import javax.ws.rs.core.Response;
  */
 @Path(ApiEndpoint.SALES_LEAD_ENDPOINT)
 public class SaleLeadController {
-    @Inject private CrudApi crudApi;
     @Inject private UserService userService;
     
     @POST
@@ -52,6 +51,13 @@ public class SaleLeadController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("saleLeadId") String saleLeadId){
         SaleLeadDto dto = userService.findbyId(saleLeadId);
+        return JaxResponse.created(Msg.RECORD_FOUND, dto);
+    }
+    @GET
+    @Path("/list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response findAll(){
+        List<SaleLeadDto> dto = userService.fetchAllSalesLead();
         return JaxResponse.created(Msg.RECORD_FOUND, dto);
     }
     

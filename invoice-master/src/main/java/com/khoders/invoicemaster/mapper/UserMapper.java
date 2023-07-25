@@ -93,8 +93,8 @@ public class UserMapper {
         lead.setEmergencyContact(leadDto.getEmergencyContact());
         lead.setHouseAddress(leadDto.getHouseAddress());
         lead.setLeadCode(leadDto.getLeadCode());
-        lead.setPhoneNumber(lead.getPhoneNumber());
-        lead.setRate(lead.getRate());
+        lead.setPhoneNumber(leadDto.getPhoneNumber());
+        lead.setRate(leadDto.getRate());
         lead.setFirstname(leadDto.getFirstname());
         lead.setSurname(leadDto.getSurname());
         return lead;

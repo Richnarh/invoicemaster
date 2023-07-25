@@ -8,6 +8,7 @@ package com.khoders.invoicemaster.lookups;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
+import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.entities.system.CompanyProfile;
 import com.khoders.resource.jpa.QueryBuilder;
@@ -72,6 +73,16 @@ public class LookupService {
             LookupItem item = new LookupItem();
             item.setId(data.getId());
             item.setItemName(data.getProductTypeName());
+            itemList.add(item);
+        });
+        return itemList;
+    } 
+    public List<LookupItem> employees() {
+        List<LookupItem> itemList = new LinkedList<>();
+        builder.findAll(UserAccount.class).forEach(data -> {
+            LookupItem item = new LookupItem();
+            item.setId(data.getId());
+            item.setItemName(data.getFullname() +" - "+data.getPhoneNumber());
             itemList.add(item);
         });
         return itemList;
