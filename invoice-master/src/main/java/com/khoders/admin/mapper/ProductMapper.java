@@ -130,9 +130,10 @@ public class ProductMapper {
         dto.setProductType(product.getProductType() != null ? product.getProductType().getProductTypeName() : null);
         dto.setProductTypeId(product.getProductType() != null ? product.getProductType().getId() : null);
         dto.setReorderLevel(product.getReorderLevel());
-        dto.setProductImage(Base64.getMimeEncoder().encodeToString(product.getProductImage()));
-        String base64 = product.getImageFormat()+","+ Base64.getEncoder().encodeToString(product.getProductImage());
-        dto.setProductImage(base64);
+        if(product.getProductImage() != null){
+            String base64 = product.getImageFormat()+","+ Base64.getEncoder().encodeToString(product.getProductImage());
+            dto.setProductImage(base64);
+        }
         return dto;
     }
 

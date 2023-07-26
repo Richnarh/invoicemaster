@@ -118,4 +118,13 @@ public class InvoiceService {
         });
         return dtoList;
     }
+
+    public List<InvoiceDto> searchByParam(String branchId, String userId) {
+        List<ProformaInvoice> proformaInvoiceList = invoiceService.getInvoiceList(as.getBranch(branchId), as.getUser(userId));
+        List<InvoiceDto> dtoList = new LinkedList<>();
+        proformaInvoiceList.forEach(item -> {
+            dtoList.add(mapper.toDto(item));
+        });
+        return dtoList;
+    }
 }

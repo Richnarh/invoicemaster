@@ -21,6 +21,7 @@ com\khoders\invoicemaster\ApiEndpoint.class
 com\khoders\invoicemaster\commons\CommonClass.class
 com\khoders\invoicemaster\jbeans\controller\ClientController.class
 com\khoders\invoicemaster\reportData\Receipt.class
+com\khoders\admin\controller\ProductTypeController.class
 com\khoders\invoicemaster\mapper\InvoiceMapper.class
 com\khoders\invoicemaster\jbeans\converter\PurchaseConverter.class
 com\khoders\invoicemaster\reportData\ProformaInvoiceDto.class
@@ -35,6 +36,7 @@ com\khoders\invoicemaster\service\InventoryService.class
 com\khoders\invoicemaster\lookups\LookupService.class
 com\khoders\invoicemaster\lookups\LookupSetup.class
 com\khoders\admin\controller\InventoryController.class
+com\khoders\invoicemaster\dto\ProductTypeDto.class
 com\khoders\invoicemaster\reportData\ConvertToWords.class
 com\khoders\invoicemaster\dto\CompanyProfileDto.class
 com\khoders\invoicemaster\dto\AuthResponse.class
@@ -82,7 +84,6 @@ com\khoders\invoicemaster\dto\TransactionDto.class
 com\khoders\invoicemaster\reportData\PaymentReceiptDto.class
 com\khoders\invoicemaster\dto\PaymentDataDto.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
-com\khoders\admin\controller\SalesController.class
 com\khoders\invoicemaster\InvoiceMasterConfig.class
 com\khoders\invoicemaster\dto\OnlineClientDto.class
 com\khoders\invoicemaster\service\PaymentService.class

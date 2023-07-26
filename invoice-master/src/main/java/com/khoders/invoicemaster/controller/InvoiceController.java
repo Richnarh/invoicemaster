@@ -51,7 +51,7 @@ public class InvoiceController {
     }
     
     @GET
-//    @Path("/search")
+    @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchByDate(@BeanParam AppParam param){
         List<InvoiceDto> invoices = invoiceService.searchByDate(param);
@@ -76,6 +76,13 @@ public class InvoiceController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchByUser(@PathParam("userId") String userId){
         List<InvoiceDto> invoices = invoiceService.searchByUser(userId);
+        return JaxResponse.ok(invoices);
+    }
+    @GET
+    @Path("/{branchId}/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchByParam(@PathParam("branchId") String branchId, @PathParam("userId") String userId){
+        List<InvoiceDto> invoices = invoiceService.searchByParam(branchId,userId);
         return JaxResponse.ok(invoices);
     }
 }

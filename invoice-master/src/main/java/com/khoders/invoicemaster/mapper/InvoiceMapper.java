@@ -65,8 +65,9 @@ public class InvoiceMapper {
         if(invoice.getClient() != null){
             dto.setClient(invoice.getClient().getClientName());
             dto.setClientId(invoice.getClient().getId());
+            dto.setPhoneNumber(invoice.getClient().getPhone());
         }
-        dto.setValueDate(DateUtil.parseLocalDateString(invoice.getValueDate(), Pattern.ddMMyyyy));
+        dto.setValueDate(DateUtil.parseLocalDateString(invoice.getValueDate(), Pattern.EEEMMMdyyyy));
         return dto;
     }
     
@@ -105,6 +106,7 @@ public class InvoiceMapper {
         dto.setItemCode(invoiceItem.getItemCode());
         dto.setQuantity(invoiceItem.getQuantity());
         dto.setUnitPrice(invoiceItem.getUnitPrice());
+        dto.setSubTotal(invoiceItem.getQuantity() * invoiceItem.getUnitPrice());
         if(invoiceItem.getInventory() != null){
             dto.setInventory(invoiceItem.getInventory() +"");
             dto.setInventory(invoiceItem.getInventory().getId());

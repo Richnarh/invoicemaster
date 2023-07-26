@@ -329,7 +329,28 @@ public class ProformaInvoiceService{
                 .setMaxResults(1)
                 .getResultStream().findFirst().orElse(null);
     }
-
+    
+    public List<ProformaInvoice> getInvoiceList(CompanyBranch companyBranch, UserAccount userAccount)
+    {
+        try
+        {
+            if(companyBranch != null || userAccount != null)
+            {
+                String qryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch=?1 AND e.userAccount=?2";
+                TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                    .setParameter(1, companyBranch)
+                    .setParameter(2, userAccount);
+                return typedQuery.getResultList();  
+            }
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
+    
     public boolean processMail(String msg,String fromEmail){
         Properties prop = new Properties();
 	prop.put("mail.smtp.host", ds.getConfigValue("mail.smtp.host"));

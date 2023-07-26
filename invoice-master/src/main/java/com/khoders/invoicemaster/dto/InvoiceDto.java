@@ -19,6 +19,7 @@ public class InvoiceDto extends UserProp{
     private String expiryDate = DateUtil.parseLocalDateString(DateUtil._7DaysFromToday(), Pattern._ddMMyyyy);
     private String client;
     private String clientId;
+    private String phoneNumber;
     private String quotationNumber = SystemUtils.generateRefNo();
     private double totalAmount;
     private double subTotalAmount;
@@ -122,6 +123,14 @@ public class InvoiceDto extends UserProp{
 
     public void setConverted(boolean converted) {
         this.converted = converted;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
     
 }
