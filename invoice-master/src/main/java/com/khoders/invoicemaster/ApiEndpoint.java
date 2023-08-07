@@ -18,6 +18,7 @@ public class ApiEndpoint
     public static final String SALES_ENDPOINT = VERSION + "sales";
     public static final String TRANSACTION_ENDPOINT = VERSION + "transactions";
     public static final String INVOICE_ENDPOINT = VERSION + "invoice";
+    public static final String CLIENT = VERSION + "client";
     
     // Admin
     public static final String COMPANY_BRANCH_ENDPOINT = VERSION + "company-branch";

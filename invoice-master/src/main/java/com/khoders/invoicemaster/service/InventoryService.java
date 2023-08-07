@@ -233,4 +233,10 @@ public class InventoryService
         return Collections.emptyList();
     }
 
+    public Client getClientById(String clientId) {
+        return crudApi.getEm().createQuery("SELECT e FROM Client e WHERE e.id = :id", Client.class)
+                .setParameter(Client._id, clientId)
+                .getResultStream().findFirst().orElse(null);
+    }
+
 }

@@ -489,7 +489,7 @@ public class ProformaInvoiceController implements Serializable
             SalesTax covid19 = salesTaxList.get(0);
             SalesTax salesVat = salesTaxList.get(1);
 
-//            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
+//          double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
             double totalLevies = covid19.getTaxAmount();
 
             double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
@@ -498,7 +498,7 @@ public class ProformaInvoiceController implements Serializable
             System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
             System.out.println("totalLevies => "+totalLevies);
             System.out.println("taxableValue => "+taxableValue);
-//            
+            
             double vat = taxableValue*(salesVat.getTaxRate()/100);
             
             totalPayable = vat + taxableValue + installationFee;

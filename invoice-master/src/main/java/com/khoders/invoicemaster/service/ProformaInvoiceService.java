@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.service;
 
+import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
@@ -112,10 +113,10 @@ public class ProformaInvoiceService{
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1 AND e.valueDate=?2 ORDER BY e.issuedDate DESC";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch = :companyBranch AND e.valueDate = :valueDate ORDER BY e.issuedDate DESC";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
-                                        .setParameter(1, appSession.getCurrentUser())
-                                        .setParameter(2, LocalDate.now());
+                                        .setParameter(ProformaInvoice._companyBranch, appSession.getCompanyBranch())
+                                        .setParameter(ProformaInvoice._valueDate, LocalDate.now());
                          return typedQuery.getResultList();
                          
         } catch (Exception e)
@@ -125,25 +126,57 @@ public class ProformaInvoiceService{
 
         return Collections.emptyList();
     }
+    public List<ProformaInvoice> getProformaInvoiceList(CompanyBranch companyBranch){
+       String qryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch = :companyBranch AND e.valueDate = :valueDate ORDER BY e.issuedDate DESC";
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                                        .setParameter(ProformaInvoice._companyBranch, companyBranch)
+                                        .setParameter(ProformaInvoice._valueDate, LocalDate.now());
+                         return typedQuery.getResultList();
+    }
     
     public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange){
-        try 
-        {
+        try{
             String limit = ds.getConfigValue("invoice.page.limit");
             Integer limitSize = Integer.parseInt(limit);
-            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
-            {
-                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=:userAccount ORDER BY e.issuedDate DESC";
+            if(dateRange.getFromDate() == null && dateRange.getToDate() == null){
+                System.out.println("here 1");
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch =:companyBranch ORDER BY e.issuedDate DESC";
                   TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
-                                              .setParameter(ProformaInvoice._userAccount, appSession.getCurrentUser());
+                                              .setParameter(ProformaInvoice._companyBranch, appSession.getCompanyBranch());
                                     return typedQuery.setMaxResults(limitSize).getResultList();
+                                    
             }
-            
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.userAccount=?3 ORDER BY e.issuedDate DESC";
+            System.out.println("here 2");
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.companyBranch=?3 ORDER BY e.issuedDate DESC";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
                     .setParameter(1, dateRange.getFromDate())
                     .setParameter(2, dateRange.getToDate())
-                    .setParameter(3, appSession.getCurrentUser());
+                    .setParameter(3, appSession.getCompanyBranch());
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange, CompanyBranch companyBranch){
+        try{
+            String limit = ds.getConfigValue("invoice.page.limit");
+            Integer limitSize = Integer.parseInt(limit);
+            if(dateRange.getFromDate() == null && dateRange.getToDate() == null){
+                System.out.println("here 1");
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch =:companyBranch ORDER BY e.issuedDate DESC";
+                  TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
+                                              .setParameter(ProformaInvoice._companyBranch, companyBranch);
+                                    return typedQuery.setMaxResults(limitSize).getResultList();
+                                    
+            }
+            System.out.println("here 2");
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN :valueDate AND :valueDate AND e.companyBranch =:companyBranch ORDER BY e.issuedDate DESC";
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                    .setParameter(ProformaInvoice._valueDate, dateRange.getFromDate())
+                    .setParameter(ProformaInvoice._valueDate, dateRange.getToDate())
+                    .setParameter(ProformaInvoice._companyBranch, companyBranch);
            return typedQuery.getResultList();
             
         } catch (Exception e) {
@@ -296,9 +329,9 @@ public class ProformaInvoiceService{
     {
         try
         {
-          String qryString = "SELECT e FROM PaymentData e WHERE e.proformaInvoice=?1";
+          String qryString = "SELECT e FROM PaymentData e WHERE e.proformaInvoice=:proformaInvoice";
             return crudApi.getEm().createQuery(qryString, PaymentData.class)
-                    .setParameter(1, proformaInvoice).getResultStream().findFirst().orElse(null);
+                    .setParameter(PaymentData._proformaInvoice, proformaInvoice).getResultStream().findFirst().orElse(null);
         } catch (Exception e)
         {
             e.printStackTrace();

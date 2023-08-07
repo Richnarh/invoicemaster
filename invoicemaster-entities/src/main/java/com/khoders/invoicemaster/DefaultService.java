@@ -95,7 +95,7 @@ public class DefaultService {
                 .getResultList();
     }
 
-    private Inventory getInventory(String inventoryId) {
+    public Inventory getInventory(String inventoryId) {
         return crudApi.getEm().createQuery("SELECT e FROM Inventory e WHERE e.id = :id", Inventory.class)
                 .setParameter(Inventory._id, inventoryId)
                 .getResultStream().findFirst().orElse(null);

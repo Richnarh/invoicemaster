@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.lookups;
 
 import com.khoders.invoicemaster.ApiEndpoint;
+import com.khoders.invoicemaster.enums.ClientType;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.Currency;
@@ -72,6 +73,12 @@ public class LookupController {
     public Response accessLevel(){
         return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(AccessLevel.values()));
     }
+    @GET
+    @Path("/client-type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clientType(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(ClientType.values()));
+    }
     
     // Entities
     @GET
@@ -109,5 +116,17 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response employees(){
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.employees());
+    }
+    @GET
+    @Path("/saleslead")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response saleslead(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.saleslead());
+    }
+    @GET
+    @Path("/clients")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clients(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.clients());
     }
 }

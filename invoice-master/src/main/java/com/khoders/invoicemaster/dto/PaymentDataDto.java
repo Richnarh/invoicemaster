@@ -5,6 +5,10 @@
  */
 package com.khoders.invoicemaster.dto;
 
+import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.enums.PaymentStatus;
+
 /**
  *
  * @author Pascal
@@ -15,9 +19,9 @@ public class PaymentDataDto extends UserProp{
    private String clientId;
    private String proformaInvoice;
    private String proformaInvoiceId;
-   private String paymentMethod;
-   private String deliveryStatus;
-   private String paymentStatus;
+   private PaymentMethod paymentMethod;
+   private DeliveryStatus deliveryStatus;
+   private PaymentStatus paymentStatus;
    private String deliveryAdress;
    private double partialAmountPaid;
    private double totalAmount;
@@ -47,30 +51,30 @@ public class PaymentDataDto extends UserProp{
         this.proformaInvoiceId = proformaInvoiceId;
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
-    public String getDeliveryStatus() {
+    public DeliveryStatus getDeliveryStatus() {
         return deliveryStatus;
     }
 
-    public void setDeliveryStatus(String deliveryStatus) {
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public String getPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
-
+    
     public double getPartialAmountPaid() {
         return partialAmountPaid;
     }

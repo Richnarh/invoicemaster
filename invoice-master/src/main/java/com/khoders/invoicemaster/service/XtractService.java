@@ -51,13 +51,13 @@ public class XtractService
         double totalTax = salesTaxesList.stream().mapToDouble(SalesTax::getTaxAmount).sum();
         double invoiceValue = totalTax + proformaInvoice.getTotalAmount() + proformaInvoice.getInstallationFee();
         
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
         {
-            receipt.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+            receipt.setBranchName(proformaInvoice.getUserAccount().getCompanyBranch() + "");
         }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
+        if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
         {
-            receipt.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+            receipt.setWebsite(proformaInvoice.getUserAccount().getCompanyBranch().getCompanyProfile().getWebsite());
         }
 
         receipt.setReceiptNumber(proformaInvoice.getQuotationNumber());
@@ -108,28 +108,28 @@ public class XtractService
         proformaInvoiceDto.setTotalPayable(invoiceValue);
         proformaInvoiceDto.setExtraDiscount(!salesTaxesList.isEmpty() && salesTaxesList.get(0) != null && salesTaxesList.get(0).getSaleLead() != null ? salesTaxesList.get(0).getSaleLead().getRate() : 0);
 
-            
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
+        if(proformaInvoice.getUserAccount() != null){
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setTelephoneNo(proformaInvoice.getUserAccount().getCompanyBranch().getTelephoneNo());
+            }
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setBranchName(proformaInvoice.getUserAccount().getCompanyBranch() + "");
+            }
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setGpsAddress(proformaInvoice.getUserAccount().getCompanyBranch().getGpsAddress());
+            }
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setWebsite(proformaInvoice.getUserAccount().getCompanyBranch().getCompanyProfile().getWebsite());
+            }
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
+            {
+                proformaInvoiceDto.setTinNo(proformaInvoice.getUserAccount().getCompanyBranch().getCompanyProfile().getTinNo());
+            }
         }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
-        }
-        if (appSession.getCurrentUser().getCompanyBranch() != null)
-        {
-            proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
-        }
-        
         for (SalesTax salesTax : salesTaxesList)
         {
             SalesTaxDto taxItem = new SalesTaxDto();
@@ -169,17 +169,17 @@ public class XtractService
             invoiceItemDto.setQuantity(invoiceItem.getQuantity());
             invoiceItemDto.setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemDto.setTotalAmount(invoiceItem.getSubTotal());
-            
-            if(appSession.getCurrentUser().getFrame() != null)
-            {
-                invoiceItemDto.setFrameUnit(appSession.getCurrentUser().getFrame().getLabel());
+            if(proformaInvoice.getUserAccount() != null){
+                if(proformaInvoice.getUserAccount().getFrame() != null)
+                {
+                    invoiceItemDto.setFrameUnit(proformaInvoice.getUserAccount().getFrame().getLabel());
+                }
+
+                if(proformaInvoice.getUserAccount().getWidth() != null)
+                {
+                    invoiceItemDto.setWidthHeightUnits(proformaInvoice.getUserAccount().getWidth().getLabel());
+                }
             }
-            
-            if(appSession.getCurrentUser().getWidth() != null)
-            {
-                invoiceItemDto.setWidthHeightUnits(appSession.getCurrentUser().getWidth().getLabel());
-            }
-            
             invoiceItemDtoList.add(invoiceItemDto);
         }
             proformaInvoiceDto.setInvoiceItemList(invoiceItemDtoList);
@@ -197,31 +197,31 @@ public class XtractService
         proformaInvoiceDto.setIssuedDate(proformaInvoice.getIssuedDate());
         proformaInvoiceDto.setQuotationNumber(proformaInvoice.getQuotationNumber());
         
-        if(appSession.getCurrentUser() != null)
+        if(proformaInvoice.getUserAccount() != null)
         {
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
             {
-                proformaInvoiceDto.setTelephoneNo(appSession.getCurrentUser().getCompanyBranch().getTelephoneNo());
+                proformaInvoiceDto.setTelephoneNo(proformaInvoice.getUserAccount().getCompanyBranch().getTelephoneNo());
             }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
             {
-                proformaInvoiceDto.setBranchName(appSession.getCurrentUser().getCompanyBranch() + "");
+                proformaInvoiceDto.setBranchName(proformaInvoice.getUserAccount().getCompanyBranch() + "");
             }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
             {
-                proformaInvoiceDto.setGpsAddress(appSession.getCurrentUser().getCompanyBranch().getGpsAddress());
+                proformaInvoiceDto.setGpsAddress(proformaInvoice.getUserAccount().getCompanyBranch().getGpsAddress());
             }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
             {
-                proformaInvoiceDto.setWebsite(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getWebsite());
+                proformaInvoiceDto.setWebsite(proformaInvoice.getUserAccount().getCompanyBranch().getCompanyProfile().getWebsite());
             }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
             {
-                proformaInvoiceDto.setTinNo(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getTinNo());
+                proformaInvoiceDto.setTinNo(proformaInvoice.getUserAccount().getCompanyBranch().getCompanyProfile().getTinNo());
             }
-            if (appSession.getCurrentUser().getCompanyBranch() != null)
+            if (proformaInvoice.getUserAccount().getCompanyBranch() != null)
             {
-                proformaInvoiceDto.setEmailAddress(appSession.getCurrentUser().getCompanyBranch().getCompanyProfile().getCompanyEmail());
+                proformaInvoiceDto.setEmailAddress(proformaInvoice.getUserAccount().getCompanyBranch().getCompanyProfile().getCompanyEmail());
             }
         }
         return proformaInvoiceDto;

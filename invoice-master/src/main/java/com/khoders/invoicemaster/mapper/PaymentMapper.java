@@ -11,14 +11,19 @@ import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.UserAccount;
+import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.reportData.ProformaInvoiceDto;
 import com.khoders.invoicemaster.reportData.ProformaInvoiceItemDto;
 import com.khoders.invoicemaster.service.AppService;
 import com.khoders.invoicemaster.service.PaymentService;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Pattern;
+import com.khoders.resource.utilities.SystemUtils;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,17 +37,38 @@ import javax.inject.Inject;
 public class PaymentMapper {
     @Inject private CrudApi crudApi;
     @Inject private DefaultService ds;
-    @Inject private AppService appService;
+    @Inject private AppService as;
     @Inject private ProformaInvoiceService invoiceService;
     @Inject private PaymentService paymentService;
+    
+    public PaymentData toEntity(PaymentDataDto dto){
+        PaymentData data = new PaymentData();
+        if (dto.getId() != null){
+            data.setId(dto.getId());
+        }
+        data.genCode();
+        data.setPartialAmountPaid(dto.getPartialAmountPaid());
+        data.setDeliveryStatus(dto.getDeliveryStatus());
+        data.setPaymentMethod(dto.getPaymentMethod());
+        data.setPaymentStatus(dto.getPaymentStatus());
+        data.setPaymentCode(dto.getPaymentCode() != null ? dto.getPaymentCode() : SystemUtils.generateCode());
+        if(dto.getProformaInvoiceId() == null){
+            throw new DataNotFoundException("Invoice Id is required");
+        }
+        if(dto.getClientId() == null){
+            throw new DataNotFoundException("Client Id is required");
+        }
+        data.setProformaInvoice(ds.getInvoiceById(dto.getProformaInvoiceId()));
+        return data;
+    }
     
     public PaymentDataDto toDto(PaymentData data){
         PaymentDataDto dto = new PaymentDataDto();
         if(data.getId() == null) return null;
         dto.setId(data.getId());
-        dto.setDeliveryStatus(data.getDeliveryStatus() != null ? data.getDeliveryStatus().getLabel() : null);
-        dto.setPaymentMethod(data.getPaymentMethod() != null ? data.getPaymentMethod().getLabel() : null);
-        dto.setPaymentStatus(data.getPaymentStatus() != null ? data.getPaymentStatus().getLabel() : null);
+        dto.setDeliveryStatus(data.getDeliveryStatus());
+        dto.setPaymentMethod(data.getPaymentMethod());
+        dto.setPaymentStatus(data.getPaymentStatus());
         dto.setPaymentMessage(data.isPaymentMessage());
         dto.setPartialAmountPaid(data.getPartialAmountPaid());
         dto.setPaymentCode(data.getPaymentCode());
@@ -65,7 +91,7 @@ public class PaymentMapper {
         
         PaymentData data = paymentService.getPaymentData(paymentDataId);
         ProformaInvoice proformaInvoice = crudApi.find(ProformaInvoice.class, data.getProformaInvoice().getId());
-        UserAccount user = appService.getUser(data.getUserAccount().getId());
+        UserAccount user = as.getUser(data.getUserAccount().getId());
         List<ProformaInvoiceItem> invoiceItemList = invoiceService.getProformaInvoiceItemList(proformaInvoice);
 
         ProformaInvoiceDto proformaInvoiceDto = new ProformaInvoiceDto();

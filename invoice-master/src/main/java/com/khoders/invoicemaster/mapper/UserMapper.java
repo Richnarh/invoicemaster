@@ -8,7 +8,6 @@ package com.khoders.invoicemaster.mapper;
 import com.khoders.invoicemaster.dto.SaleLeadDto;
 import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.dto.UserDto;
-import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
@@ -22,12 +21,15 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Pattern;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Pascal
  */
 public class UserMapper {
+    private static final Logger log = LoggerFactory.getLogger(UserMapper.class);
     @Inject private CrudApi crudApi;
     @Inject private AppService as;
     

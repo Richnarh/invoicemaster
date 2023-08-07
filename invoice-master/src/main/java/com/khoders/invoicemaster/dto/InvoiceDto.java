@@ -28,7 +28,7 @@ public class InvoiceDto extends UserProp{
     private double installationFee;
     private String description;
     private boolean converted;
-
+    
     public String getIssuedDate() {
         return issuedDate;
     }
@@ -132,5 +132,4 @@ public class InvoiceDto extends UserProp{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    
 }
