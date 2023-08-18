@@ -54,7 +54,7 @@ public class LookupService {
         builder.findAll(Inventory.class).forEach(data -> {
             LookupItem item = new LookupItem();
             item.setId(data.getId());
-            item.setItemName(data.getProduct().getProductName());
+            item.setItemName(data+"");
             itemList.add(item);
         });
         return itemList;

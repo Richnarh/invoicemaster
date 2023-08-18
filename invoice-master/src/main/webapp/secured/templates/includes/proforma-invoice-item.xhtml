@@ -97,7 +97,7 @@
                         <tr>
                             <td><span class="field-label">Sub Total</span></td>
                             <td  class="text-right"> 
-                                <h:inputText value="#{proformaInvoiceController.subTotal}" readonly="true" class="form-control">
+                                <h:inputText value="#{proformaInvoiceController.subTotal}" readonly="true" class="form-control text-right">
                                     <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
                                 </h:inputText>
                             </td>
@@ -105,7 +105,7 @@
                         <tr>
                             <td><span class="field-label">#{msg.total_amount}</span></td>
                             <td  class="text-right"> 
-                                <h:outputText value="#{proformaInvoiceController.totalSaleAmount}" class="field-shade">
+                                <h:outputText value="#{proformaInvoiceController.totalSaleAmount}" class="field-shade text-right">
                                     <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}"/>
                                 </h:outputText>
                             </td>
@@ -114,13 +114,13 @@
                             <td><span class="field-label">#{msg.discount} (%)</span></td>
                             <td  class="text-right"> 
                                 <h:panelGroup rendered="#{proformaInvoiceController.proformaInvoiceItemList.size() > 0 and proformaInvoiceController.actionType == 'ENABLE_ON_EDIT'}">
-                                    <h:inputText class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                    <h:inputText class="form-control text-right" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{proformaInvoiceController.proformaInvoiceItemList.size() > 0 and proformaInvoiceController.actionType == 'DISABLE_ON_EDIT'}">
-                                    <h:inputText disabled="true" class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                    <h:inputText disabled="true" class="form-control text-right" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{proformaInvoiceController.actionType == null}">
-                                    <h:inputText class="form-control" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
+                                    <h:inputText class="form-control text-right" maxlength="5" value="#{proformaInvoiceController.productDiscountRate}"/>
                                 </h:panelGroup>
                             </td>
                         </tr>
@@ -137,7 +137,7 @@
                             <tr>
                                 <td>#{salesTax.taxName} (#{salesTax.taxRate} %)</td>
                                 <td class="text-right">
-                                    <h:outputText value="#{salesTax.taxAmount}">
+                                    <h:outputText value="#{salesTax.taxAmount}" class="text-right">
                                         <f:convertNumber pattern="#{msg.money_pattern}" />
                                     </h:outputText>
                                 </td>
@@ -147,7 +147,7 @@
                         <tr>
                             <td><span class="field-label">Installation Fee</span></td>
                             <td  class="text-right"> 
-                                <h:inputText class="form-control" value="#{proformaInvoiceController.installationFee}"/>
+                                <h:inputText class="form-control text-right" value="#{proformaInvoiceController.installationFee}"/>
                             </td>
                         </tr>
 <!--                        <tr>
@@ -161,7 +161,7 @@
                         <tr class="bg-gradient-gray">
                             <td><span class="field-label text-uppercase font-weight-bold">Total Payable</span></td>
                             <td class="text-right"> 
-                                <h:outputText value="#{proformaInvoiceController.totalPayable}" styleClass="field-shade">
+                                <h:outputText value="#{proformaInvoiceController.totalPayable}" styleClass="field-shade" class="text-right">
                                     <f:convertNumber pattern="#{appSession.currentUser.companyBranch.companyProfile.currency} #{msg.money_pattern}" />
                                 </h:outputText>
                             </td>
