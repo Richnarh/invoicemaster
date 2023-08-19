@@ -23,7 +23,7 @@
                     <p:inputText value="#{proformaInvoiceController.proformaInvoiceItem.quantity}" required="true"/>
 
                     <span>#{msg.unit_price} <span class="text-danger">*</span> </span>
-                    <p:inputText id="sellingPrice" value="#{proformaInvoiceController.proformaInvoiceItem.unitPrice}" required="true"/>
+                    <p:inputText id="sellingPrice" readonly="true" value="#{proformaInvoiceController.proformaInvoiceItem.unitPrice}" required="true"/>
 
                     <span>#{msg.description}</span>
                     <p:inputTextarea value="#{proformaInvoiceController.proformaInvoiceItem.description}"/>

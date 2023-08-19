@@ -76,21 +76,10 @@ public class ProformaInvoiceService{
         }
         return Collections.emptyList();
     }
-    public List<SalesTax> getSalesTaxList(ProformaInvoice proformaInvoice)
-    {
-        try
-        {
-          String query = "SELECT e FROM SalesTax e WHERE e.proformaInvoice=?1 AND e.userAccount=?2 ORDER BY e.reOrder ASC";
-        
-        TypedQuery<SalesTax> typedQuery = crudApi.getEm().createQuery(query, SalesTax.class)
-                                .setParameter(1, proformaInvoice)
-                                .setParameter(2, appSession.getCurrentUser());
-                return typedQuery.getResultList();      
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<SalesTax> getSalesTaxList(ProformaInvoice proformaInvoice){
+        return crudApi.getEm().createQuery("SELECT e FROM SalesTax e WHERE e.proformaInvoice = :proformaInvoice ORDER BY e.reOrder ASC", SalesTax.class)
+                                .setParameter(SalesTax._proformaInvoice, proformaInvoice)
+                                .getResultList();   
     }
     
     public List<SalesTax> getSalesTaxList(UserTransaction userTransaction)

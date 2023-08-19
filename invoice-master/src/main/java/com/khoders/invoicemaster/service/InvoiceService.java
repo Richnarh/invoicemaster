@@ -114,6 +114,7 @@ public class InvoiceService {
         List<InvoiceItemDto> invoiceItemList = mapper.toDto(itemList);
         List<SalesTaxDto> salesTaxList = mapper.toSalesTaxDto(taxList);
         
+        sales.setSubTotal(itemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum());
         sales.setTotalPayable(totalPayable);
         sales.setActionType(actionType);
         sales.setInvoiceItemList(invoiceItemList);

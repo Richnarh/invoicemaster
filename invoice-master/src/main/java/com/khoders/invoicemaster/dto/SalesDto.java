@@ -16,6 +16,7 @@ public class SalesDto extends UserProp{
     private String actionType;
     private String salesLeadId;
     double totalPayable;
+    double subTotal;
     private List<InvoiceItemDto> invoiceItemList = new LinkedList<>();
     private List<SalesTaxDto> salesTaxList = new LinkedList<>();
 
@@ -57,5 +58,13 @@ public class SalesDto extends UserProp{
 
     public void setSalesTaxList(List<SalesTaxDto> salesTaxList) {
         this.salesTaxList = salesTaxList;
+    }
+
+    public double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
     }
 }
