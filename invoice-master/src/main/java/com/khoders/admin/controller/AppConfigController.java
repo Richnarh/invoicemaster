@@ -38,11 +38,24 @@ public class AppConfigController {
         AppConfigDto configDto = configService.save(dto);
         return JaxResponse.ok(Msg.UPDATED, configDto);
     }
+    @PUT
+    @Path("/{configName}/{configValue}")
+    public Response updateByConfigName(@PathParam("configName") String configName, @PathParam("configValue") String configValue){ 
+        AppConfigDto configDto = configService.update(configName,configValue);
+        return JaxResponse.ok(Msg.UPDATED, configDto);
+    }
     
     @GET
     @Path("/{configId}")
     public Response findById(@PathParam("configId") String configId){
         AppConfigDto dto = configService.findById(configId);
+        return JaxResponse.ok(Msg.RECORD_FOUND,dto);
+    }
+    
+    @GET
+    @Path("/{configName}/config")
+    public Response findByConfigName(@PathParam("configName") String configName){
+        AppConfigDto dto = configService.findByConfigName(configName);
         return JaxResponse.ok(Msg.RECORD_FOUND,dto);
     }
     

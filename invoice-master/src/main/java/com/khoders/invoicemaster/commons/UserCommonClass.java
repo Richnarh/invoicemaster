@@ -7,7 +7,6 @@ package com.khoders.invoicemaster.commons;
 
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.OnlineClient;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
 import com.khoders.invoicemaster.entities.SaleLead;
@@ -46,7 +45,6 @@ public class UserCommonClass implements Serializable{
     private List<Product> productList = new LinkedList<>();
     private List<SMSGrup> smsGroupList = new LinkedList<>();
     private List<ProductType> productTypeList = new LinkedList<>();
-    private List<OnlineClient> onlineClientList = new LinkedList<>();
     private List<SaleLead> salesLeadList = new LinkedList<>();
     
     @PostConstruct
@@ -60,7 +58,6 @@ public class UserCommonClass implements Serializable{
         messageTemplateList = smsService.getMessageTemplateList();
         senderIdList = smsService.getSenderIdList();
         smsGroupList = smsService.getGroupList();
-        onlineClientList = clientService.getOnlineClientList();
     }
     
     public void loadClient()
@@ -106,11 +103,6 @@ public class UserCommonClass implements Serializable{
     public List<ProductType> getProductTypeList()
     {
         return productTypeList;
-    }
-
-    public List<OnlineClient> getOnlineClientList()
-    {
-        return onlineClientList;
     }
 
     public List<SaleLead> getSalesLeadList() {

@@ -16,11 +16,11 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.service.AppService;
-import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.exception.DataNotFoundException;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Pattern;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -48,12 +48,14 @@ public class InvoiceMapper {
         if(client != null){
             invoice.setClient(client);
         }
+        System.out.println("IssueDate: "+dto.getIssuedDate());
+        System.out.println("ExpiredDate: "+dto.getExpiryDate());
         invoice.setDescription(dto.getDescription());
-        invoice.setDiscountRate(invoice.getDiscountRate());
-        invoice.setExpiryDate(DateUtil.parseLocalDate(dto.getExpiryDate(), Pattern._yyyyMMdd));
-        invoice.setIssuedDate(DateUtil.parseLocalDate(dto.getIssuedDate(), Pattern._yyyyMMdd));
+        invoice.setDiscountRate(dto.getDiscountRate());
+        invoice.setExpiryDate(LocalDate.parse(dto.getExpiryDate()));
+        invoice.setIssuedDate(LocalDate.parse(dto.getExpiryDate()));
         invoice.setInstallationFee(dto.getInstallationFee());
-        invoice.setModeOfPayment(PaymentMethod.valueOf(dto.getModeOfPayment()));
+        invoice.setModeOfPayment(dto.getModeOfPayment());
 //        invoice.setQuotationNumber(dto.getQuotationNumber());
         invoice.setSubTotalAmount(dto.getSubTotalAmount());
         invoice.setTotalAmount(dto.getTotalAmount());
@@ -73,7 +75,7 @@ public class InvoiceMapper {
         dto.setExpiryDate(DateUtil.parseLocalDateString(invoice.getExpiryDate(), Pattern.ddMMyyyy));
         dto.setIssuedDate(DateUtil.parseLocalDateString(invoice.getIssuedDate(), Pattern.ddMMyyyy));
         dto.setInstallationFee(invoice.getInstallationFee());
-        dto.setModeOfPayment(invoice.getModeOfPayment() != null ? invoice.getModeOfPayment().getLabel() : null);
+        dto.setModeOfPayment(invoice.getModeOfPayment());
         dto.setSubTotalAmount(invoice.getSubTotalAmount());
         dto.setTotalAmount(invoice.getTotalAmount());
         if(invoice.getClient() != null){
@@ -107,7 +109,7 @@ public class InvoiceMapper {
             invoiceItem.setProformaInvoice(invoice);
         }
         invoiceItem.setQuantity(dto.getQuantity());
-        invoiceItem.setSubTotal(dto.getSubTotal());
+        invoiceItem.setSubTotal(dto.getQuantity() * dto.getUnitPrice());
         invoiceItem.setUnitPrice(dto.getUnitPrice());
         return invoiceItem;
     }
@@ -130,7 +132,7 @@ public class InvoiceMapper {
         dto.setSubTotal(dto.getSubTotal());
         if(invoiceItem.getInventory() != null){
             dto.setInventory(invoiceItem.getInventory() +"");
-            dto.setInventory(invoiceItem.getInventory().getId());
+            dto.setInventoryId(invoiceItem.getInventory().getId());
             if(invoiceItem.getInventory().getProduct() != null){
                 dto.setProductName(invoiceItem.getInventory().getProduct().getProductName());
                 dto.setProductId(invoiceItem.getInventory().getProduct().getId());

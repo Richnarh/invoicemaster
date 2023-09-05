@@ -5,6 +5,7 @@
  */
 package com.khoders.invoicemaster.dto;
 
+import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Pattern;
 import com.khoders.resource.utilities.SystemUtils;
@@ -15,15 +16,15 @@ import java.time.LocalDate;
  * @author Pascal
  */
 public class InvoiceDto extends UserProp{
-    private String issuedDate = DateUtil.parseLocalDateString(LocalDate.now(), Pattern._ddMMyyyy);
-    private String expiryDate = DateUtil.parseLocalDateString(DateUtil._7DaysFromToday(), Pattern._ddMMyyyy);
+    private String issuedDate = DateUtil.parseLocalDateString(LocalDate.now(), Pattern.ddMMyyyy);
+    private String expiryDate = DateUtil.parseLocalDateString(DateUtil._7DaysFromToday(), Pattern.ddMMyyyy);
     private String client;
     private String clientId;
     private String phoneNumber;
     private String quotationNumber = SystemUtils.generateRefNo();
     private double totalAmount;
     private double subTotalAmount;
-    private String modeOfPayment;
+    private PaymentMethod modeOfPayment;
     private double discountRate;
     private double installationFee;
     private String description;
@@ -85,14 +86,14 @@ public class InvoiceDto extends UserProp{
         this.subTotalAmount = subTotalAmount;
     }
 
-    public String getModeOfPayment() {
+    public PaymentMethod getModeOfPayment() {
         return modeOfPayment;
     }
 
-    public void setModeOfPayment(String modeOfPayment) {
+    public void setModeOfPayment(PaymentMethod modeOfPayment) {
         this.modeOfPayment = modeOfPayment;
     }
-
+    
     public double getDiscountRate() {
         return discountRate;
     }

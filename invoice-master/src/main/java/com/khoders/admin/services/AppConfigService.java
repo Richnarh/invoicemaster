@@ -7,6 +7,7 @@ package com.khoders.admin.services;
 
 import com.khoders.invoicemaster.dto.AppConfigDto;
 import com.khoders.admin.mapper.CompanyMapper;
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.AppConfig;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ public class AppConfigService {
     @Inject private CrudApi crudApi;
     @Inject private CompanyService companyService;
     @Inject private CompanyMapper mapper;
+    @Inject private DefaultService ds;
     
     public AppConfigDto save(AppConfigDto dto){
         log.debug("creating config");
@@ -55,5 +57,20 @@ public class AppConfigService {
     public AppConfigDto findById(String configId) {
         AppConfig appConfig = crudApi.find(AppConfig.class, configId);
         return mapper.toDto(appConfig);
+    }
+    
+    public AppConfigDto findByConfigName(String configName) {
+        AppConfig appConfig = ds.getAppConfig(configName);
+        return mapper.toDto(appConfig);
+    }
+
+    public AppConfigDto update(String configName, String configValue) {
+        AppConfigDto configDto = null;
+        AppConfig appConfig = ds.getAppConfig(configName);
+        appConfig.setConfigValue(configValue);
+        if(crudApi.save(appConfig) != null){
+            configDto = mapper.toDto(appConfig);
+        }
+        return configDto;
     }
 }

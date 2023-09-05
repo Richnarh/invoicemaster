@@ -6,6 +6,7 @@
 package com.khoders.invoicemaster.jbeans.controller;
 
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -16,8 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -34,69 +33,86 @@ public class TaxController implements Serializable{
     private String optionText;
     
     private Tax tax = new Tax();
+    private TaxGroup taxGroup = new TaxGroup();
+    private TaxGroup selectedGroup = null;
     private List<Tax> taxList = new LinkedList<>();
+    private List<TaxGroup> taxGroupList = new LinkedList<>();
     
     @PostConstruct
     private void init()
     {
         clearTax();
+        clearTaxGroup();
         
-        taxList = proformaInvoiceService.getTaxList();
+        taxGroupList = proformaInvoiceService.getTaxGroupList();
     }
     
-   public void saveTax()
-    {
-        try 
-        {
-          if(crudApi.save(tax) != null)
-          {
-              taxList = CollectionList.washList(taxList, tax);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to create sender Id"), null));
-          }
-           clearTax();
-        } catch (Exception e) 
-        {
-            e.printStackTrace();
+    public void saveTax() {
+        try {
+            if(selectedGroup == null){
+                Msg.error("Please select tax group");
+                return;
+            }
+            tax.setTaxGroup(selectedGroup);
+            if (crudApi.save(tax) != null) {
+                taxList = CollectionList.washList(taxList, tax);
+                Msg.info(Msg.SUCCESS_MESSAGE);
+            }
+            tax = new Tax();
+        } catch (Exception e) {
+        }
+    }
+    public void saveTaxGroup() {
+        try {
+            if (crudApi.save(taxGroup) != null) {
+                taxGroupList = CollectionList.washList(taxGroupList, taxGroup);
+                Msg.info(Msg.SUCCESS_MESSAGE);
+            }
+            clearTaxGroup();
+        } catch (Exception e) {
         }
     }
    
-    public void editTax(Tax tax)
-    {
-       optionText = "Update";
-       this.tax=tax;
+    public void selectGroup(TaxGroup taxGroup){
+        selectedGroup = taxGroup;
+        optionText = "Update";
+        this.taxGroup = taxGroup;
+        
+        taxList = proformaInvoiceService.getTaxList(taxGroup);
     }
-    
-    public void deleteTax(Tax tax)
-    {
-        try
-        {
-          if(crudApi.delete(tax))
-          {
-              taxList.remove(tax);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null)); 
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-          }
-        } catch (Exception e) 
-        {
+    public void editTax(Tax tax) {
+        optionText = "Update";
+        this.tax = tax;
+    }
+
+    public void deleteTax(Tax tax) {
+        try {
+            if (crudApi.delete(tax)) {
+                taxList.remove(tax);
+                Msg.info(Msg.DELETE_MESSAGE);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void deleteTaxGroup(TaxGroup taxGroup) {
+        try {
+            if (crudApi.delete(taxGroup)) {
+                taxGroupList.remove(taxGroup);
+                Msg.info(Msg.DELETE_MESSAGE);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
     public void clearTax() {
         tax = new Tax();
+        selectedGroup = null;
+        SystemUtils.resetJsfUI();
+    }
+    public void clearTaxGroup() {
+        taxGroup = new TaxGroup();
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
@@ -122,6 +138,26 @@ public class TaxController implements Serializable{
     public List<Tax> getTaxList()
     {
         return taxList;
+    }
+
+    public List<TaxGroup> getTaxGroupList() {
+        return taxGroupList;
+    }
+
+    public TaxGroup getTaxGroup() {
+        return taxGroup;
+    }
+
+    public void setTaxGroup(TaxGroup taxGroup) {
+        this.taxGroup = taxGroup;
+    }
+
+    public TaxGroup getSelectedGroup() {
+        return selectedGroup;
+    }
+
+    public void setSelectedGroup(TaxGroup selectedGroup) {
+        this.selectedGroup = selectedGroup;
     }
     
 }

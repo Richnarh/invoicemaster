@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"> 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
 
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
@@ -16,47 +17,104 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <h:form id="taxForm" class="spaced-form">
+                                <h:form id="taxGroupForm" class="spaced-form">
                                     <h:panelGrid columns="2">
-                                        <span>Tax Name</span>
-                                        <p:inputText required="true" value="#{taxController.tax.taxName}"/>
+                                        <span>Group Name <span class="text-danger">*</span></span>
+                                        <p:inputText required="true" value="#{taxController.taxGroup.groupName}"/>
                                         
-                                        <span>Tax Rate</span>
-                                        <p:inputText required="true" value="#{taxController.tax.taxRate}"/>
-                                    </h:panelGrid>
+                                        <span>Group Status <span class="text-danger">*</span></span>
+                                        <p:selectOneMenu value="#{taxController.taxGroup.groupStatus}">
+                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                            <f:selectItems value="#{commonClass.statusList}"/>
+                                        </p:selectOneMenu>
 
-                                    <div class="pt-3">
-                                        <p:commandButton class="kbtn-success mr-3" value="#{taxController.optionText}" update="@form, :taxTable"
-                                                         action="#{taxController.saveTax()}" />
+                                        <span>Group Description</span>
+                                        <h:inputTextarea class="form-control" value="#{taxController.taxGroup.groupDescription}"/>
 
-                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true"
-                                                         action="#{taxController.clearTax()}" update="@form"/>
-                                    </div>
+                                        <p:commandButton icon="#{msg.check_icon_circle}" class="kbtn-success mr-3" value="#{taxController.optionText}" update="@form, :taxGroupTable" action="#{taxController.saveTaxGroup()}" />
+                                        <p:commandButton icon="#{msg.clear_icon}" class="kbtn-default" value="#{msg.clear}" immediate="true" action="#{taxController.clearTaxGroup()}" update="@form"/>
+                                    </h:panelGrid>    
+                                    <hr/>
                                 </h:form>
-                            </div>
-
-                            <div class="col-md-8">
-                                <h:form id="taxTable">
-                                    <p:dataTable value="#{taxController.taxList}" var="tax">
-                                        <p:column headerText="Tax Name">
-                                            #{tax.taxName}
-                                        </p:column>
-                                                                                
-                                        <p:column headerText="Tax Rate">
-                                            #{tax.taxRate} %
-                                        </p:column>
-                                                                                
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                            <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update="@form, :taxForm"
-                                                             action="#{taxController.editTax(tax)}"/>
+                                <h:form id="taxGroupTable" class="spaced-form">    
+                                    <p:dataTable value="#{taxController.taxGroupList}" var="taxGroup">
+                                        <p:column class="row-toggler">
+                                            <p:rowToggler/>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
-                                            <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{taxController.deleteTax(tax)}" 
-                                                             onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                        <p:rowExpansion>
+                                            <p:panelGrid columns="2">
+                                                <span>#{msg.id}</span>
+                                                <h:outputText value="#{taxGroup.id}"/>
+                                            </p:panelGrid>
+                                        </p:rowExpansion>
+                                        <p:column headerText="Status" class="text-center">
+                                            <h:outputText value="#{taxGroup.groupStatus.label}"/>
+                                        </p:column>
+                                        <p:column headerText="Group Name" class="text-center">
+                                            <p:commandLink class="ptext-link" value="#{taxGroup.groupName}" action="#{taxController.selectGroup(taxGroup)}" ajax="false"/>
                                         </p:column>
                                     </p:dataTable>
                                 </h:form>
+                            </div>
+
+                            <div class="col-md-6 mx-auto">
+                                <h:panelGroup rendered="#{taxController.selectedGroup != null}">
+                                    <h:form id="taxForm" class="spaced-form">
+                                        <h:panelGrid columns="2">
+                                            <span>Selected Group</span>
+                                            <h:outputText class="faded-shade" value="#{taxController.selectedGroup.groupName}"/>
+                                            <span>Tax Name <span class="text-danger">*</span></span>
+                                            <p:inputText required="true" value="#{taxController.tax.taxName}"/>
+
+                                            <span>Tax Rate</span>
+                                            <p:inputText required="true" value="#{taxController.tax.taxRate}"/>
+                                            
+                                            <span>Reorder</span>
+                                            <p:inputText required="true" value="#{taxController.tax.reOrder}"/>
+                                        </h:panelGrid>
+
+                                        <div class="pt-3">
+                                            <p:commandButton icon="#{msg.check_icon_circle}" class="kbtn-success mr-3" value="Save Changes" update="@form, :taxTable"
+                                                             action="#{taxController.saveTax()}" />
+
+                                            <p:commandButton class="kbtn-default" value="#{msg.clear}/Hide" immediate="true"
+                                                             icon="#{msg.clear_icon}" action="#{taxController.clearTax()}" ajax="false"/>
+                                        </div>
+                                    </h:form>
+                                    <hr/>
+                                    <h:form id="taxTable">
+                                        <p:dataTable value="#{taxController.taxList}" var="tax">
+                                            <p:column class="row-toggler">
+                                                <p:rowToggler/>
+                                            </p:column>
+
+                                            <p:rowExpansion>
+                                                <p:panelGrid columns="2">
+                                                    <span>#{msg.id}</span>
+                                                    <h:outputText value="#{tax.id}"/>
+                                                </p:panelGrid>
+                                            </p:rowExpansion>
+                                            <p:column headerText="Tax Name">
+                                                #{tax.taxName}
+                                            </p:column>
+
+                                            <p:column headerText="Tax Rate">
+                                                #{tax.taxRate} %
+                                            </p:column>
+                                            <p:column headerText="Reorder" class="text-center">
+                                                #{tax.reOrder}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" style="width: 120px;">
+                                                <p:menuButton value="#{msg.choose}">
+                                                    <p:menuitem icon="#{msg.edit_icon}" value="#{msg.edit}" action="#{taxController.editTax(tax)}" update=":taxForm"/>
+                                                    <p:menuitem icon="#{msg.clear_icon}" value="#{msg.delete}" action="#{taxController.deleteTax(tax)}" update="@form"/>
+                                                </p:menuButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </h:panelGroup>
                             </div>
                         </div>
                     </div>

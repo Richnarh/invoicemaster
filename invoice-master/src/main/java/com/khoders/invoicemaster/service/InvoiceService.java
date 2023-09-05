@@ -16,6 +16,7 @@ import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.dto.InvoiceDto;
 import com.khoders.invoicemaster.dto.InvoiceItemDto;
 import com.khoders.invoicemaster.dto.PaymentDataDto;
+import com.khoders.invoicemaster.dto.ReportData;
 import com.khoders.invoicemaster.dto.ReverseData;
 import com.khoders.invoicemaster.dto.SalesDto;
 import com.khoders.invoicemaster.dto.SalesTaxDto;
@@ -42,6 +43,7 @@ import com.khoders.resource.utilities.DateUtil;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.Pattern;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -71,6 +73,7 @@ public class InvoiceService {
     
     public InvoiceDto save(InvoiceDto invoiceDto, AppParam param) {
         log.debug("Saving proforma invoice");
+        System.out.println("Saving proforma invoice");
         ProformaInvoice invoice = mapper.toEntity(invoiceDto, param);
         InvoiceDto dto = null;
         if(crudApi.save(invoice) != null){
@@ -80,8 +83,8 @@ public class InvoiceService {
     }
     
     public SalesDto saveAll(SalesDto salesDto, AppParam param){
-        ProformaInvoice proformaInvoice = ds.getInvoiceById(salesDto.getId());
-        String actionType = ds.getConfigValue("action.type");
+        ProformaInvoice proformaInvoice = ds.getInvoiceById(salesDto.getInvoiceId());
+        SaleLead saleLead = crudApi.find(SaleLead.class, salesDto.getSalesLeadId());
         List<ProformaInvoiceItem> invoiceItemList = mapper.toEntity(salesDto.getInvoiceItemList());
         for (ProformaInvoiceItem proformaInvoiceItem : invoiceItemList) {
             proformaInvoiceItem.genCode();
@@ -89,16 +92,51 @@ public class InvoiceService {
             proformaInvoiceItem.setCompanyBranch(as.getBranch(param.getCompanyBranchId()));
             crudApi.save(proformaInvoiceItem);
         }
-        taxCalculation(salesDto, as.getUser(param.getUserAccountId()));
         
-        SalesDto sales = new SalesDto();
-        List<ProformaInvoiceItem> itemList = invoiceService.getProformaInvoiceItemList(proformaInvoice);
+        double calculatedDiscount = 0.0;
+        List<ProformaInvoiceItem> proformaInvoiceItemList = invoiceService.getProformaInvoiceItemList(proformaInvoice);
+        
+        double totalSaleAmount = proformaInvoiceItemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum();
+        
+        System.out.println("totalDiscountRate: "+salesDto.getDiscountRate());
+        double totalDiscountRate;
+        double productDiscountRate = salesDto.getDiscountRate();
+                
+        if(saleLead != null){
+            System.out.println("saleLead: "+saleLead.getRate());
+            totalDiscountRate = productDiscountRate + saleLead.getRate();
+        }else{
+            totalDiscountRate = productDiscountRate;
+        }
+                
+        if (totalDiscountRate > 0.0){
+            System.out.println("totalDiscountRate: "+totalDiscountRate);
+            calculatedDiscount = totalSaleAmount * (totalDiscountRate/100); // Calculating Discount on total Amount
+            double newTotalAmount = totalSaleAmount - calculatedDiscount;
+            proformaInvoice.setTotalAmount(newTotalAmount);
+            proformaInvoice.setSubTotalAmount(totalSaleAmount);
+        }else{
+            proformaInvoice.setTotalAmount(totalSaleAmount);
+            proformaInvoice.setSubTotalAmount(totalSaleAmount);
+        }
+        proformaInvoice.setInstallationFee(salesDto.getInstallationFee());
+        proformaInvoice.setDiscountRate(salesDto.getDiscountRate());
+        
+        proformaInvoice.setInstallationFee(salesDto.getInstallationFee());
+        proformaInvoice.setDiscountRate(salesDto.getDiscountRate());
+        crudApi.save(proformaInvoice);
+        
+        taxCalculation(salesDto, as.getUser(param.getUserAccountId()));
         List<SalesTax> taxList = invoiceService.getSalesTaxList(proformaInvoice);
         
-        sales.setInvoiceItemList(mapper.toDto(itemList));
+        SalesDto sales = new SalesDto();
+        sales.setInvoiceId(proformaInvoice.getId());
+        sales.setSubTotal(totalSaleAmount);
+        sales.setInvoiceItemList(mapper.toDto(proformaInvoiceItemList));
         sales.setSalesTaxList(mapper.toSalesTaxDto(taxList));
         sales.setTotalPayable(totalPayable);
-        sales.setActionType(actionType);
+        sales.setTotalAmount(proformaInvoice.getTotalAmount());
+        sales.setSalesLeadId(taxList.get(0) != null && taxList.get(0).getSaleLead() != null ? taxList.get(0).getSaleLead().getId() : null);
         return sales;
     }
     
@@ -116,15 +154,22 @@ public class InvoiceService {
         
         sales.setSubTotal(itemList.stream().mapToDouble(ProformaInvoiceItem::getSubTotal).sum());
         sales.setTotalPayable(totalPayable);
+        sales.setInstallationFee(proformaInvoice.getInstallationFee());
+        sales.setDiscountRate(proformaInvoice.getDiscountRate());
+        sales.setInvoiceId(proformaInvoice.getId());
         sales.setActionType(actionType);
         sales.setInvoiceItemList(invoiceItemList);
         sales.setSalesTaxList(salesTaxList);
+        sales.setSalesLeadId(!taxList.isEmpty() && taxList.get(0) != null && taxList.get(0).getSaleLead() != null ? taxList.get(0).getSaleLead().getId() : null);
         return sales;
     }
     
     public double calculateVat(ProformaInvoice proformaInvoice){
         List<SalesTax> salesTaxList = invoiceService.getSalesTaxList(proformaInvoice);
-        
+        System.out.println("salesTaxList; #Vat: "+salesTaxList.size());
+        if(salesTaxList.isEmpty()){
+            return 0.0;
+        }
         SalesTax covid19 = salesTaxList.get(0);
         SalesTax salesVat = salesTaxList.get(1);
 
@@ -136,6 +181,9 @@ public class InvoiceService {
         log.debug("saleAmount: {} ", proformaInvoice.getTotalAmount());
         log.debug("totalLevies: {} ", totalLevies);
         log.debug("taxableValue: {} ", taxableValue);
+        System.out.println("saleAmount: {} "+ proformaInvoice.getTotalAmount());
+        System.out.println("totalLevies: {} "+ totalLevies);
+        System.out.println("taxableValue: {} "+ taxableValue);
         
         double vat = taxableValue * (salesVat.getTaxRate() / 100);
 
@@ -144,15 +192,15 @@ public class InvoiceService {
         salesVat.setTaxAmount(vat);
 
         crudApi.save(salesVat);
-        
+        System.out.println("totalPayable: "+totalPayable);
         return totalPayable;
     }
     
     public void taxCalculation(SalesDto dto, UserAccount user){
-        ProformaInvoice proformaInvoice = ds.getInvoiceById(dto.getId());
+        ProformaInvoice proformaInvoice = ds.getInvoiceById(dto.getInvoiceId());
         SaleLead saleLead = crudApi.find(SaleLead.class, dto.getSalesLeadId());
         List<SalesTax> salesTaxList = invoiceService.getSalesTaxList(proformaInvoice);
-        
+        System.out.println("salesTaxList: "+salesTaxList.size());
         // delete all salesTax for the selected proforma invoice
         salesTaxList.forEach(tx-> {
             crudApi.delete(tx);
@@ -179,7 +227,7 @@ public class InvoiceService {
             st.setSaleLead(saleLead);
             crudApi.save(st);
         }
-
+        System.out.println("Initialise vat computation...");
         calculateVat(proformaInvoice);
     }
     
@@ -241,18 +289,9 @@ public class InvoiceService {
     }
 
     public List<InvoiceDto> searchByDate(AppParam param) {
-        System.out.println("fromDate: "+param.getFromDate());
-        System.out.println("toDate: "+param.getToDate());
         LocalDate fromDate = DateUtil.parseLocalDate(param.getFromDate(), Pattern._yyyyMMdd);
         LocalDate toDate = DateUtil.parseLocalDate(param.getToDate(), Pattern._yyyyMMdd);
-        
-        System.out.println("fromDate#: "+fromDate);
-        System.out.println("toDate#: "+toDate);
-        
         DateRangeUtil dateRange = new DateRangeUtil(fromDate, toDate);
-        
-        System.out.println("fromDate___: "+dateRange.getFromDate());
-        System.out.println("toDate_____: "+dateRange.getToDate());
         
         List<ProformaInvoice> proformaInvoiceList = invoiceService.getProformaInvoice(dateRange, as.getBranch(param.getCompanyBranchId()));
         List<InvoiceDto> dtoList = new LinkedList<>();
@@ -403,7 +442,7 @@ public class InvoiceService {
     }
 
     public PaymentDataDto getPaymentDataByInvoiceId(String invoiceId) {
-        log.debug("fetching payment info: {} ", invoiceId);
+       log.debug("fetching payment info: {} ", invoiceId);
        PaymentDataDto dto = null;
        PaymentData infoData = invoiceService.invoiceRecord(ds.getInvoiceById(invoiceId));
        if(infoData !=  null){
@@ -412,26 +451,34 @@ public class InvoiceService {
        return dto;
     }
     
-    public byte[] generateInvoice(String invoiceId) {
+    public ReportData generateInvoice(String invoiceId) {
         List<ProformaInvoiceDto> proformaInvoiceDtoList = new LinkedList<>();
         List<ProformaInvoiceDto> coverDataList = new LinkedList<>();
         
-        reportManager.param.put("logo", ReportFiles.LOGO);
+        ReportManager.param.put("logo", ReportFiles.LOGO);
         ProformaInvoice proformaInvoice = ds.getInvoiceById(invoiceId);
         
         ProformaInvoiceDto coverData = xtractService.extractToProformaInvoiceCover(proformaInvoice);
         coverDataList.add(coverData);
-        byte[] coverPrint = reportManager.createByteReport(coverDataList, ReportFiles.PRO_INVOICE_COVER, reportManager.param);
+        byte[] coverPrint = reportManager.createByteReport(coverDataList, ReportFiles.PRO_INVOICE_COVER, ReportManager.param);
         
         ProformaInvoiceDto proformaInvoiceDto = xtractService.extractToProformaInvoice(proformaInvoice);
         proformaInvoiceDtoList.add(proformaInvoiceDto);
-        byte[] invoicePrint = reportManager.createByteReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, reportManager.param);
+        byte[] invoicePrint = reportManager.createByteReport(proformaInvoiceDtoList, ReportFiles.PRO_INVOICE_FILE, ReportManager.param);
         
-        byte[] bytes = Bytes.concat(coverPrint,invoicePrint);
+        ReportData  reportData = new ReportData();
+        System.out.println("coverPrint: "+coverPrint);
+        System.out.println("invoicePrint: "+invoicePrint);
+//        byte[] bytes = Bytes.concat(invoicePrint,coverPrint);
+
+        String str1 = Base64.getEncoder().encodeToString(coverPrint);
+        String str2 = Base64.getEncoder().encodeToString(invoicePrint);
+        reportData.setInvoiceCover(str1);
+        reportData.setInvoiceReport(str2);
         
-        log.debug("bytes: {} ",bytes);
+        System.out.println("");
         System.out.println("Done!");
-        return bytes;
+        return reportData;
     } 
     
     public byte[] generateReceipt(String invoiceId) {
@@ -440,8 +487,8 @@ public class InvoiceService {
         Receipt receipt = xtractService.extractToReceipt(proformaInvoice);
 
         receiptList.add(receipt);
-        reportManager.param.put("logo", ReportFiles.LOGO);
-        return reportManager.createByteReport(receiptList, ReportFiles.RECEIPT_FILE, reportManager.param);
+        ReportManager.param.put("logo", ReportFiles.LOGO);
+        return reportManager.createByteReport(receiptList, ReportFiles.RECEIPT_FILE, ReportManager.param);
     } 
     
     public String reverseApproval(AppParam param,String invoiceId){
@@ -501,45 +548,4 @@ public class InvoiceService {
             e.printStackTrace();
         }
     }
-//   public byte[] appendData(byte[] firstObject,byte[] secondObject){
-//    ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
-//    try {
-//        if (firstObject!=null && firstObject.length!=0)
-//            outputStream.write(firstObject);
-//        if (secondObject!=null && secondObject.length!=0)   
-//            outputStream.write(secondObject);
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//    return outputStream.toByteArray();
-//}
-//    public byte[] createByteReport(List<JasperPrint> jasperPrints){
-//        byte[] a = null;
-//        byte[] b = null;
-//        byte[] combined = null;
-//                
-//        try {
-//            for (int i = 0; i <= jasperPrints.size() - 1; i++) {
-//                System.out.println("report: "+i);
-//                byte[] printByte = JasperExportManager.exportReportToPdf(jasperPrints.get(i));
-//                append(printByte);
-//            }
-//            System.out.println("a: "+a +"\t b: "+b);
-//            combined = ByteBuffer.allocate(a.length+b.length).put(a).put(b).array();
-//        } catch (JRException e) {
-//        }
-//        return combined;
-//    }
-//    
-//    public static final byte[] append(final byte[]... arrays) {
-//    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-//    if (arrays != null) {
-//        for (final byte[] array : arrays) {
-//            if (array != null) {
-//                out.write(array, 0, array.length);
-//            }
-//        }
-//    }
-//    return out.toByteArray();
-//}
 }

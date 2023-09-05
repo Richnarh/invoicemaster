@@ -28,10 +28,12 @@
                         <ui:include src="invoice-menu.xhtml"/>
                     </h:panelGroup>
 
-                    <li class="nav-header">E-COMMERCE</li>
-                    <h:panelGroup>
-                        <ui:include src="ecommerce-menu.xhtml"/>
-                    </h:panelGroup>
+                    <ui:remove>
+                        <li class="nav-header">E-COMMERCE</li>
+                        <h:panelGroup>
+                            <ui:include src="ecommerce-menu.xhtml"/>
+                        </h:panelGroup>
+                    </ui:remove>
 
                     <ui:remove>
                         <li class="nav-header">SETTINGS</li>

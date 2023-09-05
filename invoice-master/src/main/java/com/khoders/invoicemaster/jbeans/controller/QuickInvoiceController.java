@@ -136,9 +136,9 @@ public class QuickInvoiceController implements Serializable
         for (Tax tax : taxList)
         {
             // v2 exclude the NHIL tax in sales calculation
-            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
-                if(tax.getTaxName().equals("NHIL")) continue;
-            }
+//            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
+//                if(tax.getTaxName().equals("NHIL")) continue;
+//            }
             SalesTaxDto dto = new SalesTaxDto();
 
             double calc = getTotalSaleAmount() * (tax.getTaxRate() / 100);
@@ -156,9 +156,11 @@ public class QuickInvoiceController implements Serializable
 
     private void calculateVat()
     {
-        SalesTaxDto covid19 = salesTaxDtoList.get(0);
-        SalesTaxDto salesVat = salesTaxDtoList.get(1);
-        double totalLevies = covid19.getTaxAmount();
+        SalesTaxDto nhil = salesTaxDtoList.get(0);
+        SalesTaxDto getFund = salesTaxDtoList.get(1);
+        SalesTaxDto covid19 = salesTaxDtoList.get(2);
+        SalesTaxDto salesVat = salesTaxDtoList.get(3);
+        double totalLevies = nhil.getTaxAmount()+getFund.getTaxAmount()+covid19.getTaxAmount();
         double taxableValue = getTotalSaleAmount() + totalLevies;
         double vat = taxableValue * (salesVat.getTaxRate() / 100);
         totalPayable = vat + taxableValue + installationFee;

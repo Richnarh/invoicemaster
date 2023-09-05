@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
@@ -14,8 +13,8 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.entities.UserAccount;
-import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
@@ -81,23 +80,7 @@ public class ProformaInvoiceService{
                                 .setParameter(SalesTax._proformaInvoice, proformaInvoice)
                                 .getResultList();   
     }
-    
-    public List<SalesTax> getSalesTaxList(UserTransaction userTransaction)
-    {
-        try
-        {
-          String query = "SELECT e FROM SalesTax e WHERE e.userTransaction=?1 ORDER BY e.reOrder ASC";
-        
-        TypedQuery<SalesTax> typedQuery = crudApi.getEm().createQuery(query, SalesTax.class)
-                                .setParameter(1, userTransaction);
-                return typedQuery.getResultList();      
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-   
+
     public List<ProformaInvoice> getProformaInvoiceList()
     {
         try
@@ -298,6 +281,14 @@ public class ProformaInvoiceService{
         }
 
         return Collections.emptyList();
+    }
+    public List<Tax> getTaxList(TaxGroup taxGroup){
+       return crudApi.getEm().createQuery("SELECT e FROM Tax e WHERE e.taxGroup = :taxGroup ORDER BY e.reOrder ASC", Tax.class)
+               .setParameter(Tax._taxGroup, taxGroup)
+               .getResultList();
+    }
+    public List<TaxGroup> getTaxGroupList(){
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e", TaxGroup.class).getResultList();
     }
     
     public List<PaymentData> getPaymentInfoList(ProformaInvoice proformaInvoice)

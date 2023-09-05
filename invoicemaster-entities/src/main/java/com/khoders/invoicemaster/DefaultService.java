@@ -11,7 +11,9 @@ import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.sms.SenderId;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -35,6 +37,18 @@ public class DefaultService {
     public AppConfig getAppConfig(String configName) {
         return crudApi.getEm().createQuery("SELECT e FROM AppConfig e WHERE e.configName = :configName", AppConfig.class)
                 .setParameter(AppConfig._configName, configName)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
+    public TaxGroup getTaxGroupByStatus(Status groupStatus) {
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e WHERE e.groupStatus = :groupStatus", TaxGroup.class)
+                .setParameter(TaxGroup._groupStatus, groupStatus)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
+    public TaxGroup getTaxGroupByName(Status groupName) {
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e WHERE e.groupName = :groupName", TaxGroup.class)
+                .setParameter(TaxGroup._groupName, groupName)
                 .getResultStream().findFirst().orElse(null);
     }
     

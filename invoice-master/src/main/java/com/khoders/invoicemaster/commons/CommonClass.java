@@ -16,6 +16,7 @@ import com.khoders.resource.enums.Currency;
 import com.khoders.resource.enums.DiscountType;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.enums.UnitOfMeasurement;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -87,6 +88,10 @@ public class CommonClass implements Serializable
     public List<AppVersion> getAppVersionList()
     {
         return Arrays.asList(AppVersion.values());
+    }
+    public List<Status> getStatusList()
+    {
+        return Arrays.asList(Status.values());
     }
     
 }

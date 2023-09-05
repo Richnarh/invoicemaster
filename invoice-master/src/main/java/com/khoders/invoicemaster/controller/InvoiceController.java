@@ -11,6 +11,7 @@ import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.dto.InvoiceDto;
 import com.khoders.invoicemaster.dto.InvoiceItemDto;
 import com.khoders.invoicemaster.dto.PaymentDataDto;
+import com.khoders.invoicemaster.dto.ReportData;
 import com.khoders.invoicemaster.dto.SalesDto;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.service.InvoiceService;
@@ -49,7 +50,7 @@ public class InvoiceController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(@BeanParam AppParam param, InvoiceDto invoiceDto){
+    public Response create(@BeanParam AppParam param,InvoiceDto invoiceDto){
         InvoiceDto dto = invoiceService.save(invoiceDto, param);
         return JaxResponse.created(Msg.CREATED, dto);
     }
@@ -159,8 +160,8 @@ public class InvoiceController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response generateInvoice(@PathParam("invoiceId") String invoiceId){
         log.debug("reporting...");
-        byte[] reportByte = invoiceService.generateInvoice(invoiceId);
-        return JaxResponse.ok(Msg.RECORD_FOUND, Base64.getEncoder().encodeToString(reportByte));
+        ReportData reportData = invoiceService.generateInvoice(invoiceId);
+        return JaxResponse.ok(Msg.RECORD_FOUND, reportData);
     }
     @GET
     @Path("/{invoiceId}/receipt")
@@ -198,5 +199,11 @@ public class InvoiceController {
     public Response searchByParam(@PathParam("branchId") String branchId, @PathParam("userId") String userId){
         List<InvoiceDto> invoices = invoiceService.searchByParam(branchId,userId);
         return JaxResponse.ok(invoices);
+    }
+    @GET
+    @Path("/invoice-params")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchByParam(){
+        return JaxResponse.ok(new InvoiceDto());
     }
 }
