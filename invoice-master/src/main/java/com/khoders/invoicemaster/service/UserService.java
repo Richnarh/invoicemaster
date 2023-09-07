@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.admin.services;
+package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.dto.SaleLeadDto;
-import com.khoders.admin.mapper.AppParam;
+import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.mapper.UserMapper;
 import com.khoders.invoicemaster.dto.AuthRequest;

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.admin.controller;
+package com.khoders.invoicemaster.controller;
 
-import com.khoders.admin.services.BranchService;
+import com.khoders.invoicemaster.service.BranchService;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.dto.CompanyProfileDto;
 import com.khoders.resource.jaxrs.JaxResponse;

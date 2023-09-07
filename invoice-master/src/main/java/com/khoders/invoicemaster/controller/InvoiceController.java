@@ -5,7 +5,7 @@
  */
 package com.khoders.invoicemaster.controller;
 
-import com.khoders.admin.mapper.AppParam;
+import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.dto.InvoiceDto;

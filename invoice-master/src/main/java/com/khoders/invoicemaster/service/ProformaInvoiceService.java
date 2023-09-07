@@ -287,9 +287,6 @@ public class ProformaInvoiceService{
                .setParameter(Tax._taxGroup, taxGroup)
                .getResultList();
     }
-    public List<TaxGroup> getTaxGroupList(){
-        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e", TaxGroup.class).getResultList();
-    }
     
     public List<PaymentData> getPaymentInfoList(ProformaInvoice proformaInvoice)
     {

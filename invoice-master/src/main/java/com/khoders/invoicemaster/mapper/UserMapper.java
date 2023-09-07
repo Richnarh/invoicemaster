@@ -6,7 +6,6 @@
 package com.khoders.invoicemaster.mapper;
 
 import com.khoders.invoicemaster.dto.SaleLeadDto;
-import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.entities.UserAccount;

@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.admin.services.CompanyService;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.dto.AuthRequest;
 import com.khoders.invoicemaster.dto.UserDto;

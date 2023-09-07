@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.admin.controller;
+package com.khoders.invoicemaster.controller;
 
-import com.khoders.admin.mapper.AppParam;
-import com.khoders.admin.services.TransactionService;
+import com.khoders.invoicemaster.mapper.AppParam;
+import com.khoders.invoicemaster.service.TransactionService;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.dto.PaymentDataDto;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
+import com.khoders.invoicemaster.enums.DeliveryStatus;
 import java.util.Base64;
 import java.util.List;
 import javax.inject.Inject;
@@ -61,7 +62,7 @@ public class TransactionController {
     
     @GET
     @Path("/delivery/{deliveryStatus}")
-    public Response delivery(@PathParam("deliveryStatus") String deliveryStatus){
+    public Response delivery(@PathParam("deliveryStatus") DeliveryStatus deliveryStatus){
         List<PaymentDataDto> dtoList = transactionService.deliveryList(deliveryStatus);
         return JaxResponse.ok(dtoList);
     }

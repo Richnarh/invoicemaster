@@ -5,7 +5,6 @@
  */
 package com.khoders.invoicemaster.mapper;
 
-import com.khoders.admin.mapper.AppParam;
 import com.khoders.invoicemaster.dto.ClientDto;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.enums.ClientType;

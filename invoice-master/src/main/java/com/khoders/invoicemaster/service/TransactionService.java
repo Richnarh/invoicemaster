@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.admin.services;
+package com.khoders.invoicemaster.service;
 
-import com.khoders.admin.mapper.AppParam;
+import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.dto.PaymentDataDto;
 import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
@@ -90,10 +90,10 @@ public class TransactionService {
         return mapper.toDto(paymentData);
     }
 
-    public List<PaymentDataDto> deliveryList(String deliveryStatus) {
+    public List<PaymentDataDto> deliveryList(DeliveryStatus deliveryStatus) {
         List<PaymentDataDto> dtoList = new LinkedList<>();
         if(deliveryStatus == null) return dtoList;
-        List<PaymentData> paymentList = paymentService.getInvoiceByDeliveryStatus(DeliveryStatus.valueOf(deliveryStatus));
+        List<PaymentData> paymentList = paymentService.getInvoiceByDeliveryStatus(deliveryStatus);
         paymentList.forEach(item ->{
             dtoList.add(mapper.toDto(item));
         });

@@ -1,6 +1,7 @@
 package com.khoders.invoicemaster.entities.accounts;
 
 import com.khoders.invoicemaster.enums.DebitCredit;
+import com.khoders.invoicemaster.enums.EntrySource;
 import com.khoders.resource.jpa.BaseModel;
 
 import javax.persistence.*;
@@ -27,6 +28,10 @@ public class Journal extends BaseModel {
     @Column(name = "debit_credit")
     @Enumerated(EnumType.STRING)
     private DebitCredit debitCredit;
+    
+    @Column(name = "entry_source")
+    @Enumerated(EnumType.STRING)
+    private EntrySource entrySource;
 
     public double getDebit() {
         return debit;

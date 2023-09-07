@@ -11,7 +11,7 @@ import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import static Zenoph.SMSLib.Enums.REQSTATUS.SUCCESS;
 import Zenoph.SMSLib.ZenophSMS;
 import com.google.common.primitives.Bytes;
-import com.khoders.admin.mapper.AppParam;
+import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.dto.InvoiceDto;
 import com.khoders.invoicemaster.dto.InvoiceItemDto;
