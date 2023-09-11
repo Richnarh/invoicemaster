@@ -30,4 +30,8 @@ public class ApiEndpoint
     public static final String PRODUCT_ENDPOINT = VERSION + "product";
     public static final String PRODUCT_TYPE_ENDPOINT = VERSION + "product-type";
     public static final String PAYMENT_ENDPOINT = VERSION + "payment";
+    public static final String SMS_ENDPOINT = VERSION + "sms";
+    public static final String GROUP_ENDPOINT = VERSION + "sms-group";
+    public static final String GROUP_CONTACT_ENDPOINT = VERSION + "group-contact";
+    public static final String MESSAGE_TEMPLATE_ENDPOINT = VERSION + "message-template";
 }

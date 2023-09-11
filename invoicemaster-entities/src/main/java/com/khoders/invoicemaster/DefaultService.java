@@ -12,6 +12,7 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.TaxGroup;
+import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
@@ -112,6 +113,11 @@ public class DefaultService {
     public Inventory getInventory(String inventoryId) {
         return crudApi.getEm().createQuery("SELECT e FROM Inventory e WHERE e.id = :id", Inventory.class)
                 .setParameter(Inventory._id, inventoryId)
+                .getResultStream().findFirst().orElse(null);
+    }
+    public MessageTemplate getMessageTemplate(String templateId) {
+        return crudApi.getEm().createQuery("SELECT e FROM MessageTemplate e WHERE e.id = :id", MessageTemplate.class)
+                .setParameter(MessageTemplate._id, templateId)
                 .getResultStream().findFirst().orElse(null);
     }
 }

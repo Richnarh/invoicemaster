@@ -83,7 +83,7 @@ public class SmsController implements Serializable
     {
         clientList = smsService.getContactList();
         
-        getConnection();
+//        getConnection();
         
     }
     

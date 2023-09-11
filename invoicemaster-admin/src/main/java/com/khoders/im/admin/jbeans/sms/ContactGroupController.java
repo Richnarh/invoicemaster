@@ -43,8 +43,7 @@ public class ContactGroupController implements Serializable{
     private List<Client> clientList = new LinkedList<>();
     
     @PostConstruct
-    private void init()
-    {
+    private void init(){
         clearContactGroup();
         contactGroupList = smsService.getGroupContactList();
         clientList = inventoryService.getClientList();

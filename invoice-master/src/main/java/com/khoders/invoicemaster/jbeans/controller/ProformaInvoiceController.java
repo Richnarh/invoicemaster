@@ -440,11 +440,9 @@ public class ProformaInvoiceController implements Serializable
 
     public void taxCalculation(){
         TaxGroup taxGroup = null;
-        // delete all salesTax for the selected proforma invoice
         System.out.println("salesTaxList #Calc: "+salesTaxList.size());
         if(!salesTaxList.isEmpty()){
           taxGroup = salesTaxList.get(0).getTaxGroup();
-            System.out.println("TaxGroup: "+taxGroup.getGroupName());
         }
         for (SalesTax salesTx : salesTaxList) {
           crudApi.delete(salesTx);  
@@ -454,10 +452,6 @@ public class ProformaInvoiceController implements Serializable
         }
         List<Tax> taxList = proformaInvoiceService.getTaxList(taxGroup);
         for (Tax tax : taxList){
-            // v2 exclude the NHIL tax in sales calculation
-//            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
-//                if(tax.getTaxName().equals("NHIL")) continue;
-//            }
             SalesTax st = new SalesTax();
 
             double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
@@ -517,8 +511,6 @@ public class ProformaInvoiceController implements Serializable
                 default:
                     break;
             }            
-
-//          double totalLevies = covid19.getTaxAmount();
 
             double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
             

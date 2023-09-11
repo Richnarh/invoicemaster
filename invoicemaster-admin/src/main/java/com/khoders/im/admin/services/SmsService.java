@@ -92,19 +92,10 @@ public class SmsService
         return Collections.emptyList();
     }
     
-    public List<GroupContact> getContactGroupList(SMSGrup smsGrup)
-    {
-        try
-        {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.smsGrup=?1";
-            TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, smsGrup);
-                             return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<GroupContact> getContactGroupList(SMSGrup smsGrup){
+        return crudApi.getEm().createQuery("SELECT e FROM GroupContact e WHERE e.smsGrup = :smsGrup", GroupContact.class)
+                .setParameter(GroupContact._smsGrup, smsGrup)
+                .getResultList();
     }
   
     public List<Sms> loadSmslogList(SMSType smsType)

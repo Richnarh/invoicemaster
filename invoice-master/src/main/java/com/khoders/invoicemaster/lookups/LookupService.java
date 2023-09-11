@@ -13,6 +13,8 @@ import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.entities.system.CompanyProfile;
+import com.khoders.invoicemaster.sms.MessageTemplate;
+import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.resource.jpa.QueryBuilder;
 import java.util.LinkedList;
 import java.util.List;
@@ -102,6 +104,26 @@ public class LookupService {
     public List<LookupItem> clients() {
         List<LookupItem> itemList = new LinkedList<>();
         builder.findAll(Client.class).forEach(data -> {
+            LookupItem item = new LookupItem();
+            item.setId(data.getId());
+            item.setItemName(data+"");
+            itemList.add(item);
+        });
+        return itemList;
+    } 
+    public List<LookupItem> smsGroup() {
+        List<LookupItem> itemList = new LinkedList<>();
+        builder.findAll(SMSGrup.class).forEach(data -> {
+            LookupItem item = new LookupItem();
+            item.setId(data.getId());
+            item.setItemName(data+"");
+            itemList.add(item);
+        });
+        return itemList;
+    } 
+    public List<LookupItem> messageTemplates() {
+        List<LookupItem> itemList = new LinkedList<>();
+        builder.findAll(MessageTemplate.class).forEach(data -> {
             LookupItem item = new LookupItem();
             item.setId(data.getId());
             item.setItemName(data+"");

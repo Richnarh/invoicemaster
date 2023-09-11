@@ -8,6 +8,7 @@ package com.khoders.invoicemaster.lookups;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.enums.ClientType;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.invoicemaster.enums.MessagingType;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.Currency;
 import com.khoders.resource.enums.PaymentMethod;
@@ -79,6 +80,12 @@ public class LookupController {
     public Response clientType(){
         return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(ClientType.values()));
     }
+    @GET
+    @Path("/message-type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response messageType(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(MessagingType.values()));
+    }
     
     // Entities
     @GET
@@ -128,5 +135,17 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response clients(){
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.clients());
+    }
+    @GET
+    @Path("/sms-group")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response SmsGroup(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.smsGroup());
+    }
+    @GET
+    @Path("/message-template")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response messageTemplates(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.messageTemplates());
     }
 }

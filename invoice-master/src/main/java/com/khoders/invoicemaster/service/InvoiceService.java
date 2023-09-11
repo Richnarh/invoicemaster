@@ -10,7 +10,6 @@ import Zenoph.SMSLib.Enums.REQSTATUS;
 import static Zenoph.SMSLib.Enums.REQSTATUS.ERR_INSUFF_CREDIT;
 import static Zenoph.SMSLib.Enums.REQSTATUS.SUCCESS;
 import Zenoph.SMSLib.ZenophSMS;
-import com.google.common.primitives.Bytes;
 import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.dto.InvoiceDto;
@@ -27,15 +26,16 @@ import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SaleLead;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
-import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
 import com.khoders.invoicemaster.mapper.InvoiceMapper;
 import com.khoders.invoicemaster.mapper.PaymentMapper;
 import com.khoders.invoicemaster.reportData.ProformaInvoiceDto;
 import com.khoders.invoicemaster.reportData.Receipt;
 import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.reports.ReportManager;
 import com.khoders.resource.utilities.DateRangeUtil;
@@ -73,7 +73,6 @@ public class InvoiceService {
     
     public InvoiceDto save(InvoiceDto invoiceDto, AppParam param) {
         log.debug("Saving proforma invoice");
-        System.out.println("Saving proforma invoice");
         ProformaInvoice invoice = mapper.toEntity(invoiceDto, param);
         InvoiceDto dto = null;
         if(crudApi.save(invoice) != null){
@@ -165,56 +164,78 @@ public class InvoiceService {
     }
     
     public double calculateVat(ProformaInvoice proformaInvoice){
+        SalesTax nhil=null,getFund=null,covid19=null,salesVat=null;
+        double totalLevies = 0;
         List<SalesTax> salesTaxList = invoiceService.getSalesTaxList(proformaInvoice);
         System.out.println("salesTaxList; #Vat: "+salesTaxList.size());
         if(salesTaxList.isEmpty()){
             return 0.0;
         }
-        SalesTax covid19 = salesTaxList.get(0);
-        SalesTax salesVat = salesTaxList.get(1);
-
-        double totalLevies = covid19.getTaxAmount();
+        if (!salesTaxList.isEmpty()) {
+            switch (salesTaxList.size()) {
+                case 2:
+                    covid19 = salesTaxList.get(0);
+                    salesVat = salesTaxList.get(1);
+                    totalLevies = covid19.getTaxAmount();
+                    break;
+                case 3:
+                    nhil = salesTaxList.get(0);
+                    covid19 = salesTaxList.get(1);
+                    salesVat = salesTaxList.get(2);
+                    totalLevies = nhil.getTaxAmount() + covid19.getTaxAmount();
+                    break;
+                case 4:
+                    nhil = salesTaxList.get(0);
+                    getFund = salesTaxList.get(1);
+                    covid19 = salesTaxList.get(2);
+                    salesVat = salesTaxList.get(3);
+                    totalLevies = nhil.getTaxAmount() + getFund.getTaxAmount() + covid19.getTaxAmount();
+                    break;
+                default:
+                    break;
+            }
+        }
 
         double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
-        log.debug("Covide19: {} taxAmnt: {} ", covid19.getTaxName(), covid19.getTaxAmount());
-        log.debug("salesVat: {} taxAmnt: {} ", salesVat.getTaxName(), salesVat.getTaxAmount());
-        log.debug("saleAmount: {} ", proformaInvoice.getTotalAmount());
-        log.debug("totalLevies: {} ", totalLevies);
-        log.debug("taxableValue: {} ", taxableValue);
+        log.info("Covide19: {} taxAmnt: {} ", covid19.getTaxName(), covid19.getTaxAmount());
+        log.info("salesVat: {} taxAmnt: {} ", salesVat.getTaxName(), salesVat.getTaxAmount());
+        log.info("saleAmount: {} ", proformaInvoice.getTotalAmount());
+        log.info("totalLevies: {} ", totalLevies);
+        log.info("taxableValue: {} ", taxableValue);
         System.out.println("saleAmount: {} "+ proformaInvoice.getTotalAmount());
         System.out.println("totalLevies: {} "+ totalLevies);
         System.out.println("taxableValue: {} "+ taxableValue);
         
-        double vat = taxableValue * (salesVat.getTaxRate() / 100);
-
+        double vat = taxableValue * (salesVat.getTaxRate()/100);
         totalPayable = vat + taxableValue + proformaInvoice.getInstallationFee();
-
         salesVat.setTaxAmount(vat);
-
         crudApi.save(salesVat);
-        System.out.println("totalPayable: "+totalPayable);
+        
         return totalPayable;
     }
     
     public void taxCalculation(SalesDto dto, UserAccount user){
+        TaxGroup taxGroup = null;
+        
         ProformaInvoice proformaInvoice = ds.getInvoiceById(dto.getInvoiceId());
         SaleLead saleLead = crudApi.find(SaleLead.class, dto.getSalesLeadId());
         List<SalesTax> salesTaxList = invoiceService.getSalesTaxList(proformaInvoice);
-        System.out.println("salesTaxList: "+salesTaxList.size());
-        // delete all salesTax for the selected proforma invoice
-        salesTaxList.forEach(tx-> {
-            crudApi.delete(tx);
-        });
-        for (Tax tax : invoiceService.getTaxList()) {
-            // v2 exclude the NHIL tax in sales calculation
-            if (user.getAppVersion().equals(AppVersion.V2)) {
-                if (tax.getTaxName().equals("NHIL")) {
-                    continue;
-                }
-            }
+        
+        log.debug("salesTaxList #Calc: {} ",salesTaxList.size());
+        if(!salesTaxList.isEmpty()){
+          taxGroup = salesTaxList.get(0).getTaxGroup();
+        }
+        for(SalesTax salesTx : salesTaxList) {
+          crudApi.delete(salesTx);  
+        }
+        if(taxGroup == null){
+            taxGroup = ds.getTaxGroupByStatus(Status.ACTIVE);
+        }
+        List<Tax> taxList = invoiceService.getTaxList(taxGroup);
+        for (Tax tax : taxList) {
+            
             SalesTax st = new SalesTax();
-
-            double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate() / 100);
+            double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
 
             st.genCode();
             st.setTaxName(tax.getTaxName());
@@ -504,7 +525,7 @@ public class InvoiceService {
         sb.append(proformaInvoice.getQuotationNumber());
         sb.append("\n").append("Click the link below to complete the reversal.").append("\n");
         sb.append(url);
-        System.out.println("Msg: "+sb.toString());
+        log.info("Msg: ",sb.toString());
         sendMsg(sb.toString());
          
         boolean sentMail = invoiceService.processMail(sb.toString(), userAccount.getEmail());
