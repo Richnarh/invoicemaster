@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package com.khoders.invoicemaster.dto;
-
-import com.khoders.invoicemaster.dto.UserProp;
-
 /**
  *
  * @author Pascal

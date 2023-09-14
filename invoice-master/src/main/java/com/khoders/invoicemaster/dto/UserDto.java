@@ -25,7 +25,8 @@ public class UserDto extends BaseDto{
     private String height;
     private String width;
     private String password;
-    private String appVersion;private List<AppModuleDto> appModuleList;
+    private String appVersion;
+    private List<AppModuleDto> appModuleList;
     
 
     public String getCompanyBranch() {

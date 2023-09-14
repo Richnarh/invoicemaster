@@ -10,6 +10,8 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +24,11 @@ public class Tax extends BaseModel implements Serializable
 {
   @Column(name = "tax_id")
   private String taxId;
+  
+  public static final String _taxGroup = "taxGroup";
+  @JoinColumn(name = "tax_group", referencedColumnName = "id")
+  @ManyToOne
+  private TaxGroup taxGroup;
   
   @Column(name = "tax_name")
   private String taxName;
@@ -70,6 +77,14 @@ public class Tax extends BaseModel implements Serializable
     public void setReOrder(int reOrder)
     {
         this.reOrder = reOrder;
+    }
+
+    public TaxGroup getTaxGroup() {
+        return taxGroup;
+    }
+
+    public void setTaxGroup(TaxGroup taxGroup) {
+        this.taxGroup = taxGroup;
     }
 
     public void genCode()

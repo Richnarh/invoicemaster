@@ -6,9 +6,14 @@
 package com.khoders.invoicemaster.lookups;
 
 import com.khoders.invoicemaster.ApiEndpoint;
+import com.khoders.invoicemaster.enums.ClientType;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.invoicemaster.enums.MessagingType;
+import com.khoders.resource.enums.AccessLevel;
+import com.khoders.resource.enums.Currency;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.enums.UnitOfMeasurement;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
@@ -51,6 +56,36 @@ public class LookupController {
     public Response paymentMethod(){
         return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(PaymentMethod.values()));
     }
+    @GET
+    @Path("/currency")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response currency(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(Currency.values()));
+    }
+    @GET
+    @Path("/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response status(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(Status.values()));
+    }
+    @GET
+    @Path("/access-level")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response accessLevel(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(AccessLevel.values()));
+    }
+    @GET
+    @Path("/client-type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clientType(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(ClientType.values()));
+    }
+    @GET
+    @Path("/message-type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response messageType(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, LookupSetup.PrepareEnum(MessagingType.values()));
+    }
     
     // Entities
     @GET
@@ -58,6 +93,12 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response stock(){
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.inventory());
+    }
+    @GET
+    @Path("/products")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response products(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.products());
     }
     @GET
     @Path("/company-profile")
@@ -70,5 +111,41 @@ public class LookupController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response companyBranch(){
         return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.companyBranch());
+    }
+    @GET
+    @Path("/product-type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response productType(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.productTypes());
+    }
+    @GET
+    @Path("/employees")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response employees(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.employees());
+    }
+    @GET
+    @Path("/saleslead")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response saleslead(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.saleslead());
+    }
+    @GET
+    @Path("/clients")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clients(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.clients());
+    }
+    @GET
+    @Path("/sms-group")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response SmsGroup(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.smsGroup());
+    }
+    @GET
+    @Path("/message-template")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response messageTemplates(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, lookupService.messageTemplates());
     }
 }

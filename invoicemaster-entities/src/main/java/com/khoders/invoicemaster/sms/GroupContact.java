@@ -27,6 +27,7 @@ public class GroupContact extends UserAccountRecord implements Serializable
     @Column(name = "group_id")
     private String contactGroupId;
 
+    public static final String _smsGrup = "smsGrup";
     @JoinColumn(name = "sms_group", referencedColumnName = "id")
     @ManyToOne
     private SMSGrup smsGrup;

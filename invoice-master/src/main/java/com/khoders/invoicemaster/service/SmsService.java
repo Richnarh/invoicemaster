@@ -7,20 +7,15 @@ package com.khoders.invoicemaster.service;
 
 import Zenoph.SMSLib.Enums.MSGTYPE;
 import Zenoph.SMSLib.ZenophSMS;
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.enums.SMSType;
-import com.khoders.invoicemaster.sms.SmsAccess;
 import com.khoders.invoicemaster.sms.GroupContact;
 import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
 import com.khoders.invoicemaster.sms.Sms;
-import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.resource.jpa.CrudApi;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -34,83 +29,25 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class SmsService
 {
-    @Inject private AppSession appSession;
     @Inject private CrudApi crudApi;
+    @Inject private DefaultService ds;
     
-    public List<Client> getContactList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM Client e WHERE e.userAccount=?1 ORDER BY e.clientName ASC";
-            TypedQuery<Client> typedQuery = crudApi.getEm().createQuery(qryString, Client.class);
-                               typedQuery.setParameter(1, appSession.getCurrentUser());
-                         return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<Client> getContactList(){
+        return crudApi.getEm().createQuery("SELECT e FROM Client e ORDER BY e.clientName ASC", Client.class).getResultList();
+    }
+       
+    public List<SMSGrup> getGroupList(){
+       return crudApi.getEm().createQuery("SELECT e FROM SMSGrup e ORDER BY e.groupName ASC", SMSGrup.class).getResultList();
     }
     
-    public List<GroupContact> getGroupContactList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1";
-            TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
-                             return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<GroupContact> getContactGroupList(){
+        return crudApi.getEm().createQuery("SELECT e FROM GroupContact e", GroupContact.class).getResultList();
     }
     
-    public List<SMSGrup> getGroupList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM SMSGrup e WHERE e.userAccount=?1 ";
-            TypedQuery<SMSGrup> typedQuery = crudApi.getEm().createQuery(qryString, SMSGrup.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
-                             return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-    
-    public List<GroupContact> getContactGroupList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1";
-            TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
-                             return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-    
-    public List<GroupContact> getContactGroupList(SMSGrup smsGrup)
-    {
-        try
-        {
-            String qryString = "SELECT e FROM GroupContact e WHERE e.userAccount=?1 AND e.smsGrup=?2";
-            TypedQuery<GroupContact> typedQuery = crudApi.getEm().createQuery(qryString, GroupContact.class);
-                                typedQuery.setParameter(1, appSession.getCurrentUser());
-                                typedQuery.setParameter(2, smsGrup);
-                             return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<GroupContact> getContactGroupList(SMSGrup smsGrup){
+       return crudApi.getEm().createQuery("SELECT e FROM GroupContact e WHERE e.smsGrup=:smsGrup", GroupContact.class)
+               .setParameter(GroupContact._smsGrup, smsGrup)
+               .getResultList();
     }
   
     public List<Sms> loadSmslogList(SMSType smsType)
@@ -145,67 +82,20 @@ public class SmsService
         }
         return Collections.emptyList();
     }
-    public boolean isInternetAccessVailable()
-    {
-        try
-        {
-            URL url = new URL("http://www.google.com");
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            Object object = httpURLConnection.getContent();
-            System.out.println("SUCCESSFUL INTERNET CONNECTION");
-            System.out.println(object);
-            return true;
-
-        } catch (UnknownHostException e)
-        {
-            System.out.println("CONNECTION FAILED");
-            e.printStackTrace();
-            return false;
-        } catch (IOException e)
-        {
-            System.out.println("CONNECTION FAILED");
-            e.printStackTrace();
-        }
-        return false;
-    }
     
-    public List<MessageTemplate> getMessageTemplateList()
-    {
-        try
-        {
-            String qryString = "SELECT e FROM MessageTemplate e WHERE e.userAccount=?1";
-            TypedQuery<MessageTemplate> typedQuery = crudApi.getEm().createQuery(qryString, MessageTemplate.class);
-            typedQuery.setParameter(1, appSession.getCurrentUser());
-                             return typedQuery.getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<MessageTemplate> getMessageTemplateList(){
+     return crudApi.getEm().createQuery("SELECT e FROM MessageTemplate e", MessageTemplate.class).getResultList();
     }
    
-    public ZenophSMS extractParams()
-    {
+    public ZenophSMS extractParams(){
         ZenophSMS zsms = new ZenophSMS();
-        try
-        {
-           SmsAccess smsAccess = crudApi.getEm().createQuery("SELECT e FROM SmsAccess e", SmsAccess.class)
-                    .getSingleResult();
-            if(smsAccess != null){
-                
-            System.out.println("Username --- "+smsAccess.getUsername());
-            System.out.println("Password --- "+smsAccess.getPassword());
-            
-            zsms.setUser(smsAccess.getUsername());
-            zsms.setPassword(smsAccess.getPassword());
+        try {
+            zsms.setUser(ds.getConfigValue("sms.username"));
+            zsms.setPassword(ds.getConfigValue("sms.password"));
             zsms.authenticate();
             zsms.setMessageType(MSGTYPE.TEXT);
-          }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
-
         return zsms;
     }
 }

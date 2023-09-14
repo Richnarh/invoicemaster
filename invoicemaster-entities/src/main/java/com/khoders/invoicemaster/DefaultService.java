@@ -11,7 +11,10 @@ import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
+import com.khoders.invoicemaster.entities.TaxGroup;
+import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SenderId;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -38,6 +41,18 @@ public class DefaultService {
                 .getResultStream().findFirst().orElse(null);
     }
     
+    public TaxGroup getTaxGroupByStatus(Status groupStatus) {
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e WHERE e.groupStatus = :groupStatus", TaxGroup.class)
+                .setParameter(TaxGroup._groupStatus, groupStatus)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
+    public TaxGroup getTaxGroupByName(Status groupName) {
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e WHERE e.groupName = :groupName", TaxGroup.class)
+                .setParameter(TaxGroup._groupName, groupName)
+                .getResultStream().findFirst().orElse(null);
+    }
+    
     public String getSenderId(){
         SenderId id = crudApi.getEm().createQuery("SELECT e FROM SenderId e", SenderId.class)
                 .setMaxResults(1)
@@ -49,6 +64,11 @@ public class DefaultService {
     public ProformaInvoice getInvoice(String quotationNumber){
         return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoice e WHERE e.quotationNumber = :quotationNumber", ProformaInvoice.class)
                 .setParameter(ProformaInvoice._quotationNumber, quotationNumber)
+                .getResultStream().findFirst().orElse(null);
+    }
+    public ProformaInvoice getInvoiceById(String invoiceId){
+        return crudApi.getEm().createQuery("SELECT e FROM ProformaInvoice e WHERE e.id = :id", ProformaInvoice.class)
+                .setParameter(ProformaInvoice._id, invoiceId)
                 .getResultStream().findFirst().orElse(null);
     }
        public boolean deletePaymentData(ProformaInvoice proformaInvoice) {
@@ -90,9 +110,14 @@ public class DefaultService {
                 .getResultList();
     }
 
-    private Inventory getInventory(String inventoryId) {
+    public Inventory getInventory(String inventoryId) {
         return crudApi.getEm().createQuery("SELECT e FROM Inventory e WHERE e.id = :id", Inventory.class)
                 .setParameter(Inventory._id, inventoryId)
+                .getResultStream().findFirst().orElse(null);
+    }
+    public MessageTemplate getMessageTemplate(String templateId) {
+        return crudApi.getEm().createQuery("SELECT e FROM MessageTemplate e WHERE e.id = :id", MessageTemplate.class)
+                .setParameter(MessageTemplate._id, templateId)
                 .getResultStream().findFirst().orElse(null);
     }
 }

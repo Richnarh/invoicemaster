@@ -7,6 +7,8 @@ package com.khoders.im.admin.services;
 
 import com.khoders.invoicemaster.entities.AppConfig;
 import com.khoders.invoicemaster.entities.SaleLead;
+import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.entities.system.CompanyProfile;
@@ -45,5 +47,14 @@ public class CompanyService
     
     public List<AppConfig> getConfigList() {
         return crudApi.getEm().createQuery("SELECT e FROM AppConfig e", AppConfig.class).getResultList();
+    }
+    
+    public List<TaxGroup> getTaxGroupList() {
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e ORDER BY e.groupName DESC", TaxGroup.class).getResultList();
+    }
+    public List<Tax> getTaxList(TaxGroup taxGroup){
+       return crudApi.getEm().createQuery("SELECT e FROM Tax e WHERE e.taxGroup = :taxGroup ORDER BY e.reOrder ASC", Tax.class)
+               .setParameter(Tax._taxGroup, taxGroup)
+               .getResultList();
     }
 }

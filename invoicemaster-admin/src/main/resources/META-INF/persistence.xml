@@ -32,6 +32,18 @@
     <class>com.khoders.invoicemaster.sms.SmsAccess</class>
     <class>com.khoders.invoicemaster.entities.SaleLead</class>
     <class>com.khoders.invoicemaster.entities.AppConfig</class>
+    <class>com.khoders.invoicemaster.entities.TaxGroup</class>
+    <class>com.khoders.invoicemaster.entities.accounts.Account</class>
+    <class>com.khoders.invoicemaster.entities.accounts.BankTransaction</class>
+    <class>com.khoders.invoicemaster.entities.accounts.Bill</class>
+    <class>com.khoders.invoicemaster.entities.accounts.BillItem</class>
+    <class>com.khoders.invoicemaster.entities.accounts.Expense</class>
+    <class>com.khoders.invoicemaster.entities.accounts.ExpenseItem</class>
+    <class>com.khoders.invoicemaster.entities.accounts.GeneralLedger</class>
+    <class>com.khoders.invoicemaster.entities.accounts.Invoice</class>
+    <class>com.khoders.invoicemaster.entities.accounts.InvoiceItem</class>
+    <class>com.khoders.invoicemaster.entities.accounts.Journal</class>
+    <class>com.khoders.invoicemaster.entities.accounts.Payment</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--        <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

@@ -21,8 +21,8 @@ import com.khoders.invoicemaster.entities.AppConfig;
 import com.khoders.invoicemaster.entities.DiscountAction;
 import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.PaymentData;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.enums.ActionType;
-import com.khoders.invoicemaster.enums.AppVersion;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
 import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.invoicemaster.jbeans.ReportFiles;
@@ -32,6 +32,7 @@ import com.khoders.invoicemaster.service.SmsService;
 import com.khoders.invoicemaster.service.XtractService;
 import com.khoders.invoicemaster.sms.Sms;
 import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.reports.ReportManager;
 import com.khoders.resource.utilities.CollectionList;
@@ -83,7 +84,6 @@ public class ProformaInvoiceController implements Serializable
     private List<ProformaInvoiceItem> proformaInvoiceItemList = new LinkedList<>();
     private List<ProformaInvoiceItem> removedProformaInvoiceItemList = new LinkedList<>();
 
-    private List<Tax> taxList = new LinkedList<>();
     private List<SalesTax> salesTaxList = new LinkedList<>();
     private SalesTax taxSales = new SalesTax();
     private ActionType actionType = null;
@@ -100,10 +100,8 @@ public class ProformaInvoiceController implements Serializable
     private boolean panelFlag=false;
      
     @PostConstruct
-    public void init()
-    {
+    public void init(){
         proformaInvoiceList = proformaInvoiceService.getProformaInvoiceList();
-        taxList = proformaInvoiceService.getTaxList();
         pageLimit = ds.getConfigValue("invoice.page.limit");
         clearProformaInvoice();
     }
@@ -397,11 +395,8 @@ public class ProformaInvoiceController implements Serializable
                 actionType = ActionType.DISABLE_ON_EDIT;
             else
                 actionType = ActionType.ENABLE_ON_EDIT;
-            
-            System.out.println("actionType: "+actionType);
         }
         
-        System.out.println("actionType: "+actionType);
         calculateVat();
     }
 
@@ -440,25 +435,23 @@ public class ProformaInvoiceController implements Serializable
             clearProformaInvoiceItem();
         } catch (Exception e)
         {
-            e.printStackTrace();
         }
     }
 
-    public void taxCalculation()
-    {
-      
-        // delete all salesTax for the selected proforma invoice
-        salesTaxList.forEach(tx ->
-        {
-            crudApi.delete(tx);
-        });
-      
-        for (Tax tax : taxList)
-        {
-            // v2 exclude the NHIL tax in sales calculation
-            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
-                if(tax.getTaxName().equals("NHIL")) continue;
-            }
+    public void taxCalculation(){
+        TaxGroup taxGroup = null;
+        System.out.println("salesTaxList #Calc: "+salesTaxList.size());
+        if(!salesTaxList.isEmpty()){
+          taxGroup = salesTaxList.get(0).getTaxGroup();
+        }
+        for (SalesTax salesTx : salesTaxList) {
+          crudApi.delete(salesTx);  
+        }
+        if(taxGroup == null){
+            taxGroup = ds.getTaxGroupByStatus(Status.ACTIVE);
+        }
+        List<Tax> taxList = proformaInvoiceService.getTaxList(taxGroup);
+        for (Tax tax : taxList){
             SalesTax st = new SalesTax();
 
             double calc = proformaInvoice.getTotalAmount() * (tax.getTaxRate()/100);
@@ -472,6 +465,7 @@ public class ProformaInvoiceController implements Serializable
             st.setCompanyBranch(appSession.getCompanyBranch());
             st.setProformaInvoice(proformaInvoice);
             st.setSaleLead(salesTax.getSaleLead());
+            st.setTaxGroup(taxGroup);
             crudApi.save(st);
         }
             
@@ -482,23 +476,48 @@ public class ProformaInvoiceController implements Serializable
     
     private void calculateVat()
     {
-        if(!salesTaxList.isEmpty())
-        {
-//            SalesTax nhil = salesTaxList.get(0);
-//            SalesTax getFund = salesTaxList.get(1);
-            SalesTax covid19 = salesTaxList.get(0);
-            SalesTax salesVat = salesTaxList.get(1);
-
-//            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
-            double totalLevies = covid19.getTaxAmount();
+        SalesTax nhil=null,getFund=null,covid19=null,salesVat=null;
+        double totalLevies = 0;
+        if(!salesTaxList.isEmpty()){
+            switch (salesTaxList.size()) {
+                case 2:
+                    covid19 = salesTaxList.get(0);
+                    salesVat = salesTaxList.get(1);
+                    totalLevies = covid19.getTaxAmount();
+                    System.out.println(covid19.getTaxName() +"\t taxAmnt: "+covid19.getTaxAmount());
+                    System.out.println(salesVat.getTaxName() +"\t taxAmnt: "+salesVat.getTaxAmount());
+                    break;
+                case 3:
+                    nhil = salesTaxList.get(0);
+                    covid19 = salesTaxList.get(1);
+                    salesVat = salesTaxList.get(2);
+                    totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
+                    System.out.println(nhil.getTaxName() +"\t taxAmnt: "+nhil.getTaxAmount());
+                    System.out.println(covid19.getTaxName() +"\t taxAmnt: "+covid19.getTaxAmount());
+                    System.out.println(salesVat.getTaxName() +"\t taxAmnt: "+salesVat.getTaxAmount());
+                    break;
+                case 4:
+                    nhil = salesTaxList.get(0);
+                    getFund = salesTaxList.get(1);
+                    covid19 = salesTaxList.get(2);
+                    salesVat = salesTaxList.get(3);
+                    totalLevies = nhil.getTaxAmount()+getFund.getTaxAmount()+covid19.getTaxAmount();
+                    
+                    System.out.println(nhil.getTaxName() +"\t taxAmnt: "+nhil.getTaxAmount());
+                    System.out.println(getFund.getTaxName() +"\t taxAmnt: "+getFund.getTaxAmount());
+                    System.out.println(covid19.getTaxName() +"\t taxAmnt: "+covid19.getTaxAmount());
+                    System.out.println(salesVat.getTaxName() +"\t taxAmnt: "+salesVat.getTaxAmount());
+                    break;
+                default:
+                    break;
+            }            
 
             double taxableValue = proformaInvoice.getTotalAmount() + totalLevies;
-            System.out.println("Covide19: "+covid19.getTaxName() +"\t taxAmnt: "+covid19.getTaxAmount());
-            System.out.println("salesVat: "+salesVat.getTaxName() +"\t taxAmnt: "+salesVat.getTaxAmount());
+            
             System.out.println("saleAmount => "+proformaInvoice.getTotalAmount());
             System.out.println("totalLevies => "+totalLevies);
             System.out.println("taxableValue => "+taxableValue);
-//            
+            
             double vat = taxableValue*(salesVat.getTaxRate()/100);
             
             totalPayable = vat + taxableValue + installationFee;
@@ -805,11 +824,6 @@ public class ProformaInvoiceController implements Serializable
     public double getTotalPayable()
     {
         return totalPayable;
-    }
-
-    public List<Tax> getTaxList()
-    {
-        return taxList;
     }
 
     public double getInstallationFee()

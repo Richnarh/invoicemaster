@@ -13,6 +13,8 @@ public class InvoiceItemDto extends UserProp{
     private String itemCode;
     private String inventory;
     private String inventoryId;
+    private String productName;
+    private String productId;
     private int quantity = 1;
     private double unitPrice;
     private double subTotal;
@@ -90,6 +92,22 @@ public class InvoiceItemDto extends UserProp{
 
     public void setProformaInvoiceId(String proformaInvoiceId) {
         this.proformaInvoiceId = proformaInvoiceId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
     
 }

@@ -5,8 +5,6 @@
  */
 package com.khoders.invoicemaster.dto;
 
-import com.khoders.invoicemaster.dto.BaseDto;
-
 /**
  *
  * @author Pascal

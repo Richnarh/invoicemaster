@@ -5,10 +5,8 @@
  */
 package com.khoders.invoicemaster.service;
 
-import com.khoders.admin.services.CompanyService;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.dto.AuthRequest;
-import com.khoders.invoicemaster.dto.AuthResponse;
 import com.khoders.invoicemaster.dto.UserDto;
 import com.khoders.invoicemaster.mapper.UserMapper;
 import com.khoders.resource.jpa.CrudApi;
@@ -30,7 +28,7 @@ public class AuthService {
     @Inject private CompanyService companyService;
     
     public UserDto doLogin(AuthRequest authRequest) {
-        log.info("Initializing login...");
+        log.info("Initialising login...");
         UserAccount userAccount = companyService.login(authRequest);
         if (userAccount != null) {
             return mapper.toDto(userAccount);

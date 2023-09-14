@@ -13,8 +13,8 @@ import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.Tax;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.entities.UserAccount;
-import com.khoders.invoicemaster.entities.UserTransaction;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.invoicemaster.enums.DeliveryStatus;
 import com.khoders.invoicemaster.enums.InvoiceStatus;
@@ -75,47 +75,20 @@ public class ProformaInvoiceService{
         }
         return Collections.emptyList();
     }
-    public List<SalesTax> getSalesTaxList(ProformaInvoice proformaInvoice)
-    {
-        try
-        {
-          String query = "SELECT e FROM SalesTax e WHERE e.proformaInvoice=?1 AND e.userAccount=?2 ORDER BY e.reOrder ASC";
-        
-        TypedQuery<SalesTax> typedQuery = crudApi.getEm().createQuery(query, SalesTax.class)
-                                .setParameter(1, proformaInvoice)
-                                .setParameter(2, appSession.getCurrentUser());
-                return typedQuery.getResultList();      
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<SalesTax> getSalesTaxList(ProformaInvoice proformaInvoice){
+        return crudApi.getEm().createQuery("SELECT e FROM SalesTax e WHERE e.proformaInvoice = :proformaInvoice ORDER BY e.reOrder ASC", SalesTax.class)
+                                .setParameter(SalesTax._proformaInvoice, proformaInvoice)
+                                .getResultList();   
     }
-    
-    public List<SalesTax> getSalesTaxList(UserTransaction userTransaction)
-    {
-        try
-        {
-          String query = "SELECT e FROM SalesTax e WHERE e.userTransaction=?1 ORDER BY e.reOrder ASC";
-        
-        TypedQuery<SalesTax> typedQuery = crudApi.getEm().createQuery(query, SalesTax.class)
-                                .setParameter(1, userTransaction);
-                return typedQuery.getResultList();      
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-   
+
     public List<ProformaInvoice> getProformaInvoiceList()
     {
         try
         {
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=?1 AND e.valueDate=?2 ORDER BY e.issuedDate DESC";
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch = :companyBranch AND e.valueDate = :valueDate ORDER BY e.issuedDate DESC";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
-                                        .setParameter(1, appSession.getCurrentUser())
-                                        .setParameter(2, LocalDate.now());
+                                        .setParameter(ProformaInvoice._companyBranch, appSession.getCompanyBranch())
+                                        .setParameter(ProformaInvoice._valueDate, LocalDate.now());
                          return typedQuery.getResultList();
                          
         } catch (Exception e)
@@ -125,25 +98,57 @@ public class ProformaInvoiceService{
 
         return Collections.emptyList();
     }
+    public List<ProformaInvoice> getProformaInvoiceList(CompanyBranch companyBranch){
+       String qryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch = :companyBranch AND e.valueDate = :valueDate ORDER BY e.issuedDate DESC";
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                                        .setParameter(ProformaInvoice._companyBranch, companyBranch)
+                                        .setParameter(ProformaInvoice._valueDate, LocalDate.now());
+                         return typedQuery.getResultList();
+    }
     
     public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange){
-        try 
-        {
+        try{
             String limit = ds.getConfigValue("invoice.page.limit");
             Integer limitSize = Integer.parseInt(limit);
-            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
-            {
-                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.userAccount=:userAccount ORDER BY e.issuedDate DESC";
+            if(dateRange.getFromDate() == null && dateRange.getToDate() == null){
+                System.out.println("here 1");
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch =:companyBranch ORDER BY e.issuedDate DESC";
                   TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
-                                              .setParameter(ProformaInvoice._userAccount, appSession.getCurrentUser());
+                                              .setParameter(ProformaInvoice._companyBranch, appSession.getCompanyBranch());
                                     return typedQuery.setMaxResults(limitSize).getResultList();
+                                    
             }
-            
-            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.userAccount=?3 ORDER BY e.issuedDate DESC";
+            System.out.println("here 2");
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN ?1 AND ?2 AND e.companyBranch=?3 ORDER BY e.issuedDate DESC";
             TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
                     .setParameter(1, dateRange.getFromDate())
                     .setParameter(2, dateRange.getToDate())
-                    .setParameter(3, appSession.getCurrentUser());
+                    .setParameter(3, appSession.getCompanyBranch());
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    public List<ProformaInvoice> getProformaInvoice(DateRangeUtil dateRange, CompanyBranch companyBranch){
+        try{
+            String limit = ds.getConfigValue("invoice.page.limit");
+            Integer limitSize = Integer.parseInt(limit);
+            if(dateRange.getFromDate() == null && dateRange.getToDate() == null){
+                System.out.println("here 1");
+                  String  queryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch =:companyBranch ORDER BY e.issuedDate DESC";
+                  TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(queryString, ProformaInvoice.class)
+                                              .setParameter(ProformaInvoice._companyBranch, companyBranch);
+                                    return typedQuery.setMaxResults(limitSize).getResultList();
+                                    
+            }
+            System.out.println("here 2");
+            String qryString = "SELECT e FROM ProformaInvoice e WHERE e.valueDate BETWEEN :valueDate AND :valueDate AND e.companyBranch =:companyBranch ORDER BY e.issuedDate DESC";
+            TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                    .setParameter(ProformaInvoice._valueDate, dateRange.getFromDate())
+                    .setParameter(ProformaInvoice._valueDate, dateRange.getToDate())
+                    .setParameter(ProformaInvoice._companyBranch, companyBranch);
            return typedQuery.getResultList();
             
         } catch (Exception e) {
@@ -277,6 +282,11 @@ public class ProformaInvoiceService{
 
         return Collections.emptyList();
     }
+    public List<Tax> getTaxList(TaxGroup taxGroup){
+       return crudApi.getEm().createQuery("SELECT e FROM Tax e WHERE e.taxGroup = :taxGroup ORDER BY e.reOrder ASC", Tax.class)
+               .setParameter(Tax._taxGroup, taxGroup)
+               .getResultList();
+    }
     
     public List<PaymentData> getPaymentInfoList(ProformaInvoice proformaInvoice)
     {
@@ -296,9 +306,9 @@ public class ProformaInvoiceService{
     {
         try
         {
-          String qryString = "SELECT e FROM PaymentData e WHERE e.proformaInvoice=?1";
+          String qryString = "SELECT e FROM PaymentData e WHERE e.proformaInvoice=:proformaInvoice";
             return crudApi.getEm().createQuery(qryString, PaymentData.class)
-                    .setParameter(1, proformaInvoice).getResultStream().findFirst().orElse(null);
+                    .setParameter(PaymentData._proformaInvoice, proformaInvoice).getResultStream().findFirst().orElse(null);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -329,7 +339,28 @@ public class ProformaInvoiceService{
                 .setMaxResults(1)
                 .getResultStream().findFirst().orElse(null);
     }
-
+    
+    public List<ProformaInvoice> getInvoiceList(CompanyBranch companyBranch, UserAccount userAccount)
+    {
+        try
+        {
+            if(companyBranch != null || userAccount != null)
+            {
+                String qryString = "SELECT e FROM ProformaInvoice e WHERE e.companyBranch=?1 AND e.userAccount=?2";
+                TypedQuery<ProformaInvoice> typedQuery = crudApi.getEm().createQuery(qryString, ProformaInvoice.class)
+                    .setParameter(1, companyBranch)
+                    .setParameter(2, userAccount);
+                return typedQuery.getResultList();  
+            }
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
+    
     public boolean processMail(String msg,String fromEmail){
         Properties prop = new Properties();
 	prop.put("mail.smtp.host", ds.getConfigValue("mail.smtp.host"));

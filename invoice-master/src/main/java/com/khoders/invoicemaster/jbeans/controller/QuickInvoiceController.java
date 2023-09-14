@@ -5,19 +5,20 @@
  */
 package com.khoders.invoicemaster.jbeans.controller;
 
+import com.khoders.invoicemaster.DefaultService;
 import com.khoders.invoicemaster.reportData.SalesTaxDto;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
 import com.khoders.invoicemaster.entities.Tax;
-import com.khoders.invoicemaster.enums.AppVersion;
+import com.khoders.invoicemaster.entities.TaxGroup;
 import com.khoders.invoicemaster.listener.AppSession;
 import com.khoders.invoicemaster.service.ProformaInvoiceService;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -36,20 +37,15 @@ public class QuickInvoiceController implements Serializable
     private ProformaInvoiceService proformaInvoiceService;
     @Inject
     private AppSession appSession;
+    @Inject
+    private DefaultService ds;
 
     private ProformaInvoiceItem proformaInvoiceItem = new ProformaInvoiceItem();
 
     private List<ProformaInvoiceItem> proformaInvoiceItemList = new LinkedList<>();
     private List<ProformaInvoiceItem> removedProformaInvoiceItemList = new LinkedList<>();
-    private List<Tax> taxList = new LinkedList<>();
     List<SalesTaxDto> salesTaxDtoList = new LinkedList<>();
     
-    @PostConstruct
-    void init()
-    {
-      taxList = proformaInvoiceService.getTaxList();
-    }
-
     private double subTotal, totalSaleAmount, calculatedDiscount, installationFee, taxAmount, totalPayable, invoiceAmount, productDiscountRate;
     
     public void inventoryProperties()
@@ -129,16 +125,12 @@ public class QuickInvoiceController implements Serializable
         }
     }
 
-    public void taxCalculation()
-    {
+    public void taxCalculation(){
         salesTaxDtoList = new LinkedList<>();
-                
-        for (Tax tax : taxList)
-        {
-            // v2 exclude the NHIL tax in sales calculation
-            if(appSession.getCurrentUser().getAppVersion().equals(AppVersion.V2)){
-                if(tax.getTaxName().equals("NHIL")) continue;
-            }
+        TaxGroup taxGroup = ds.getTaxGroupByStatus(Status.ACTIVE);
+        List<Tax> taxList = proformaInvoiceService.getTaxList(taxGroup);
+
+        for (Tax tax : taxList){
             SalesTaxDto dto = new SalesTaxDto();
 
             double calc = getTotalSaleAmount() * (tax.getTaxRate() / 100);
@@ -156,9 +148,11 @@ public class QuickInvoiceController implements Serializable
 
     private void calculateVat()
     {
-        SalesTaxDto covid19 = salesTaxDtoList.get(0);
-        SalesTaxDto salesVat = salesTaxDtoList.get(1);
-        double totalLevies = covid19.getTaxAmount();
+        SalesTaxDto nhil = salesTaxDtoList.get(0);
+        SalesTaxDto getFund = salesTaxDtoList.get(1);
+        SalesTaxDto covid19 = salesTaxDtoList.get(2);
+        SalesTaxDto salesVat = salesTaxDtoList.get(3);
+        double totalLevies = nhil.getTaxAmount()+getFund.getTaxAmount()+covid19.getTaxAmount();
         double taxableValue = getTotalSaleAmount() + totalLevies;
         double vat = taxableValue * (salesVat.getTaxRate() / 100);
         totalPayable = vat + taxableValue + installationFee;

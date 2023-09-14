@@ -5,17 +5,24 @@
  */
 package com.khoders.invoicemaster.dto;
 
+import com.khoders.invoicemaster.enums.DeliveryStatus;
+import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.enums.PaymentStatus;
+
 /**
  *
  * @author Pascal
  */
 public class PaymentDataDto extends UserProp{
    private String paymentCode;
+   private String clientName;
+   private String clientId;
    private String proformaInvoice;
    private String proformaInvoiceId;
-   private String paymentMethod;
-   private String deliveryStatus;
-   private String paymentStatus;
+   private PaymentMethod paymentMethod;
+   private DeliveryStatus deliveryStatus;
+   private PaymentStatus paymentStatus;
+   private String deliveryAdress;
    private double partialAmountPaid;
    private double totalAmount;
    private boolean paymentMessage=false;
@@ -44,30 +51,30 @@ public class PaymentDataDto extends UserProp{
         this.proformaInvoiceId = proformaInvoiceId;
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
-    public String getDeliveryStatus() {
+    public DeliveryStatus getDeliveryStatus() {
         return deliveryStatus;
     }
 
-    public void setDeliveryStatus(String deliveryStatus) {
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public String getPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
-
+    
     public double getPartialAmountPaid() {
         return partialAmountPaid;
     }
@@ -90,6 +97,30 @@ public class PaymentDataDto extends UserProp{
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getDeliveryAdress() {
+        return deliveryAdress;
+    }
+
+    public void setDeliveryAdress(String deliveryAdress) {
+        this.deliveryAdress = deliveryAdress;
     }
    
 }
