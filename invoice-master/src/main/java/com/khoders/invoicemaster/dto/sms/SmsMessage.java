@@ -5,7 +5,10 @@
  */
 package com.khoders.invoicemaster.dto.sms;
 
+import com.khoders.invoicemaster.dto.ClientDto;
 import com.khoders.invoicemaster.enums.MessagingType;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -17,6 +20,7 @@ public class SmsMessage {
     private String messageTemplateId;
     private MessagingType messagingType;
     private String textMessage;
+    private List<ClientDto> clientList = new LinkedList<>();
 
     public String getClientId() {
         return clientId;
@@ -56,6 +60,14 @@ public class SmsMessage {
 
     public void setMessageTemplateId(String messageTemplateId) {
         this.messageTemplateId = messageTemplateId;
+    }
+
+    public List<ClientDto> getClientList() {
+        return clientList;
+    }
+
+    public void setClientList(List<ClientDto> clientList) {
+        this.clientList = clientList;
     }
     
 }

@@ -9,6 +9,7 @@ import Zenoph.SMSLib.Enums.REQSTATUS;
 import static Zenoph.SMSLib.Enums.REQSTATUS.SUCCESS;
 import Zenoph.SMSLib.ZenophSMS;
 import com.khoders.invoicemaster.DefaultService;
+import com.khoders.invoicemaster.dto.ClientDto;
 import com.khoders.invoicemaster.dto.sms.GroupContactDto;
 import com.khoders.invoicemaster.dto.sms.MessageTemplateDto;
 import com.khoders.invoicemaster.dto.sms.SMSGrupDto;
@@ -43,11 +44,13 @@ public class MsgService {
     @Inject private SmsMapper mapper;
 
     public List<GroupContactDto> createGroupContact(GroupContactDto contactDto) {
+        log.info("smsGrupId: {}",contactDto.getSmsGrupId());
         if(contactDto.getSmsGrupId() == null){
             throw new DataNotFoundException("Please select a group");
         }
         String groupName = null;
         SMSGrup grup = crudApi.find(SMSGrup.class, contactDto.getSmsGrupId());
+        System.out.println("grup: "+grup.getGroupName());
         if(grup != null && grup.getGroupName().equals("All")){
             groupName = grup.getGroupName();
         }
@@ -82,6 +85,7 @@ public class MsgService {
     }
     
     public List<GroupContactDto> findContactByGroup(String groupId){
+        log.info("smsGroupId: "+groupId);
         SMSGrup smsGrup = crudApi.find(SMSGrup.class, groupId);
         List<GroupContact> groupContactList = smsService.getContactGroupList(smsGrup);
         List<GroupContactDto> dtoList = new LinkedList<>();
@@ -181,16 +185,13 @@ public class MsgService {
             if(client == null){
                 return Msg.setMsg("Could not send message, Client cannot be found in database!");
             }
-            log.info("Initializing number...");
             String phoneNumber = client.getPhone();
             log.info("phoneNumber... {} ", phoneNumber);
             List<String> numbers = zsms.extractPhoneNumbers(phoneNumber);
 
-            log.info("numbers##... {} ", numbers);
             for (String number : numbers){
                 zsms.addRecipient(number);
             }
-            log.info("Done adding... ");
             zsms.setSenderId(sendId);
             System.out.println("Sending...");
             List<String[]> response = zsms.submit();
@@ -202,7 +203,7 @@ public class MsgService {
                 } else {
                     switch (reqstatus) {
                         case SUCCESS:
-                            log.info(" <<--- SMS delivered -->>>");
+                            log.info("SMS delivered...");
                            msg =  Msg.setMsg("SMS sent to " + client.getClientName());
                             break;
                         case ERR_INSUFF_CREDIT:
@@ -222,7 +223,6 @@ public class MsgService {
         String msg = null;
         String sendId = ds.getConfigValue("sms.sender.id");
         MessageTemplate messageTemplate = ds.getMessageTemplate(smsMessage.getMessageTemplateId());
-        SMSGrup smsGrup = crudApi.find(SMSGrup.class, smsMessage.getSmsGroupId());
         if (sendId == null) {
             return Msg.setMsg("Please set sender ID");
         }
@@ -239,21 +239,11 @@ public class MsgService {
                 }
                 zsms.setMessage(smsMessage.getTextMessage());
             }
-            if (smsMessage.getClientId() == null) {
-                return Msg.setMsg("Please select a client");
-            }
-            Client client = crudApi.find(Client.class, smsMessage.getClientId());
-            if(client == null){
-                return Msg.setMsg("Could not send message, Client cannot be found in database!");
-            }
-            
+            log.info("contact size: {}",smsMessage.getClientList().size());
             zsms.setSenderId(sendId);
-            List<GroupContact> groupContactList = smsService.getContactGroupList(smsGrup);
             List<String> numbers = new LinkedList<>();
-            for (GroupContact groupContact : groupContactList) {
-                if (groupContact.getClient() != null && groupContact.getClient().getPhone() != null) {
-                    numbers.add(groupContact.getClient().getPhone());
-                }
+            for (ClientDto contact : smsMessage.getClientList()) {
+                    numbers.add(contact.getPhone());
             }
             for (String number : numbers) {
                 zsms.addRecipient(number);
