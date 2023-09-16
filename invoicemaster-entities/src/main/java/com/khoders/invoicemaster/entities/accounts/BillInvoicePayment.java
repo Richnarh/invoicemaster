@@ -1,15 +1,15 @@
 package com.khoders.invoicemaster.entities.accounts;
 
+import com.khoders.invoicemaster.entities.UserAccountRecord;
 import com.khoders.invoicemaster.enums.PaymentType;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
-import com.khoders.resource.jpa.BaseModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @MappedSuperclass
-public class BillInvoicePayment extends BaseModel {
+public class BillInvoicePayment extends UserAccountRecord {
     @Column(name = "amount")
     private double amount;
 
@@ -30,7 +30,7 @@ public class BillInvoicePayment extends BaseModel {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    @JoinColumn(name = "account", referencedColumnName = "id")
+    @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account account;
 

@@ -19,6 +19,7 @@ public class ApiEndpoint
     public static final String TRANSACTION_ENDPOINT = VERSION + "transactions";
     public static final String INVOICE_ENDPOINT = VERSION + "invoice";
     public static final String CLIENT = VERSION + "client";
+    public static final String TAX_GROUP_ENDPOINT = VERSION + "tax-group";
     public static final String TAX_ENDPOINT = VERSION + "tax";
     
     // Admin
@@ -35,4 +36,7 @@ public class ApiEndpoint
     public static final String GROUP_ENDPOINT = VERSION + "sms-group";
     public static final String GROUP_CONTACT_ENDPOINT = VERSION + "group-contact";
     public static final String MESSAGE_TEMPLATE_ENDPOINT = VERSION + "message-template";
+    
+    // Accounting
+    public static final String ACCOUNT_ENDPOINT = VERSION + "accounts";
 }

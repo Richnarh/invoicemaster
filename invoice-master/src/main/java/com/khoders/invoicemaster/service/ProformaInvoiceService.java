@@ -409,4 +409,8 @@ public class ProformaInvoiceService{
                     .setParameter(PaymentData._deliveryStatus, DeliveryStatus.PENDING_DELIVERY)
                     .getResultList();
     }
+       
+    public List<TaxGroup> getTaxGroupList() {
+        return crudApi.getEm().createQuery("SELECT e FROM TaxGroup e ORDER BY e.groupName DESC", TaxGroup.class).getResultList();
+    }
 }

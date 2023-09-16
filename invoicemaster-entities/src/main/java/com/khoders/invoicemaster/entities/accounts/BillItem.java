@@ -8,11 +8,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "bill_item")
 public class BillItem extends BillInvoice {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+    
     public static final String _bill = "bill";
     public static final String _billId = Bill._id;
     @JoinColumn(name = "bills", referencedColumnName = "id")

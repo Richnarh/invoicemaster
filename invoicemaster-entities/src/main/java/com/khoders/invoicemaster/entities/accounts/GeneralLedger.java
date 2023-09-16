@@ -1,15 +1,15 @@
 package com.khoders.invoicemaster.entities.accounts;
 
+import com.khoders.invoicemaster.entities.UserAccountRecord;
 import com.khoders.invoicemaster.enums.EntrySource;
-import com.khoders.resource.jpa.BaseModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "general_ledger")
-public class GeneralLedger extends BaseModel {
-    @JoinColumn(name = "account", referencedColumnName = "id")
+public class GeneralLedger extends UserAccountRecord {
+    @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account account;
 

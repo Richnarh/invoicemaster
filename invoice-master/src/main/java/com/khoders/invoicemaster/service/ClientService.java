@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
  */
 @Stateless
 public class ClientService{
-    
     private static final Logger log = LoggerFactory.getLogger(ClientService.class);
     
     @Inject private QueryBuilder builder;

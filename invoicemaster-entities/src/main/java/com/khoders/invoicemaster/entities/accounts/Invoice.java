@@ -1,7 +1,7 @@
 package com.khoders.invoicemaster.entities.accounts;
 
 import com.khoders.invoicemaster.entities.Client;
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.invoicemaster.entities.UserAccountRecord;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "invoices")
-public class Invoice extends BaseModel {
+public class Invoice extends UserAccountRecord {
     @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
     private Client client;

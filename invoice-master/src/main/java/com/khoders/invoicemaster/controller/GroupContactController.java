@@ -13,6 +13,7 @@ import com.khoders.resource.utilities.Msg;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -49,5 +50,14 @@ public class GroupContactController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findContactByGroup(@PathParam("groupId") String groupId){
         return JaxResponse.ok(Msg.RECORD_FOUND, msgService.findContactByGroup(groupId));
+    }
+    
+    @DELETE
+    @Path("/{groupContactId}")
+    public Response delete(@PathParam("groupContactId") String groupContactId){
+        boolean delete = msgService.deleteContactGroup(groupContactId);
+        if(delete)
+            return JaxResponse.ok(Msg.DELETE_MESSAGE,delete);
+        return JaxResponse.ok("Could not delete contact group",delete);
     }
 }

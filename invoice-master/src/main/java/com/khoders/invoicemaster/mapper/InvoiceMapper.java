@@ -47,15 +47,13 @@ public class InvoiceMapper {
         if(client != null){
             invoice.setClient(client);
         }
-        System.out.println("IssueDate: "+dto.getIssuedDate());
-        System.out.println("ExpiredDate: "+dto.getExpiryDate());
+        
         invoice.setDescription(dto.getDescription());
         invoice.setDiscountRate(dto.getDiscountRate());
         invoice.setExpiryDate(LocalDate.parse(dto.getExpiryDate()));
         invoice.setIssuedDate(LocalDate.parse(dto.getExpiryDate()));
         invoice.setInstallationFee(dto.getInstallationFee());
         invoice.setModeOfPayment(dto.getModeOfPayment());
-//        invoice.setQuotationNumber(dto.getQuotationNumber());
         invoice.setSubTotalAmount(dto.getSubTotalAmount());
         invoice.setTotalAmount(dto.getTotalAmount());
         invoice.setUserAccount(as.getUser(param.getUserAccountId()));
@@ -77,6 +75,7 @@ public class InvoiceMapper {
         dto.setModeOfPayment(invoice.getModeOfPayment());
         dto.setSubTotalAmount(invoice.getSubTotalAmount());
         dto.setTotalAmount(invoice.getTotalAmount());
+        dto.setConverted(invoice.isConverted());
         if(invoice.getClient() != null){
             dto.setClient(invoice.getClient()+"");
             dto.setClientId(invoice.getClient().getId());

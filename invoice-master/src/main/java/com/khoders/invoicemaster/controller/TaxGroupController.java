@@ -6,7 +6,6 @@
 package com.khoders.invoicemaster.controller;
 
 import com.khoders.invoicemaster.ApiEndpoint;
-import com.khoders.invoicemaster.dto.TaxDto;
 import com.khoders.invoicemaster.dto.TaxGroupDto;
 import com.khoders.invoicemaster.service.TaxService;
 import com.khoders.resource.jaxrs.JaxResponse;
@@ -25,17 +24,17 @@ import javax.ws.rs.core.Response;
 
 /**
  *
- * @author Pascal
+ * @author Richard Narh
  */
-@Path(ApiEndpoint.TAX_ENDPOINT)
-public class TaxController {
+@Path(ApiEndpoint.TAX_GROUP_ENDPOINT)
+public class TaxGroupController {
     @Inject private TaxService taxService;
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(TaxDto taxDto){
-       TaxDto dto = taxService.saveTax(taxDto);
-       return JaxResponse.created(Msg.CREATED, dto);
+    public Response createGroup(TaxGroupDto groupDto){
+        TaxGroupDto dto = taxService.saveTaxGroup(groupDto);
+        return JaxResponse.created(Msg.CREATED, dto);
     }
     
     @PUT
@@ -46,25 +45,25 @@ public class TaxController {
     }
     
     @GET
-    @Path("/{taxId}")
+    @Path("/{taxGroupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findById(@PathParam("taxId") String taxId){
-        return JaxResponse.ok(Msg.RECORD_FOUND, taxService.findTaxById(taxId));
+    public Response findById(@PathParam("taxGroupId") String taxGroupId){
+        return JaxResponse.ok(Msg.RECORD_FOUND, taxService.findTaxgroupById(taxGroupId));
     }
     
     @GET
-    @Path("/list/{taxGroupId}")
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll(@PathParam("taxGroupId") String taxGroupId){
-        return JaxResponse.ok(Msg.RECORD_FOUND, taxService.findAllTaxes(taxGroupId));
+    public Response findAll(){
+        return JaxResponse.ok(Msg.RECORD_FOUND, taxService.findAllTaxGroups());
     }
     
     @DELETE
-    @Path("/{taxId}")
-    public Response delete(@PathParam("taxId") String taxId){
-        boolean delete = taxService.deleteTax(taxId);
+    @Path("/{taxGroupId}")
+    public Response delete(@PathParam("taxGroupId") String taxGroupId){
+        boolean delete = taxService.deleteTaxGroup(taxGroupId);
         if(delete)
             return JaxResponse.ok(Msg.DELETE_MESSAGE,delete);
-        return JaxResponse.ok("Could not delete tax",delete);
+        return JaxResponse.ok("Could not delete inventory",delete);
     }
 }

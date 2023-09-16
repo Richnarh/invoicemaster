@@ -1,11 +1,11 @@
 package com.khoders.invoicemaster.entities.accounts;
 
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.invoicemaster.entities.UserAccountRecord;
 
 import javax.persistence.*;
 
 @MappedSuperclass
-public class BillInvoice extends BaseModel {
+public class BillInvoice extends UserAccountRecord {
     @Column(name = "quantity")
     private double quantity;
 

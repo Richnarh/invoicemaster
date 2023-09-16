@@ -1,5 +1,6 @@
 package com.khoders.invoicemaster.entities.accounts;
 
+import com.khoders.invoicemaster.entities.UserAccountRecord;
 import com.khoders.invoicemaster.enums.DebitCredit;
 import com.khoders.invoicemaster.enums.EntrySource;
 import com.khoders.resource.jpa.BaseModel;
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "journal")
-public class Journal extends BaseModel {
+public class Journal extends UserAccountRecord {
     @Column(name = "debit")
     private double debit;
 
@@ -21,7 +22,7 @@ public class Journal extends BaseModel {
     @Column(name = "description")
     private String description;
 
-    @JoinColumn(name = "account", referencedColumnName = "id")
+    @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account account;
 
@@ -80,4 +81,13 @@ public class Journal extends BaseModel {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public EntrySource getEntrySource() {
+        return entrySource;
+    }
+
+    public void setEntrySource(EntrySource entrySource) {
+        this.entrySource = entrySource;
+    }
+    
 }

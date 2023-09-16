@@ -3,6 +3,7 @@ com\khoders\invoicemaster\mapper\ClientMapper.class
 com\khoders\invoicemaster\service\AuthService.class
 com\khoders\invoicemaster\service\XtractService.class
 com\khoders\invoicemaster\jbeans\controller\ReturnGoodController.class
+com\khoders\invoicemaster\service\TaxService.class
 com\khoders\invoicemaster\mapper\AppParam.class
 com\khoders\invoicemaster\dto\UserProp.class
 com\khoders\invoicemaster\jbeans\controller\QuickInvoiceController.class
@@ -77,9 +78,11 @@ com\khoders\invoicemaster\listener\AppSession.class
 com\khoders\invoicemaster\controller\InventoryController.class
 com\khoders\invoicemaster\dto\sms\MessageTemplateDto.class
 com\khoders\invoicemaster\controller\MessageTemplateController.class
+com\khoders\invoicemaster\controller\TaxGroupController.class
 com\khoders\invoicemaster\jbeans\controller\ReportHandler.class
 com\khoders\invoicemaster\controller\GroupContactController.class
 com\khoders\invoicemaster\jbeans\controller\ProfileUpdateController.class
+com\khoders\invoicemaster\mapper\TaxMapper.class
 com\khoders\invoicemaster\jbeans\controller\ReportController.class
 com\khoders\invoicemaster\jbeans\controller\PaymentDataController.class
 com\khoders\invoicemaster\dto\TransactionDto.class
@@ -88,10 +91,13 @@ com\khoders\invoicemaster\dto\PaymentDataDto.class
 com\khoders\invoicemaster\dto\sms\Group.class
 com\khoders\invoicemaster\jbeans\controller\UserAccountController.class
 com\khoders\invoicemaster\controller\CompanyBranchController.class
+com\khoders\invoicemaster\controller\TaxController.class
 com\khoders\invoicemaster\InvoiceMasterConfig.class
 com\khoders\invoicemaster\dto\OnlineClientDto.class
 com\khoders\invoicemaster\service\PaymentService.class
 com\khoders\invoicemaster\dto\CompanyBranchDto.class
+com\khoders\invoicemaster\dto\TaxGroupDto.class
+com\khoders\invoicemaster\dto\TaxDto.class
 com\khoders\invoicemaster\dto\InvoiceItemDto.class
 com\khoders\invoicemaster\service\MsgService.class
 com\khoders\invoicemaster\service\AppService.class

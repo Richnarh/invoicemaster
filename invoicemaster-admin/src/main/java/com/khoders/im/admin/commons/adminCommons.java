@@ -12,6 +12,7 @@ import com.khoders.invoicemaster.enums.SMSType;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.enums.PaymentStatus;
+import com.khoders.resource.enums.Status;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +54,10 @@ public class adminCommons implements Serializable
     public List<SMSType> getSmsTypeList()
     {
         return Arrays.asList(SMSType.values());
+    }
+    public List<Status> getStatusList()
+    {
+        return Arrays.asList(Status.values());
     }
     
 }

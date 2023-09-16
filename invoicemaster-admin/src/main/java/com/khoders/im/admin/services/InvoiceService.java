@@ -5,12 +5,9 @@
  */
 package com.khoders.im.admin.services;
 
-import com.khoders.im.admin.listener.AppSession;
 import com.khoders.invoicemaster.entities.Inventory;
-import com.khoders.invoicemaster.entities.PaymentData;
 import com.khoders.invoicemaster.entities.ProformaInvoice;
 import com.khoders.invoicemaster.entities.ProformaInvoiceItem;
-import com.khoders.invoicemaster.entities.SalesTax;
 import com.khoders.invoicemaster.entities.UserAccount;
 import com.khoders.invoicemaster.entities.system.CompanyBranch;
 import com.khoders.resource.jpa.CrudApi;

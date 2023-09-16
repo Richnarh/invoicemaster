@@ -50,8 +50,8 @@ public class ClientController {
     @GET
     @Path("/{clientId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findById(@PathParam("inventoryId") String inventoryId){
-        return JaxResponse.ok(Msg.RECORD_FOUND, clientService.findById(inventoryId));
+    public Response findById(@PathParam("clientId") String clientId){
+        return JaxResponse.ok(Msg.RECORD_FOUND, clientService.findById(clientId));
     }
     
     @GET
@@ -67,6 +67,6 @@ public class ClientController {
         boolean delete = clientService.delete(clientId);
         if(delete)
             return JaxResponse.ok(Msg.DELETE_MESSAGE,delete);
-        return JaxResponse.ok("Could not delete inventory",delete);
+        return JaxResponse.ok("Could not delete client",delete);
     }
 }

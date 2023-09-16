@@ -51,11 +51,11 @@ public class MsgService {
         String groupName = null;
         SMSGrup grup = crudApi.find(SMSGrup.class, contactDto.getSmsGrupId());
         System.out.println("grup: "+grup.getGroupName());
-        if(grup != null && grup.getGroupName().equals("All")){
+        if(grup.getGroupName().equals("All")){
             groupName = grup.getGroupName();
         }
         List<GroupContactDto> groupContactList = new LinkedList<>();
-        if(groupName.equals("All")){
+        if(groupName != null && groupName.equals("All")){
             List<Client> clientList = inventoryService.getClientList();
             clientList.forEach(client -> {
                 GroupContact contact = new GroupContact();
@@ -93,6 +93,11 @@ public class MsgService {
             dtoList.add(mapper.toDto(item));
         });
         return dtoList;
+    }
+    
+    public boolean deleteContactGroup(String groupContactId){
+        GroupContact groupContact = crudApi.find(GroupContact.class, groupContactId);
+        return groupContact != null ? crudApi.delete(groupContact) : false;
     }
 
     // SMS Group
@@ -165,8 +170,11 @@ public class MsgService {
         if (sendId == null) {
             return Msg.setMsg("Please set sender ID");
         }
-        if (messageTemplate != null && messageTemplate.getTemplateText() == null) {
-            return Msg.setMsg("The selected template has not text");
+        if(messageTemplate == null){
+            return Msg.setMsg("Please create a template.");
+        }
+        if (messageTemplate.getTemplateText() == null) {
+            return Msg.setMsg("The selected template has no text");
         }
         try {
             ZenophSMS zsms = smsService.extractParams();
