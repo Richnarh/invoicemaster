@@ -21,25 +21,25 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "bank_statement")
 public class BankStatement extends UserAccountRecord{
-    public final String _bankAccount = "bankAccount";
+    public static final String _bankAccount = "bankAccount";
     @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account bankAccount;
     
-    public final String _statementDate = "statementDate";
+    public static final String _statementDate = "statementDate";
     @Column(name = "statement_date")
     private LocalDate statementDate;
     
-    public final String _description = "description";
+    public static final String _description = "description";
     @Column(name = "description")
     @Lob
     private String description;
     
-    public final String _credit = "credit";
+    public static final String _credit = "credit";
     @Column(name = "credit")
     private double credit;
     
-    public final String _debit = "debit";
+    public static final String _debit = "debit";
     @Column(name = "debit")
     private double debit;
     

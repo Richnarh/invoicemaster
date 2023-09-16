@@ -10,13 +10,16 @@ import java.util.List;
 @Entity
 @Table(name = "bills")
 public class Bill extends UserAccountRecord {
+    public static final String _client = "client";
     @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
     private Client client;
 
+    public static final String _receiptNo = "receiptNo";
     @Column(name = "receipt_no")
     private String receiptNo;
 
+    public static final String _billDate = "billDate";
     @Column(name = "bill_date")
     private LocalDate billDate;
 
@@ -27,6 +30,7 @@ public class Bill extends UserAccountRecord {
     @Column(name = "total_amount")
     private double totalAmount;
 
+    public static final String _balanceOverDue = "balanceOverDue";
     @Column(name = "balance_overdue")
     private double balanceOverDue;
 

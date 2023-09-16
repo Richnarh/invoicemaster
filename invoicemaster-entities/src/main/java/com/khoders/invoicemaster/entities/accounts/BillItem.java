@@ -14,7 +14,7 @@ public class BillItem extends BillInvoice {
     @JoinColumn(name = "bills", referencedColumnName = "id")
     @ManyToOne
     private Bill bill;
-
+        
     public Bill getBill() {
         return bill;
     }

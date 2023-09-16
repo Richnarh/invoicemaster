@@ -6,7 +6,8 @@
 package com.khoders.invoicemaster.controller.accounts;
 
 import com.khoders.invoicemaster.ApiEndpoint;
-import com.khoders.invoicemaster.dto.accounts.AccountDto;
+import com.khoders.invoicemaster.dto.accounts.CashTransferDto;
+import com.khoders.invoicemaster.dto.accounts.CashTransferDto;
 import com.khoders.invoicemaster.service.AccountService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
@@ -26,44 +27,44 @@ import javax.ws.rs.core.Response;
  *
  * @author Richard Narh
  */
-@Path(ApiEndpoint.ACCOUNT_ENDPOINT)
-public class AccountController {
+@Path(ApiEndpoint.CASH_TRANSFER_ENDPOINT)
+public class CashTransferController {
     @Inject private AccountService accountService;
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(AccountDto accountDto){
-        AccountDto dto = accountService.saveAccount(accountDto);
-        return JaxResponse.created(dto);
+    public Response create(CashTransferDto cashTransferDto){
+        CashTransferDto dto = accountService.saveCashTransfer(cashTransferDto);
+        return JaxResponse.created(Msg.CREATED,dto);
     }
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(AccountDto accountDto){
-        AccountDto dto = accountService.saveAccount(accountDto);
+    public Response update(CashTransferDto cashTransferDto){
+        CashTransferDto dto = accountService.saveCashTransfer(cashTransferDto);
         return JaxResponse.ok(Msg.UPDATED, dto);
     }
     
     @GET
-    @Path("/{accountId}")
+    @Path("/{cashTransferId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findById(@PathParam("accountId") String accountId){
-        return JaxResponse.ok(Msg.RECORD_FOUND, accountService.findById(accountId));
+    public Response findById(@PathParam("cashTransferId") String cashTransferId){
+        return JaxResponse.ok(Msg.RECORD_FOUND, accountService.findCashTransferById(cashTransferId));
     }
     
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll(){
-        return JaxResponse.ok(Msg.RECORD_FOUND, accountService.findAllAccounts());
+        return JaxResponse.ok(Msg.RECORD_FOUND, accountService.findAllCashTransfers());
     }
     
     @DELETE
-    @Path("/{accountId}")
-    public Response delete(@PathParam("accountId") String accountId){
-        boolean delete = accountService.deleteAccount(accountId);
+    @Path("/{cashTransferId}")
+    public Response delete(@PathParam("cashTransferId") String cashTransferId){
+        boolean delete = accountService.deleteCashTransfer(cashTransferId);
         if(delete)
             return JaxResponse.ok(Msg.DELETE_MESSAGE,delete);
-        return JaxResponse.ok("Could not delete account",delete);
+        return JaxResponse.ok("Could not delete CashTransfer",delete);
     }
 }

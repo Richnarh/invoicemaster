@@ -19,13 +19,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "deposite_item")
 public class DepositeItem extends UserAccountRecord{
-    public final String _account = "account";
+    public static final String _account = "account";
     @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account account;
     
-    public final String _cashDeposite = "cashDeposite";
-    public final String _cashDepositeId = CashDeposite._id;
+    public static final String _cashDeposite = "cashDeposite";
+    public static final String _cashDepositeId = CashDeposite._id;
     @JoinColumn(name = "cash_deposite", referencedColumnName = "id")
     @ManyToOne
     private CashDeposite cashDeposite;

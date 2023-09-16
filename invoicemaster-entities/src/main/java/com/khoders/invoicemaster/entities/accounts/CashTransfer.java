@@ -27,12 +27,12 @@ public class CashTransfer extends UserAccountRecord{
     @Column(name = "total_amount")
     private double totalAmount;
     
-    public final String _fromAccount = "fromAccount";
+    public static final String _fromAccount = "fromAccount";
     @JoinColumn(name = "from_account", referencedColumnName = "id")
     @ManyToOne
     private Account fromAccount;
     
-    public final String _toAccount = "toAccount";
+    public static final String _toAccount = "toAccount";
     @JoinColumn(name = "to_account", referencedColumnName = "id")
     @ManyToOne
     private Account toAccount;

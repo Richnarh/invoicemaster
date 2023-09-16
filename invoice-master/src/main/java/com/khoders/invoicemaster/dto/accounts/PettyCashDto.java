@@ -3,55 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.entities.accounts;
+package com.khoders.invoicemaster.dto.accounts;
 
-import com.khoders.invoicemaster.entities.UserAccountRecord;
-import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.khoders.invoicemaster.dto.UserProp;
 
 /**
  *
- * @author Pascal
+ * @author Richard Narh
  */
-@Entity
-@Table(name = "petty_cash")
-public class PettyCash extends UserAccountRecord{
-    
-    @Column(name = "fund_date")
-    private LocalDate fundDate;
-    
-    @Column(name = "fund_name")
+public class PettyCashDto extends UserProp{
+    private String fundDate;
     private String fundName;
-    
-    public static final String _pettyAccount = "pettyAccount";
-    @JoinColumn(name = "accounts")
-    @ManyToOne
-    private Account pettyAccount;
-    
-    @Column(name = "fund_purpose")
+    private String pettyAccount;
+    private String pettyAccountId;
     private String fundPurpose;
-    
-    @Column(name = "total_amount")
     private double totalAmount;
-    
-    @Column(name = "fund_balance")
     private double fundBalance;
-    
-    @Column(name = "money_used")
     private double moneyUsed;
 
-    public LocalDate getFundDate() {
+    public String getFundDate() {
         return fundDate;
     }
 
-    public void setFundDate(LocalDate fundDate) {
+    public void setFundDate(String fundDate) {
         this.fundDate = fundDate;
     }
-    
+
     public String getFundName() {
         return fundName;
     }
@@ -60,12 +37,20 @@ public class PettyCash extends UserAccountRecord{
         this.fundName = fundName;
     }
 
-    public Account getPettyAccount() {
+    public String getPettyAccount() {
         return pettyAccount;
     }
 
-    public void setPettyAccount(Account pettyAccount) {
+    public void setPettyAccount(String pettyAccount) {
         this.pettyAccount = pettyAccount;
+    }
+
+    public String getPettyAccountId() {
+        return pettyAccountId;
+    }
+
+    public void setPettyAccountId(String pettyAccountId) {
+        this.pettyAccountId = pettyAccountId;
     }
 
     public String getFundPurpose() {

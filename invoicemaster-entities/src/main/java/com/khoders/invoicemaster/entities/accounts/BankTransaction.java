@@ -7,6 +7,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "bank_transaction")
 public class BankTransaction extends UserAccountRecord {
+    
+    public static final String _account = "account";
     @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account account;

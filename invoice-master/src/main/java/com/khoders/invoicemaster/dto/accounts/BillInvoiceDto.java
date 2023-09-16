@@ -1,31 +1,27 @@
-package com.khoders.invoicemaster.entities.accounts;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.khoders.invoicemaster.dto.accounts;
 
-import com.khoders.invoicemaster.entities.UserAccountRecord;
+import com.khoders.invoicemaster.dto.UserProp;
 
-import javax.persistence.*;
-
-@MappedSuperclass
-public class BillInvoice extends UserAccountRecord {
-    @Column(name = "quantity")
+/**
+ *
+ * @author Richard Narh
+ */
+public class BillInvoiceDto extends UserProp{
     private double quantity;
-
-    @Column(name = "unit_price")
     private double unitPrice;
-
-    @Column(name = "total_amount")
     private double totalAmount;
-
-    @Column(name = "product")
-    @Lob
     private String product;
-
-    @JoinColumn(name = "accounts", referencedColumnName = "id")
-    @ManyToOne
-    private Account account;
+    private String account;
+    private String accountId;
 
     public double getQuantity() {
         return quantity;
-}
+    }
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
@@ -55,11 +51,20 @@ public class BillInvoice extends UserAccountRecord {
         this.product = product;
     }
 
-    public Account getAccount() {
+    public String getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(String account) {
         this.account = account;
     }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+    
 }

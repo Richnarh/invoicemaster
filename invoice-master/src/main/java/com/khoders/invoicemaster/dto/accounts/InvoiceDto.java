@@ -1,57 +1,46 @@
-package com.khoders.invoicemaster.entities.accounts;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.khoders.invoicemaster.dto.accounts;
 
-import com.khoders.invoicemaster.entities.Client;
-import com.khoders.invoicemaster.entities.UserAccountRecord;
-
-import javax.persistence.*;
-import java.time.LocalDate;
+import com.khoders.invoicemaster.dto.UserProp;
 import java.util.LinkedList;
 import java.util.List;
 
-@Entity
-@Table(name = "invoices")
-public class Invoice extends UserAccountRecord {
-    
-    public static final String _client = "client";
-    @JoinColumn(name = "client", referencedColumnName = "id")
-    @ManyToOne
-    private Client client;
-
-    @Column(name = "invoice_no")
+/**
+ *
+ * @author Richard Narh
+ */
+public class InvoiceDto extends UserProp{
+    private String client;
+    private String clientId;
     private String invoiceNo;
-
-    @Column(name = "due_date")
-    private LocalDate dueDate;
-
-    @Column(name = "memo")
-    @Lob
+    private String dueDate;
     private String memo;
-
-    @Column(name = "balance_overdue")
     private double balanceOverDue;
-
-    @Column(name = "total_amount")
     private double totalAmount;
-
-    @Column(name = "customer_notes")
-    @Lob
     private String customerNotes;
-
-    @Column(name = "terms_condition")
-    @Lob
     private String termsCondition;
+    private List<InvoiceItemDto> invoiceItemList = new LinkedList<>();
 
-    @Transient
-    private List<InvoiceItem> invoiceItemList = new LinkedList<>();
-
-    public Client getClient() {
+    public String getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(String client) {
         this.client = client;
     }
-    
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     public String getInvoiceNo() {
         return invoiceNo;
     }
@@ -60,11 +49,11 @@ public class Invoice extends UserAccountRecord {
         this.invoiceNo = invoiceNo;
     }
 
-    public LocalDate getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -108,11 +97,12 @@ public class Invoice extends UserAccountRecord {
         this.termsCondition = termsCondition;
     }
 
-    public List<InvoiceItem> getInvoiceItemList() {
+    public List<InvoiceItemDto> getInvoiceItemList() {
         return invoiceItemList;
     }
 
-    public void setInvoiceItemList(List<InvoiceItem> invoiceItemList) {
+    public void setInvoiceItemList(List<InvoiceItemDto> invoiceItemList) {
         this.invoiceItemList = invoiceItemList;
     }
+    
 }

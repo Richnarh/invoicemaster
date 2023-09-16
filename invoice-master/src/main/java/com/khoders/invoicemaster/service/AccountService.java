@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.service.accounts;
+package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.dto.accounts.AccountDto;
+import com.khoders.invoicemaster.dto.accounts.CashTransferDto;
 import com.khoders.invoicemaster.entities.accounts.Account;
+import com.khoders.invoicemaster.entities.accounts.CashTransfer;
 import com.khoders.invoicemaster.mapper.AccountMapper;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.LinkedList;
@@ -50,9 +52,37 @@ public class AccountService {
         return dtoList;
     }
 
-    public boolean delete(String accountId) {
+    public boolean deleteAccount(String accountId) {
         Account account = crudApi.find(Account.class, accountId);
         return account != null ? crudApi.delete(account) : false;
     }
     
+    public CashTransferDto saveCashTransfer(CashTransferDto transferDto){
+        CashTransferDto dto = null;
+        CashTransfer cashTransfer = mapper.toEntity(transferDto);
+        if(crudApi.save(cashTransfer) != null){
+            dto = mapper.toDto(cashTransfer);
+        }
+        return dto;
+    }
+    
+    public List<CashTransferDto> findAllCashTransfers(){
+        log.debug("Fetching all CashTransfer");
+        List<CashTransfer> cashTransfers = crudApi.findAll(CashTransfer.class);
+        List<CashTransferDto> dtoList = new LinkedList<>();
+        cashTransfers.forEach(item -> {
+            dtoList.add(mapper.toDto(item));
+        });
+        return dtoList;
+    }
+    
+    public CashTransferDto findCashTransferById(String cashTransferId) {
+       CashTransfer cashTransfer = crudApi.find(CashTransfer.class, cashTransferId);
+       return mapper.toDto(cashTransfer);
+    }
+    
+    public boolean deleteCashTransfer(String cashTransferId) {
+        CashTransfer cashTransfer = crudApi.find(CashTransfer.class, cashTransferId);
+        return cashTransfer != null ? crudApi.delete(cashTransfer) : false;
+    }
 }

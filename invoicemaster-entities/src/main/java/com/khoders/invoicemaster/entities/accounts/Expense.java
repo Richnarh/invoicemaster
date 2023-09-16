@@ -17,10 +17,12 @@ public class Expense extends UserAccountRecord {
     @Column(name = "receipt_no")
     private String receiptNo;
 
+    public static final String _account = "account";
     @JoinColumn(name = "account")
     @ManyToOne
     private Account account;
 
+    public static final String _client = "client";
     @JoinColumn(name = "client")
     @ManyToOne
     private Client client;

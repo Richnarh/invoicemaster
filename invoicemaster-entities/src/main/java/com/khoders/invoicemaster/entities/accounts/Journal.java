@@ -3,7 +3,6 @@ package com.khoders.invoicemaster.entities.accounts;
 import com.khoders.invoicemaster.entities.UserAccountRecord;
 import com.khoders.invoicemaster.enums.DebitCredit;
 import com.khoders.invoicemaster.enums.EntrySource;
-import com.khoders.resource.jpa.BaseModel;
 
 import javax.persistence.*;
 

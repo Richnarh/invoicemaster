@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "general_ledger")
 public class GeneralLedger extends UserAccountRecord {
+    public static final String _account = "account";
     @JoinColumn(name = "accounts", referencedColumnName = "id")
     @ManyToOne
     private Account account;
