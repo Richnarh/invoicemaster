@@ -10,7 +10,7 @@ import com.khoders.invoicemaster.entities.Inventory;
 import com.khoders.invoicemaster.entities.Product;
 import com.khoders.invoicemaster.entities.ProductType;
 import com.khoders.invoicemaster.entities.SaleLead;
-import com.khoders.invoicemaster.service.ClientService;
+import com.khoders.invoicemaster.handlers.ClientHandler;
 import com.khoders.invoicemaster.sms.MessageTemplate;
 import com.khoders.invoicemaster.sms.SMSGrup;
 import com.khoders.invoicemaster.sms.SenderId;
@@ -36,7 +36,7 @@ import javax.inject.Named;
 public class UserCommonClass implements Serializable{
     @Inject private SmsService smsService;
     @Inject private InventoryService inventoryService;
-    @Inject private ClientService clientService;
+    @Inject private ClientHandler clientService;
     
     private List<Client> clientList = new LinkedList<>();
     private List<Inventory> inventoryList = new LinkedList<>();

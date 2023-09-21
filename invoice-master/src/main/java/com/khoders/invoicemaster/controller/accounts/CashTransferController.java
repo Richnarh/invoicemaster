@@ -7,7 +7,6 @@ package com.khoders.invoicemaster.controller.accounts;
 
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.dto.accounts.CashTransferDto;
-import com.khoders.invoicemaster.dto.accounts.CashTransferDto;
 import com.khoders.invoicemaster.service.AccountService;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
