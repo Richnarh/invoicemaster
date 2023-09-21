@@ -5,6 +5,8 @@
  */
 package com.khoders.invoicemaster.dto;
 
+import com.khoders.resource.enums.Status;
+
 /**
  *
  * @author Pascal
@@ -12,7 +14,7 @@ package com.khoders.invoicemaster.dto;
 public class AppConfigDto extends BaseDto{
     private String configName;
     private String configValue;
-    private String configStatus;
+    private Status configStatus;
 
     public String getConfigName() {
         return configName;
@@ -30,11 +32,11 @@ public class AppConfigDto extends BaseDto{
         this.configValue = configValue;
     }
 
-    public String getConfigStatus() {
+    public Status getConfigStatus() {
         return configStatus;
     }
 
-    public void setConfigStatus(String configStatus) {
+    public void setConfigStatus(Status configStatus) {
         this.configStatus = configStatus;
     }
     

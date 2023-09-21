@@ -40,4 +40,6 @@ public class ApiEndpoint
     // Accounting
     public static final String ACCOUNT_ENDPOINT = VERSION + "accounts";
     public static final String CASH_TRANSFER_ENDPOINT = VERSION + "cash-transfer";
+    public static final String PETTY_CASH_ENDPOINT = VERSION + "petty-cash";
+    public static final String CASH_DEPOSITE_ENDPOINT = VERSION + "cash-deposite";
 }

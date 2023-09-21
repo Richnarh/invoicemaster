@@ -7,8 +7,10 @@ package com.khoders.invoicemaster.service;
 
 import com.khoders.invoicemaster.dto.accounts.AccountDto;
 import com.khoders.invoicemaster.dto.accounts.CashTransferDto;
+import com.khoders.invoicemaster.dto.accounts.PettyCashDto;
 import com.khoders.invoicemaster.entities.accounts.Account;
 import com.khoders.invoicemaster.entities.accounts.CashTransfer;
+import com.khoders.invoicemaster.entities.accounts.PettyCash;
 import com.khoders.invoicemaster.mapper.AccountMapper;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.LinkedList;
@@ -84,5 +86,35 @@ public class AccountService {
     public boolean deleteCashTransfer(String cashTransferId) {
         CashTransfer cashTransfer = crudApi.find(CashTransfer.class, cashTransferId);
         return cashTransfer != null ? crudApi.delete(cashTransfer) : false;
+    }
+
+    // Petty cash
+    public PettyCashDto savePettyCash(PettyCashDto pettyCashDto) {
+        PettyCashDto dto = null;
+        PettyCash pettyCash = mapper.toEntity(pettyCashDto);
+        if(crudApi.save(pettyCash) != null){
+            dto = mapper.toDto(pettyCash);
+        }
+        return dto;
+    }
+
+    public PettyCashDto findPettyCashById(String pettyCashId) {
+       PettyCash pettyCash = crudApi.find(PettyCash.class, pettyCashId);
+       return mapper.toDto(pettyCash);
+    }
+
+    public List<PettyCashDto> findAllPettyCashList() {
+        log.debug("Fetching all PettyCash");
+        List<PettyCash> pettyCashList = crudApi.findAll(PettyCash.class);
+        List<PettyCashDto> dtoList = new LinkedList<>();
+        pettyCashList.forEach(item -> {
+            dtoList.add(mapper.toDto(item));
+        });
+        return dtoList;
+    }
+
+    public boolean deletePettyCash(String pettyCashId) {
+        PettyCash pettyCash = crudApi.find(PettyCash.class, pettyCashId);
+        return pettyCash != null ? crudApi.delete(pettyCash) : false;
     }
 }

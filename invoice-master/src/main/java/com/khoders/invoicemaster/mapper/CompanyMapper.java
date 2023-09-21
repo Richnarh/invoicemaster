@@ -87,7 +87,7 @@ public class CompanyMapper {
         }
         appConfig.setConfigName(dto.getConfigName());
         appConfig.setConfigValue(dto.getConfigValue());
-//        appConfig.setConfigStatus(dto.getConfigStatus() != null ? Status.valueOf(dto.getConfigStatus()) : Status.ACTIVE);
+        appConfig.setConfigStatus(dto.getConfigStatus());
         return appConfig;
     }
     
@@ -99,7 +99,7 @@ public class CompanyMapper {
         dto.setId(appConfig.getId());
         dto.setConfigName(appConfig.getConfigName());
         dto.setConfigValue(appConfig.getConfigValue());
-        dto.setConfigStatus(appConfig.getConfigStatus() != null ? appConfig.getConfigStatus().getLabel() : null);
+        dto.setConfigStatus(appConfig.getConfigStatus());
         return dto;
     }
     

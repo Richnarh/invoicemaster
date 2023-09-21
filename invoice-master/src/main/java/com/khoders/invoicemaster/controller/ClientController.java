@@ -8,7 +8,7 @@ package com.khoders.invoicemaster.controller;
 import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.ApiEndpoint;
 import com.khoders.invoicemaster.dto.ClientDto;
-import com.khoders.invoicemaster.service.ClientService;
+import com.khoders.invoicemaster.handlers.ClientHandler;
 import com.khoders.resource.jaxrs.JaxResponse;
 import com.khoders.resource.utilities.Msg;
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 @Path(ApiEndpoint.CLIENT)
 public class ClientController {
     @Inject
-    private ClientService clientService;
+    private ClientHandler clientService;
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

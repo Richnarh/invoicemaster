@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.invoicemaster.service;
+package com.khoders.invoicemaster.handlers;
 
 import com.khoders.invoicemaster.mapper.AppParam;
 import com.khoders.invoicemaster.dto.ClientDto;
 import com.khoders.invoicemaster.entities.Client;
 import com.khoders.invoicemaster.mapper.ClientMapper;
+import com.khoders.invoicemaster.service.InventoryService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.jpa.QueryBuilder;
 import java.util.LinkedList;
@@ -23,8 +24,8 @@ import org.slf4j.LoggerFactory;
  * @author richa
  */
 @Stateless
-public class ClientService{
-    private static final Logger log = LoggerFactory.getLogger(ClientService.class);
+public class ClientHandler{
+    private static final Logger log = LoggerFactory.getLogger(ClientHandler.class);
     
     @Inject private QueryBuilder builder;
     @Inject private CrudApi crudApi;
